@@ -95,6 +95,7 @@ namespace PushNotifications.WS
                     .WithConnectionString(ApplicationConfiguration.Get("pushnot_conn_str_projections"))
                     .Build();
                 var session = cluster.ConnectAndCreateDefaultKeyspaceIfNotExists();
+                session.InitializeProjectionDatabase(Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)));
                 return session;
             }
         }
