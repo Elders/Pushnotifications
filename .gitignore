@@ -1,10 +1,13 @@
 #####################
 ## CURRENT PROJECT ##
 #####################
-
 release.cmd
+
+#Ignore git files
 *.orig
 
+#Ignore MSI artifacts during packaging
+*.wxs
 
 ##############################################################
 ## Ignore Visual Studio temporary files, build results, and ##
@@ -12,8 +15,8 @@ release.cmd
 ##############################################################
 
 # Ignore most popular binaries in Windows
-.exe
-.dll
+*.exe
+*.dll
 
 # Roslyn stuff
 *.sln.ide
@@ -231,6 +234,7 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+!*.msi/
 
 # Windows shortcuts
 *.lnk
