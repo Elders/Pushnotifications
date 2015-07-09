@@ -3,10 +3,8 @@ using Elders.Cronus.Pipeline.Config;
 using Elders.Cronus.Pipeline.Hosts;
 using Elders.Cronus.Pipeline.Transport.RabbitMQ.Config;
 using Elders.Cronus.IocContainer;
-using Elders.Cronus;
 using Elders.Pandora;
 using Elders.Cronus.DomainModeling;
-using System.Linq;
 using System.Web.Http;
 using Elders.Cronus.Pipeline;
 using Elders.Cronus.Pipeline.Transport;
@@ -32,15 +30,11 @@ namespace PushNotifications.Api
 
                 ApplicationConfiguration.SetContext("PushNotifications");
 
-                string PN = "PushNotifications";
-
                 container = new Container();
-
-                var PM_appServiceFactory = new ApplicationServiceFactory(container, PN);
                 var cfg = new CronusSettings(container);
 
                 cfg.UseContractsFromAssemblies(new[] { Assembly.GetAssembly(typeof(PushNotificationWasSent)) });
-                cfg.UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = ApplicationConfiguration.Get("server"));
+                cfg.UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = ApplicationConfiguration.Get("pushnot_rabbitmq_server"));
 
                 Func<IPipelineTransport> transport = () => container.Resolve<IPipelineTransport>();
                 Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
@@ -58,45 +52,6 @@ namespace PushNotifications.Api
             {
                 log.Error(ex);
                 throw;
-            }
-        }
-
-        public class ApplicationServiceFactory
-        {
-            private readonly IContainer container;
-            private readonly string namedInstance;
-
-            public ApplicationServiceFactory(IContainer container, string namedInstance)
-            {
-                this.container = container;
-                this.namedInstance = namedInstance;
-            }
-
-            public object Create(Type appServiceType)
-            {
-                var appService = FastActivator
-                    .CreateInstance(appServiceType);
-                return appService;
-            }
-        }
-
-        public class PortHandlerFactory
-        {
-            private readonly IContainer container;
-            private readonly string namedInstance;
-
-            public PortHandlerFactory(IContainer container, string namedInstance)
-            {
-                this.container = container;
-                this.namedInstance = namedInstance;
-            }
-
-            public object Create(Type handlerType)
-            {
-                var handler = FastActivator
-                    .CreateInstance(handlerType)
-                    .AssignPropertySafely<IPort>(x => x.CommandPublisher = container.Resolve<IPublisher<ICommand>>(namedInstance));
-                return handler;
             }
         }
 
