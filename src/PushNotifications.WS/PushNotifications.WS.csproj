@@ -46,8 +46,9 @@
     <Reference Include="Elders.Cronus.Persistence.Cassandra">
       <HintPath>..\packages\Cronus.Persistence.Cassandra.3.1.4\lib\net45-full\Elders.Cronus.Persistence.Cassandra.dll</HintPath>
     </Reference>
-    <Reference Include="Elders.Cronus.Projections.Cassandra">
-      <HintPath>..\packages\Cronus.Projections.Cassandra.1.0.0\lib\net45-full\Elders.Cronus.Projections.Cassandra.dll</HintPath>
+    <Reference Include="Elders.Cronus.Projections.Cassandra, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Cronus.Projections.Cassandra.1.0.1\lib\net45-full\Elders.Cronus.Projections.Cassandra.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.Serialization.Proteus">
       <HintPath>..\packages\Cronus.Serialization.Proteus.2.0.2\lib\net45-full\Elders.Cronus.Serialization.Proteus.dll</HintPath>
