@@ -2,8 +2,6 @@
 using PushNotifications.Contracts.PushNotifications;
 using PushNotifications.Contracts.PushNotifications.Events;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PushNotifications.PushNotifications
 {
@@ -18,7 +16,7 @@ namespace PushNotifications.PushNotifications
             if (ReferenceEquals(null, e)) throw new ArgumentNullException("e");
 
             Id = e.Id;
-            Payload = new Payload(e.Json, e.Text, e.Sound, e.Icon, e.Badge);
+            Payload = new Payload(e.Json, e.Text, e.Sound, e.Icon, e.Badge, e.IsSilent);
         }
     }
 }

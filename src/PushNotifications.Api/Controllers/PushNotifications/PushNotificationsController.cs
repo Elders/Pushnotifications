@@ -3,8 +3,6 @@ using Elders.Web.Api;
 using PushNotifications.Contracts.PushNotifications;
 using PushNotifications.Contracts.PushNotifications.Commands;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http;
 using Thinktecture.IdentityModel.WebApi;
 
@@ -50,10 +48,12 @@ namespace PushNotifications.Api.Controllers.PushNotifications
 
         public int Badge { get; set; }
 
+        public bool IsSilent { get; set; }
+
         public SendPushNotification AsCommand()
         {
             var id = new PushNotificationId(Guid.NewGuid());
-            return new SendPushNotification(id, UserId, Json, Text, Sound, Icon, Category, Badge);
+            return new SendPushNotification(id, UserId, Json, Text, Sound, Icon, Category, Badge, IsSilent);
         }
     }
 }

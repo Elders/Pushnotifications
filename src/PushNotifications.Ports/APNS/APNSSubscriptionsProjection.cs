@@ -1,12 +1,9 @@
 ﻿using Elders.Cronus.DomainModeling;
 using Elders.Cronus.DomainModeling.Projections;
 using PushNotifications.Contracts.Subscriptions.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 
-namespace PushNotifications.Ports
+namespace PushNotifications.Ports.APNS
 {
     public class APNSSubscriptionsProjection : IProjection, IHaveProjectionsRepository,
         IEventHandler<UserSubscribedForAPNS>,
@@ -25,9 +22,8 @@ namespace PushNotifications.Ports
         }
 
         public IRepository Repository { get; set; }
-
-
     }
+
     [DataContract(Name = "c3dab7f5-01fe-4cdf-929a-a827336814aa")]
     public class APNSSubscriptions : ICollectionDataTransferObjectItem<string, string>
     {

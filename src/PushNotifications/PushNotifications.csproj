@@ -31,8 +31,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Elders.Cronus.DomainModeling, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Cronus.DomainModeling.2.2.0\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+      <HintPath>..\packages\Cronus.DomainModeling.2.2.1\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,15 +55,29 @@
     <Compile Include="Subscriptions\APNSSubscriptionState.cs">
       <DependentUpon>APNSSubscription.cs</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="Subscriptions\ParseSubscription.cs" />
+    <Compile Include="Subscriptions\ParseSubscriptionAppService.cs">
+      <DependentUpon>ParseSubscription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Subscriptions\GCMSubscription.cs" />
+    <Compile Include="Subscriptions\GCMSubscriptionAppService.cs">
+      <DependentUpon>GCMSubscription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Subscriptions\GCMSubscriptionState.cs">
+      <DependentUpon>GCMSubscription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Subscriptions\ParseSubscriptionState.cs">
+      <DependentUpon>ParseSubscription.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{ad83839b-ddec-4911-bc56-aebb28a292d1}</Project>
       <Name>PushNotifications.Contracts</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

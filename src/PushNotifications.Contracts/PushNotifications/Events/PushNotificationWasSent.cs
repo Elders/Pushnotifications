@@ -1,7 +1,4 @@
 ﻿using Elders.Cronus.DomainModeling;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 
 namespace PushNotifications.Contracts.PushNotifications.Events
@@ -11,7 +8,7 @@ namespace PushNotifications.Contracts.PushNotifications.Events
     {
         PushNotificationWasSent() { }
 
-        public PushNotificationWasSent(PushNotificationId id, string userId, string json, string text, string sound, string icon, string category, int badge)
+        public PushNotificationWasSent(PushNotificationId id, string userId, string json, string text, string sound, string icon, string category, int badge, bool isSilent)
         {
             Id = id;
             UserId = userId;
@@ -21,6 +18,7 @@ namespace PushNotifications.Contracts.PushNotifications.Events
             Icon = icon;
             Category = category;
             Badge = badge;
+            IsSilent = isSilent;
         }
 
         [DataMember(Order = 1)]
@@ -46,5 +44,8 @@ namespace PushNotifications.Contracts.PushNotifications.Events
 
         [DataMember(Order = 8)]
         public int Badge { get; private set; }
+
+        [DataMember(Order = 9)]
+        public bool IsSilent { get; private set; }
     }
 }

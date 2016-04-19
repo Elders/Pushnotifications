@@ -1,8 +1,5 @@
-﻿using Elders.Cronus.DomainModeling;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
+using Elders.Cronus.DomainModeling;
 
 namespace PushNotifications.Contracts.PushNotifications.Commands
 {
@@ -11,7 +8,7 @@ namespace PushNotifications.Contracts.PushNotifications.Commands
     {
         SendPushNotification() { }
 
-        public SendPushNotification(PushNotificationId id, string userId, string json, string text, string sound, string icon, string category, int badge)
+        public SendPushNotification(PushNotificationId id, string userId, string json, string text, string sound, string icon, string category, int badge, bool isSilent)
         {
             Id = id;
             UserId = userId;
@@ -21,6 +18,7 @@ namespace PushNotifications.Contracts.PushNotifications.Commands
             Icon = icon;
             Category = category;
             Badge = badge;
+            IsSilent = isSilent;
         }
 
         [DataMember(Order = 1)]
@@ -46,6 +44,9 @@ namespace PushNotifications.Contracts.PushNotifications.Commands
 
         [DataMember(Order = 8)]
         public int Badge { get; private set; }
+
+        [DataMember(Order = 9)]
+        public bool IsSilent { get; private set; }
 
         public bool IsValid()
         {
