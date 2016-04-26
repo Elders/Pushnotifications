@@ -40,6 +40,7 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cronus.cs" />
     <Compile Include="PushNotifications\Commands\SendPushNotification.cs" />
     <Compile Include="PushNotifications\Events\PushNotificationWasSent.cs" />
     <Compile Include="PushNotifications\Payload.cs" />
