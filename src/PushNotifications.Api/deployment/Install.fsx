@@ -1,5 +1,5 @@
 // include Fake libs
-#I @"./FAKE/tools"
+#I @"bin/FAKE/tools/"
 #r @"FakeLib.dll"
 #r @"Fake.IIS.dll"
 #r @"Fake.Deploy.Lib.dll"
@@ -13,7 +13,7 @@ let env = environVar "CLUSTER_NAME"
 let defaultWebsite = "pushnotifications.local.com"
 let website = getBuildParamOrDefault "website" defaultWebsite
 
-let depl_path = environVar "DEPL_PATH"
+let depl_path = environVar "vapt_depl_path"
 let websiteDeplPath = depl_path @@ @"Elders\PushNotifications\pn.Api"
 
 // Targets
@@ -23,7 +23,7 @@ Target "PreInstall" (fun _ ->
 )
 
 Target "Install" (fun _ ->
-    XCopy ".\..\Content" websiteDeplPath
+    XCopy "../content" websiteDeplPath
 )
 Target "PostInstall" (fun _ ->
     let startWebsite = "start site " + website
