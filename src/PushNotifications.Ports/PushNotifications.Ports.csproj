@@ -112,7 +112,6 @@
     <Compile Include="IPushNotificationPort.cs" />
     <Compile Include="Parse\ParseAndroidNotifcation.cs" />
     <Compile Include="Parse\ParseNotificationService.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -123,6 +122,9 @@
       <Project>{ad83839b-ddec-4911-bc56-aebb28a292d1}</Project>
       <Name>PushNotifications.Contracts</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
