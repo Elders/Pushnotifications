@@ -10,7 +10,7 @@ open Fake.IISHelper
 open Fake.Services
 
 let env = environVar "CLUSTER_NAME"
-let defaultWebsite = "api-pushnotifications." + env + ".devsmm.com"
+let defaultWebsite = "pushnotifications.local.com"
 let website = getBuildParamOrDefault "website" defaultWebsite
 
 let depl_path = environVar "DEPL_PATH"
