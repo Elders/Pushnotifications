@@ -8,7 +8,7 @@ using Thinktecture.IdentityModel.WebApi;
 
 namespace PushNotifications.Api.Controllers.PushNotifications
 {
-    [ScopeAuthorize("notifications")]
+    [ScopeAuthorize("admin")]
     [RoutePrefix("PushNotifications")]
     public class PushNotificationsController : ApiController
     {
