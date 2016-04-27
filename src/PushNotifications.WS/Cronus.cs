@@ -108,7 +108,9 @@ namespace PushNotifications.WS
             var parseAppId = ApplicationConfiguration.Get("pushnot_parse_app_id");
             var parseRestApiKey = ApplicationConfiguration.Get("pushnot_parse_rest_api_key");
 
-            var appleCert = File.ReadAllBytes(iosCert);
+            string iosCertPath = Environment.ExpandEnvironmentVariables(iosCert);
+
+            var appleCert = File.ReadAllBytes(iosCertPath);
 
             bool iSprod = Boolean.Parse(ApplicationConfiguration.Get("pushnot_ios_production"));
             broker.RegisterAppleService(new ApplePushChannelSettings(iSprod, appleCert, iosCertPass));
