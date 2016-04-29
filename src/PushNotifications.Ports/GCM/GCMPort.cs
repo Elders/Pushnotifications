@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Elders.Cronus.DomainModeling;
 using Elders.Cronus.DomainModeling.Projections;
 using PushNotifications.Contracts.PushNotifications.Events;
@@ -10,6 +11,8 @@ namespace PushNotifications.Ports.GCM
     public class GCMPort : IPort, IPushNotificationPort, IHaveProjectionsRepository,
         IEventHandler<PushNotificationWasSent>
     {
+        log4net.ILog log = log4net.LogManager.GetLogger(typeof(GCMPort));
+
         public IPublisher<ICommand> CommandPublisher { get; set; }
 
         public IRepository Repository { get; set; }
@@ -22,9 +25,18 @@ namespace PushNotifications.Ports.GCM
 
             foreach (var token in tokens.Select(x => x.Token).Distinct().ToList())
             {
-                PushBroker.QueueNotification(new GcmNotification()
-                    .ForDeviceRegistrationId(token)
-                    .WithJson(@event.Json));
+                try
+                {
+                    PushBroker.QueueNotification(new GcmNotification()
+                        .ForDeviceRegistrationId(token)
+                        .WithJson(@event.Json));
+
+                    log.Info("Android push notification was sent to device with token: " + token);
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex);
+                }
             }
         }
     }

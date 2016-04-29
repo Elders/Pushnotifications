@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Elders.Cronus.DomainModeling;
 using Elders.Cronus.DomainModeling.Projections;
 using PushNotifications.Contracts.PushNotifications.Events;
@@ -10,6 +11,8 @@ namespace PushNotifications.Ports.APNS
     public class APNSPort : IPort, IPushNotificationPort, IHaveProjectionsRepository,
         IEventHandler<PushNotificationWasSent>
     {
+        log4net.ILog log = log4net.LogManager.GetLogger(typeof(APNSPort));
+
         public IPublisher<ICommand> CommandPublisher { get; set; }
 
         public IRepository Repository { get; set; }
@@ -22,7 +25,16 @@ namespace PushNotifications.Ports.APNS
 
             foreach (var token in tokens.Select(x => x.Token).Distinct().ToList())
             {
-                PushBroker.QueueNotification(BuildNotification(token, @event.Json, @event.Text, @event.Badge, @event.Sound, @event.Category, @event.IsSilent));
+                try
+                {
+                    PushBroker.QueueNotification(BuildNotification(token, @event.Json, @event.Text, @event.Badge, @event.Sound, @event.Category, @event.IsSilent));
+
+                    log.Info("Apple push notification was sent to device with token: " + token);
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex);
+                }
             }
         }
 

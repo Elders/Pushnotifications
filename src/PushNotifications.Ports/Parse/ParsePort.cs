@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Elders.Cronus.DomainModeling;
 using Elders.Cronus.DomainModeling.Projections;
 using PushNotifications.Contracts.PushNotifications.Events;
@@ -9,6 +10,8 @@ namespace PushNotifications.Ports.Parse
     public class ParsePort : IPort, IPushNotificationPort, IHaveProjectionsRepository,
         IEventHandler<PushNotificationWasSent>
     {
+        log4net.ILog log = log4net.LogManager.GetLogger(typeof(ParsePort));
+
         public IPublisher<ICommand> CommandPublisher { get; set; }
 
         public IRepository Repository { get; set; }
@@ -21,7 +24,16 @@ namespace PushNotifications.Ports.Parse
 
             foreach (var token in tokens.Select(x => x.Token).Distinct().ToList())
             {
-                PushBroker.QueueNotification(new ParseAndroidNotifcation(token, @event.Json));
+                try
+                {
+                    PushBroker.QueueNotification(new ParseAndroidNotifcation(token, @event.Json));
+
+                    log.Info("Parse push notification was sent to device with token: " + token);
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex);
+                }
             }
         }
     }
