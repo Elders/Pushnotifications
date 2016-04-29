@@ -11,7 +11,7 @@ namespace PushNotifications.Ports.GCM
     public class GCMPort : IPort, IPushNotificationPort, IHaveProjectionsRepository,
         IEventHandler<PushNotificationWasSent>
     {
-        log4net.ILog log = log4net.LogManager.GetLogger(typeof(GCMPort));
+        static log4net.ILog log = log4net.LogManager.GetLogger(typeof(GCMPort));
 
         public IPublisher<ICommand> CommandPublisher { get; set; }
 
@@ -23,7 +23,16 @@ namespace PushNotifications.Ports.GCM
         {
             var tokens = Repository.Query<GCMSubscriptions>().GetCollection(@event.UserId);
 
-            foreach (var token in tokens.Select(x => x.Token).Distinct().ToList())
+            var distinctTokens = tokens.Select(x => x.Token).Distinct().ToList();
+
+            if (distinctTokens.Count == 0)
+            {
+                log.Info("There is no android token for user with id: " + @event.UserId);
+
+                return;
+            }
+
+            foreach (var token in distinctTokens)
             {
                 try
                 {

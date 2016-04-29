@@ -10,7 +10,7 @@ namespace PushNotifications.Ports.Parse
     public class ParsePort : IPort, IPushNotificationPort, IHaveProjectionsRepository,
         IEventHandler<PushNotificationWasSent>
     {
-        log4net.ILog log = log4net.LogManager.GetLogger(typeof(ParsePort));
+        static log4net.ILog log = log4net.LogManager.GetLogger(typeof(ParsePort));
 
         public IPublisher<ICommand> CommandPublisher { get; set; }
 
@@ -22,7 +22,16 @@ namespace PushNotifications.Ports.Parse
         {
             var tokens = Repository.Query<ParseSubscriptions>().GetCollection(@event.UserId);
 
-            foreach (var token in tokens.Select(x => x.Token).Distinct().ToList())
+            var distinctTokens = tokens.Select(x => x.Token).Distinct().ToList();
+
+            if (distinctTokens.Count == 0)
+            {
+                log.Info("There is no parse token for user with id: " + @event.UserId);
+
+                return;
+            }
+
+            foreach (var token in distinctTokens)
             {
                 try
                 {
