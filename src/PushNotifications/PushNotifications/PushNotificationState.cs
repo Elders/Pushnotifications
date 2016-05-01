@@ -13,8 +13,6 @@ namespace PushNotifications.PushNotifications
 
         public void When(PushNotificationWasSent e)
         {
-            if (ReferenceEquals(null, e)) throw new ArgumentNullException("e");
-
             Id = e.Id;
             Payload = new Payload(e.Json, e.Text, e.Sound, e.Icon, e.Badge, e.IsSilent);
         }

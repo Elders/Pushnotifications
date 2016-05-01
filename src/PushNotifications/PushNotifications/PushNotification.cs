@@ -11,7 +11,7 @@ namespace PushNotifications.PushNotifications
 
         public PushNotification(PushNotificationId id, string userId, string json, string text, string sound, string icon, string category, int badge, bool isSilent)
         {
-            if (ReferenceEquals(null, id)) throw new ArgumentNullException("id");
+            if (ReferenceEquals(null, id)) throw new ArgumentNullException(nameof(id));
 
             state = new PushNotificationState();
 

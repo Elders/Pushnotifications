@@ -27,7 +27,7 @@ namespace PushNotifications.Ports.GCM
 
             if (distinctTokens.Count == 0)
             {
-                log.Info("There is no android token for user with id: " + @event.UserId);
+                log.Error("[GCM] Unable to find token for userId: '" + @event.UserId + "'");
 
                 return;
             }
@@ -40,7 +40,7 @@ namespace PushNotifications.Ports.GCM
                         .ForDeviceRegistrationId(token)
                         .WithJson(@event.Json));
 
-                    log.Info("Android push notification was sent to device with token: " + token);
+                    log.Info("[GCM] Push notification '" + @event.Text + "' was queued using token '" + token + "'");
                 }
                 catch (Exception ex)
                 {

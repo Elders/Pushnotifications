@@ -26,7 +26,7 @@ namespace PushNotifications.Ports.Parse
 
             if (distinctTokens.Count == 0)
             {
-                log.Info("There is no parse token for user with id: " + @event.UserId);
+                log.Error("[PARSE] Unable to find token for userId: '" + @event.UserId + "'");
 
                 return;
             }
@@ -37,7 +37,13 @@ namespace PushNotifications.Ports.Parse
                 {
                     PushBroker.QueueNotification(new ParseAndroidNotifcation(token, @event.Json));
 
-                    log.Info("Parse push notification was sent to device with token: " + token);
+                    log.Info("[PARSE] Push notification '" + @event.Text + "' was queued using token '" + token + "'");
+                    log.Debug("[PARSE] Push notification '" + @event.Text + "' was queued using token '" + token + "'" + Environment.NewLine +
+                        @event.Json + Environment.NewLine +
+                        @event.Badge + Environment.NewLine +
+                        @event.Sound + Environment.NewLine +
+                        @event.Category + Environment.NewLine +
+                        @event.IsSilent);
                 }
                 catch (Exception ex)
                 {

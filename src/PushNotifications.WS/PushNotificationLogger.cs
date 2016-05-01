@@ -1,11 +1,13 @@
 ﻿using System;
+using PushNotifications.WS.Logging;
 using PushSharp.Core;
 
 namespace PushNotifications.WS
 {
     public static class PushNotificationLogger
     {
-        static log4net.ILog log = log4net.LogManager.GetLogger(typeof(PushNotificationLogger));
+        static ILog log = LogProvider.GetLogger(typeof(PushNotificationLogger));
+
         public static string TOKEN;
 
         public static void DeviceSubscriptionChanged(object sender, string oldSubscriptionId, string newSubscriptionId, INotification notification)
@@ -21,17 +23,17 @@ namespace PushNotifications.WS
 
         public static void NotificationFailed(object sender, INotification notification, Exception notificationFailureException)
         {
-            log.Error("Failure: " + sender + " -> " + notification + "TOKEN:" + TOKEN, notificationFailureException);
+            log.ErrorException("Failure: " + sender + " -> " + notification + "TOKEN:" + TOKEN, notificationFailureException);
         }
 
         public static void ChannelException(object sender, IPushChannel channel, Exception exception)
         {
-            log.Error("Channel Exception: " + sender, exception);
+            log.ErrorException("Channel Exception: " + sender, exception);
         }
 
         public static void ServiceException(object sender, Exception exception)
         {
-            log.Error("Channel Exception: " + sender, exception);
+            log.ErrorException("Channel Exception: " + sender, exception);
         }
 
         public static void DeviceSubscriptionExpired(object sender, string expiredDeviceSubscriptionId, DateTime timestamp, INotification notification)
@@ -41,12 +43,12 @@ namespace PushNotifications.WS
 
         public static void ChannelDestroyed(object sender)
         {
-            log.Warn("Channel Destroyed for: " + sender);
+            log.Debug("Channel Destroyed for: " + sender);
         }
 
         public static void ChannelCreated(object sender, IPushChannel pushChannel)
         {
-            log.Info("Channel Created for: " + sender);
+            log.Debug("Channel Created for: " + sender);
         }
     }
 }

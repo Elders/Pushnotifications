@@ -27,8 +27,7 @@ namespace PushNotifications.Ports.APNS
 
             if (distinctTokens.Count == 0)
             {
-                log.Info("There is no apple token for user with id: " + @event.UserId);
-
+                log.Error("[APNS] Unable to find token for userId: '" + @event.UserId + "'");
                 return;
             }
 
@@ -38,7 +37,13 @@ namespace PushNotifications.Ports.APNS
                 {
                     PushBroker.QueueNotification(BuildNotification(token, @event.Json, @event.Text, @event.Badge, @event.Sound, @event.Category, @event.IsSilent));
 
-                    log.Info("Apple push notification was sent to device with token: " + token);
+                    log.Info("[APNS] Push notification '" + @event.Text + "' was queued using token '" + token + "'");
+                    log.Debug("[APNS] Push notification '" + @event.Text + "' was queued using token '" + token + "'" + Environment.NewLine +
+                        @event.Json + Environment.NewLine +
+                        @event.Badge + Environment.NewLine +
+                        @event.Sound + Environment.NewLine +
+                        @event.Category + Environment.NewLine +
+                        @event.IsSilent);
                 }
                 catch (Exception ex)
                 {

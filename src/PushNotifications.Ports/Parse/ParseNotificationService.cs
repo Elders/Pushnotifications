@@ -43,13 +43,13 @@ namespace PushNotifications.Ports.Parse
             {
                 var response = client.Execute(request);
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                    log.Error("Failure: ParseNotification -> " + requestString + " -> " + response.StatusCode.ToString() + " " + response.Content);
+                    log.Error("[PARSE] ParseNotification -> " + requestString + " -> " + response.StatusCode.ToString() + " " + response.Content);
                 else
-                    log.Info("Sent Parse Notification: " + requestString);
+                    log.Debug("[PARSE] Sent Parse Notification: " + requestString);
             }
             catch (Exception ex)
             {
-                log.Error("Failure: ParseNotification -> " + requestString + " -> ", ex);
+                log.Error("[PARSE] ParseNotification -> " + requestString + " -> ", ex);
             }
         }
 
