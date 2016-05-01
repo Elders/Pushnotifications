@@ -23,5 +23,10 @@ namespace PushNotifications.Contracts.Subscriptions.Events
 
         [DataMember(Order = 3)]
         public string Token { get; private set; }
+
+        public override string ToString()
+        {
+            return "[GCM] User '" + UserId + "' has unsubscribed from token '" + Token + "'. ";
+        }
     }
 }
