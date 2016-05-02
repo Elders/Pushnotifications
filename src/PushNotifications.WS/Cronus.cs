@@ -191,9 +191,24 @@ namespace PushNotifications.WS
 
         public static void Stop()
         {
-            host.Stop();
-            host = null;
-            container.Destroy();
+            try
+            {
+                if (host != null)
+                {
+                    host.Stop();
+                    host = null;
+                }
+                if (container != null)
+                {
+                    container.Destroy();
+                    container = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Fatal("Unable to stop properly the service.", ex);
+                throw;
+            }
         }
     }
 }
