@@ -41,7 +41,8 @@ namespace PushNotifications.WS
                 string PN = "PushNotifications";
 
                 container = new Container();
-                container.RegisterSingleton<PushBroker>(() => ConfigurePushBroker());
+                var broker = ConfigurePushBroker();
+                container.RegisterSingleton<PushBroker>(() => broker);
                 container.RegisterSingleton<Cassandra.ISession>(() => SessionCreator.CreateProjectionSession());
                 container.RegisterTransient<IRepository>(() => new Repository(
                     new CassandraPersister(container.Resolve<Cassandra.ISession>()),
