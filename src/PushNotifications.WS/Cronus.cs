@@ -114,7 +114,7 @@ namespace PushNotifications.WS
             var appleCert = File.ReadAllBytes(iosCertPath);
 
             bool iSprod = Boolean.Parse(ApplicationConfiguration.Get("pushnot_ios_production"));
-            broker.RegisterAppleService(new ApplePushChannelSettings(iSprod, appleCert, iosCertPass));
+            broker.RegisterAppleService(new ApplePushChannelSettings(iSprod, appleCert, iosCertPass, disableCertificateCheck: true));
             broker.RegisterGcmService(new GcmPushChannelSettings(androidToken));
             broker.RegisterService<ParseAndroidNotifcation>(new ParseNotificationService(parseAppId, parseRestApiKey));
 
