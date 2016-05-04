@@ -47,5 +47,10 @@ namespace PushNotifications.Contracts.PushNotifications.Events
 
         [DataMember(Order = 9)]
         public bool IsSilent { get; private set; }
+
+        public override string ToString()
+        {
+            return "Push notification was sent with text " + Text + " and json " + Json + " to user " + UserId;
+        }
     }
 }

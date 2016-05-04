@@ -1,7 +1,9 @@
 ﻿using Elders.Cronus.DomainModeling;
 using Elders.Cronus.DomainModeling.Projections;
 using PushNotifications.Contracts.Subscriptions.Events;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System;
 
 namespace PushNotifications.Ports.APNS
 {
@@ -11,7 +13,7 @@ namespace PushNotifications.Ports.APNS
     {
         public void Handle(UserSubscribedForAPNS @event)
         {
-            Repository.Query<APNSSubscriptions>().Save(new APNSSubscriptions(@event.UserId, @event.Token));
+            Repository.Query<APNSSubscriptions>().Save(new APNSSubscriptions(@event.UserId, @event.Token, 0));
         }
 
         public void Handle(UserUnSubscribedFromAPNS @event)
@@ -29,10 +31,11 @@ namespace PushNotifications.Ports.APNS
     {
         public APNSSubscriptions() { }
 
-        public APNSSubscriptions(string userId, string token)
+        public APNSSubscriptions(string userId, string token, int badge)
         {
             (this as ICollectionDataTransferObjectItem<string, string>).Id = token;
             (this as ICollectionDataTransferObjectItem<string, string>).CollectionId = userId;
+            Badge = badge;
         }
 
         public string Token { get { return (this as ICollectionDataTransferObjectItem<string, string>).Id; } }
@@ -44,5 +47,28 @@ namespace PushNotifications.Ports.APNS
 
         [DataMember(Order = 2)]
         string ICollectionDataTransferObject<string>.CollectionId { get; set; }
+
+        [DataMember(Order = 3)]
+        public int Badge { get; set; }
+
+
+        public static IEqualityComparer<APNSSubscriptions> Comparer { get { return new APNSSubscriptionsComparer(); } }
+
+        public class APNSSubscriptionsComparer : IEqualityComparer<APNSSubscriptions>
+        {
+            public bool Equals(APNSSubscriptions x, APNSSubscriptions y)
+            {
+                if (ReferenceEquals(x, null) && ReferenceEquals(y, null))
+                    return true;
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                    return false;
+                return x.User == y.User && x.Token == y.Token;
+            }
+
+            public int GetHashCode(APNSSubscriptions obj)
+            {
+                return (117 ^ obj.User.GetHashCode()) ^ obj.Token.GetHashCode();
+            }
+        }
     }
 }

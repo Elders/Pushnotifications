@@ -27,7 +27,7 @@ namespace PushNotifications.Ports.GCM
 
             if (distinctTokens.Count == 0)
             {
-                log.Error("[GCM] Unable to find token for userId: '" + @event.UserId + "'");
+                log.Debug("[GCM] Unable to find token for userId: '" + @event.UserId + "'");
 
                 return;
             }

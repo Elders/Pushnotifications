@@ -21,24 +21,27 @@ namespace PushNotifications.Ports.APNS
 
         public void Handle(PushNotificationWasSent @event)
         {
-            var tokens = Repository.Query<APNSSubscriptions>().GetCollection(@event.UserId);
+            var subscriptions = Repository.Query<APNSSubscriptions>().GetCollection(@event.UserId);
 
-            var distinctTokens = tokens.Select(x => x.Token).Distinct().ToList();
+            var disticntSubscriptions = subscriptions.Distinct(APNSSubscriptions.Comparer).ToList();
 
-            if (distinctTokens.Count == 0)
+            if (disticntSubscriptions.Count == 0)
             {
-                log.Error("[APNS] Unable to find token for userId: '" + @event.UserId + "'");
+                log.Debug("[APNS] Unable to find token for userId: '" + @event.UserId + "'");
                 return;
             }
 
-            foreach (var token in distinctTokens)
+            foreach (var subscription in disticntSubscriptions)
             {
                 try
                 {
-                    PushBroker.QueueNotification(BuildNotification(token, @event.Json, @event.Text, @event.Badge, @event.Sound, @event.Category, @event.IsSilent));
+                    var badge = @event.Badge != 0 ? subscription.Badge + 1 : @event.Badge;
+                    subscription.Badge = badge;
+                    Repository.Query<APNSSubscriptions>().Save(subscription);
+                    PushBroker.QueueNotification(BuildNotification(subscription.Token, @event.Json, @event.Text, subscription.Badge, @event.Sound, @event.Category, @event.IsSilent));
 
-                    log.Info("[APNS] Push notification '" + @event.Text + "' was queued using token '" + token + "'");
-                    log.Debug("[APNS] Push notification '" + @event.Text + "' was queued using token '" + token + "'" + Environment.NewLine +
+                    log.Info("[APNS] Push notification '" + @event.Text + "' was queued using token '" + subscription.Token + "'");
+                    log.Debug("[APNS] Push notification '" + @event.Text + "' was queued using token '" + subscription.Token + "'" + Environment.NewLine +
                         @event.Json + Environment.NewLine +
                         @event.Badge + Environment.NewLine +
                         @event.Sound + Environment.NewLine +

@@ -26,7 +26,7 @@ namespace PushNotifications.Ports.Parse
 
             if (distinctTokens.Count == 0)
             {
-                log.Error("[PARSE] Unable to find token for userId: '" + @event.UserId + "'");
+                log.Debug("[PARSE] Unable to find token for userId: '" + @event.UserId + "'");
 
                 return;
             }
