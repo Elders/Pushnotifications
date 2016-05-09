@@ -1,9 +1,10 @@
 ﻿using PushSharp;
+using PushSharp.Core;
 
 namespace PushNotifications.Ports
 {
     public interface IPushNotificationPort
     {
-        PushBroker PushBroker { get; set; }
+        IPushBroker PushBroker { get; set; }
     }
 }

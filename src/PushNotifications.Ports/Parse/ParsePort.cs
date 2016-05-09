@@ -4,6 +4,7 @@ using Elders.Cronus.DomainModeling;
 using Elders.Cronus.DomainModeling.Projections;
 using PushNotifications.Contracts.PushNotifications.Events;
 using PushSharp;
+using PushSharp.Core;
 
 namespace PushNotifications.Ports.Parse
 {
@@ -16,7 +17,7 @@ namespace PushNotifications.Ports.Parse
 
         public IRepository Repository { get; set; }
 
-        public PushBroker PushBroker { get; set; }
+        public IPushBroker PushBroker { get; set; }
 
         public void Handle(PushNotificationWasSent @event)
         {

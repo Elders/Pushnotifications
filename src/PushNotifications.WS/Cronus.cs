@@ -16,9 +16,11 @@ using PushNotifications.Ports;
 using PushNotifications.Ports.APNS;
 using PushNotifications.Ports.Parse;
 using PushNotifications.PushNotifications;
+using PushNotifications.WS.NotificationThrottle;
 using PushSharp;
 using PushSharp.Android;
 using PushSharp.Apple;
+using PushSharp.Core;
 
 namespace PushNotifications.WS
 {
@@ -41,8 +43,8 @@ namespace PushNotifications.WS
                 string PN = "PushNotifications";
 
                 container = new Container();
-                var broker = ConfigurePushBroker();
-                container.RegisterSingleton<PushBroker>(() => broker);
+                //container.RegisterSingleton<PushBroker>(() => broker);
+
                 container.RegisterSingleton<Cassandra.ISession>(() => SessionCreator.CreateProjectionSession());
                 container.RegisterTransient<IRepository>(() => new Repository(
                     new CassandraPersister(container.Resolve<Cassandra.ISession>()),
@@ -53,7 +55,11 @@ namespace PushNotifications.WS
                 var cfg = new CronusSettings(container);
                 var connstr = ApplicationConfiguration.Get("pushnot_conn_str_es");
                 log.InfoFormat("ConnectionString => {0}", connstr);
-                cfg.UseContractsFromAssemblies(new[] { Assembly.GetAssembly(typeof(PushNotificationWasSent)), Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)) });
+                cfg.UseContractsFromAssemblies(new[] {
+                    Assembly.GetAssembly(typeof(PushNotificationWasSent)),
+                    Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)),
+                    Assembly.GetAssembly(typeof(APNSNotificationMessage))
+                });
                 cfg.UseCommandConsumer(PN, consumer => consumer
                     .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = ApplicationConfiguration.Get("pushnot_rabbitmq_server"))
                     .WithDefaultPublishersWithRabbitMq()
@@ -76,6 +82,12 @@ namespace PushNotifications.WS
                     .WithDefaultPublishersWithRabbitMq()
                     .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = ApplicationConfiguration.Get("pushnot_rabbitmq_server"))
                     .UseProjections(h => h.RegisterAllHandlersInAssembly(Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)), projFactory.Create)));
+
+                Func<object, byte[]> serializer = container.Resolve<ISerializer>().SerializeToBytes;
+                Func<byte[], object> deserializer = container.Resolve<ISerializer>().DeserializeFromBytes;
+                var broker = ConfigurePushBroker();
+                var throttler = new ThrottledBrokerAdapter(new ThrottledBroker(serializer, deserializer, broker));
+                container.RegisterSingleton<IPushBroker>(() => throttler);
 
                 (cfg as ISettingsBuilder).Build();
                 host = container.Resolve<CronusHost>();
@@ -166,7 +178,7 @@ namespace PushNotifications.WS
             {
                 var handler = FastActivator
                     .CreateInstance(handlerType)
-                    .AssignPropertySafely<IPushNotificationPort>(x => x.PushBroker = container.Resolve<PushBroker>())
+                    .AssignPropertySafely<IPushNotificationPort>(x => x.PushBroker = container.Resolve<IPushBroker>())
                     .AssignPropertySafely<IHaveProjectionsRepository>(x => x.Repository = container.Resolve<IRepository>());
                 return handler;
             }

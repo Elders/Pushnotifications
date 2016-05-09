@@ -5,6 +5,7 @@ using Elders.Cronus.DomainModeling.Projections;
 using PushNotifications.Contracts.PushNotifications.Events;
 using PushSharp;
 using PushSharp.Apple;
+using PushSharp.Core;
 
 namespace PushNotifications.Ports.APNS
 {
@@ -17,7 +18,7 @@ namespace PushNotifications.Ports.APNS
 
         public IRepository Repository { get; set; }
 
-        public PushBroker PushBroker { get; set; }
+        public IPushBroker PushBroker { get; set; }
 
         public void Handle(PushNotificationWasSent @event)
         {
