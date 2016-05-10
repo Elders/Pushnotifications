@@ -27,26 +27,22 @@ namespace PushNotifications.WS.NotificationThrottle
 
             if (!channels.ContainsKey(notificationType))
             {
-                IPushService registration = null;
                 if (notification is AppleNotification)
                 {
-                    registration = broker.GetRegistrations<AppleNotification>().SingleOrDefault();
+                    broker.QueueNotification<AppleNotification>(notification as AppleNotification);
                 }
                 else if (notification is GcmNotification)
                 {
-                    registration = broker.GetRegistrations<GcmNotification>().SingleOrDefault();
+                    broker.QueueNotification<GcmNotification>(notification as GcmNotification);
                 }
                 else if (notification is ParseAndroidNotifcation)
                 {
-                    registration = broker.GetRegistrations<ParseAndroidNotifcation>().SingleOrDefault();
+                    broker.QueueNotification<ParseAndroidNotifcation>(notification as ParseAndroidNotifcation);
                 }
                 else
                     throw new NotSupportedException(notification.GetType().ToString());
-
-                CreateChannel(registration, notificationType);
             }
 
-            channels[notificationType].SendNotification(notification, SendNotificationCallbackDelegate);
         }
 
         private void CreateChannel(IPushService registration, Type t)
@@ -54,7 +50,9 @@ namespace PushNotifications.WS.NotificationThrottle
             if (channels.ContainsKey(t) == false)
             {
                 var settings = registration.ChannelSettings;
+
                 var channel = registration.PushChannelFactory.CreateChannel(settings);
+
                 channels.Add(t, channel);
             }
         }
