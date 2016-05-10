@@ -81,6 +81,7 @@ namespace PushNotifications.Ports.APNS
             {
                 notification.ForDeviceToken(token)
                             .WithAlert(text)
+                            .WithContentAvailable(1)
                             .WithCustomItem("payload", json)
                             .WithSound(sound)
                             .WithBadge(badge)

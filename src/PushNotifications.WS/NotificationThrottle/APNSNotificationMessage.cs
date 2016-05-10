@@ -55,6 +55,7 @@ namespace PushNotifications.WS.NotificationThrottle
             {
                 notification.WithCustomItem(item.Key, item.Value);
             }
+
             return notification;
         }
     }
