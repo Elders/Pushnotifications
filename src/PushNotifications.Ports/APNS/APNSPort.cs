@@ -36,7 +36,7 @@ namespace PushNotifications.Ports.APNS
             {
                 try
                 {
-                    var badge = @event.Badge != 0 ? subscription.Badge + 1 : @event.Badge;
+                    var badge = @event.Badge == 0 ? subscription.Badge + 1 : @event.Badge;
                     subscription.Badge = badge;
                     Repository.Query<APNSSubscriptions>().Save(subscription);
                     PushBroker.QueueNotification(BuildNotification(subscription.Token, @event.Json, @event.Text, subscription.Badge, @event.Sound, @event.Category, @event.IsSilent));
