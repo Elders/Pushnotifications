@@ -3,7 +3,6 @@ using Elders.Cronus.DomainModeling.Projections;
 using PushNotifications.Contracts.Subscriptions.Events;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System;
 
 namespace PushNotifications.Ports.APNS
 {
@@ -14,13 +13,28 @@ namespace PushNotifications.Ports.APNS
         public void Handle(UserSubscribedForAPNS @event)
         {
             Repository.Query<APNSSubscriptions>().Save(new APNSSubscriptions(@event.UserId, @event.Token, 0));
+            var users = Repository.Query<APNSToken>().GetCollection(@event.Token);
+            foreach (var user in users)
+            {
+                var debil = Repository.Query<APNSSubscriptions>().GetCollectionItem(@event.Token, user.User);
+                if (ReferenceEquals(debil, null) == false)
+                    Repository.Query<APNSSubscriptions>().Delete(debil);
+
+                Repository.Query<APNSToken>().Delete(user);
+            }
+
+            Repository.Query<APNSToken>().Save(new APNSToken(@event.UserId, @event.Token));
         }
 
         public void Handle(UserUnSubscribedFromAPNS @event)
         {
             var subscription = Repository.Query<APNSSubscriptions>().GetCollectionItem(@event.Token, @event.UserId);
-            if (!ReferenceEquals(subscription, null))
+            if (ReferenceEquals(subscription, null) == false)
                 Repository.Query<APNSSubscriptions>().Delete(subscription);
+
+            var debilProjection = Repository.Query<APNSToken>().GetCollectionItem(@event.UserId, @event.Token);
+            if (ReferenceEquals(debilProjection, null) == false)
+                Repository.Query<APNSToken>().Delete(debilProjection);
         }
 
         public IRepository Repository { get; set; }
@@ -70,5 +84,27 @@ namespace PushNotifications.Ports.APNS
                 return (117 ^ obj.User.GetHashCode()) ^ obj.Token.GetHashCode();
             }
         }
+    }
+
+    [DataContract(Name = "639bb6f0-ce27-4319-a51c-75bbdc5b7815")]
+    public class APNSToken : ICollectionDataTransferObjectItem<string, string>
+    {
+        public APNSToken() { }
+
+        public APNSToken(string userId, string token)
+        {
+            (this as ICollectionDataTransferObjectItem<string, string>).Id = userId;
+            (this as ICollectionDataTransferObjectItem<string, string>).CollectionId = token;
+        }
+
+        public string User { get { return (this as ICollectionDataTransferObjectItem<string, string>).Id; } }
+
+        public string Token { get { return (this as ICollectionDataTransferObjectItem<string, string>).CollectionId; } }
+
+        [DataMember(Order = 1)]
+        string ICollectionDataTransferObjectItem<string, string>.Id { get; set; }
+
+        [DataMember(Order = 2)]
+        string ICollectionDataTransferObject<string>.CollectionId { get; set; }
     }
 }
