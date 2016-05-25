@@ -244,3 +244,4 @@ $RECYCLE.BIN/
 **/.*/
 
 **/PushNotifications.Configuration/*
+src/PushNotifications.WS.MSI/Product.wxs
