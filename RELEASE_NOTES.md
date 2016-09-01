@@ -1,3 +1,6 @@
+#### 1.0.0-beta0003 - 01.09.2016
+* Adds empty constructor for PushNotificationModel
+
 #### 1.0.0-beta0002 - 01.09.2016
 * Initial release of PushNotificationsClient
 

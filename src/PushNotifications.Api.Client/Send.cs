@@ -19,6 +19,8 @@ namespace PushNotifications.Api.Client
 
         public class PushNotificationModel
         {
+            public PushNotificationModel()
+            { }
             public PushNotificationModel(string userId, string json, string text, string sound, string icon, string category, int badge, bool isSilent)
             {
                 UserId = userId;
