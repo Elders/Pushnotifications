@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Api", "PushNotifications.Api\PushNotifications.Api.csproj", "{344C15B3-045A-46F0-9877-5A1D76E24FBE}"
 EndProject
@@ -12,6 +12,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications", "PushNotifications\PushNotifications.csproj", "{6D64E748-0A5C-466F-AD59-0CD015496F09}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Contracts", "PushNotifications.Contracts\PushNotifications.Contracts.csproj", "{AD83839B-DDEC-4911-BC56-AEBB28A292D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Api.Client", "PushNotifications.Api.Client\PushNotifications.Api.Client.csproj", "{953201D5-3C46-4FBC-B75F-592B6FF7389D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{047AC964-8D36-4D48-B50B-C179F1CC518B}"
+	ProjectSection(SolutionItems) = preProject
+		..\RELEASE_NOTES.md = ..\RELEASE_NOTES.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +46,10 @@ Global
 		{AD83839B-DDEC-4911-BC56-AEBB28A292D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD83839B-DDEC-4911-BC56-AEBB28A292D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD83839B-DDEC-4911-BC56-AEBB28A292D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953201D5-3C46-4FBC-B75F-592B6FF7389D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953201D5-3C46-4FBC-B75F-592B6FF7389D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953201D5-3C46-4FBC-B75F-592B6FF7389D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953201D5-3C46-4FBC-B75F-592B6FF7389D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
