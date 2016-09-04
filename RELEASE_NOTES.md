@@ -1,3 +1,6 @@
+#### 1.0.0-beta0004 - 04.09.2016
+* Updates the deployment script for the API
+
 #### 1.0.0-beta0003 - 01.09.2016
 * Adds empty constructor for PushNotificationModel
 
