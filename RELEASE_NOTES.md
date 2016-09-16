@@ -1,3 +1,6 @@
+#### 1.0.0-beta0005 - 16.09.2016
+* We are sending 20 push notifications every 5 seconds if the usage of the CPU is below 50%
+
 #### 1.0.0-beta0004 - 04.09.2016
 * Updates the deployment script for the API
 

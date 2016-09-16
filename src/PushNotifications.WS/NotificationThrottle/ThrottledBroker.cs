@@ -79,20 +79,20 @@ namespace PushNotifications.WS.NotificationThrottle
 
             public void Start()
             {
-                var scheduleSeconds = 1;
+                var scheduleSeconds = 5;
                 try
                 {
                     var usage = monitor.Usage();
 
-                    if (usage < 70)
+                    if (usage < 50)
                     {
                         endpoint.Open();
                         using (var sender = new NotificationSender(broker))
                         {
-                            for (int i = 0; i < 30; i++)
+                            for (int i = 0; i < 20; i++)
                             {
                                 EndpointMessage message;
-                                endpoint.BlockDequeue(30, out message);
+                                endpoint.BlockDequeue(20, out message);
                                 if (message != null)
                                 {
                                     var notification = deserizalize(message.Body) as IThrottleNotification;
@@ -114,7 +114,7 @@ namespace PushNotifications.WS.NotificationThrottle
                     }
                     else
                     {
-                        log.Warn("Usage above 70%, not sending notifications. Usage: " + usage + "%");
+                        log.Warn("Usage above 50%, not sending notifications. Usage: " + usage + "%");
                     }
                 }
                 catch (EndpointClosedException ex)
