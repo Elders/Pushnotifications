@@ -49,9 +49,7 @@ SET RELEASE_NOTES=RELEASE_NOTES.md
 SET SUMMARY="PushNotifications"
 SET DESCRIPTION="PushNotifications"
 
-%FAKE% %NYX% appName=PushNotifications.WS appReleaseNotes=%RELEASE_NOTES% appSummary=%SUMMARY% appDescription=%DESCRIPTION% nugetkey=%RELEASE_NUGETKEY%
-%FAKE% %NYX% appName=PushNotifications.WS.MSI appReleaseNotes=%RELEASE_NOTES% appSummary=%SUMMARY% appDescription=%DESCRIPTION% nugetkey=%RELEASE_NUGETKEY% appType=msi
-%FAKE% %NYX% appName=PushNotifications.Api appReleaseNotes=%RELEASE_NOTES% appSummary=%SUMMARY% appDescription=%DESCRIPTION% nugetkey=%RELEASE_NUGETKEY% 
-%FAKE% %NYX% appName=PushNotifications.Api.Client appReleaseNotes=%RELEASE_NOTES% appSummary=%SUMMARY% appDescription=%DESCRIPTION% nugetkey=%RELEASE_NUGETKEY% nugetPackageName=PushNotifications.Api.Client
-
-IF NOT [%1]==[] (%FAKE% %NYX% "target=Release" -st appReleaseNotes=%RELEASE_NOTES%)
+%FAKE% %NYX% "target=Build" appName=PushNotifications.WS appSummary=%SUMMARY% appDescription=%DESCRIPTION% nugetkey=%RELEASE_NUGETKEY%
+%FAKE% %NYX% appName=PushNotifications.WS.MSI appSummary=%SUMMARY% appDescription=%DESCRIPTION% nugetkey=%RELEASE_NUGETKEY% appType=msi
+%FAKE% %NYX% appName=PushNotifications.Api appSummary=%SUMMARY% appDescription=%DESCRIPTION% nugetkey=%RELEASE_NUGETKEY% 
+%FAKE% %NYX% appName=PushNotifications.Api.Client appSummary=%SUMMARY% appDescription=%DESCRIPTION% nugetkey=%RELEASE_NUGETKEY% nugetPackageName=PushNotifications.Api.Client
