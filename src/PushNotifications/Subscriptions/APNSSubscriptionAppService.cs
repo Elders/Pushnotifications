@@ -1,8 +1,5 @@
 ﻿using Elders.Cronus.DomainModeling;
 using PushNotifications.Contracts.Subscriptions.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PushNotifications.Subscriptions
 {

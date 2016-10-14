@@ -1,7 +1,4 @@
 ﻿using Elders.Cronus.DomainModeling;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 
 namespace PushNotifications.Contracts.Subscriptions.Events
@@ -26,5 +23,10 @@ namespace PushNotifications.Contracts.Subscriptions.Events
 
         [DataMember(Order = 3)]
         public string Token { get; private set; }
+
+        public override string ToString()
+        {
+            return "[APNS] User '" + UserId + "' has subscribed to token '" + Token + "'. ";
+        }
     }
 }

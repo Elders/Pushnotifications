@@ -2,8 +2,6 @@
 using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Contracts.Subscriptions.Events;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PushNotifications.Subscriptions
 {

@@ -30,9 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Elders.Cronus.DomainModeling, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Cronus.DomainModeling.2.2.0\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+    <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.DomainModeling.2.4.0\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -40,19 +40,32 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cronus.cs" />
     <Compile Include="PushNotifications\Commands\SendPushNotification.cs" />
     <Compile Include="PushNotifications\Events\PushNotificationWasSent.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotifications\Payload.cs" />
     <Compile Include="PushNotifications\PushNotificationId.cs" />
+    <Compile Include="Subscriptions\Commands\SubscribeForParse.cs" />
+    <Compile Include="Subscriptions\Commands\UnSubscribeFromParse.cs" />
+    <Compile Include="Subscriptions\Events\UserSubscribedForParse.cs" />
+    <Compile Include="Subscriptions\Events\UserUnSubscribedFromParse.cs" />
+    <Compile Include="Subscriptions\ParseSubscriptionId.cs" />
+    <Compile Include="Subscriptions\GCMSubscriptionId.cs" />
+    <Compile Include="Subscriptions\Commands\SubscribeForGCM.cs" />
+    <Compile Include="Subscriptions\Commands\UnSubscribeFromGCM.cs" />
     <Compile Include="Subscriptions\Commands\UnSubscribeFromAPNS.cs" />
     <Compile Include="Subscriptions\Commands\SubscribeForAPNS.cs" />
     <Compile Include="Subscriptions\APNSSubscriptionId.cs" />
+    <Compile Include="Subscriptions\Events\UserSubscribedForGCM.cs" />
+    <Compile Include="Subscriptions\Events\UserUnSubscribedFromGCM.cs" />
     <Compile Include="Subscriptions\Events\UserUnSubscribedFromAPNS.cs" />
     <Compile Include="Subscriptions\Events\UserSubscribedForAPNS.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

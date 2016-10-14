@@ -2,10 +2,7 @@
 using Elders.Web.Api;
 using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Contracts.Subscriptions.Commands;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Web.Http;
 using Thinktecture.IdentityModel.WebApi;
 
@@ -18,7 +15,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions
         public IPublisher<ICommand> Publisher { get; set; }
 
         [HttpPost, Route("Subscribe")]
-        public IHttpActionResult Subscribe(SubscriptionModel model)
+        public IHttpActionResult Subscribe(APNSSubscriptionModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
 
@@ -35,7 +32,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions
         }
 
         [HttpPost, Route("UnSubscribe")]
-        public IHttpActionResult UnSubscribe(SubscriptionModel model)
+        public IHttpActionResult UnSubscribe(APNSSubscriptionModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
 
@@ -52,7 +49,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions
         }
     }
 
-    public class SubscriptionModel
+    public class APNSSubscriptionModel
     {
         [AuthorizeClaim(AuthorizeClaimType.Subject)]
         public string UserId { get; set; }

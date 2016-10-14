@@ -33,50 +33,57 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cassandra">
-      <HintPath>..\packages\CassandraCSharpDriver.2.5.2\lib\net40\Cassandra.dll</HintPath>
+    <Reference Include="Cassandra, Version=3.0.0.0, Culture=neutral, PublicKeyToken=10b231fbfc8c4b4d, processorArchitecture=MSIL">
+      <HintPath>..\packages\CassandraCSharpDriver.3.0.5\lib\net40\Cassandra.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Cronus">
-      <HintPath>..\packages\Cronus.2.2.5\lib\net45-full\Elders.Cronus.dll</HintPath>
+    <Reference Include="Elders.Cronus, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.2.6.2\lib\net45-full\Elders.Cronus.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Cronus.DomainModeling, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Cronus.DomainModeling.2.2.0\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+    <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.DomainModeling.2.4.0\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Cronus.Persistence.Cassandra">
-      <HintPath>..\packages\Cronus.Persistence.Cassandra.3.1.4\lib\net45-full\Elders.Cronus.Persistence.Cassandra.dll</HintPath>
+    <Reference Include="Elders.Cronus.Persistence.Cassandra, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.Persistence.Cassandra.3.1.5\lib\net45-full\Elders.Cronus.Persistence.Cassandra.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.Projections.Cassandra, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Cronus.Projections.Cassandra.1.0.1\lib\net45-full\Elders.Cronus.Projections.Cassandra.dll</HintPath>
+      <HintPath>..\packages\Cronus.Projections.Cassandra.1.0.2\lib\net45-full\Elders.Cronus.Projections.Cassandra.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Cronus.Serialization.Proteus">
-      <HintPath>..\packages\Cronus.Serialization.Proteus.2.0.2\lib\net45-full\Elders.Cronus.Serialization.Proteus.dll</HintPath>
+    <Reference Include="Elders.Cronus.Serialization.NewtonsoftJson, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.Serialization.NewtonsoftJson.1.0.0\lib\net45-full\Elders.Cronus.Serialization.NewtonsoftJson.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Cronus.Transport.RabbitMQ">
-      <HintPath>..\packages\Cronus.Transport.RabbitMQ.2.1.3\lib\net45-full\Elders.Cronus.Transport.RabbitMQ.dll</HintPath>
+    <Reference Include="Elders.Cronus.Transport.RabbitMQ, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.Transport.RabbitMQ.2.2.0\lib\net45-full\Elders.Cronus.Transport.RabbitMQ.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Multithreading.Scheduler">
-      <HintPath>..\packages\Multithreading.Scheduler.1.0.1\lib\net40-full\Elders.Multithreading.Scheduler.dll</HintPath>
+    <Reference Include="Elders.Multithreading.Scheduler, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Multithreading.Scheduler.1.1.0\lib\net45-full\Elders.Multithreading.Scheduler.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Pandora">
-      <HintPath>..\packages\Pandora.0.3.0\lib\net45-full\Elders.Pandora.dll</HintPath>
+    <Reference Include="Elders.Pandora, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pandora.0.4.0\lib\net45-full\Elders.Pandora.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Pandora.Box">
-      <HintPath>..\packages\Pandora.0.3.0\lib\net45-full\Elders.Pandora.Box.dll</HintPath>
+    <Reference Include="Elders.Pandora.Box, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pandora.0.4.0\lib\net45-full\Elders.Pandora.Box.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Proteus">
-      <HintPath>..\packages\Proteus.1.0.7\lib\net45-full\Elders.Proteus.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="LZ4, Version=1.0.10.93, Culture=neutral, PublicKeyToken=62e1b5ec1eec9bdd, processorArchitecture=MSIL">
+      <HintPath>..\packages\lz4net.1.0.10.93\lib\net4-client\LZ4.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="LZ4">
-      <HintPath>..\packages\lz4net.1.0.5.93\lib\net40-client\LZ4.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PushSharp.Amazon.Adm">
       <HintPath>..\packages\PushSharp.2.2.1.0\lib\net40\PushSharp.Amazon.Adm.dll</HintPath>
@@ -107,11 +114,13 @@
     <Reference Include="PushSharp.WindowsPhone">
       <HintPath>..\packages\PushSharp.2.2.1.0\lib\net40\PushSharp.WindowsPhone.dll</HintPath>
     </Reference>
-    <Reference Include="RabbitMQ.Client">
-      <HintPath>..\packages\RabbitMQ.Client.3.5.3\lib\net40\RabbitMQ.Client.dll</HintPath>
+    <Reference Include="RabbitMQ.Client, Version=3.6.1.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.6.1\lib\net45\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -122,6 +131,7 @@
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -130,7 +140,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="Cronus.cs" />
+    <Compile Include="NotificationThrottle\APNSNotificationMessage.cs" />
+    <Compile Include="NotificationThrottle\CircularBuffer.cs" />
+    <Compile Include="NotificationThrottle\GCMNotificationMessage.cs" />
+    <Compile Include="NotificationThrottle\IThrottleNotification.cs" />
+    <Compile Include="NotificationThrottle\NotificationSender.cs" />
+    <Compile Include="NotificationThrottle\ParseNotificationMessage.cs" />
+    <Compile Include="NotificationThrottle\ProcessorMonitor.cs" />
+    <Compile Include="NotificationThrottle\ThrotleSettings.cs" />
+    <Compile Include="NotificationThrottle\ThrottledBroker.cs" />
+    <Compile Include="NotificationThrottle\ThrottledBrokerAdapter.cs" />
+    <Compile Include="PushNotificationLogger.cs" />
     <Compile Include="PushNotificationService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -138,7 +160,6 @@
       <DependentUpon>PushNotificationService.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -157,6 +178,9 @@
       <Project>{6d64e748-0a5c-466f-ad59-0cd015496f09}</Project>
       <Name>PushNotifications</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

@@ -1,0 +1,10 @@
+{
+    "name": "PushNotifications.RabbitMQ",
+    "defaults": {
+        "pushnot_rabbitmq_server": "docker-local.com",
+        "pushnot_rabbitmq_port": "5672",
+        "pushnot_rabbitmq_virtual_host": "/",
+        "pushnot_rabbitmq_username": "guest",
+        "pushnot_rabbitmq_password": "guest"
+    }
+}

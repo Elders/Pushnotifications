@@ -2,16 +2,15 @@
 
 SETLOCAL
 
-SET TOOLS_PATH=.
-SET NUGET=%TOOLS_PATH%\NuGet\NuGet.exe
-SET FAKE=%TOOLS_PATH%\FAKE\tools\Fake.exe
+SET NUGET=%LocalAppData%\NuGet\NuGet.exe
+SET FAKE=bin\FAKE\tools\Fake.exe
 
 echo Downloading latest version of NuGet.exe...
-IF NOT EXIST %TOOLS_PATH%\NuGet md %TOOLS_PATH%\NuGet
-@powershell -NoProfile -ExecutionPolicy unrestricted -Command "$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest 'https://www.nuget.org/nuget.exe' -OutFile '%NUGET%'"
+IF NOT EXIST %LocalAppData%\NuGet md %LocalAppData%\NuGet
+@powershell -NoProfile -ExecutionPolicy unrestricted -Command "$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest 'https://dist.nuget.org/win-x86-commandline/latest/nuget.exe' -OutFile '%NUGET%'"
 
-echo Downloading latest version of Fake.exe...
-%NUGET% "install" "FAKE" "-OutputDirectory" "%TOOLS_PATH%" "-ExcludeVersion" "-Prerelease"
+echo Downloading latest version of FAKE...
+IF NOT EXIST bin\FAKE %NUGET% "install" "FAKE" "-OutputDirectory" "bin" "-ExcludeVersion" "-Version" "4.32.0"
 
 for /f %%i in ("%0") do set curpath=%%~dpi 
 cd /d %curpath%
