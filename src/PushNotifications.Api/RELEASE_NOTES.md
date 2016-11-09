@@ -1,4 +1,4 @@
-#### 2.0.0-beta0001 - 09.11.2016
+#### 2.0.0 - 09.11.2016
 * Switches to consul pandora as default settings resolver
 * Updates packages. There was a nasty bug where Thinktecture.IdentityServer3.AccessTokenValidation was unlisted. This produced non-consistent error while parsing access tokens. The solution was to remove that package and use the new IdentityServer3.AccessTokenValidation.
 

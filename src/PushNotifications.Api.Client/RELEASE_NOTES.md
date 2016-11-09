@@ -1,4 +1,4 @@
-#### 2.0.0-beta0001 - 09.11.2016
+#### 2.0.0 - 09.11.2016
 * Autolycus has stolen the release notes
 
 #### 1.0.0 - 14.10.2016
