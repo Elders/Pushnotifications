@@ -16,6 +16,7 @@ namespace PushNotifications.WS
 
         protected override void OnStart(string[] args)
         {
+            log4net.Config.XmlConfigurator.Configure();
             Cronus.Start();
         }
 

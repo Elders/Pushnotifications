@@ -16,6 +16,7 @@ using PushNotifications.Ports;
 using PushNotifications.Ports.APNS;
 using PushNotifications.Ports.Parse;
 using PushNotifications.PushNotifications;
+using PushNotifications.WS.Logging;
 using PushNotifications.WS.NotificationThrottle;
 using PushSharp;
 using PushSharp.Android;
@@ -26,26 +27,27 @@ namespace PushNotifications.WS
 {
     public class Cronus
     {
-        private static CronusHost host;
-        static log4net.ILog log;
+        static ILog log = LogProvider.GetLogger(typeof(Cronus));
+
+        static CronusHost host;
         static Container container;
 
         public static void Start()
         {
             try
             {
-                log4net.Config.XmlConfigurator.Configure();
-                log = log4net.LogManager.GetLogger(typeof(Cronus));
                 log.Info("Starting Cronus Push Notifications");
 
-                ApplicationConfiguration.SetContext("PushNotifications");
+                var appContext = new ApplicationContext("PushNotifications");
+                var cfgRepo = new ConsulForPandora(new Uri("http://consul.local.com:8500"));
+                var pandora = new Pandora(appContext, cfgRepo);
 
                 string PN = "PushNotifications";
 
                 container = new Container();
                 //container.RegisterSingleton<PushBroker>(() => broker);
 
-                container.RegisterSingleton<Cassandra.ISession>(() => SessionCreator.CreateProjectionSession());
+                container.RegisterSingleton<Cassandra.ISession>(() => SessionCreator.CreateProjectionSession(pandora.Get("pushnot_conn_str_projections")));
                 container.RegisterTransient<IRepository>(() => new Repository(
                     new CassandraPersister(container.Resolve<Cassandra.ISession>()),
                     container.Resolve<ISerializer>().SerializeToBytes,
@@ -61,7 +63,7 @@ namespace PushNotifications.WS
                     Assembly.GetAssembly(typeof(APNSNotificationMessage))
                 });
                 cfg.UseCommandConsumer(PN, consumer => consumer
-                    .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = ApplicationConfiguration.Get("pushnot_rabbitmq_server"))
+                    .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"))
                     .WithDefaultPublishersWithRabbitMq()
                     .UseCassandraEventStore(eventStore => eventStore
                         .SetConnectionString(connstr)
@@ -73,20 +75,21 @@ namespace PushNotifications.WS
                 var portFactory = new PortHandlerFactory(container);
                 cfg.UsePortConsumer(PORT, consumable => consumable
                     .WithDefaultPublishersWithRabbitMq()
-                    .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = ApplicationConfiguration.Get("pushnot_rabbitmq_server"))
+                    .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"))
                     .UsePorts(handler => handler.RegisterAllHandlersInAssembly(Assembly.GetAssembly(typeof(APNSPort)), portFactory.Create)));
 
                 string PROJ = "proj";
                 var projFactory = new PorojectionHandlerFactory(container);
                 cfg.UseProjectionConsumer(PROJ, consumable => consumable
                     .WithDefaultPublishersWithRabbitMq()
-                    .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = ApplicationConfiguration.Get("pushnot_rabbitmq_server"))
+                    .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"))
                     .UseProjections(h => h.RegisterAllHandlersInAssembly(Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)), projFactory.Create)));
 
                 Func<object, byte[]> serializer = container.Resolve<ISerializer>().SerializeToBytes;
                 Func<byte[], object> deserializer = container.Resolve<ISerializer>().DeserializeFromBytes;
-                var broker = ConfigurePushBroker();
-                var throttler = new ThrottledBrokerAdapter(new ThrottledBroker(serializer, deserializer, broker));
+                var broker = ConfigurePushBroker(pandora);
+                var throttleSettings = new ThrotleSettings(pandora);
+                var throttler = new ThrottledBrokerAdapter(new ThrottledBroker(serializer, deserializer, broker, throttleSettings));
                 container.RegisterSingleton<IPushBroker>(() => throttler);
 
                 (cfg as ISettingsBuilder).Build();
@@ -96,12 +99,12 @@ namespace PushNotifications.WS
             }
             catch (Exception ex)
             {
-                log.Error(ex);
+                log.ErrorException("Unable to boot PushNotifications.WS", ex);
                 throw;
             }
         }
 
-        private static PushBroker ConfigurePushBroker()
+        private static PushBroker ConfigurePushBroker(Pandora pandora)
         {
             var broker = new PushBroker();
             broker.OnNotificationSent += PushNotificationLogger.NotificationSent;
@@ -113,19 +116,19 @@ namespace PushNotifications.WS
             broker.OnChannelCreated += PushNotificationLogger.ChannelCreated;
             broker.OnChannelDestroyed += PushNotificationLogger.ChannelDestroyed;
 
-            var iosCert = ApplicationConfiguration.Get("pushnot_ios_cert");
-            var iosCertPass = ApplicationConfiguration.Get("pushnot_ios_cert_pass");
+            var iosCert = pandora.Get("pushnot_ios_cert");
+            var iosCertPass = pandora.Get("pushnot_ios_cert_pass");
 
-            var androidToken = ApplicationConfiguration.Get("pushnot_android_token");
+            var androidToken = pandora.Get("pushnot_android_token");
 
-            var parseAppId = ApplicationConfiguration.Get("pushnot_parse_app_id");
-            var parseRestApiKey = ApplicationConfiguration.Get("pushnot_parse_rest_api_key");
+            var parseAppId = pandora.Get("pushnot_parse_app_id");
+            var parseRestApiKey = pandora.Get("pushnot_parse_rest_api_key");
 
             string iosCertPath = Environment.ExpandEnvironmentVariables(iosCert);
 
             var appleCert = File.ReadAllBytes(iosCertPath);
 
-            bool iSprod = Boolean.Parse(ApplicationConfiguration.Get("pushnot_ios_production"));
+            bool iSprod = Boolean.Parse(pandora.Get("pushnot_ios_production"));
             broker.RegisterAppleService(new ApplePushChannelSettings(iSprod, appleCert, iosCertPass, disableCertificateCheck: true));
             broker.RegisterGcmService(new GcmPushChannelSettings(androidToken));
             broker.RegisterService<ParseAndroidNotifcation>(new ParseNotificationService(parseAppId, parseRestApiKey));
@@ -135,10 +138,10 @@ namespace PushNotifications.WS
 
         public class SessionCreator
         {
-            public static Cassandra.ISession CreateProjectionSession()
+            public static Cassandra.ISession CreateProjectionSession(string connectionString)
             {
                 var cluster = Cassandra.Cluster.Builder()
-                    .WithConnectionString(ApplicationConfiguration.Get("pushnot_conn_str_projections"))
+                    .WithConnectionString(connectionString)
                     .Build();
                 var session = cluster.ConnectAndCreateDefaultKeyspaceIfNotExists();
                 session.InitializeProjectionDatabase(Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)));
@@ -219,7 +222,7 @@ namespace PushNotifications.WS
             }
             catch (Exception ex)
             {
-                log.Fatal("Unable to stop properly the service.", ex);
+                log.FatalException("Unable to stop properly the service.", ex);
                 throw;
             }
         }

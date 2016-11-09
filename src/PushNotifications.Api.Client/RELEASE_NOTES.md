@@ -1,3 +1,6 @@
+#### 2.0.0-beta0001 - 09.11.2016
+* Autolycus has stolen the release notes
+
 #### 1.0.0 - 14.10.2016
 * We are sending 20 push notifications every 5 seconds if the usage of the CPU is below 50%
 * Adds empty constructor for PushNotificationModel
