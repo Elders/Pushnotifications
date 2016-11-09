@@ -1,3 +1,6 @@
+#### 2.0.1 - 09.11.2016
+* Fixes a bug and properly gets a setting from pandora.consul
+
 #### 2.0.0 - 09.11.2016
 * Switches to consul pandora as default settings resolver
 

@@ -55,7 +55,7 @@ namespace PushNotifications.WS
 
                 var PM_appServiceFactory = new ApplicationServiceFactory(container, PN);
                 var cfg = new CronusSettings(container);
-                var connstr = ApplicationConfiguration.Get("pushnot_conn_str_es");
+                var connstr = pandora.Get("pushnot_conn_str_es");
                 log.InfoFormat("ConnectionString => {0}", connstr);
                 cfg.UseContractsFromAssemblies(new[] {
                     Assembly.GetAssembly(typeof(PushNotificationWasSent)),
