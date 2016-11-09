@@ -11,30 +11,28 @@ using Elders.Cronus.Pipeline.Transport;
 using Elders.Cronus.Serializer;
 using System.Reflection;
 using PushNotifications.Contracts.PushNotifications.Events;
+using PushNotifications.Api.Logging;
 
 namespace PushNotifications.Api
 {
     public static class Cronus
     {
-        private static CronusHost host;
-        static log4net.ILog log;
+        static ILog log = LogProvider.GetLogger(typeof(Cronus));
+
+        static CronusHost host;
         static Container container;
 
-        public static void UseCronusCommandPublisher(this HttpConfiguration apiConfig)
+        public static void UseCronusCommandPublisher(this HttpConfiguration apiConfig, Pandora pandora)
         {
             try
             {
-                log4net.Config.XmlConfigurator.Configure();
-                log = log4net.LogManager.GetLogger(typeof(Cronus));
                 log.Info("Starting Cronus Push Notifications Api");
-
-                ApplicationConfiguration.SetContext("PushNotifications");
 
                 container = new Container();
                 var cfg = new CronusSettings(container);
-
+                container.RegisterSingleton<Pandora>(() => pandora);
                 cfg.UseContractsFromAssemblies(new[] { Assembly.GetAssembly(typeof(PushNotificationWasSent)) });
-                cfg.UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = ApplicationConfiguration.Get("pushnot_rabbitmq_server"));
+                cfg.UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"));
 
                 Func<IPipelineTransport> transport = () => container.Resolve<IPipelineTransport>();
                 Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
@@ -50,7 +48,7 @@ namespace PushNotifications.Api
             }
             catch (Exception ex)
             {
-                log.Error(ex);
+                log.ErrorException("Unable to boot PushNotifications.Api", ex);
                 throw;
             }
         }

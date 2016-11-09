@@ -11,13 +11,13 @@ namespace PushNotifications.WS.NotificationThrottle
 {
     public class ThrotleSettings : IRabbitMqTransportSettings
     {
-        public ThrotleSettings()
+        public ThrotleSettings(Pandora pandora)
         {
-            Server = ApplicationConfiguration.Get("pushnot_rabbitmq_server");
-            Port = ApplicationConfiguration.Get<int>("pushnot_rabbitmq_port");
-            Username = ApplicationConfiguration.Get("pushnot_rabbitmq_username");
-            Password = ApplicationConfiguration.Get("pushnot_rabbitmq_password");
-            VirtualHost = ApplicationConfiguration.Get("pushnot_rabbitmq_virtual_host");
+            Server = pandora.Get("pushnot_rabbitmq_server");
+            Port = pandora.Get<int>("pushnot_rabbitmq_port");
+            Username = pandora.Get("pushnot_rabbitmq_username");
+            Password = pandora.Get("pushnot_rabbitmq_password");
+            VirtualHost = pandora.Get("pushnot_rabbitmq_virtual_host");
             EndpointNameConvention = new ThrottledBrokerEndpointNameConvention(typeof(APNSNotificationMessage), typeof(GCMNotificationMessage), typeof(ParseNotificationMessage));
             PipelineNameConvention = new ThrottledBrokerPipelineNameConvention();
         }

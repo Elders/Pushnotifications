@@ -20,11 +20,11 @@ namespace PushNotifications.WS.NotificationThrottle
         private RabbitMqTransport rabbitMqTransport;
         private readonly Func<object, byte[]> serialize;
 
-        public ThrottledBroker(Func<object, byte[]> serialize, Func<byte[], object> deserialize, IPushBroker broker)
+        public ThrottledBroker(Func<object, byte[]> serialize, Func<byte[], object> deserialize, IPushBroker broker, ThrotleSettings throtleSettings)
         {
             this.deserialize = deserialize;
             this.serialize = serialize;
-            rabbitMqTransport = new RabbitMqTransport(new ThrotleSettings());
+            rabbitMqTransport = new RabbitMqTransport(throtleSettings);
             var endpointDefinition = rabbitMqTransport.EndpointFactory.GetEndpointDefinition(null).Single();
             var endpoint = rabbitMqTransport.EndpointFactory.CreateEndpoint(endpointDefinition);
             pool = new WorkPool("Throtler", 1);

@@ -4,7 +4,7 @@ SETLOCAL
 
 SET NUGET=%LocalAppData%\NuGet\NuGet.exe
 SET FAKE=%LocalAppData%\FAKE\tools\Fake.exe
-SET NYX=%LocalAppData%\Nyx\tools\build.fsx
+SET NYX=%LocalAppData%\Nyx\tools\build_next.fsx
 SET GITVERSION=%LocalAppData%\GitVersion.CommandLine\tools\GitVersion.exe
 SET MSBUILD14_TOOLS_PATH="%ProgramFiles(x86)%\MSBuild\14.0\bin\MSBuild.exe"
 SET MSPEC=%LocalAppData%\Machine.Specifications.Runner.Console\tools\mspec-clr4.exe
@@ -45,7 +45,6 @@ echo Downloading Nyx...
 IF NOT [%1]==[] (set RELEASE_NUGETKEY="%1")
 IF NOT [%2]==[] (set RELEASE_TARGETSOURCE="%2")
 
-SET RELEASE_NOTES=RELEASE_NOTES.md
 SET SUMMARY="PushNotifications"
 SET DESCRIPTION="PushNotifications"
 
