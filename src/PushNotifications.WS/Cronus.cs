@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using Elders.Cronus;
 using Elders.Cronus.DomainModeling.Projections;
 using Elders.Cronus.IocContainer;
 using Elders.Cronus.Persistence.Cassandra.Config;
@@ -12,9 +11,7 @@ using Elders.Cronus.Projections.Cassandra;
 using Elders.Cronus.Serializer;
 using Elders.Pandora;
 using PushNotifications.Contracts.PushNotifications.Events;
-using PushNotifications.Ports;
 using PushNotifications.Ports.APNS;
-using PushNotifications.Ports.Parse;
 using PushNotifications.PushNotifications;
 using PushNotifications.WS.Logging;
 using PushNotifications.WS.NotificationThrottle;
@@ -22,11 +19,18 @@ using PushSharp;
 using PushSharp.Android;
 using PushSharp.Apple;
 using PushSharp.Core;
+using Elders.Cronus.Cluster.Config;
+using Elders.Cronus.AtomicAction.Config;
+using Elders.Cronus.AtomicAction.Redis.Config;
+using Projections;
+using Projections.Cassandra;
+using Facilities.Factory;
 
 namespace PushNotifications.WS
 {
-    public class Cronus
+    public static class Cronus
     {
+
         static ILog log = LogProvider.GetLogger(typeof(Cronus));
 
         static CronusHost host;
@@ -42,57 +46,18 @@ namespace PushNotifications.WS
                 var cfgRepo = new ConsulForPandora(new Uri("http://consul.local.com:8500"));
                 var pandora = new Pandora(appContext, cfgRepo);
 
-                string PN = "PushNotifications";
-
                 container = new Container();
-                //container.RegisterSingleton<PushBroker>(() => broker);
 
-                container.RegisterSingleton<Cassandra.ISession>(() => SessionCreator.CreateProjectionSession(pandora.Get("pushnot_conn_str_projections")));
-                container.RegisterTransient<IRepository>(() => new Repository(
-                    new CassandraPersister(container.Resolve<Cassandra.ISession>()),
-                    container.Resolve<ISerializer>().SerializeToBytes,
-                    container.Resolve<ISerializer>().DeserializeFromBytes));
+                new CronusSettings(container)
+                     .UseCluster(cluster =>
+                       cluster.UseAggregateRootAtomicAction(atomic =>
+                           atomic.UseRedis(redis =>
+                               redis.SetLockEndPoints(pandora.Get("redis_endpoints").ParseIPEndPoints(";")))))
+                     .UseAppServices(pandora)
+                     .UseProjections(pandora)
+                     .UsePorts(pandora)
+                     .Build();
 
-                var PM_appServiceFactory = new ApplicationServiceFactory(container, PN);
-                var cfg = new CronusSettings(container);
-                var connstr = pandora.Get("pushnot_conn_str_es");
-                log.InfoFormat("ConnectionString => {0}", connstr);
-                cfg.UseContractsFromAssemblies(new[] {
-                    Assembly.GetAssembly(typeof(PushNotificationWasSent)),
-                    Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)),
-                    Assembly.GetAssembly(typeof(APNSNotificationMessage))
-                });
-                cfg.UseCommandConsumer(PN, consumer => consumer
-                    .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"))
-                    .WithDefaultPublishersWithRabbitMq()
-                    .UseCassandraEventStore(eventStore => eventStore
-                        .SetConnectionString(connstr)
-                        .SetAggregateStatesAssembly(typeof(PushNotificationState))
-                        .WithNewStorageIfNotExists())
-                    .UseApplicationServices(cmdHandler => cmdHandler.RegisterAllHandlersInAssembly(typeof(PushNotificationAppService), PM_appServiceFactory.Create)));
-
-                string PORT = "port";
-                var portFactory = new PortHandlerFactory(container);
-                cfg.UsePortConsumer(PORT, consumable => consumable
-                    .WithDefaultPublishersWithRabbitMq()
-                    .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"))
-                    .UsePorts(handler => handler.RegisterAllHandlersInAssembly(Assembly.GetAssembly(typeof(APNSPort)), portFactory.Create)));
-
-                string PROJ = "proj";
-                var projFactory = new PorojectionHandlerFactory(container);
-                cfg.UseProjectionConsumer(PROJ, consumable => consumable
-                    .WithDefaultPublishersWithRabbitMq()
-                    .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"))
-                    .UseProjections(h => h.RegisterAllHandlersInAssembly(Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)), projFactory.Create)));
-
-                Func<object, byte[]> serializer = container.Resolve<ISerializer>().SerializeToBytes;
-                Func<byte[], object> deserializer = container.Resolve<ISerializer>().DeserializeFromBytes;
-                var broker = ConfigurePushBroker(pandora);
-                var throttleSettings = new ThrotleSettings(pandora);
-                var throttler = new ThrottledBrokerAdapter(new ThrottledBroker(serializer, deserializer, broker, throttleSettings));
-                container.RegisterSingleton<IPushBroker>(() => throttler);
-
-                (cfg as ISettingsBuilder).Build();
                 host = container.Resolve<CronusHost>();
                 host.Start();
                 log.Info("STARTED Cronus Push Notifications");
@@ -102,6 +67,68 @@ namespace PushNotifications.WS
                 log.ErrorException("Unable to boot PushNotifications.WS", ex);
                 throw;
             }
+        }
+
+        private static ICronusSettings UseAppServices(this ICronusSettings cronusSettings, Pandora pandora)
+        {
+            var appServiceFactory = new ServiceLocator(cronusSettings.Container);
+
+            cronusSettings.UseContractsFromAssemblies(new[] {
+                    Assembly.GetAssembly(typeof(PushNotificationWasSent)),
+                    Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)),
+                    Assembly.GetAssembly(typeof(APNSNotificationMessage))
+                })
+            .UseCommandConsumer(consumer => consumer
+                .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"))
+                .WithDefaultPublishers()
+                .UseCassandraEventStore(eventStore => eventStore
+                    .SetConnectionString(pandora.Get("pushnot_conn_str_es"))
+                    .SetAggregateStatesAssembly(typeof(PushNotificationState))
+                    .WithNewStorageIfNotExists())
+                .UseApplicationServices(cmdHandler => cmdHandler.RegisterHandlersInAssembly(new[] { typeof(PushNotificationAppService).Assembly }, appServiceFactory.Resolve)));
+
+            return cronusSettings;
+        }
+
+        private static ICronusSettings UseProjections(this ICronusSettings cronusSettings, Pandora pandora)
+        {
+            var projectionFactory = new ServiceLocator(cronusSettings.Container);
+
+            var projectionSession = SessionFactory.Create(pandora.Get("pushnot_conn_str_projections"));
+            projectionSession.InitializeProjectionDatabase(Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)));
+            var persister = new CassandraPersister(projectionSession);
+            Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
+            Func<Repository> repo = () => new Repository(persister, obj => serializer().SerializeToBytes(obj), data => serializer().DeserializeFromBytes(data));
+            container.RegisterTransient<IProjectionRepository>(() => new CassandraProjectionRepository(new ProjectionBuilder(), repo));
+            container.RegisterTransient<IRepository>(() => new Repository(
+                new CassandraPersister(container.Resolve<Cassandra.ISession>()),
+                container.Resolve<ISerializer>().SerializeToBytes,
+                container.Resolve<ISerializer>().DeserializeFromBytes));
+
+            cronusSettings.UseProjectionConsumer(consumable => consumable
+                .WithDefaultPublishers()
+                .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"))
+                .UseProjections(h => h.RegisterHandlersInAssembly(new[] { Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)) }, projectionFactory.Resolve)));
+
+            return cronusSettings;
+        }
+
+        private static ICronusSettings UsePorts(this ICronusSettings cronusSettings, Pandora pandora)
+        {
+            var portFactory = new ServiceLocator(cronusSettings.Container);
+
+            var broker = ConfigurePushBroker(pandora);
+            var throttleSettings = new ThrotleSettings(pandora);
+            Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
+            var throttler = new ThrottledBrokerAdapter(new ThrottledBroker(cronusSettings.Container, broker, throttleSettings));
+            container.RegisterSingleton<IPushBroker>(() => throttler);
+
+            cronusSettings.UsePortConsumer(consumable => consumable
+                .WithDefaultPublishers()
+                .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"))
+                .UsePorts(handler => handler.RegisterHandlersInAssembly(new[] { Assembly.GetAssembly(typeof(APNSPort)) }, portFactory.Resolve)));
+
+            return cronusSettings;
         }
 
         private static PushBroker ConfigurePushBroker(Pandora pandora)
@@ -131,77 +158,19 @@ namespace PushNotifications.WS
             bool iSprod = Boolean.Parse(pandora.Get("pushnot_ios_production"));
             broker.RegisterAppleService(new ApplePushChannelSettings(iSprod, appleCert, iosCertPass, disableCertificateCheck: true));
             broker.RegisterGcmService(new GcmPushChannelSettings(androidToken));
-            broker.RegisterService<ParseAndroidNotifcation>(new ParseNotificationService(parseAppId, parseRestApiKey));
 
             return broker;
         }
 
-        public class SessionCreator
+        private class SessionFactory
         {
-            public static Cassandra.ISession CreateProjectionSession(string connectionString)
+            public static Cassandra.ISession Create(string connectionString)
             {
                 var cluster = Cassandra.Cluster.Builder()
                     .WithConnectionString(connectionString)
                     .Build();
                 var session = cluster.ConnectAndCreateDefaultKeyspaceIfNotExists();
-                session.InitializeProjectionDatabase(Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)));
                 return session;
-            }
-        }
-
-        public class ApplicationServiceFactory
-        {
-            private readonly IContainer container;
-            private readonly string namedInstance;
-
-            public ApplicationServiceFactory(IContainer container, string namedInstance)
-            {
-                this.container = container;
-                this.namedInstance = namedInstance;
-            }
-
-            public object Create(Type appServiceType)
-            {
-                var appService = FastActivator
-                    .CreateInstance(appServiceType);
-                return appService;
-            }
-        }
-
-        public class PortHandlerFactory
-        {
-            private readonly IContainer container;
-
-            public PortHandlerFactory(IContainer container)
-            {
-                this.container = container;
-            }
-
-            public object Create(Type handlerType)
-            {
-                var handler = FastActivator
-                    .CreateInstance(handlerType)
-                    .AssignPropertySafely<IPushNotificationPort>(x => x.PushBroker = container.Resolve<IPushBroker>())
-                    .AssignPropertySafely<IHaveProjectionsRepository>(x => x.Repository = container.Resolve<IRepository>());
-                return handler;
-            }
-        }
-
-        public class PorojectionHandlerFactory
-        {
-            private readonly IContainer container;
-
-            public PorojectionHandlerFactory(IContainer container)
-            {
-                this.container = container;
-            }
-
-            public object Create(Type handlerType)
-            {
-                var handler = FastActivator
-                    .CreateInstance(handlerType)
-                    .AssignPropertySafely<IHaveProjectionsRepository>(x => x.Repository = container.Resolve<IRepository>());
-                return handler;
             }
         }
 

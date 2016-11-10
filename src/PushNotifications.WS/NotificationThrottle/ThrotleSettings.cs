@@ -6,6 +6,7 @@ using Elders.Cronus.Pipeline;
 using Elders.Cronus.Pipeline.Transport.RabbitMQ.Config;
 using Elders.Cronus.DomainModeling;
 using Elders.Pandora;
+using Elders.Cronus.MessageProcessing;
 
 namespace PushNotifications.WS.NotificationThrottle
 {
@@ -18,7 +19,7 @@ namespace PushNotifications.WS.NotificationThrottle
             Username = pandora.Get("pushnot_rabbitmq_username");
             Password = pandora.Get("pushnot_rabbitmq_password");
             VirtualHost = pandora.Get("pushnot_rabbitmq_virtual_host");
-            EndpointNameConvention = new ThrottledBrokerEndpointNameConvention(typeof(APNSNotificationMessage), typeof(GCMNotificationMessage), typeof(ParseNotificationMessage));
+            EndpointNameConvention = new ThrottledBrokerEndpointNameConvention(typeof(APNSNotificationMessage), typeof(GCMNotificationMessage));
             PipelineNameConvention = new ThrottledBrokerPipelineNameConvention();
         }
 
@@ -64,7 +65,7 @@ namespace PushNotifications.WS.NotificationThrottle
                    headers);
             }
 
-            public IEnumerable<EndpointDefinition> GetEndpointDefinition(Elders.Cronus.IMessageProcessor messageProcessor)
+            public IEnumerable<EndpointDefinition> GetEndpointDefinition(IEndpointConsumer consumer, SubscriptionMiddleware subscriptionMiddleware)
             {
                 yield return endpoint;
             }

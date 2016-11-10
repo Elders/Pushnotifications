@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cassandra, Version=3.0.0.0, Culture=neutral, PublicKeyToken=10b231fbfc8c4b4d, processorArchitecture=MSIL">
-      <HintPath>..\packages\CassandraCSharpDriver.3.0.5\lib\net40\Cassandra.dll</HintPath>
+      <HintPath>..\packages\CassandraCSharpDriver.3.0.9\lib\net40\Cassandra.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Consul, Version=0.7.0.3, Culture=neutral, PublicKeyToken=20a6ad9a81df1d95, processorArchitecture=MSIL">
@@ -42,31 +42,35 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.2.6.2\lib\net45-full\Elders.Cronus.dll</HintPath>
+      <HintPath>..\packages\Cronus.3.0.2\lib\net45-full\Elders.Cronus.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.2.4.0\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+    <Reference Include="Elders.Cronus.AtomicAction.Redis, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.AtomicAction.Redis.0.2.0\lib\net45-full\Elders.Cronus.AtomicAction.Redis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elders.Cronus.DomainModeling, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.DomainModeling.3.1.4\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.Persistence.Cassandra, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.Persistence.Cassandra.3.1.5\lib\net45-full\Elders.Cronus.Persistence.Cassandra.dll</HintPath>
+      <HintPath>..\packages\Cronus.Persistence.Cassandra.3.1.6\lib\net45-full\Elders.Cronus.Persistence.Cassandra.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.Projections.Cassandra, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.Projections.Cassandra.1.0.2\lib\net45-full\Elders.Cronus.Projections.Cassandra.dll</HintPath>
+      <HintPath>..\packages\Cronus.Projections.Cassandra.1.1.1\lib\net45-full\Elders.Cronus.Projections.Cassandra.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.Serialization.NewtonsoftJson, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.Serialization.NewtonsoftJson.1.0.0\lib\net45-full\Elders.Cronus.Serialization.NewtonsoftJson.dll</HintPath>
+      <HintPath>..\packages\Cronus.Serialization.NewtonsoftJson.1.0.1\lib\net45-full\Elders.Cronus.Serialization.NewtonsoftJson.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.Transport.RabbitMQ, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.Transport.RabbitMQ.2.2.0\lib\net45-full\Elders.Cronus.Transport.RabbitMQ.dll</HintPath>
+      <HintPath>..\packages\Cronus.Transport.RabbitMQ.3.0.0\lib\net45-full\Elders.Cronus.Transport.RabbitMQ.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Multithreading.Scheduler, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Multithreading.Scheduler.1.1.0\lib\net45-full\Elders.Multithreading.Scheduler.dll</HintPath>
+    <Reference Include="Elders.Multithreading.Scheduler, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Multithreading.Scheduler.1.1.2\lib\net45-full\Elders.Multithreading.Scheduler.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Pandora, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -79,6 +83,10 @@
     </Reference>
     <Reference Include="Elders.Pandora.Consul, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Pandora.Consul.0.5.3\lib\net45-full\Elders.Pandora.Consul.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elders.RedLock, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RedLock.0.1.0\lib\net45-full\Elders.RedLock.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -122,8 +130,12 @@
     <Reference Include="PushSharp.WindowsPhone">
       <HintPath>..\packages\PushSharp.2.2.1.0\lib\net40\PushSharp.WindowsPhone.dll</HintPath>
     </Reference>
-    <Reference Include="RabbitMQ.Client, Version=3.6.1.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
-      <HintPath>..\packages\RabbitMQ.Client.3.6.1\lib\net45\RabbitMQ.Client.dll</HintPath>
+    <Reference Include="RabbitMQ.Client, Version=3.6.5.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.6.5\lib\net45\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StackExchange.Redis, Version=1.0.316.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StackExchange.Redis.1.0.488\lib\net45\StackExchange.Redis.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -150,12 +162,12 @@
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="Cronus.cs" />
+    <Compile Include="Extentions\StirngExtentions.cs" />
     <Compile Include="NotificationThrottle\APNSNotificationMessage.cs" />
     <Compile Include="NotificationThrottle\CircularBuffer.cs" />
     <Compile Include="NotificationThrottle\GCMNotificationMessage.cs" />
     <Compile Include="NotificationThrottle\IThrottleNotification.cs" />
     <Compile Include="NotificationThrottle\NotificationSender.cs" />
-    <Compile Include="NotificationThrottle\ParseNotificationMessage.cs" />
     <Compile Include="NotificationThrottle\ProcessorMonitor.cs" />
     <Compile Include="NotificationThrottle\ThrotleSettings.cs" />
     <Compile Include="NotificationThrottle\ThrottledBroker.cs" />
@@ -175,6 +187,14 @@
     <None Include="RELEASE_NOTES.md" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Facilities\Facilities.csproj">
+      <Project>{eaf56783-bef2-433a-803b-0975c4f481e4}</Project>
+      <Name>Facilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Projections\Projections.csproj">
+      <Project>{12CA3B19-AE26-4C11-BC79-A399208E351E}</Project>
+      <Name>Projections</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{ad83839b-ddec-4911-bc56-aebb28a292d1}</Project>
       <Name>PushNotifications.Contracts</Name>

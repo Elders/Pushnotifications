@@ -4,7 +4,6 @@ using System.Linq;
 using PushSharp.Core;
 using PushSharp.Apple;
 using PushSharp.Android;
-using PushNotifications.Ports.Parse;
 
 namespace PushNotifications.WS.NotificationThrottle
 {
@@ -34,10 +33,6 @@ namespace PushNotifications.WS.NotificationThrottle
                 else if (notification is GcmNotification)
                 {
                     broker.QueueNotification<GcmNotification>(notification as GcmNotification);
-                }
-                else if (notification is ParseAndroidNotifcation)
-                {
-                    broker.QueueNotification<ParseAndroidNotifcation>(notification as ParseAndroidNotifcation);
                 }
                 else
                     throw new NotSupportedException(notification.GetType().ToString());
@@ -78,8 +73,6 @@ namespace PushNotifications.WS.NotificationThrottle
                 token = (notification as AppleNotification).DeviceToken;
             else if (notification is GcmNotification)
                 token = (notification as GcmNotification).RegistrationIds.Single();
-            else if (notification is ParseAndroidNotifcation)
-                token = (notification as ParseAndroidNotifcation).Token;
 
             return token;
         }

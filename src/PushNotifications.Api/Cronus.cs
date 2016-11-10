@@ -1,17 +1,18 @@
 ﻿using System;
-using Elders.Cronus.Pipeline.Config;
-using Elders.Cronus.Pipeline.Hosts;
-using Elders.Cronus.Pipeline.Transport.RabbitMQ.Config;
-using Elders.Cronus.IocContainer;
 using Elders.Pandora;
-using Elders.Cronus.DomainModeling;
 using System.Web.Http;
-using Elders.Cronus.Pipeline;
-using Elders.Cronus.Pipeline.Transport;
-using Elders.Cronus.Serializer;
 using System.Reflection;
-using PushNotifications.Contracts.PushNotifications.Events;
 using PushNotifications.Api.Logging;
+using System.Web.Http.Dispatcher;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Web.Http.Controllers;
+using System.Linq;
+using Elders.Web.Api.Filters;
+using Newtonsoft.Json;
+using IdentityServer3.AccessTokenValidation;
+using Owin;
+using System.IdentityModel.Tokens;
 
 namespace PushNotifications.Api
 {
@@ -19,32 +20,43 @@ namespace PushNotifications.Api
     {
         static ILog log = LogProvider.GetLogger(typeof(Cronus));
 
-        static CronusHost host;
-        static Container container;
-
-        public static void UseCronusCommandPublisher(this HttpConfiguration apiConfig, Pandora pandora)
+        public static void UseHttpWebApi(this IAppBuilder app, Pandora pandora)
         {
             try
             {
                 log.Info("Starting Cronus Push Notifications Api");
 
-                container = new Container();
-                var cfg = new CronusSettings(container);
-                container.RegisterSingleton<Pandora>(() => pandora);
-                cfg.UseContractsFromAssemblies(new[] { Assembly.GetAssembly(typeof(PushNotificationWasSent)) });
-                cfg.UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"));
+                JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
 
-                Func<IPipelineTransport> transport = () => container.Resolve<IPipelineTransport>();
-                Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
-                container.RegisterSingleton<IPublisher<ICommand>>(() => new PipelinePublisher<ICommand>(transport(), serializer()));
+                var apiConfig = new HttpConfiguration();
+                GlobalConfigureApi(apiConfig);
 
-                (cfg as ISettingsBuilder).Build();
-                host = container.Resolve<CronusHost>();
-                host.Start();
-                log.Info("STARTED Cronus Push Notifications Api");
+                var configurations = typeof(Cronus).Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IApiConfiguration)))
+                     .Select(x => Activator.CreateInstance(x) as IApiConfiguration).ToList();
+                foreach (var item in configurations)
+                {
+                    try
+                    {
+                        item.Initialize(apiConfig, pandora);
+                    }
+                    catch (Exception ex)
+                    {
+                        log.FatalException($"Failed to initialize:{item.GetType().Name}", ex);
+                        throw;
+                    }
+                }
 
-                //  Not related with cronus...
-                apiConfig.Services.Replace(typeof(System.Web.Http.Dispatcher.IHttpControllerActivator), new CustomHttpControllerActivator(container));
+                apiConfig.Services.Replace(typeof(IAssembliesResolver), new ControllerAssembliesResolver(configurations.Select(x => x.Assembly).ToList()));
+                apiConfig.Services.Replace(typeof(IHttpControllerActivator), new CompositeLocatorFactory(configurations.ToList()));
+
+                app.UseIdentityServerBearerTokenAuthentication(new IdentityServerBearerTokenAuthenticationOptions
+                {
+                    Authority = pandora.Get("idsrv_authority")
+                });
+
+                app.UseWebApi(apiConfig);
+
+                log.Info("Started Cronus Push Notifications Api");
             }
             catch (Exception ex)
             {
@@ -53,11 +65,67 @@ namespace PushNotifications.Api
             }
         }
 
-        public static void Stop()
+        private static void GlobalConfigureApi(HttpConfiguration apiConfig)
         {
-            host.Stop();
-            host = null;
-            container.Destroy();
+            if (apiConfig == null) throw new ArgumentNullException(nameof(apiConfig));
+            apiConfig.Filters.Add(new VerifyModelState());
+            apiConfig.Filters.Add(new ExceptionFilter());
+
+            apiConfig.SuppressDefaultHostAuthentication();
+            apiConfig.Filters.Add(new HostAuthenticationAttribute("Bearer"));
+            apiConfig.Filters.Add(new AuthorizeAttribute());
+
+            apiConfig.Formatters.Remove(apiConfig.Formatters.XmlFormatter);
+
+            JsonSerializerSettings settings = apiConfig.Formatters.JsonFormatter.SerializerSettings;
+
+            settings.DateFormatString = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.ffffff'Z'";
+            settings.Converters.Add(new ErrorConverter());
+            settings.NullValueHandling = NullValueHandling.Ignore;
+            settings.Formatting = Formatting.Indented;
+            settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+            var contractReslover = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+            settings.ContractResolver = contractReslover;
+            contractReslover.DefaultMembersSearchFlags = contractReslover.DefaultMembersSearchFlags | BindingFlags.NonPublic;
+        }
+    }
+
+    public interface IApiConfiguration
+    {
+        Assembly Assembly { get; }
+
+        IHttpControllerActivator ControllerFactory { get; }
+
+        void Initialize(HttpConfiguration configuration, Pandora pandora);
+    }
+
+    public class CompositeLocatorFactory : IHttpControllerActivator
+    {
+        List<IApiConfiguration> configurations;
+
+        public CompositeLocatorFactory(List<IApiConfiguration> configurations)
+        {
+            this.configurations = configurations;
+        }
+
+        public IHttpController Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+        {
+            var configuration = configurations.SingleOrDefault(x => x.Assembly == controllerType.Assembly);
+            return configuration.ControllerFactory.Create(request, controllerDescriptor, controllerType);
+        }
+    }
+
+    public class ControllerAssembliesResolver : DefaultAssembliesResolver
+    {
+        ICollection<Assembly> assemblies;
+
+        public ControllerAssembliesResolver(ICollection<Assembly> assemblies)
+        {
+            this.assemblies = assemblies;
+        }
+        public override ICollection<Assembly> GetAssemblies()
+        {
+            return assemblies;
         }
     }
 }

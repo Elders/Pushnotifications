@@ -1,0 +1,25 @@
+{
+    "name": "redis_settings",
+    "defaults": {
+        "redis_endpoints": ""
+    },
+    "clusters": {
+        "local": {
+            "redis_endpoints": "127.0.0.1:6379"
+        },
+        "docker-local": {
+            "redis_endpoints": "docker-local.com:6379"
+        },
+        "int": {
+            "redis_endpoints": ""
+        },
+        "test": {
+            "redis_endpoints": ""
+        },
+        "pruvit": {
+           "redis_endpoints": ""
+        }
+    },
+    "machines": {
+    }
+}

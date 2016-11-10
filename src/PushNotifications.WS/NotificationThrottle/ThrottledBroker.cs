@@ -7,9 +7,11 @@ using PushSharp.Core;
 using Elders.Cronus.DomainModeling;
 using Elders.Cronus.Pipeline.Transport.RabbitMQ;
 using Elders.Multithreading.Scheduler;
-using PushNotifications.Ports.Parse;
 using PushSharp.Android;
 using PushSharp.Apple;
+using Elders.Cronus.MessageProcessing;
+using Elders.Cronus.IocContainer;
+using Elders.Cronus.Serializer;
 
 namespace PushNotifications.WS.NotificationThrottle
 {
@@ -20,12 +22,15 @@ namespace PushNotifications.WS.NotificationThrottle
         private RabbitMqTransport rabbitMqTransport;
         private readonly Func<object, byte[]> serialize;
 
-        public ThrottledBroker(Func<object, byte[]> serialize, Func<byte[], object> deserialize, IPushBroker broker, ThrotleSettings throtleSettings)
+        public ThrottledBroker(IContainer container, IPushBroker broker, ThrotleSettings throtleSettings)
         {
-            this.deserialize = deserialize;
-            this.serialize = serialize;
+            Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
+            this.deserialize = serializer().DeserializeFromBytes;
+            this.serialize = serializer().SerializeToBytes;
             rabbitMqTransport = new RabbitMqTransport(throtleSettings);
-            var endpointDefinition = rabbitMqTransport.EndpointFactory.GetEndpointDefinition(null).Single();
+            var subscriptionMiddleware = container.Resolve<SubscriptionMiddleware>("Projections");
+            var consumer = container.Resolve<IEndpointConsumer>("Projections");
+            var endpointDefinition = rabbitMqTransport.EndpointFactory.GetEndpointDefinition(consumer, subscriptionMiddleware).Single();
             var endpoint = rabbitMqTransport.EndpointFactory.CreateEndpoint(endpointDefinition);
             pool = new WorkPool("Throtler", 1);
             pool.AddWork(new MessagePublishingWork(endpoint, deserialize, broker));
@@ -52,10 +57,7 @@ namespace PushNotifications.WS.NotificationThrottle
             {
                 return new GCMNotificationMessage(notification as GcmNotification);
             }
-            if (notification is ParseAndroidNotifcation)
-            {
-                return new ParseNotificationMessage(notification as ParseAndroidNotifcation);
-            }
+
             throw new NotSupportedException(notification.GetType().ToString());
         }
 

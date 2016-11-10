@@ -1,3 +1,6 @@
+#### 2.0.1 - 11.11.2016
+* Update Cronus to 3.0.2
+
 #### 2.0.0 - 09.11.2016
 * Autolycus has stolen the release notes
 

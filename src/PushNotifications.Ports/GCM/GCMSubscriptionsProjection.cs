@@ -1,86 +1,85 @@
-﻿using System.Runtime.Serialization;
-using Elders.Cronus.DomainModeling;
-using Elders.Cronus.DomainModeling.Projections;
+﻿using Elders.Cronus.DomainModeling;
+using Projections;
+using Projections.Collections;
 using PushNotifications.Contracts.Subscriptions.Events;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace PushNotifications.Ports.GCM
 {
-    public class GCMSubscriptionsProjection : IProjection, IHaveProjectionsRepository,
+    public class GCMSubscriptionsWriteProjection : IProjectionHandler,
         IEventHandler<UserSubscribedForGCM>,
         IEventHandler<UserUnSubscribedFromGCM>
     {
+        public IProjectionRepository Projections { get; set; }
+
         public void Handle(UserSubscribedForGCM @event)
         {
-            Repository.Query<GCMSubscriptions>().Save(new GCMSubscriptions(@event.UserId, @event.Token));
+            var projection = Projections.LoadCollectionItem<GCMSubscriptionsProjection>(@event.UserId, @event.Token);
+            if (ReferenceEquals(projection, null) == true)
+                projection = new GCMSubscriptionsProjection();
 
-            var users = Repository.Query<GCMToken>().GetCollection(@event.Token);
+            projection.Handle(@event);
+            Projections.SaveAsCollection(projection);
+
+            var users = Projections.LoadCollectionItems<GCMTokenProjection>(@event.Token);
             foreach (var user in users)
             {
-                var debil = Repository.Query<GCMToken>().GetCollectionItem(@event.Token, user.User);
-                if (ReferenceEquals(debil, null) == false)
-                    Repository.Query<GCMToken>().Delete(debil);
-
-                Repository.Query<GCMToken>().Delete(user);
+                Projections.DeleteCollectionItem<GCMSubscriptionsProjection>(user.State.UserId, @event.Token);
+                Projections.DeleteCollectionItem<GCMTokenProjection>(@event.Token, user.State.UserId);
             }
-
-            Repository.Query<GCMToken>().Save(new GCMToken(@event.UserId, @event.Token));
         }
 
         public void Handle(UserUnSubscribedFromGCM @event)
         {
-            var subscription = Repository.Query<GCMSubscriptions>().GetCollectionItem(@event.Token, @event.UserId);
-            if (ReferenceEquals(subscription, null) == false)
-                Repository.Query<GCMSubscriptions>().Delete(subscription);
-
-            var debilProjection = Repository.Query<GCMToken>().GetCollectionItem(@event.UserId, @event.Token);
-            if (ReferenceEquals(debilProjection, null) == false)
-                Repository.Query<GCMToken>().Delete(debilProjection);
+            Projections.DeleteCollectionItem<GCMSubscriptionsProjection>(@event.UserId, @event.Token);
         }
-
-        public IRepository Repository { get; set; }
     }
 
-    [DataContract(Name = "e0cb75f0-a333-40fb-813e-8702463a484f")]
-    public class GCMSubscriptions : ICollectionDataTransferObjectItem<string, string>
+    public class GCMSubscriptionsProjection : ProjectionCollectionDef<GCMSubscriptionsProjectionState>,
+        IEventHandler<UserSubscribedForGCM>
     {
-        public GCMSubscriptions() { }
-
-        public GCMSubscriptions(string userId, string token)
+        public void Handle(UserSubscribedForGCM @event)
         {
-            (this as ICollectionDataTransferObjectItem<string, string>).Id = token;
-            (this as ICollectionDataTransferObjectItem<string, string>).CollectionId = userId;
+            State.Id = @event.Token;
+            State.CollectionId = @event.UserId;
+            State.UserId = @event.UserId;
+            State.Token = @event.Token;
+            State.Badge = 0;
         }
-
-        public string Token { get { return (this as ICollectionDataTransferObjectItem<string, string>).Id; } }
-
-        public string User { get { return (this as ICollectionDataTransferObjectItem<string, string>).CollectionId; } }
-
-        [DataMember(Order = 1)]
-        string ICollectionDataTransferObjectItem<string, string>.Id { get; set; }
-
-        [DataMember(Order = 2)]
-        string ICollectionDataTransferObject<string>.CollectionId { get; set; }
     }
 
-    [DataContract(Name = "4a443e4e-9c0c-4b07-8be8-28545de7d785")]
-    public class GCMToken : ICollectionDataTransferObjectItem<string, string>
+    [DataContract(Name = "9a050d0d-21b4-403d-8086-40dc0efe61cc")]
+    public class GCMSubscriptionsProjectionState : ProjectionCollectionState<string, string>
     {
-        public GCMToken() { }
-
-        public GCMToken(string userId, string token)
-        {
-            (this as ICollectionDataTransferObjectItem<string, string>).Id = userId;
-            (this as ICollectionDataTransferObjectItem<string, string>).CollectionId = token;
-        }
-
-        public string User { get { return (this as ICollectionDataTransferObjectItem<string, string>).Id; } }
-
-        public string Token { get { return (this as ICollectionDataTransferObjectItem<string, string>).CollectionId; } }
+        GCMSubscriptionsProjectionState() { }
 
         [DataMember(Order = 1)]
-        string ICollectionDataTransferObjectItem<string, string>.Id { get; set; }
+        public string UserId { get; set; }
 
         [DataMember(Order = 2)]
-        string ICollectionDataTransferObject<string>.CollectionId { get; set; }
+        public string Token { get; set; }
+
+        [DataMember(Order = 3)]
+        public int Badge { get; set; }
+
+        public static IEqualityComparer<GCMSubscriptionsProjectionState> Comparer { get { return new GCMSubscriptionsComparer(); } }
+
+        public class GCMSubscriptionsComparer : IEqualityComparer<GCMSubscriptionsProjectionState>
+        {
+            public bool Equals(GCMSubscriptionsProjectionState x, GCMSubscriptionsProjectionState y)
+            {
+                if (ReferenceEquals(x, null) && ReferenceEquals(y, null))
+                    return true;
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                    return false;
+                return x.UserId == y.UserId && x.Token == y.Token;
+            }
+
+            public int GetHashCode(GCMSubscriptionsProjectionState obj)
+            {
+                return (117 ^ obj.UserId.GetHashCode()) ^ obj.Token.GetHashCode();
+            }
+        }
     }
 }

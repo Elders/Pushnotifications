@@ -32,15 +32,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cassandra, Version=3.0.0.0, Culture=neutral, PublicKeyToken=10b231fbfc8c4b4d, processorArchitecture=MSIL">
-      <HintPath>..\packages\CassandraCSharpDriver.3.0.5\lib\net40\Cassandra.dll</HintPath>
+      <HintPath>..\packages\CassandraCSharpDriver.3.0.9\lib\net40\Cassandra.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.2.4.0\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+    <Reference Include="Elders.Cronus.DomainModeling, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.DomainModeling.3.1.4\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.Projections.Cassandra, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.Projections.Cassandra.1.0.2\lib\net45-full\Elders.Cronus.Projections.Cassandra.dll</HintPath>
+      <HintPath>..\packages\Cronus.Projections.Cassandra.1.1.1\lib\net45-full\Elders.Cronus.Projections.Cassandra.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -51,8 +51,8 @@
       <HintPath>..\packages\lz4net.1.0.10.93\lib\net4-client\LZ4.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PushSharp.Amazon.Adm">
@@ -102,23 +102,23 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APNS\APNSTokenProjection.cs" />
     <Compile Include="Cronus.cs" />
-    <Compile Include="Parse\ParseSubscriptionsProjection.cs" />
-    <Compile Include="Parse\ParsePort.cs" />
+    <Compile Include="GCM\GCMTokenProjection.cs" />
+    <Compile Include="GCM\GCMSubscriptionsProjection.cs" />
     <Compile Include="GCM\GCMPort.cs" />
     <Compile Include="APNS\APNSPort.cs" />
-    <Compile Include="GCM\GCMSubscriptionsProjection.cs" />
     <Compile Include="APNS\APNSSubscriptionsProjection.cs" />
-    <Compile Include="IHaveProjectionsRepository.cs" />
-    <Compile Include="IPushNotificationPort.cs" />
-    <Compile Include="Parse\ParseAndroidNotifcation.cs" />
-    <Compile Include="Parse\ParseNotificationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Projections\Projections.csproj">
+      <Project>{12ca3b19-ae26-4c11-bc79-a399208e351e}</Project>
+      <Name>Projections</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{ad83839b-ddec-4911-bc56-aebb28a292d1}</Project>
       <Name>PushNotifications.Contracts</Name>

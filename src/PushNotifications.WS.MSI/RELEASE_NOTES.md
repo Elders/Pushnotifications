@@ -1,3 +1,6 @@
+#### 2.0.2 - 11.11.2016
+* Update Cronus to 3.0.2
+
 #### 2.0.1 - 09.11.2016
 * Fixes a bug and properly gets a setting from pandora.consul
 
