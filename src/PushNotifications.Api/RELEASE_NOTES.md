@@ -1,3 +1,6 @@
+#### 2.0.3 - 24.11.2016
+* Add config settings for controlling the push notifications throttling.
+
 #### 2.0.1 - 11.11.2016
 * Update Cronus to 3.0.2
 

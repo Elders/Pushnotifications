@@ -33,7 +33,7 @@ namespace PushNotifications.WS.NotificationThrottle
             var endpointDefinition = rabbitMqTransport.EndpointFactory.GetEndpointDefinition(consumer, subscriptionMiddleware).Single();
             var endpoint = rabbitMqTransport.EndpointFactory.CreateEndpoint(endpointDefinition);
             pool = new WorkPool("Throtler", 1);
-            pool.AddWork(new MessagePublishingWork(endpoint, deserialize, broker));
+            pool.AddWork(new MessagePublishingWork(endpoint, deserialize, broker, throtleSettings));
             pool.StartCrawlers();
         }
 
@@ -70,31 +70,32 @@ namespace PushNotifications.WS.NotificationThrottle
             private readonly IEndpoint endpoint;
             static log4net.ILog log = log4net.LogManager.GetLogger(typeof(MessagePublishingWork));
             ProcessorMonitor monitor;
+            ThrotleSettings throtleSettings;
 
-            public MessagePublishingWork(IEndpoint endpoint, Func<byte[], object> deserizalize, IPushBroker broker)
+            public MessagePublishingWork(IEndpoint endpoint, Func<byte[], object> deserizalize, IPushBroker broker, ThrotleSettings throtleSettings)
             {
                 this.broker = broker;
                 this.deserizalize = deserizalize;
                 this.endpoint = endpoint;
+                this.throtleSettings = throtleSettings;
                 monitor = new ProcessorMonitor(30, new TimeSpan(0, 0, 5));
             }
 
             public void Start()
             {
-                var scheduleSeconds = 5;
                 try
                 {
                     var usage = monitor.Usage();
 
-                    if (usage < 50)
+                    if (usage < throtleSettings.PushNotificationsMaxCPUUtilization)
                     {
                         endpoint.Open();
                         using (var sender = new NotificationSender(broker))
                         {
-                            for (int i = 0; i < 20; i++)
+                            for (int i = 0; i < throtleSettings.PushNotificationsBatchSize; i++)
                             {
                                 EndpointMessage message;
-                                endpoint.BlockDequeue(20, out message);
+                                endpoint.BlockDequeue((uint)throtleSettings.PushNotificationsBatchSize, out message);
                                 if (message != null)
                                 {
                                     var notification = deserizalize(message.Body) as IThrottleNotification;
@@ -105,14 +106,9 @@ namespace PushNotifications.WS.NotificationThrottle
                                     }
                                     sender.SendNotification((notification as IThrottleNotification).ToNotification());
                                 }
-                                else
-                                {
-                                    scheduleSeconds = 5;
-                                    break;
-                                }
                             }
                         }
-                        ScheduledStart = DateTime.UtcNow.AddSeconds(scheduleSeconds);
+                        ScheduledStart = DateTime.UtcNow.AddSeconds(throtleSettings.PushNotificationsSendoutDelay);
                     }
                     else
                     {
@@ -138,7 +134,7 @@ namespace PushNotifications.WS.NotificationThrottle
                     {
                         log.Error("Could not close the endpoint.", ex);
                     }
-                    ScheduledStart = DateTime.UtcNow.AddSeconds(scheduleSeconds);
+                    ScheduledStart = DateTime.UtcNow.AddSeconds(throtleSettings.PushNotificationsSendoutDelay);
                 }
             }
 

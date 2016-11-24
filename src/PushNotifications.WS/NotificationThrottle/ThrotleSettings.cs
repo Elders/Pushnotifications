@@ -19,6 +19,9 @@ namespace PushNotifications.WS.NotificationThrottle
             Username = pandora.Get("pushnot_rabbitmq_username");
             Password = pandora.Get("pushnot_rabbitmq_password");
             VirtualHost = pandora.Get("pushnot_rabbitmq_virtual_host");
+            PushNotificationsBatchSize = pandora.Get<int>("pushnot_batch_size");
+            PushNotificationsSendoutDelay = pandora.Get<int>("pushnot_sendout_delay");
+            PushNotificationsMaxCPUUtilization = pandora.Get<int>("pushnot_max_cpu_utilization");
             EndpointNameConvention = new ThrottledBrokerEndpointNameConvention(typeof(APNSNotificationMessage), typeof(GCMNotificationMessage));
             PipelineNameConvention = new ThrottledBrokerPipelineNameConvention();
         }
@@ -34,6 +37,12 @@ namespace PushNotifications.WS.NotificationThrottle
         public string Username { get; set; }
 
         public string VirtualHost { get; set; }
+
+        public int PushNotificationsBatchSize { get; set; }
+
+        public int PushNotificationsSendoutDelay { get; set; }
+
+        public int PushNotificationsMaxCPUUtilization { get; set; }
 
         public IEndpointNameConvention EndpointNameConvention { get; set; }
 

@@ -30,7 +30,6 @@ namespace PushNotifications.WS
 {
     public static class Cronus
     {
-
         static ILog log = LogProvider.GetLogger(typeof(Cronus));
 
         static CronusHost host;
@@ -50,9 +49,13 @@ namespace PushNotifications.WS
 
                 new CronusSettings(container)
                      .UseCluster(cluster =>
-                       cluster.UseAggregateRootAtomicAction(atomic =>
-                           atomic.UseRedis(redis =>
-                               redis.SetLockEndPoints(pandora.Get("redis_endpoints").ParseIPEndPoints(";")))))
+                        cluster.UseAggregateRootAtomicAction(atomic =>
+                        {
+                            if (pandora.Get<bool>("enable_redis_atomic_action"))
+                                atomic.UseRedis(redis => redis.SetLockEndPoints(pandora.Get("redis_endpoints").ParseIPEndPoints(";")));
+                            else
+                                atomic.WithInMemory();
+                        }))
                      .UseAppServices(pandora)
                      .UseProjections(pandora)
                      .UsePorts(pandora)

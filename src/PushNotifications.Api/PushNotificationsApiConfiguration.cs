@@ -41,8 +41,12 @@ namespace PushNotifications.Api
             var cfg = new CronusSettings(container)
                   .UseCluster(cluster =>
                        cluster.UseAggregateRootAtomicAction(atomic =>
-                           atomic.UseRedis(redis =>
-                               redis.SetLockEndPoints(pandora.Get("redis_endpoints").ParseIPEndPoints(";")))))
+                       {
+                           if (pandora.Get<bool>("enable_redis_atomic_action"))
+                               atomic.UseRedis(redis => redis.SetLockEndPoints(pandora.Get("redis_endpoints").ParseIPEndPoints(";")));
+                           else
+                               atomic.WithInMemory();
+                       }))
                   .UseContractsFromAssemblies(new[] { Assembly.GetAssembly(typeof(PushNotificationWasSent)) })
                   .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"));
 
