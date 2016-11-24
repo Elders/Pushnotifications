@@ -68,16 +68,16 @@
       <HintPath>..\packages\Multithreading.Scheduler.1.1.2\lib\net45-full\Elders.Multithreading.Scheduler.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Pandora, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pandora.0.5.4\lib\net45-full\Elders.Pandora.dll</HintPath>
+    <Reference Include="Elders.Pandora, Version=0.6.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pandora.0.6.9\lib\net45-full\Elders.Pandora.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Pandora.Box, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pandora.0.5.4\lib\net45-full\Elders.Pandora.Box.dll</HintPath>
+    <Reference Include="Elders.Pandora.Box, Version=0.6.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pandora.0.6.9\lib\net45-full\Elders.Pandora.Box.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Pandora.Consul, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pandora.Consul.0.5.3\lib\net45-full\Elders.Pandora.Consul.dll</HintPath>
+      <HintPath>..\packages\Pandora.Consul.0.6.1\lib\net45-full\Elders.Pandora.Consul.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.RedLock, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">

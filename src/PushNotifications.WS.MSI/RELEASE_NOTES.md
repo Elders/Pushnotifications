@@ -1,3 +1,6 @@
+#### 2.0.4 - 24.11.2016
+* Update Pandora
+
 #### 2.0.3 - 24.11.2016
 * Add config settings for controlling the push notifications throttling.
 
