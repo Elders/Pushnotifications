@@ -1,3 +1,6 @@
+#### 2.0.5 - 27.11.2016
+* Changes the api deployment path
+
 #### 2.0.4 - 24.11.2016
 * Update Pandora
 

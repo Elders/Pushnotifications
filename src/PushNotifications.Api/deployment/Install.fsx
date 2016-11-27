@@ -13,8 +13,11 @@ let env = environVar "CLUSTER_NAME"
 let defaultWebsite = "pushnotifications.local.com"
 let website = getBuildParamOrDefault "website" defaultWebsite
 
-let depl_path = environVar "vapt_depl_path"
-let websiteDeplPath = depl_path @@ @"Elders\PushNotifications\pn.Api"
+let progData = environVar "ProgramData"
+let company = "Elders"
+let appName = "pushnotifications"
+let depl_path = progData @@ company @@ appName
+let websiteDeplPath = depl_path @@ @"pn.api"
 
 // Targets
 Target "PreInstall" (fun _ ->
