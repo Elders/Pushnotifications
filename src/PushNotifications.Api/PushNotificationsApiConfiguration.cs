@@ -48,7 +48,13 @@ namespace PushNotifications.Api
                                atomic.WithInMemory();
                        }))
                   .UseContractsFromAssemblies(new[] { Assembly.GetAssembly(typeof(PushNotificationWasSent)) })
-                  .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"));
+                  .UseRabbitMqTransport(x =>
+                  {
+                      x.Server = pandora.Get("rabbitmq_server");
+                      x.Username = pandora.Get("rabbitmq_username");
+                      x.Password = pandora.Get("rabbitmq_password");
+                      x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
+                  });
 
             (cfg as ICronusSettings).Build();
         }

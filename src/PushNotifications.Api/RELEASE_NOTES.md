@@ -1,3 +1,6 @@
+#### 2.0.6 - 27.11.2016
+* Uses VH of rabbitmq
+
 #### 2.0.5 - 27.11.2016
 * Changes the api deployment path
 

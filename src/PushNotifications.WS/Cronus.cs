@@ -82,7 +82,13 @@ namespace PushNotifications.WS
                     Assembly.GetAssembly(typeof(APNSNotificationMessage))
                 })
             .UseCommandConsumer(consumer => consumer
-                .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"))
+                .UseRabbitMqTransport(x =>
+                {
+                    x.Server = pandora.Get("rabbitmq_server");
+                    x.Username = pandora.Get("rabbitmq_username");
+                    x.Password = pandora.Get("rabbitmq_password");
+                    x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
+                })
                 .WithDefaultPublishers()
                 .UseCassandraEventStore(eventStore => eventStore
                     .SetConnectionString(pandora.Get("pushnot_conn_str_es"))
@@ -110,7 +116,13 @@ namespace PushNotifications.WS
 
             cronusSettings.UseProjectionConsumer(consumable => consumable
                 .WithDefaultPublishers()
-                .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"))
+                .UseRabbitMqTransport(x =>
+                {
+                    x.Server = pandora.Get("rabbitmq_server");
+                    x.Username = pandora.Get("rabbitmq_username");
+                    x.Password = pandora.Get("rabbitmq_password");
+                    x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
+                })
                 .UseProjections(h => h.RegisterHandlersInAssembly(new[] { Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)) }, projectionFactory.Resolve)));
 
             return cronusSettings;
@@ -128,7 +140,13 @@ namespace PushNotifications.WS
 
             cronusSettings.UsePortConsumer(consumable => consumable
                 .WithDefaultPublishers()
-                .UseRabbitMqTransport(x => (x as IRabbitMqTransportSettings).Server = pandora.Get("pushnot_rabbitmq_server"))
+                .UseRabbitMqTransport(x =>
+                {
+                    x.Server = pandora.Get("rabbitmq_server");
+                    x.Username = pandora.Get("rabbitmq_username");
+                    x.Password = pandora.Get("rabbitmq_password");
+                    x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
+                })
                 .UsePorts(handler => handler.RegisterHandlersInAssembly(new[] { Assembly.GetAssembly(typeof(APNSPort)) }, portFactory.Resolve)));
 
             return cronusSettings;
