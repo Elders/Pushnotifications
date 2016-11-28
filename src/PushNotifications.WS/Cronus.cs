@@ -119,6 +119,7 @@ namespace PushNotifications.WS
                 .UseRabbitMqTransport(x =>
                 {
                     x.Server = pandora.Get("rabbitmq_server");
+                    x.Port = pandora.Get<int>("rabbitmq_port");
                     x.Username = pandora.Get("rabbitmq_username");
                     x.Password = pandora.Get("rabbitmq_password");
                     x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
@@ -143,6 +144,7 @@ namespace PushNotifications.WS
                 .UseRabbitMqTransport(x =>
                 {
                     x.Server = pandora.Get("rabbitmq_server");
+                    x.Port = pandora.Get<int>("rabbitmq_port");
                     x.Username = pandora.Get("rabbitmq_username");
                     x.Password = pandora.Get("rabbitmq_password");
                     x.VirtualHost = pandora.Get("rabbitmq_virtualhost");

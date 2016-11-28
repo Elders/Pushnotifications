@@ -29,6 +29,7 @@ namespace PushNotifications.Api
                 JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
 
                 var apiConfig = new HttpConfiguration();
+                apiConfig.MapHttpAttributeRoutes();
                 GlobalConfigureApi(apiConfig);
 
                 var configurations = typeof(Cronus).Assembly.GetTypes().Where(x => x.GetInterfaces().Contains(typeof(IApiConfiguration)))

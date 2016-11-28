@@ -1,3 +1,6 @@
+#### 2.0.7 - 28.11.2016
+* Updates packages
+
 #### 2.0.6 - 27.11.2016
 * Uses VH of rabbitmq
 
