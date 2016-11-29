@@ -22,7 +22,10 @@ namespace PushNotifications.Ports.APNS
 
         public void Handle(PushNotificationWasSent @event)
         {
-            var subscriptions = Projections.LoadCollectionItems<APNSSubscriptionsProjection>(@event.UserId).Select(x => x.State);
+            var subscriptions = Projections.LoadCollectionItems<APNSSubscriptionsProjection>(@event.UserId).Where(x => ReferenceEquals(x, null) == false).Select(x => x.State);
+
+            if (ReferenceEquals(subscriptions, null) == true || subscriptions.Any() == false)
+                return;
 
             var disticntSubscriptions = subscriptions.Distinct(APNSSubscriptionsProjectionState.Comparer).ToList();
 

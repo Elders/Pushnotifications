@@ -1,3 +1,6 @@
+#### 2.0.8 - 28.11.2016
+* Fixes unhandled exception with projections
+
 #### 2.0.7 - 28.11.2016
 * Updates packages
 

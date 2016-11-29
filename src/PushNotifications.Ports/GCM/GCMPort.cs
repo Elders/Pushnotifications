@@ -22,7 +22,10 @@ namespace PushNotifications.Ports.GCM
 
         public void Handle(PushNotificationWasSent @event)
         {
-            var tokens = Projections.LoadCollectionItems<GCMSubscriptionsProjection>(@event.UserId).Select(x => x.State);
+            var tokens = Projections.LoadCollectionItems<GCMSubscriptionsProjection>(@event.UserId).Where(x => ReferenceEquals(x, null) == false).Select(x => x.State);
+
+            if (ReferenceEquals(tokens, null) == true || tokens.Any() == false)
+                return;
 
             var distinctTokens = tokens.Select(x => x.Token).Distinct().ToList();
 
