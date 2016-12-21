@@ -14,11 +14,11 @@ namespace PushNotifications.WS.NotificationThrottle
     {
         public ThrotleSettings(Pandora pandora)
         {
-            Server = pandora.Get("pushnot_rabbitmq_server");
-            Port = pandora.Get<int>("pushnot_rabbitmq_port");
-            Username = pandora.Get("pushnot_rabbitmq_username");
-            Password = pandora.Get("pushnot_rabbitmq_password");
-            VirtualHost = pandora.Get("pushnot_rabbitmq_virtual_host");
+            Server = pandora.Get("rabbitmq_server");
+            Port = pandora.Get<int>("rabbitmq_port");
+            Username = pandora.Get("rabbitmq_username");
+            Password = pandora.Get("rabbitmq_password");
+            VirtualHost = pandora.Get("rabbitmq_virtualhost");
             PushNotificationsBatchSize = pandora.Get<int>("pushnot_batch_size");
             PushNotificationsSendoutDelay = pandora.Get<int>("pushnot_sendout_delay");
             PushNotificationsMaxCPUUtilization = pandora.Get<int>("pushnot_max_cpu_utilization");

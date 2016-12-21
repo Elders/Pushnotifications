@@ -1,3 +1,6 @@
+#### 2.0.8 - 21.21.2016
+* Fixes throttling config
+
 #### 2.0.7 - 28.11.2016
 * Fixes unhandled exception with projections
 
