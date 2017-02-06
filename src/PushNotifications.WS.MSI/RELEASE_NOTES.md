@@ -1,3 +1,6 @@
+#### 2.0.10 - 06.02.2017
+* Add settings for enable/disable APNS, GCM and Pushy.
+
 #### 2.0.9 - 06.02.2017
 * Add integration with Pushy push notifications service.
 

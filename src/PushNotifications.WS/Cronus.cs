@@ -177,23 +177,42 @@ namespace PushNotifications.WS
             broker.OnChannelCreated += PushNotificationLogger.ChannelCreated;
             broker.OnChannelDestroyed += PushNotificationLogger.ChannelDestroyed;
 
-            var iosCert = pandora.Get("pushnot_ios_cert");
-            var iosCertPass = pandora.Get("pushnot_ios_cert_pass");
+            if (pandora.Get<bool>("pushnot_enable_apns"))
+                EnableAPNSNotifications(pandora, broker);
 
-            var androidToken = pandora.Get("pushnot_android_token");
+            if (pandora.Get<bool>("pushnot_enable_gcm"))
+                EnableGCMNotifications(pandora, broker);
 
-            var pushyRestApiKey = pandora.Get("pushnot_pushy_rest_api_key");
-
-            string iosCertPath = Environment.ExpandEnvironmentVariables(iosCert);
-
-            var appleCert = File.ReadAllBytes(iosCertPath);
-
-            bool iSprod = Boolean.Parse(pandora.Get("pushnot_ios_production"));
-            broker.RegisterAppleService(new ApplePushChannelSettings(iSprod, appleCert, iosCertPass, disableCertificateCheck: true));
-            broker.RegisterGcmService(new GcmPushChannelSettings(androidToken));
-            broker.RegisterService<PushyNotification>(new PushyNotificationService(pushyRestApiKey));
+            if (pandora.Get<bool>("pushnot_enable_pushy"))
+                EnablePushyNotifications(pandora, broker);
 
             return broker;
+        }
+
+        private static void EnableAPNSNotifications(Pandora pandora, PushBroker broker)
+        {
+            var iosCert = pandora.Get("pushnot_ios_cert");
+            var iosCertPass = pandora.Get("pushnot_ios_cert_pass");
+            bool iSprod = Boolean.Parse(pandora.Get("pushnot_ios_production"));
+
+            string iosCertPath = Environment.ExpandEnvironmentVariables(iosCert);
+            var appleCert = File.ReadAllBytes(iosCertPath);
+
+            broker.RegisterAppleService(new ApplePushChannelSettings(iSprod, appleCert, iosCertPass, disableCertificateCheck: true));
+        }
+
+        private static void EnableGCMNotifications(Pandora pandora, PushBroker broker)
+        {
+            var androidToken = pandora.Get("pushnot_android_token");
+
+            broker.RegisterGcmService(new GcmPushChannelSettings(androidToken));
+        }
+
+        private static void EnablePushyNotifications(Pandora pandora, PushBroker broker)
+        {
+            var pushyRestApiKey = pandora.Get("pushnot_pushy_rest_api_key");
+
+            broker.RegisterService<PushyNotification>(new PushyNotificationService(pushyRestApiKey));
         }
 
         private class SessionFactory
