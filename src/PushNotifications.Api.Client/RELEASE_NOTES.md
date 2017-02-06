@@ -1,3 +1,6 @@
+#### 2.0.2 - 06.02.2017
+* Add integration with Pushy push notifications service.
+
 #### 2.0.1 - 11.11.2016
 * Update Cronus to 3.0.2
 

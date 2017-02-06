@@ -15,7 +15,7 @@ namespace PushNotifications.Subscriptions
 
         public void When(UserSubscribedForAPNS e)
         {
-            if (ReferenceEquals(null, e)) throw new ArgumentNullException("e");
+            if (ReferenceEquals(null, e)) throw new ArgumentNullException(nameof(e));
 
             Id = e.Id;
             UserId = e.UserId;
@@ -24,7 +24,7 @@ namespace PushNotifications.Subscriptions
 
         public void When(UserUnSubscribedFromAPNS e)
         {
-            if (ReferenceEquals(null, e)) throw new ArgumentNullException("e");
+            if (ReferenceEquals(null, e)) throw new ArgumentNullException(nameof(e));
 
             Id = e.Id;
             UserId = string.Empty;

@@ -15,7 +15,7 @@ namespace PushNotifications.Subscriptions
 
         public void When(UserSubscribedForGCM e)
         {
-            if (ReferenceEquals(null, e)) throw new ArgumentNullException("e");
+            if (ReferenceEquals(null, e)) throw new ArgumentNullException(nameof(e));
 
             Id = e.Id;
             UserId = e.UserId;
@@ -24,7 +24,7 @@ namespace PushNotifications.Subscriptions
 
         public void When(UserUnSubscribedFromGCM e)
         {
-            if (ReferenceEquals(null, e)) throw new ArgumentNullException("e");
+            if (ReferenceEquals(null, e)) throw new ArgumentNullException(nameof(e));
 
             Id = e.Id;
             UserId = string.Empty;

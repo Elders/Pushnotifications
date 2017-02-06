@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PushNotifications.Ports</RootNamespace>
     <AssemblyName>PushNotifications.Ports</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>99a23cc2</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -83,7 +84,7 @@
       <HintPath>..\packages\PushSharp.2.2.1.0\lib\net40\PushSharp.WindowsPhone.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -104,6 +105,9 @@
   <ItemGroup>
     <Compile Include="APNS\APNSTokenProjection.cs" />
     <Compile Include="Cronus.cs" />
+    <Compile Include="Pushy\PushyPort.cs" />
+    <Compile Include="Pushy\PushySubscriptionsProjection.cs" />
+    <Compile Include="Pushy\PushyTokenProjection.cs" />
     <Compile Include="GCM\GCMTokenProjection.cs" />
     <Compile Include="GCM\GCMSubscriptionsProjection.cs" />
     <Compile Include="GCM\GCMPort.cs" />
@@ -119,9 +123,21 @@
       <Project>{12ca3b19-ae26-4c11-bc79-a399208e351e}</Project>
       <Name>Projections</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.APNS\PushNotifications.APNS.csproj">
+      <Project>{f666ccb8-1108-4e4a-b533-c2bd891a5381}</Project>
+      <Name>PushNotifications.APNS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{ad83839b-ddec-4911-bc56-aebb28a292d1}</Project>
       <Name>PushNotifications.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.GCM\PushNotifications.GCM.csproj">
+      <Project>{657108b4-3a0f-4404-95b9-4eaa58695f0a}</Project>
+      <Name>PushNotifications.GCM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.Pushy\PushNotifications.Pushy.csproj">
+      <Project>{1d69a02a-e098-4939-a378-1320f9cd272a}</Project>
+      <Name>PushNotifications.Pushy</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

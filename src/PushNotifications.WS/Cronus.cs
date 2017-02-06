@@ -14,7 +14,6 @@ using PushNotifications.Contracts.PushNotifications.Events;
 using PushNotifications.Ports.APNS;
 using PushNotifications.PushNotifications;
 using PushNotifications.WS.Logging;
-using PushNotifications.WS.NotificationThrottle;
 using PushSharp;
 using PushSharp.Android;
 using PushSharp.Apple;
@@ -25,6 +24,10 @@ using Elders.Cronus.AtomicAction.Redis.Config;
 using Projections;
 using Projections.Cassandra;
 using Facilities.Factory;
+using PushNotifications.Throttling;
+using PushNotifications.APNS;
+using PushNotifications.GCM;
+using PushNotifications.Pushy;
 
 namespace PushNotifications.WS
 {
@@ -39,11 +42,13 @@ namespace PushNotifications.WS
         {
             try
             {
-                log.Info("Starting Cronus Push Notifications");
-
                 var appContext = new ApplicationContext("PushNotifications");
                 var cfgRepo = new ConsulForPandora(new Uri("http://consul.local.com:8500"));
                 var pandora = new Pandora(appContext, cfgRepo);
+
+                LogStartup.Boot(pandora);
+
+                log.Info("Starting Cronus Push Notifications");
 
                 container = new Container();
 
@@ -79,12 +84,16 @@ namespace PushNotifications.WS
             cronusSettings.UseContractsFromAssemblies(new[] {
                     Assembly.GetAssembly(typeof(PushNotificationWasSent)),
                     Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)),
-                    Assembly.GetAssembly(typeof(APNSNotificationMessage))
+                    Assembly.GetAssembly(typeof(APNSNotificationMessage)),
+                    Assembly.GetAssembly(typeof(GCMNotificationMessage)),
+                    Assembly.GetAssembly(typeof(PushyNotificationMessage))
                 })
             .UseCommandConsumer(consumer => consumer
                 .UseRabbitMqTransport(x =>
                 {
                     x.Server = pandora.Get("rabbitmq_server");
+                    x.Port = pandora.Get<int>("rabbitmq_port");
+                    x.AdminPort = pandora.Get<int>("rabbitmq_admin_port");
                     x.Username = pandora.Get("rabbitmq_username");
                     x.Password = pandora.Get("rabbitmq_password");
                     x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
@@ -120,6 +129,7 @@ namespace PushNotifications.WS
                 {
                     x.Server = pandora.Get("rabbitmq_server");
                     x.Port = pandora.Get<int>("rabbitmq_port");
+                    x.AdminPort = pandora.Get<int>("rabbitmq_admin_port");
                     x.Username = pandora.Get("rabbitmq_username");
                     x.Password = pandora.Get("rabbitmq_password");
                     x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
@@ -134,7 +144,7 @@ namespace PushNotifications.WS
             var portFactory = new ServiceLocator(cronusSettings.Container);
 
             var broker = ConfigurePushBroker(pandora);
-            var throttleSettings = new ThrotleSettings(pandora);
+            var throttleSettings = new ThrotlleSettings(pandora);
             Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
             var throttler = new ThrottledBrokerAdapter(new ThrottledBroker(cronusSettings.Container, broker, throttleSettings));
             container.RegisterSingleton<IPushBroker>(() => throttler);
@@ -145,6 +155,7 @@ namespace PushNotifications.WS
                 {
                     x.Server = pandora.Get("rabbitmq_server");
                     x.Port = pandora.Get<int>("rabbitmq_port");
+                    x.AdminPort = pandora.Get<int>("rabbitmq_admin_port");
                     x.Username = pandora.Get("rabbitmq_username");
                     x.Password = pandora.Get("rabbitmq_password");
                     x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
@@ -171,8 +182,7 @@ namespace PushNotifications.WS
 
             var androidToken = pandora.Get("pushnot_android_token");
 
-            var parseAppId = pandora.Get("pushnot_parse_app_id");
-            var parseRestApiKey = pandora.Get("pushnot_parse_rest_api_key");
+            var pushyRestApiKey = pandora.Get("pushnot_pushy_rest_api_key");
 
             string iosCertPath = Environment.ExpandEnvironmentVariables(iosCert);
 
@@ -181,6 +191,7 @@ namespace PushNotifications.WS
             bool iSprod = Boolean.Parse(pandora.Get("pushnot_ios_production"));
             broker.RegisterAppleService(new ApplePushChannelSettings(iSprod, appleCert, iosCertPass, disableCertificateCheck: true));
             broker.RegisterGcmService(new GcmPushChannelSettings(androidToken));
+            broker.RegisterService<PushyNotification>(new PushyNotificationService(pushyRestApiKey));
 
             return broker;
         }

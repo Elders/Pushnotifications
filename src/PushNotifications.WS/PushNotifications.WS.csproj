@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PushNotifications.WS</RootNamespace>
     <AssemblyName>PushNotifications.WS</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>7b561a6c</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -66,7 +67,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.Transport.RabbitMQ, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.Transport.RabbitMQ.3.0.0\lib\net45-full\Elders.Cronus.Transport.RabbitMQ.dll</HintPath>
+      <HintPath>..\packages\Cronus.Transport.RabbitMQ.3.0.1\lib\net45-full\Elders.Cronus.Transport.RabbitMQ.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Multithreading.Scheduler, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -91,6 +92,10 @@
     </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net.ElasticSearch, Version=2.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.ElasticSearch.2.3.3\lib\net45\log4net.ElasticSearch.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="LZ4, Version=1.0.10.93, Culture=neutral, PublicKeyToken=62e1b5ec1eec9bdd, processorArchitecture=MSIL">
@@ -163,15 +168,7 @@
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="Cronus.cs" />
     <Compile Include="Extentions\StirngExtentions.cs" />
-    <Compile Include="NotificationThrottle\APNSNotificationMessage.cs" />
-    <Compile Include="NotificationThrottle\CircularBuffer.cs" />
-    <Compile Include="NotificationThrottle\GCMNotificationMessage.cs" />
-    <Compile Include="NotificationThrottle\IThrottleNotification.cs" />
-    <Compile Include="NotificationThrottle\NotificationSender.cs" />
-    <Compile Include="NotificationThrottle\ProcessorMonitor.cs" />
-    <Compile Include="NotificationThrottle\ThrotleSettings.cs" />
-    <Compile Include="NotificationThrottle\ThrottledBroker.cs" />
-    <Compile Include="NotificationThrottle\ThrottledBrokerAdapter.cs" />
+    <Compile Include="LogStartup.cs" />
     <Compile Include="PushNotificationLogger.cs" />
     <Compile Include="PushNotificationService.cs">
       <SubType>Component</SubType>
@@ -195,13 +192,33 @@
       <Project>{12CA3B19-AE26-4C11-BC79-A399208E351E}</Project>
       <Name>Projections</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.APNS\PushNotifications.APNS.csproj">
+      <Project>{f666ccb8-1108-4e4a-b533-c2bd891a5381}</Project>
+      <Name>PushNotifications.APNS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{ad83839b-ddec-4911-bc56-aebb28a292d1}</Project>
       <Name>PushNotifications.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.GCM\PushNotifications.GCM.csproj">
+      <Project>{657108b4-3a0f-4404-95b9-4eaa58695f0a}</Project>
+      <Name>PushNotifications.GCM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Ports\PushNotifications.Ports.csproj">
       <Project>{7dde9588-b7c8-4fa1-80b7-e2d71d27084d}</Project>
       <Name>PushNotifications.Ports</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.PushSharp\PushNotifications.PushSharp.csproj">
+      <Project>{97304fe5-95cf-482b-9af3-046ac290f7cd}</Project>
+      <Name>PushNotifications.PushSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.Pushy\PushNotifications.Pushy.csproj">
+      <Project>{1d69a02a-e098-4939-a378-1320f9cd272a}</Project>
+      <Name>PushNotifications.Pushy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.Throttling\PushNotifications.Throttling.csproj">
+      <Project>{7ea08d11-231a-4b5b-9a8f-38005e247eb4}</Project>
+      <Name>PushNotifications.Throttling</Name>
     </ProjectReference>
     <ProjectReference Include="..\PushNotifications\PushNotifications.csproj">
       <Project>{6d64e748-0a5c-466f-ad59-0cd015496f09}</Project>

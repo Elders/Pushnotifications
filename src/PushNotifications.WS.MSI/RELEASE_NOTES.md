@@ -1,4 +1,7 @@
-#### 2.0.8 - 21.21.2016
+#### 2.0.9 - 06.02.2017
+* Add integration with Pushy push notifications service.
+
+#### 2.0.8 - 21.12.2016
 * Fixes throttling config
 
 #### 2.0.7 - 28.11.2016

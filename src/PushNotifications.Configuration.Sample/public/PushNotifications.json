@@ -12,8 +12,7 @@
         "pushnot_ios_cert_pass": "",
         "pushnot_ios_production": "false",
         "pushnot_android_token": "",
-        "pushnot_parse_app_id": "",
-        "pushnot_parse_rest_api_key": ""
+        "pushnot_pushy_rest_api_key": ""
     },
     "clusters": {
         "local": {

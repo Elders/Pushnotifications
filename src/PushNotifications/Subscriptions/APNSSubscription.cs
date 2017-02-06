@@ -11,9 +11,9 @@ namespace PushNotifications.Subscriptions
 
         public APNSSubscription(APNSSubscriptionId id, string userId, string token)
         {
-            if (ReferenceEquals(null, id)) throw new ArgumentNullException("id");
-            if (string.IsNullOrWhiteSpace(userId)) throw new ArgumentNullException("userId");
-            if (string.IsNullOrWhiteSpace(token)) throw new ArgumentNullException("token");
+            if (ReferenceEquals(null, id)) throw new ArgumentNullException(nameof(id));
+            if (string.IsNullOrWhiteSpace(userId)) throw new ArgumentNullException(nameof(userId));
+            if (string.IsNullOrWhiteSpace(token)) throw new ArgumentNullException(nameof(token));
 
             state = new APNSSubscriptionState();
             IEvent evnt = new UserSubscribedForAPNS(id, userId, token);
@@ -22,8 +22,8 @@ namespace PushNotifications.Subscriptions
 
         public void Subscribe(string userId, string token)
         {
-            if (string.IsNullOrWhiteSpace(userId)) throw new ArgumentNullException("userId");
-            if (string.IsNullOrWhiteSpace(token)) throw new ArgumentNullException("token");
+            if (string.IsNullOrWhiteSpace(userId)) throw new ArgumentNullException(nameof(userId));
+            if (string.IsNullOrWhiteSpace(token)) throw new ArgumentNullException(nameof(token));
 
             if (state.UserId != userId && state.Token == token)
             {
@@ -34,8 +34,8 @@ namespace PushNotifications.Subscriptions
 
         public void UnSubscribe(string userId, string token)
         {
-            if (string.IsNullOrWhiteSpace(userId)) throw new ArgumentNullException("userId");
-            if (string.IsNullOrWhiteSpace(token)) throw new ArgumentNullException("token");
+            if (string.IsNullOrWhiteSpace(userId)) throw new ArgumentNullException(nameof(userId));
+            if (string.IsNullOrWhiteSpace(token)) throw new ArgumentNullException(nameof(token));
 
             if (state.UserId == userId && state.Token == token)
             {
