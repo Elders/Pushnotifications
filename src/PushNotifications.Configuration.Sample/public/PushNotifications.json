@@ -2,7 +2,8 @@
     "name": "PushNotifications",
     "references": [
         { "jar": "PushNotifications.RabbitMQ.json" },
-        { "jar": "redis_settings.json" }
+        { "jar": "redis_settings.json" },
+        { "jar": "log.json" }
     ],
     "defaults": {
         "idsrv_authority": "",
