@@ -37,7 +37,7 @@ namespace PushNotifications.Api
                 var appCluster = pandora.ApplicationContext.Cluster.ToLowerInvariant();
                 var appMachine = pandora.ApplicationContext.Machine.ToLowerInvariant();
                 appender.ConnectionString = $"Server={server.Host};Index=log-{appCluster}-{appMachine}-{appName};Port={port.ToString()};rolling=true";
-                appender.Evaluator = new log4net.Core.LevelEvaluator(log4net.Core.Level.All);
+                appender.Evaluator = new log4net.Core.LevelEvaluator(log4net.Core.Level.Error);
                 appender.BufferSize = pandora.Get<int>("log_elasticsearch_buffer");
                 appender.Threshold = log4net.Core.Level.All;
                 appender.Fix = log4net.Core.FixFlags.None;

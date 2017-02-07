@@ -1,3 +1,6 @@
+#### 2.0.12 - 06.02.2017
+* Change the log settings.
+
 #### 2.0.11 - 06.02.2017
 * Change the log settings.
 
