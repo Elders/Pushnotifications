@@ -40,6 +40,7 @@ namespace PushNotifications.Api
                 appender.Evaluator = new log4net.Core.LevelEvaluator(log4net.Core.Level.All);
                 appender.BufferSize = pandora.Get<int>("log_elasticsearch_buffer");
                 appender.Threshold = log4net.Core.Level.All;
+                appender.Fix = log4net.Core.FixFlags.None;
                 appender.ActivateOptions();
 
                 loggerRepo.AddAppender(appender);

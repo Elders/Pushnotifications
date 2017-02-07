@@ -1,3 +1,6 @@
+#### 2.0.11 - 06.02.2017
+* Change the log settings.
+
 #### 2.0.10 - 06.02.2017
 * Add settings for enable/disable APNS, GCM and Pushy.
 
