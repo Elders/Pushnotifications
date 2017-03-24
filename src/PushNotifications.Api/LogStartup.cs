@@ -1,10 +1,8 @@
-﻿using Elders.Pandora;
-
-namespace PushNotifications.Api
+﻿namespace PushNotifications.Api
 {
     public static class LogStartup
     {
-        public static void Boot(Pandora pandora)
+        public static void Boot(Elders.Pandora.Pandora pandora)
         {
             log4net.Config.XmlConfigurator.Configure();
             log4net.LogManager.GetRepository().AddElasticSearchAppender(pandora);
@@ -22,7 +20,7 @@ namespace PushNotifications.Api
         /// </summary>
         /// <param name="loggerRepo"></param>
         /// <param name="pandora"></param>
-        public static void AddElasticSearchAppender(this log4net.Repository.ILoggerRepository loggerRepo, Pandora pandora)
+        public static void AddElasticSearchAppender(this log4net.Repository.ILoggerRepository loggerRepo, Elders.Pandora.Pandora pandora)
         {
             bool canConfigureAppender = pandora.Get<bool>("log_elasticsearch_enabled");
 
@@ -40,7 +38,7 @@ namespace PushNotifications.Api
                 appender.Evaluator = new log4net.Core.LevelEvaluator(log4net.Core.Level.Error);
                 appender.BufferSize = pandora.Get<int>("log_elasticsearch_buffer");
                 appender.Threshold = log4net.Core.Level.All;
-                appender.Fix = log4net.Core.FixFlags.None;
+                appender.Fix = log4net.Core.FixFlags.All ^ log4net.Core.FixFlags.Properties ^ log4net.Core.FixFlags.UserName ^ log4net.Core.FixFlags.LocationInfo;
                 appender.ActivateOptions();
 
                 loggerRepo.AddAppender(appender);
@@ -66,7 +64,7 @@ namespace PushNotifications.Api
         //        <conversionPattern value="%date %newline%message%newline%newline" />
         //      </layout>
         //  </appender>
-        public static void AddConsoleAppender(this log4net.Repository.ILoggerRepository loggerRepo, Pandora pandora)
+        public static void AddConsoleAppender(this log4net.Repository.ILoggerRepository loggerRepo, Elders.Pandora.Pandora pandora)
         {
             bool canConfigureAppender = pandora.Get<bool>("log_console_enabled");
 
@@ -115,7 +113,7 @@ namespace PushNotifications.Api
         //     </layout>
         // </appender>
         // </remarks>
-        public static void AddRollingFileAppender(this log4net.Repository.ILoggerRepository loggerRepo, Pandora pandora)
+        public static void AddRollingFileAppender(this log4net.Repository.ILoggerRepository loggerRepo, Elders.Pandora.Pandora pandora)
         {
             bool canConfigureAppender = pandora.Get<bool>("log_file_enabled");
 
@@ -129,7 +127,7 @@ namespace PushNotifications.Api
                     "OneBigSplash",
                     "Vapt",
                     "log",
-                    pandora.ApplicationContext.ApplicationName + ".log.xml");
+                    pandora.ApplicationContext.ApplicationName + ".API.log.xml");
 
                 appender.Threshold = log4net.Core.Level.All;
                 appender.AppendToFile = true;
