@@ -103,12 +103,9 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="APNS\APNSTokenProjection.cs" />
     <Compile Include="Cronus.cs" />
     <Compile Include="Pushy\PushyPort.cs" />
     <Compile Include="Pushy\PushySubscriptionsProjection.cs" />
-    <Compile Include="Pushy\PushyTokenProjection.cs" />
-    <Compile Include="GCM\GCMTokenProjection.cs" />
     <Compile Include="GCM\GCMSubscriptionsProjection.cs" />
     <Compile Include="GCM\GCMPort.cs" />
     <Compile Include="APNS\APNSPort.cs" />

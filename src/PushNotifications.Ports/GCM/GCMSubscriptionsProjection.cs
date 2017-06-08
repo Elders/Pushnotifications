@@ -15,24 +15,26 @@ namespace PushNotifications.Ports.GCM
 
         public void Handle(UserSubscribedForGCM @event)
         {
-            var projection = Projections.LoadCollectionItem<GCMSubscriptionsProjection>(@event.UserId, @event.Token);
-            if (ReferenceEquals(projection, null) == true)
-                projection = new GCMSubscriptionsProjection();
-
-            projection.Handle(@event);
-            Projections.SaveAsCollection(projection);
-
             var users = Projections.LoadCollectionItems<GCMTokenProjection>(@event.Token);
             foreach (var user in users)
             {
                 Projections.DeleteCollectionItem<GCMSubscriptionsProjection>(user.State.UserId, @event.Token);
                 Projections.DeleteCollectionItem<GCMTokenProjection>(@event.Token, user.State.UserId);
             }
+
+            var tokenProjection = new GCMTokenProjection();
+            tokenProjection.Handle(@event);
+            Projections.SaveAsCollection(tokenProjection);
+
+            var projection = new GCMSubscriptionsProjection();
+            projection.Handle(@event);
+            Projections.SaveAsCollection(projection);
         }
 
         public void Handle(UserUnSubscribedFromGCM @event)
         {
             Projections.DeleteCollectionItem<GCMSubscriptionsProjection>(@event.UserId, @event.Token);
+            Projections.DeleteCollectionItem<GCMTokenProjection>(@event.Token, @event.UserId);
         }
     }
 
@@ -81,5 +83,29 @@ namespace PushNotifications.Ports.GCM
                 return (117 ^ obj.UserId.GetHashCode()) ^ obj.Token.GetHashCode();
             }
         }
+    }
+
+    public class GCMTokenProjection : ProjectionCollectionDef<GCMTokenProjectionState>,
+        IEventHandler<UserSubscribedForGCM>
+    {
+        public void Handle(UserSubscribedForGCM @event)
+        {
+            State.Id = @event.UserId;
+            State.CollectionId = @event.Token;
+            State.UserId = @event.UserId;
+            State.Token = @event.Token;
+        }
+    }
+
+    [DataContract(Name = "cea67031-945d-43ce-baee-b02b2e86afbf")]
+    public class GCMTokenProjectionState : ProjectionCollectionState<string, string>
+    {
+        GCMTokenProjectionState() { }
+
+        [DataMember(Order = 1)]
+        public string UserId { get; set; }
+
+        [DataMember(Order = 2)]
+        public string Token { get; set; }
     }
 }

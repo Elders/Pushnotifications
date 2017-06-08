@@ -15,25 +15,51 @@ namespace PushNotifications.Ports.APNS
 
         public void Handle(UserSubscribedForAPNS @event)
         {
-            var projection = Projections.LoadCollectionItem<APNSSubscriptionsProjection>(@event.UserId, @event.Token);
-            if (ReferenceEquals(projection, null) == true)
-                projection = new APNSSubscriptionsProjection();
-
-            projection.Handle(@event);
-            Projections.SaveAsCollection(projection);
-
             var users = Projections.LoadCollectionItems<APNSTokenProjection>(@event.Token);
             foreach (var user in users)
             {
                 Projections.DeleteCollectionItem<APNSSubscriptionsProjection>(user.State.UserId, @event.Token);
                 Projections.DeleteCollectionItem<APNSTokenProjection>(@event.Token, user.State.UserId);
             }
+
+            var tokenProjection = new APNSTokenProjection();
+            tokenProjection.Handle(@event);
+            Projections.SaveAsCollection(tokenProjection);
+
+            var projection = new APNSSubscriptionsProjection();
+            projection.Handle(@event);
+            Projections.SaveAsCollection(projection);
         }
 
         public void Handle(UserUnSubscribedFromAPNS @event)
         {
             Projections.DeleteCollectionItem<APNSSubscriptionsProjection>(@event.UserId, @event.Token);
+            Projections.DeleteCollectionItem<APNSTokenProjection>(@event.Token, @event.UserId);
         }
+    }
+
+    public class APNSTokenProjection : ProjectionCollectionDef<APNSTokenProjectionState>,
+        IEventHandler<UserSubscribedForAPNS>
+    {
+        public void Handle(UserSubscribedForAPNS @event)
+        {
+            State.Id = @event.UserId;
+            State.CollectionId = @event.Token;
+            State.UserId = @event.UserId;
+            State.Token = @event.Token;
+        }
+    }
+
+    [DataContract(Name = "aad15819-07fd-4c90-9d54-e86797dbb435")]
+    public class APNSTokenProjectionState : ProjectionCollectionState<string, string>
+    {
+        APNSTokenProjectionState() { }
+
+        [DataMember(Order = 1)]
+        public string UserId { get; set; }
+
+        [DataMember(Order = 2)]
+        public string Token { get; set; }
     }
 
     public class APNSSubscriptionsProjection : ProjectionCollectionDef<APNSSubscriptionsProjectionState>,

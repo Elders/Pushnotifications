@@ -15,25 +15,51 @@ namespace PushNotifications.Ports.Pushy
 
         public void Handle(UserSubscribedForPushy @event)
         {
-            var projection = Projections.LoadCollectionItem<PushySubscriptionsProjection>(@event.UserId, @event.Token);
-            if (ReferenceEquals(projection, null) == true)
-                projection = new PushySubscriptionsProjection();
-
-            projection.Handle(@event);
-            Projections.SaveAsCollection(projection);
-
             var users = Projections.LoadCollectionItems<PushyTokenProjection>(@event.Token);
             foreach (var user in users)
             {
                 Projections.DeleteCollectionItem<PushySubscriptionsProjection>(user.State.UserId, @event.Token);
                 Projections.DeleteCollectionItem<PushyTokenProjection>(@event.Token, user.State.UserId);
             }
+
+            var tokenProjection = new PushyTokenProjection();
+            tokenProjection.Handle(@event);
+            Projections.SaveAsCollection(tokenProjection);
+
+            var projection = new PushySubscriptionsProjection();
+            projection.Handle(@event);
+            Projections.SaveAsCollection(projection);
         }
 
         public void Handle(UserUnSubscribedFromPushy @event)
         {
             Projections.DeleteCollectionItem<PushySubscriptionsProjection>(@event.UserId, @event.Token);
+            Projections.DeleteCollectionItem<PushyTokenProjection>(@event.Token, @event.UserId);
         }
+    }
+
+    public class PushyTokenProjection : ProjectionCollectionDef<PushyTokenProjectionState>,
+        IEventHandler<UserSubscribedForPushy>
+    {
+        public void Handle(UserSubscribedForPushy @event)
+        {
+            State.Id = @event.UserId;
+            State.CollectionId = @event.Token;
+            State.UserId = @event.UserId;
+            State.Token = @event.Token;
+        }
+    }
+
+    [DataContract(Name = "55d943c7-ea33-4546-ba73-2d7cfa52fd49")]
+    public class PushyTokenProjectionState : ProjectionCollectionState<string, string>
+    {
+        PushyTokenProjectionState() { }
+
+        [DataMember(Order = 1)]
+        public string UserId { get; set; }
+
+        [DataMember(Order = 2)]
+        public string Token { get; set; }
     }
 
     public class PushySubscriptionsProjection : ProjectionCollectionDef<PushySubscriptionsProjectionState>,
