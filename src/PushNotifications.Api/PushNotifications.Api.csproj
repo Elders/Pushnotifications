@@ -41,8 +41,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Consul, Version=0.7.0.3, Culture=neutral, PublicKeyToken=20a6ad9a81df1d95, processorArchitecture=MSIL">
-      <HintPath>..\packages\Consul.0.7.0.3\lib\net45\Consul.dll</HintPath>
+    <Reference Include="Consul, Version=0.7.2.3, Culture=neutral, PublicKeyToken=20a6ad9a81df1d95, processorArchitecture=MSIL">
+      <HintPath>..\packages\Consul.0.7.2.3\lib\net45\Consul.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -69,16 +69,16 @@
       <HintPath>..\packages\Multithreading.Scheduler.1.1.2\lib\net45-full\Elders.Multithreading.Scheduler.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Pandora, Version=0.6.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pandora.0.6.9\lib\net45-full\Elders.Pandora.dll</HintPath>
+    <Reference Include="Elders.Pandora, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pandora.0.8.0\lib\net45-full\Elders.Pandora.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Pandora.Box, Version=0.6.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pandora.0.6.9\lib\net45-full\Elders.Pandora.Box.dll</HintPath>
+    <Reference Include="Elders.Pandora.Box, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pandora.0.8.0\lib\net45-full\Elders.Pandora.Box.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Pandora.Consul, Version=0.6.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pandora.Consul.0.6.2\lib\net45-full\Elders.Pandora.Consul.dll</HintPath>
+    <Reference Include="Elders.Pandora.Consul, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pandora.Consul.0.7.0\lib\net45-full\Elders.Pandora.Consul.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.RedLock, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -136,8 +136,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin">
@@ -243,9 +243,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="RELEASE_NOTES.md" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
