@@ -1,3 +1,6 @@
+#### 2.0.3 - 15.06.2017
+* Version bump
+
 #### 2.0.2 - 06.02.2017
 * Add integration with Pushy push notifications service.
 

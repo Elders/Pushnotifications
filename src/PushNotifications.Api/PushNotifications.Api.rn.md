@@ -1,3 +1,6 @@
+#### 2.0.14 - 15.06.2017
+* Version bump
+
 #### 2.0.13 - 24.03.2017
 * Changes logging fix to FixFlags.All ^ FixFlags.Properties ^ FixFlags.UserName ^ FixFlags.LocationInfo
 * Fixes locking issue for logs when logging to file
