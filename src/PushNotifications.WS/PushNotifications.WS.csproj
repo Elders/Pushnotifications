@@ -181,7 +181,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="RELEASE_NOTES.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Facilities\Facilities.csproj">

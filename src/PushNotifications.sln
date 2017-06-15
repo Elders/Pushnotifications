@@ -31,6 +31,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.PushSharp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotification.Monitors", "PushNotification.Monitors\PushNotification.Monitors.csproj", "{33D7962E-4D76-4098-9E92-DB1368AE8ECC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{11EEEBAA-6CC4-4E52-9C6E-1252D33628D9}"
+	ProjectSection(SolutionItems) = preProject
+		PushNotifications.Api.Client\PushNotifications.Api.Client.rn.md = PushNotifications.Api.Client\PushNotifications.Api.Client.rn.md
+		PushNotifications.Api\PushNotifications.Api.rn.md = PushNotifications.Api\PushNotifications.Api.rn.md
+		PushNotifications.WS.MSI\PushNotifications.WS.MSI.rn.md = PushNotifications.WS.MSI\PushNotifications.WS.MSI.rn.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
