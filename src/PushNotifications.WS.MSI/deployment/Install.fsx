@@ -1,9 +1,9 @@
 // include Deployment Tools Foundation (WIX)
-#I @"./"
+#I @"."
 #r @"Microsoft.Deployment.WindowsInstaller.dll"
 
 // include Fake libs
-#I @"./FAKE/tools"
+#I @"./bin/FAKE/tools/"
 #r @"FakeLib.dll"
 #r @"Microsoft.Deployment.WindowsInstaller"
 

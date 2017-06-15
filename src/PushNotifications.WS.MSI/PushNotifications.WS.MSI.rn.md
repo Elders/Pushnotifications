@@ -1,3 +1,6 @@
+#### 2.0.15 - 15.06.2017
+* Fixes deployment build
+
 #### 2.0.14 - 08.06.2017
 * Version bump
 * Fix issue with push notification tokens management
