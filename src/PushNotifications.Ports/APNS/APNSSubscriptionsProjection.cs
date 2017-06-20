@@ -4,6 +4,7 @@ using Projections.Collections;
 using PushNotifications.Contracts.Subscriptions.Events;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Linq;
 
 namespace PushNotifications.Ports.APNS
 {
@@ -15,11 +16,11 @@ namespace PushNotifications.Ports.APNS
 
         public void Handle(UserSubscribedForAPNS @event)
         {
-            var users = Projections.LoadCollectionItems<APNSTokenProjection>(@event.Token);
+            var users = Projections.LoadCollectionItems<APNSTokenProjection>(@event.Token).Where(x => ReferenceEquals(x, null) == false).Select(x => x.State);
             foreach (var user in users)
             {
-                Projections.DeleteCollectionItem<APNSSubscriptionsProjection>(user.State.UserId, @event.Token);
-                Projections.DeleteCollectionItem<APNSTokenProjection>(@event.Token, user.State.UserId);
+                Projections.DeleteCollectionItem<APNSSubscriptionsProjection>(user.UserId, @event.Token);
+                Projections.DeleteCollectionItem<APNSTokenProjection>(@event.Token, user.UserId);
             }
 
             var tokenProjection = new APNSTokenProjection();

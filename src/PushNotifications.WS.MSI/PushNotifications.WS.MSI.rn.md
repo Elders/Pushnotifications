@@ -1,3 +1,6 @@
+#### 2.0.16 - 15.06.2017
+* Fixes null reference produced by collection projections
+
 #### 2.0.15 - 15.06.2017
 * Fixes deployment build
 

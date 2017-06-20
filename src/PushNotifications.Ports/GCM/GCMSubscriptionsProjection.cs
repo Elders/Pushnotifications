@@ -4,6 +4,7 @@ using Projections.Collections;
 using PushNotifications.Contracts.Subscriptions.Events;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Linq;
 
 namespace PushNotifications.Ports.GCM
 {
@@ -15,11 +16,11 @@ namespace PushNotifications.Ports.GCM
 
         public void Handle(UserSubscribedForGCM @event)
         {
-            var users = Projections.LoadCollectionItems<GCMTokenProjection>(@event.Token);
+            var users = Projections.LoadCollectionItems<GCMTokenProjection>(@event.Token).Where(x => ReferenceEquals(x, null) == false).Select(x => x.State);
             foreach (var user in users)
             {
-                Projections.DeleteCollectionItem<GCMSubscriptionsProjection>(user.State.UserId, @event.Token);
-                Projections.DeleteCollectionItem<GCMTokenProjection>(@event.Token, user.State.UserId);
+                Projections.DeleteCollectionItem<GCMSubscriptionsProjection>(user.UserId, @event.Token);
+                Projections.DeleteCollectionItem<GCMTokenProjection>(@event.Token, user.UserId);
             }
 
             var tokenProjection = new GCMTokenProjection();

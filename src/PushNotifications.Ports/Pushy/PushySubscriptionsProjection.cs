@@ -4,6 +4,7 @@ using Projections.Collections;
 using PushNotifications.Contracts.Subscriptions.Events;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Linq;
 
 namespace PushNotifications.Ports.Pushy
 {
@@ -15,11 +16,11 @@ namespace PushNotifications.Ports.Pushy
 
         public void Handle(UserSubscribedForPushy @event)
         {
-            var users = Projections.LoadCollectionItems<PushyTokenProjection>(@event.Token);
+            var users = Projections.LoadCollectionItems<PushyTokenProjection>(@event.Token).Where(x => ReferenceEquals(x, null) == false).Select(x => x.State);
             foreach (var user in users)
             {
-                Projections.DeleteCollectionItem<PushySubscriptionsProjection>(user.State.UserId, @event.Token);
-                Projections.DeleteCollectionItem<PushyTokenProjection>(@event.Token, user.State.UserId);
+                Projections.DeleteCollectionItem<PushySubscriptionsProjection>(user.UserId, @event.Token);
+                Projections.DeleteCollectionItem<PushyTokenProjection>(@event.Token, user.UserId);
             }
 
             var tokenProjection = new PushyTokenProjection();
