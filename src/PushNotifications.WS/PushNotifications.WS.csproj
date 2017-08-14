@@ -75,15 +75,15 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Pandora, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pandora.0.8.0\lib\net45-full\Elders.Pandora.dll</HintPath>
+      <HintPath>..\packages\Pandora.0.8.2\lib\net45-full\Elders.Pandora.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Pandora.Box, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pandora.0.8.0\lib\net45-full\Elders.Pandora.Box.dll</HintPath>
+      <HintPath>..\packages\Pandora.0.8.2\lib\net45-full\Elders.Pandora.Box.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Pandora.Consul, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pandora.Consul.0.7.0\lib\net45-full\Elders.Pandora.Consul.dll</HintPath>
+    <Reference Include="Elders.Pandora.Consul, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pandora.Consul.0.8.0\lib\net45-full\Elders.Pandora.Consul.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.RedLock, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -103,7 +103,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PushSharp.Amazon.Adm">
