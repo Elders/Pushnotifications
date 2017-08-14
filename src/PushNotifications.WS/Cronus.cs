@@ -42,7 +42,7 @@ namespace PushNotifications.WS
         {
             try
             {
-                var appContext = new ApplicationContext("PushNotifications.WS");
+                var appContext = new ApplicationContext("PushNotifications");
                 var cfgRepo = new ConsulForPandora(new Uri("http://consul.local.com:8500"));
                 var pandora = new Pandora(appContext, cfgRepo);
 

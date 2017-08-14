@@ -10,7 +10,7 @@ namespace PushNotifications.Api
     {
         public void Configuration(IAppBuilder app)
         {
-            var appContext = new ApplicationContext("PushNotifications.Api");
+            var appContext = new ApplicationContext("PushNotifications");
             var cfgRepo = new ConsulForPandora(new Uri("http://consul.local.com:8500"));
             var pandora = new Pandora(appContext, cfgRepo);
 

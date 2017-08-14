@@ -1,3 +1,6 @@
+#### 2.0.19 - 14.08.2017
+* Fixes pandora settings
+
 #### 2.0.18 - 14.08.2017
 * Updates to latest pandora
 
