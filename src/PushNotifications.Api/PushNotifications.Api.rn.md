@@ -1,3 +1,6 @@
+#### 2.0.18 - 14.08.2017
+* Vapt specific configurations
+
 #### 2.0.17 - 14.08.2017
 * Fixes pandora settings
 
