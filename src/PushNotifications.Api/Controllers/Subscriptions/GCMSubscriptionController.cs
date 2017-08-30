@@ -5,6 +5,7 @@ using PushNotifications.Contracts.Subscriptions.Commands;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Http;
 using Thinktecture.IdentityModel.WebApi;
+using Discovery;
 
 namespace PushNotifications.Api.Controllers.Subscriptions
 {
@@ -14,7 +15,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions
     {
         public IPublisher<ICommand> Publisher { get; set; }
 
-        [HttpPost, Route("Subscribe")]
+        [HttpPost, Route("Subscribe"), Discoverable("GCMSubscriptionSubscribe", "v1")]
         public IHttpActionResult Subscribe(GCMSubscriptionModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
@@ -31,7 +32,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions
                 : this.NotAcceptable(result);
         }
 
-        [HttpPost, Route("UnSubscribe")]
+        [HttpPost, Route("UnSubscribe"), Discoverable("GCMSubscriptionUnSubscribe", "v1")]
         public IHttpActionResult UnSubscribe(GCMSubscriptionModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);

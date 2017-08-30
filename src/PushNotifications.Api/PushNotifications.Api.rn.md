@@ -1,3 +1,7 @@
+#### 2.0.20 - 30.08.2017
+* Adds ability to use qore.iaa tokens
+* Enables endpoint discovery registrations in consul
+
 #### 2.0.19 - 14.08.2017
 * Version bump
 

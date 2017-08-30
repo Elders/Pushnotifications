@@ -18,11 +18,15 @@ using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Dispatcher;
+using Consul;
+using PushNotifications.Api.Discovery;
 
 namespace PushNotifications.Api
 {
-    public class PushNotificationsApiConfiguration : IApiConfiguration
+    public class PushNotificationsApiConfiguration : IApiConfiguration, IAmDiscoverable
     {
+        static Uri consulUri = new Uri("http://consul.local.com:8500");
+
         public Assembly Assembly { get { return typeof(PushNotificationsApiConfiguration).Assembly; } }
 
         public IHttpControllerActivator ControllerFactory { get; private set; }
@@ -57,6 +61,14 @@ namespace PushNotifications.Api
                   });
 
             (cfg as ICronusSettings).Build();
+        }
+
+        public void RegisterServices(HttpConfiguration configuration, Pandora pandora)
+        {
+            var baseUri = new Uri(pandora.Get("pn_base_url"));
+            var consulClient = new ConsulClient(x => x.Address = consulUri);
+            var consulEndpointRegistrationService = new ConsulEndpointRegistrationService(consulClient);
+            consulEndpointRegistrationService.RegisterServices(configuration, Assembly, baseUri);
         }
     }
 

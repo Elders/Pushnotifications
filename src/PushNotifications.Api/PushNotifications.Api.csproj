@@ -208,9 +208,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
+    <Compile Include="Cert.cs" />
+    <Compile Include="Discovery\ConsulEndpointRegistrationService.cs" />
+    <Compile Include="Discovery\ConsulTags.cs" />
     <Compile Include="Controllers\Subscriptions\PushySubscriptionController.cs" />
+    <Compile Include="Extentions\PandoraExtensions.cs" />
     <Compile Include="Extentions\StirngExtentions.cs" />
     <Compile Include="LogStartup.cs" />
+    <Compile Include="PushNotificationsApiAssembly.cs" />
     <Compile Include="PushNotificationsApiConfiguration.cs" />
     <Compile Include="Controllers\Subscriptions\GCMSubscriptionController.cs" />
     <Compile Include="Startup.cs" />
@@ -232,6 +237,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Discovery\Discovery.csproj">
+      <Project>{64EC0B0B-A1AB-4685-AE46-36DA3DA2479C}</Project>
+      <Name>Discovery</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Facilities\Facilities.csproj">
       <Project>{eaf56783-bef2-433a-803b-0975c4f481e4}</Project>
       <Name>Facilities</Name>

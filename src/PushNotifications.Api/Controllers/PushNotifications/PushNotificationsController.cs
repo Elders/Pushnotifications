@@ -5,6 +5,7 @@ using PushNotifications.Contracts.PushNotifications.Commands;
 using System;
 using System.Web.Http;
 using Thinktecture.IdentityModel.WebApi;
+using Discovery;
 
 namespace PushNotifications.Api.Controllers.PushNotifications
 {
@@ -14,7 +15,7 @@ namespace PushNotifications.Api.Controllers.PushNotifications
     {
         public IPublisher<ICommand> Publisher { get; set; }
 
-        [HttpPost, Route("Send")]
+        [HttpPost, Route("Send"), Discoverable("PushNotificationsSend", "v1")]
         public IHttpActionResult Send(PushNotificationModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
