@@ -16,6 +16,7 @@ namespace PushNotifications.Api
 
             LogStartup.Boot(pandora);
 
+            app.UseWelcomePage("/");
             app.UseHttpWebApi(pandora);
         }
     }
