@@ -81,6 +81,8 @@ namespace PushNotifications.WS
         {
             var appServiceFactory = new ServiceLocator(cronusSettings.Container);
 
+            Elders.Cronus.Persistence.Cassandra.ReplicationStrategies.ICassandraReplicationStrategy eventStoreReplicationStrategy = new Elders.Cronus.Persistence.Cassandra.ReplicationStrategies.SimpleReplicationStrategy(1);
+
             cronusSettings.UseContractsFromAssemblies(new[] {
                     Assembly.GetAssembly(typeof(PushNotificationWasSent)),
                     Assembly.GetAssembly(typeof(APNSSubscriptionsProjection)),
@@ -101,8 +103,7 @@ namespace PushNotifications.WS
                 .WithDefaultPublishers()
                 .UseCassandraEventStore(eventStore => eventStore
                     .SetConnectionString(pandora.Get("pushnot_conn_str_es"))
-                    .SetAggregateStatesAssembly(typeof(PushNotificationState))
-                    .WithNewStorageIfNotExists())
+                    .SetAggregateStatesAssembly(typeof(PushNotificationState)))
                 .UseApplicationServices(cmdHandler => cmdHandler.RegisterHandlersInAssembly(new[] { typeof(PushNotificationAppService).Assembly }, appServiceFactory.Resolve)));
 
             return cronusSettings;
@@ -117,7 +118,7 @@ namespace PushNotifications.WS
             var persister = new CassandraPersister(projectionSession);
             Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
             Func<Repository> repo = () => new Repository(persister, obj => serializer().SerializeToBytes(obj), data => serializer().DeserializeFromBytes(data));
-            container.RegisterTransient<IProjectionRepository>(() => new CassandraProjectionRepository(new ProjectionBuilder(), repo));
+            container.RegisterTransient<Projections.IProjectionRepository>(() => new CassandraProjectionRepository(new ProjectionBuilder(), repo));
             container.RegisterTransient<IRepository>(() => new Repository(
                 new CassandraPersister(container.Resolve<Cassandra.ISession>()),
                 container.Resolve<ISerializer>().SerializeToBytes,

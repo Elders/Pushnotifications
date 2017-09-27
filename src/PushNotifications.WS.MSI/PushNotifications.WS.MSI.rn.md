@@ -1,3 +1,7 @@
+#### 2.0.22 - 27.09.2017
+* Updates packages
+* Updates consul service discovery
+
 #### 2.0.21 - 14.08.2017
 * Version bump
 

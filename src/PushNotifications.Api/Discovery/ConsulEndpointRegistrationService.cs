@@ -9,13 +9,13 @@ using Elders.Cronus.DomainModeling;
 
 namespace PushNotifications.Api.Discovery
 {
-    public class ConsulEndpointRegistrationService
+    public class ConsulRegistrationService
     {
         readonly ConsulClient client;
 
         readonly string consulNodeIp;
 
-        public ConsulEndpointRegistrationService(ConsulClient client)
+        public ConsulRegistrationService(ConsulClient client)
         {
             if (ReferenceEquals(null, client) == true) throw new ArgumentNullException(nameof(client));
             this.client = client;
@@ -34,51 +34,73 @@ namespace PushNotifications.Api.Discovery
               .Select(m => new { Method = m, Attr = (DiscoverableAttribute)m.GetCustomAttribute(typeof(DiscoverableAttribute), false) })
               .ToArray();
 
-            var httpCheck = new AgentServiceCheck { Interval = TimeSpan.FromMinutes(5), HTTP = boundedContextBaseUri.ToString() };
-
             foreach (var methodWithDiscoverableAttribute in methodsWithDiscoverableAttribute)
             {
                 var method = methodWithDiscoverableAttribute.Method;
                 var attr = methodWithDiscoverableAttribute.Attr;
 
                 var endpoint = new DiscoverableEndpoint(attr.EndpointName, new Uri(boundedContextBaseUri, GetUrl(config, method)), boundedContextName, new DiscoveryVersion(attr.Version, attr.DepricateVersion));
-                AppendToConsul(endpoint, httpCheck);
+                AppendToConsul(endpoint);
             }
         }
 
-        public void RegisterService(DiscoverableEndpoint endpoint, Uri boundedContextBaseUri)
+        public void RegisterService(DiscoverableEndpoint endpoint, Uri httpCheckUri = null)
         {
-            var httpCheck = new AgentServiceCheck { Interval = TimeSpan.FromMinutes(5), HTTP = boundedContextBaseUri.ToString() };
-            AppendToConsul(endpoint, httpCheck);
+            AppendToConsul(endpoint, httpCheckUri);
         }
 
-        void AppendToConsul(DiscoverableEndpoint endpoint, AgentServiceCheck check)
+        public void RegisterService(string serviceName, Uri httpCheckUri)
         {
-            var bcTag = $"{ConsulTags.BoundedContext}{ConsulTags.Separator}{endpoint.BoundedContext}";
-            var publicTag = $"{ConsulTags.Visability}{ConsulTags.Separator}public";
-            var timeTag = $"{ConsulTags.UpdatedAt}{ConsulTags.Separator}{DateTime.UtcNow.ToFileTimeUtc()}";
+            AppendToConsul(serviceName, serviceName, null, DefaultCheck(httpCheckUri));
+        }
 
-            var introducedAtVersionTag = $"{ConsulTags.IntroducedAtVersion}{ConsulTags.Separator}{endpoint.Version.IntroducedAtVersion}";
-            var depricatedAtVersionTag = $"{ConsulTags.DepricatedAtVersion}{ConsulTags.Separator}{endpoint.Version.DepricatedAtVersion}";
-            var endpointNameTag = $"{ConsulTags.EndpointName}{ConsulTags.Separator}{endpoint.Name}";
-            var endpointUrlTag = $"{ConsulTags.EndpointUrl}{ConsulTags.Separator}{endpoint.Url}";
+        AgentServiceCheck DefaultCheck(Uri httpCheckUri)
+        {
+            return new AgentServiceCheck { Interval = TimeSpan.FromMinutes(5), HTTP = httpCheckUri.ToString(), Timeout = TimeSpan.FromMinutes(1) };
+        }
 
+        void AppendToConsul(DiscoverableEndpoint endpoint, Uri httpCheckUri = null)
+        {
+            var bcTag = $"{ConsulHelper.BoundedContext}{ConsulHelper.Separator}{endpoint.BoundedContext}";
+            var publicTag = $"{ConsulHelper.Visability}{ConsulHelper.Separator}public";
+            var timeTag = $"{ConsulHelper.UpdatedAt}{ConsulHelper.Separator}{DateTime.UtcNow.ToFileTimeUtc()}";
+
+            var introducedAtVersionTag = $"{ConsulHelper.IntroducedAtVersion}{ConsulHelper.Separator}{endpoint.Version.IntroducedAtVersion}";
+            var depricatedAtVersionTag = $"{ConsulHelper.DepricatedAtVersion}{ConsulHelper.Separator}{endpoint.Version.DepricatedAtVersion}";
+            var endpointNameTag = $"{ConsulHelper.EndpointName}{ConsulHelper.Separator}{endpoint.Name}";
+            var endpointUrlTag = $"{ConsulHelper.EndpointUrl}{ConsulHelper.Separator}{endpoint.Url}";
+
+            var id = $"{endpoint.BoundedContext}-{endpoint.Name}-{endpoint.Version.IntroducedAtVersion}";
+            var name = $"{endpoint.BoundedContext}-{endpoint.Name}-{endpoint.Version.IntroducedAtVersion}";
+            var tags = new[] { bcTag, introducedAtVersionTag, depricatedAtVersionTag, endpointUrlTag, endpointNameTag, timeTag, publicTag };
+
+            AgentServiceCheck check = null;
+            if (ReferenceEquals(null, httpCheckUri) == false)
+                check = DefaultCheck(httpCheckUri);
+
+            AppendToConsul(id, name, tags, check);
+        }
+
+        void AppendToConsul(string id, string name, string[] tags, AgentServiceCheck check = null)
+        {
             var registration = new AgentServiceRegistration()
             {
-                ID = $"{endpoint.BoundedContext}-{endpoint.Name}-{endpoint.Version.IntroducedAtVersion}",
-                Name = $"{endpoint.BoundedContext}-{endpoint.Name}-{endpoint.Version.IntroducedAtVersion}",
+                ID = id,
+                Name = name,
                 Address = consulNodeIp,
-                Tags = new[] { bcTag, introducedAtVersionTag, depricatedAtVersionTag, endpointUrlTag, endpointNameTag, timeTag, publicTag },
+                Tags = tags,
                 Check = check
             };
-            var result = client.Agent.ServiceRegister(registration).Result;
+
+            // this will clean old registrations
+            var unRegister = client.Agent.ServiceDeregister(registration.ID).Result;
+            var register = client.Agent.ServiceRegister(registration).Result;
             //var result = client.Catalog.Services().Result;
             //foreach (var item in result.Response)
             //{
             //    client.Agent.ServiceDeregister(item.Key);
             //}
         }
-
         string GetCurrentNodeIp()
         {
             var self = client.Agent.Self().Result;

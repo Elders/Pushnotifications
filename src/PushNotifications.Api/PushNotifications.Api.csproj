@@ -46,15 +46,15 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.3.0.2\lib\net45-full\Elders.Cronus.dll</HintPath>
+      <HintPath>..\packages\Cronus.3.0.6\lib\net45-full\Elders.Cronus.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.AtomicAction.Redis, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.AtomicAction.Redis.0.2.0\lib\net45-full\Elders.Cronus.AtomicAction.Redis.dll</HintPath>
+      <HintPath>..\packages\Cronus.AtomicAction.Redis.0.2.1\lib\net45-full\Elders.Cronus.AtomicAction.Redis.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Cronus.DomainModeling, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.3.1.4\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+    <Reference Include="Elders.Cronus.DomainModeling, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.DomainModeling.3.3.0\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.Serialization.NewtonsoftJson, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -62,7 +62,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.Transport.RabbitMQ, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.Transport.RabbitMQ.3.0.1\lib\net45-full\Elders.Cronus.Transport.RabbitMQ.dll</HintPath>
+      <HintPath>..\packages\Cronus.Transport.RabbitMQ.3.0.2\lib\net45-full\Elders.Cronus.Transport.RabbitMQ.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Multithreading.Scheduler, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -214,6 +214,7 @@
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="Cert.cs" />
+    <Compile Include="Controllers\Discovery\HealthCheckController.cs" />
     <Compile Include="Discovery\ConsulEndpointRegistrationService.cs" />
     <Compile Include="Discovery\ConsulTags.cs" />
     <Compile Include="Controllers\Subscriptions\PushySubscriptionController.cs" />

@@ -1,3 +1,7 @@
+#### 2.0.21 - 27.09.2017
+* Updates packages
+* Updates consul service discovery
+
 #### 2.0.20 - 30.08.2017
 * Adds ability to use qore.iaa tokens
 * Enables endpoint discovery registrations in consul

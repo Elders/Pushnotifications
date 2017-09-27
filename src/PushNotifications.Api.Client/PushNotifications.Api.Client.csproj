@@ -30,6 +30,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -61,6 +65,7 @@
     <Compile Include="Infrastructure\RestClientExtensions.cs" />
     <Compile Include="Infrastructure\SerializerFactory.cs" />
     <Compile Include="PushNotificationsClient.cs" />
+    <Compile Include="Usage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

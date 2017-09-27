@@ -66,9 +66,11 @@ namespace PushNotifications.Api
         public void RegisterServices(HttpConfiguration configuration, Pandora pandora)
         {
             var baseUri = new Uri(pandora.Get("pn_base_url"));
+            var httpHealthCheckUri = new Uri(pandora.Get("pn_health_check_url"));
             var consulClient = new ConsulClient(x => x.Address = consulUri);
-            var consulEndpointRegistrationService = new ConsulEndpointRegistrationService(consulClient);
-            consulEndpointRegistrationService.RegisterServices(configuration, Assembly, baseUri);
+            var consulRegistrationService = new ConsulRegistrationService(consulClient);
+            consulRegistrationService.RegisterServices(configuration, Assembly, baseUri);
+            consulRegistrationService.RegisterService("pn", httpHealthCheckUri);
         }
     }
 

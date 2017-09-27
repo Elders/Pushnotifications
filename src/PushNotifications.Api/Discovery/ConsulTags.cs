@@ -2,8 +2,10 @@
 
 namespace PushNotifications.Api.Discovery
 {
-    public static class ConsulTags
+    public static class ConsulHelper
     {
+        public static readonly Uri ConsulUri = new Uri("http://consul.local.com:8500");
+
         public const string Visability = "Visability";
         public const string BoundedContext = "BoundedContext";
         public const string UpdatedAt = "UpdatedAt";
