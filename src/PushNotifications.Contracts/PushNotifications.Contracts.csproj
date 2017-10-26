@@ -30,14 +30,33 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Elders.Cronus.DomainModeling, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.DomainModeling.3.3.0\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SubscriptionToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotificationsContractsAssembly.cs" />
+    <Compile Include="FireBaseSubscriptions\Commands\SubscribeUserForFireBase.cs" />
+    <Compile Include="FireBaseSubscriptions\Commands\UnSubscribeUserFromFireBase.cs" />
+    <Compile Include="FireBaseSubscriptions\Events\UserSubscribedForFireBase.cs" />
+    <Compile Include="FireBaseSubscriptions\Events\UserUnSubscribedFromFireBase.cs" />
+    <Compile Include="FireBaseSubscriptions\FireBaseSubscriptionId.cs" />
+    <Compile Include="UserId.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PushNotifications\Commands\" />
+    <Folder Include="PushNotifications\Events\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
