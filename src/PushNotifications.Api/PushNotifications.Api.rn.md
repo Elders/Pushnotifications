@@ -1,3 +1,6 @@
+#### 2.0.22 - 27.09.2017
+* Adds mocked endpoints for fire base
+
 #### 2.0.21 - 27.09.2017
 * Updates packages
 * Updates consul service discovery

@@ -215,6 +215,7 @@
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="Cert.cs" />
     <Compile Include="Controllers\Discovery\HealthCheckController.cs" />
+    <Compile Include="Controllers\Subscriptions\FireBaseSubscriptionController.cs" />
     <Compile Include="Discovery\ConsulEndpointRegistrationService.cs" />
     <Compile Include="Discovery\ConsulTags.cs" />
     <Compile Include="Controllers\Subscriptions\PushySubscriptionController.cs" />
