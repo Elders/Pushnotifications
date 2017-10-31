@@ -3,6 +3,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Consul;
+using Discovery.Consul;
+using Elders.Cronus.DomainModeling;
 using Elders.Pandora;
 using Elders.Web.Api.Filters;
 using Newtonsoft.Json;
@@ -19,7 +22,8 @@ namespace PushNotifications.Api.Host.App_Start
                 .ConfigureRoutes()
                 .ConfigureFilters()
                 .ConfigureJsonSerializer()
-                .ConfigureCors(pandora);
+                .ConfigureCors(pandora)
+                .RegisterServices(pandora);
         }
 
         static HttpConfiguration ConfigureCors(this HttpConfiguration config, Pandora pandora)
@@ -81,6 +85,20 @@ namespace PushNotifications.Api.Host.App_Start
             {
                 settings.Converters.Add(Activator.CreateInstance(item) as JsonConverter);
             }
+
+            return config;
+        }
+
+        static HttpConfiguration RegisterServices(this HttpConfiguration config, Pandora pandora)
+        {
+            config.EnsureInitialized();
+            var baseUri = new Uri(pandora.Get("pn_base_url"));
+            var httpHealthCheckUri = new Uri(pandora.Get("pn_health_check_url"));
+            var consulClient = new ConsulClient(x => x.Address = ConsulHelper.ConsulUri);
+            var consulRegistrationService = new ConsulRegistrationService(consulClient);
+            consulRegistrationService.UnRegisterServices(typeof(PushNotificationsApiAssembly).Assembly.GetBoundedContext().BoundedContextName);
+            consulRegistrationService.RegisterServices(config, typeof(PushNotificationsApiAssembly).Assembly, baseUri);
+            consulRegistrationService.RegisterService("pn", httpHealthCheckUri);
 
             return config;
         }

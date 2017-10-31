@@ -50,6 +50,14 @@
       <HintPath>..\packages\Consul.0.7.2.3\lib\net45\Consul.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Discovery, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Discovery.0.1.0\lib\net45-full\Discovery.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Discovery.Consul, Version=0.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Discovery.Consul.0.1.3\lib\net45-full\Discovery.Consul.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Elders.Cronus, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Cronus.3.1.0\lib\net45-full\Elders.Cronus.dll</HintPath>
       <Private>True</Private>
