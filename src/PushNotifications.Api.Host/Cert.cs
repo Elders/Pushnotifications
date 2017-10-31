@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace PushNotifications.Api.Host
 {
-    public class Cert
+    public static class Cert
     {
         public static X509Certificate2 Load(string certThumbprint)
         {
@@ -43,7 +43,7 @@ namespace PushNotifications.Api.Host
                 var response = JsonConvert.DeserializeObject<JwksResponse>(responseFromServer);
                 var key = response.Keys.FirstOrDefault();
                 if (ReferenceEquals(null, key))
-                    throw new InvalidOperationException("Cannot get Qore.Iaa cert keys");
+                    throw new InvalidOperationException("Cannot get cert keys from " + authority);
 
                 var utf8 = new UTF8Encoding();
                 return utf8.GetBytes(key.x5c[0]);
@@ -57,13 +57,13 @@ namespace PushNotifications.Api.Host
 
         class CertKey
         {
-            public string kty;
-            public string use;
-            public string kid;
-            public string x5t;
-            public string e;
-            public string n;
-            public string[] x5c;
+            public string kty { get; set; }
+            public string use { get; set; }
+            public string kid { get; set; }
+            public string x5t { get; set; }
+            public string e { get; set; }
+            public string n { get; set; }
+            public string[] x5c { get; set; }
         }
     }
 }

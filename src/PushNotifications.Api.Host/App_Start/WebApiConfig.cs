@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -53,8 +54,8 @@ namespace PushNotifications.Api.Host.App_Start
             config.Filters.Add(new ExceptionFilter());
 
             config.SuppressDefaultHostAuthentication();
-            //config.Filters.Add(new HostAuthenticationAttribute("Bearer"));
-            //config.Filters.Add(new AuthorizeAttribute());
+            config.Filters.Add(new HostAuthenticationAttribute("Bearer"));
+            config.Filters.Add(new AuthorizeAttribute());
 
             config.Formatters.Remove(config.Formatters.XmlFormatter);
             config.Formatters.Remove(config.Formatters.FormUrlEncodedFormatter);
@@ -69,14 +70,17 @@ namespace PushNotifications.Api.Host.App_Start
             settings.NullValueHandling = NullValueHandling.Ignore;
             settings.Formatting = Formatting.Indented;
             settings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+            settings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
+            settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+            settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 
-            //var converters = typeof(TimestampConverterDateTime).Assembly.GetTypes()
-            //    .Where(x => typeof(JsonConverter).IsAssignableFrom(x) && x.IsAbstract == false);
+            var converters = typeof(PushNotificationsApiAssembly).Assembly.GetTypes()
+                .Where(x => typeof(JsonConverter).IsAssignableFrom(x) && x.IsAbstract == false);
 
-            //foreach (var item in converters)
-            //{
-            //    settings.Converters.Add(Activator.CreateInstance(item) as JsonConverter);
-            //}
+            foreach (var item in converters)
+            {
+                settings.Converters.Add(Activator.CreateInstance(item) as JsonConverter);
+            }
 
             return config;
         }

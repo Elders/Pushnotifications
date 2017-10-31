@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
 using Elders.Pandora;
@@ -11,9 +12,9 @@ namespace PushNotifications.Api.Host
     {
         public static IAppBuilder ConfigureJwtBearerAuthentication(this IAppBuilder app, Pandora pandora)
         {
-            //  qoretIssuer = "https://account-int.marketvision.com";
-            //  qoreAudience = "https://account-int.marketvision.com/resources";
-            var idsrvs = pandora.Get<List<IdentityServerModel>>("idsrvs");
+            JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
+
+            var idsrvs = pandora.Get<List<IdentityServerModel>>("idsrvs_config");
 
             if (idsrvs.Count == 0)
                 return app;
@@ -29,15 +30,19 @@ namespace PushNotifications.Api.Host
                 var certificate = new X509Certificate2(certBytes);
 
                 tokenProviders.Add(new X509CertificateSecurityTokenProvider(idsrv.Issuer, certificate));
+                certificates.Add(certificate);
                 issuers.Add(idsrv.Issuer);
                 audiences.Add(idsrv.Audience);
             }
 
-            app.UseJwtBearerAuthentication(new JwtBearerAuthenticationOptions
+            var asdf = new JwtBearerAuthenticationOptions
             {
+                AllowedAudiences = audiences,
                 TokenValidationParameters = GetTokenValidationParameters(certificates, issuers, audiences),
                 IssuerSecurityTokenProviders = tokenProviders
-            });
+            };
+
+            app.UseJwtBearerAuthentication(asdf);
 
             return app;
         }
@@ -51,6 +56,8 @@ namespace PushNotifications.Api.Host
             tvp.ValidateAudience = true;
             tvp.ValidateIssuerSigningKey = true;
             tvp.ValidateLifetime = true;
+
+            tvp.CertificateValidator = X509CertificateValidator.None;
 
             var tokens = new List<SecurityToken>();
             var keys = new List<X509SecurityKey>();
@@ -72,10 +79,10 @@ namespace PushNotifications.Api.Host
 
         class IdentityServerModel
         {
-            public IdentityServerModel(string issuer, string udience)
+            public IdentityServerModel(string issuer, string audience)
             {
                 Issuer = issuer;
-                this.Audience = udience;
+                Audience = audience;
             }
 
             public string Issuer { get; private set; }

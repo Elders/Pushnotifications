@@ -10,7 +10,7 @@ namespace PushNotifications.Subscriptions
     {
         public override FireBaseSubscriptionId Id { get; set; }
 
-        public UserId UserId { get; set; }
+        public SubscriberId UserId { get; set; }
 
         public SubscriptionToken Token { get; set; }
 

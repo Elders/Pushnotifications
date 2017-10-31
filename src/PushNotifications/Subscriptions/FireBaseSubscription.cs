@@ -10,7 +10,7 @@ namespace PushNotifications.Subscriptions
     {
         FireBaseSubscription() { }
 
-        public FireBaseSubscription(FireBaseSubscriptionId id, UserId userId, SubscriptionToken token)
+        public FireBaseSubscription(FireBaseSubscriptionId id, SubscriberId userId, SubscriptionToken token)
         {
             if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
             if (StringTenantId.IsValid(userId) == false) throw new ArgumentException(nameof(userId));
@@ -22,7 +22,7 @@ namespace PushNotifications.Subscriptions
             Apply(evnt);
         }
 
-        public void Subscribe(UserId userId, SubscriptionToken token)
+        public void Subscribe(SubscriberId userId, SubscriptionToken token)
         {
             if (StringTenantId.IsValid(userId) == false) throw new ArgumentException(nameof(userId));
             if (SubscriptionToken.IsValid(token) == false) throw new ArgumentException(nameof(token));
@@ -34,7 +34,7 @@ namespace PushNotifications.Subscriptions
             }
         }
 
-        public void UnSubscribe(UserId userId, SubscriptionToken token)
+        public void UnSubscribe(SubscriberId userId, SubscriptionToken token)
         {
             if (StringTenantId.IsValid(userId) == false) throw new ArgumentException(nameof(userId));
             if (SubscriptionToken.IsValid(token) == false) throw new ArgumentException(nameof(token));

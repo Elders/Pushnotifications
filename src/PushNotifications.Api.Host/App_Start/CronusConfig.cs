@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Web.Http;
 using Cassandra;
+using Elders.Cronus.AtomicAction.Config;
+using Elders.Cronus.AtomicAction.Redis.Config;
+using Elders.Cronus.Cluster.Config;
 using Elders.Cronus.DomainModeling;
 using Elders.Cronus.IocContainer;
 using Elders.Cronus.Pipeline;
@@ -33,9 +36,21 @@ namespace PushNotifications.Api.Host.App_Start
                 log = LogProvider.GetLogger(typeof(CronusConfig));
                 log.Info("Starting PushNotifications API");
                 container = new Container();
+
                 var serviceLocator = new ServiceLocator(container);
 
                 var cfg = new CronusSettings(container)
+                    .UseCluster(cluster =>
+                         cluster.UseAggregateRootAtomicAction(atomic =>
+                         {
+                             if (pandora.Get<bool>("enable_redis_atomic_action"))
+                                 atomic.UseRedis(redis => redis
+                                     .SetConnectionString(pandora.Get("redis_connection_string"))
+                                 );
+                             else
+                                 atomic.WithInMemory();
+                         })
+                     )
                  .UseContractsFromAssemblies(new[]
                  {
                      Assembly.GetAssembly(typeof(PushNotificationsContractsAssembly)),
@@ -53,7 +68,7 @@ namespace PushNotifications.Api.Host.App_Start
                         .ConfigureCassandraProjectionsStore(x => x
                         .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
                         .UseSnapshots(Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly)).ExportedTypes)
-                        .UseSnapshotStrategy(container.Resolve<ISnapshotStrategy>())
+                        .UseSnapshotStrategy(new DefaultSnapshotStrategy(TimeSpan.FromDays(10), 500))
                         .SetProjectionsReplicationStrategy(GetProjectionsReplicationStrategy(pandora))
                         .SetProjectionsWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_write_consistency_level"))
                         .SetProjectionsReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_read_consistency_level"))
@@ -63,7 +78,7 @@ namespace PushNotifications.Api.Host.App_Start
                 Func<IPipelineTransport> transport = () => container.Resolve<IPipelineTransport>();
                 Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
                 container.RegisterSingleton<IPublisher<ICommand>>(() => new PipelinePublisher<ICommand>(transport(), serializer()));
-                container.RegisterSingleton<ISnapshotStrategy>(() => new DefaultSnapshotStrategy(TimeSpan.FromDays(10), 500));
+
 
                 config.Services.Replace(typeof(System.Web.Http.Dispatcher.IHttpControllerActivator), new ServiceLocatorFactory(new ServiceLocator(container)));
             }

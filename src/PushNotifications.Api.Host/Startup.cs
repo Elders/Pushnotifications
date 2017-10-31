@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Net;
 using Elders.Pandora;
+using Microsoft.Owin;
 using Owin;
 using PushNotifications.Api.Host.App_Start;
 
+[assembly: OwinStartup(typeof(PushNotifications.Api.Host.Startup))]
 namespace PushNotifications.Api.Host
 {
     public class Startup

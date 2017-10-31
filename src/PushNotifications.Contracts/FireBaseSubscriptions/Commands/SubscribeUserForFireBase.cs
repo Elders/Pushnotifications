@@ -9,7 +9,7 @@ namespace PushNotifications.Contracts.FireBaseSubscriptions.Commands
     {
         SubscribeUserForFireBase() { }
 
-        public SubscribeUserForFireBase(FireBaseSubscriptionId id, UserId userId, SubscriptionToken token)
+        public SubscribeUserForFireBase(FireBaseSubscriptionId id, SubscriberId userId, SubscriptionToken token)
         {
             if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
             if (StringTenantId.IsValid(userId) == false) throw new ArgumentException(nameof(userId));
@@ -24,7 +24,7 @@ namespace PushNotifications.Contracts.FireBaseSubscriptions.Commands
         public FireBaseSubscriptionId Id { get; private set; }
 
         [DataMember(Order = 2)]
-        public UserId UserId { get; private set; }
+        public SubscriberId UserId { get; private set; }
 
         [DataMember(Order = 3)]
         public SubscriptionToken Token { get; private set; }

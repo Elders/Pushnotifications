@@ -1,13 +1,15 @@
 ﻿using Elders.Cronus.DomainModeling;
+using System.Runtime.Serialization;
 
 namespace PushNotifications.Contracts
 {
-    public class UserId : StringTenantId
+    [DataContract(Name = "ece0a261-027e-479b-9ce3-530d1acd8dfe")]
+    public class SubscriberId : StringTenantId
     {
-        UserId() { }
+        SubscriberId() { }
 
-        public UserId(IUrn id) : base(id, "Profile") { }
+        public SubscriberId(IUrn urn) : base(urn, "subscriber") { }
 
-        public UserId(string id, string tenant) : base(id, "Profile", tenant) { }
+        public SubscriberId(string id, string tenant) : base(id, "subscriber", tenant) { }
     }
 }

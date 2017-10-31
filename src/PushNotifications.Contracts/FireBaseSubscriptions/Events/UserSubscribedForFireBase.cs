@@ -6,9 +6,9 @@ namespace PushNotifications.Contracts.FireBaseSubscriptions.Events
     [DataContract(Name = "8c3a0c94-9115-43d8-bfa1-ba614bbd07d8")]
     public class UserSubscribedForFireBase : IEvent
     {
-        UserSubscribedForFireBase() { }
+        protected UserSubscribedForFireBase() { }
 
-        public UserSubscribedForFireBase(FireBaseSubscriptionId id, UserId userId, SubscriptionToken token)
+        public UserSubscribedForFireBase(FireBaseSubscriptionId id, SubscriberId userId, SubscriptionToken token)
         {
             Id = id;
             UserId = userId;
@@ -19,7 +19,7 @@ namespace PushNotifications.Contracts.FireBaseSubscriptions.Events
         public FireBaseSubscriptionId Id { get; private set; }
 
         [DataMember(Order = 2)]
-        public UserId UserId { get; private set; }
+        public SubscriberId UserId { get; private set; }
 
         [DataMember(Order = 3)]
         public SubscriptionToken Token { get; private set; }
