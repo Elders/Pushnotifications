@@ -27,7 +27,7 @@ namespace PushNotifications.Subscriptions
             if (StringTenantId.IsValid(userId) == false) throw new ArgumentException(nameof(userId));
             if (SubscriptionToken.IsValid(token) == false) throw new ArgumentException(nameof(token));
 
-            if (state.IsSubscriptionActive == false)
+            if (state.IsSubscriptionActive == false && state.UserId != userId)
             {
                 IEvent evnt = new UserSubscribedForFireBase(state.Id, userId, state.Token);
                 Apply(evnt);
