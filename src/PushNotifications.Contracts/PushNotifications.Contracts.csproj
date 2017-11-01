@@ -41,7 +41,10 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PushNotifications\Events\PushNotificationWasSent.cs" />
+    <Compile Include="PushNotifications\Commands\SendPushNotification.cs" />
+    <Compile Include="PushNotifications\Events\PushNotificationSent.cs" />
+    <Compile Include="PushNotifications\NotificationPayload.cs" />
+    <Compile Include="PushNotifications\PushNotificationId.cs" />
     <Compile Include="SubscriptionToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotificationsContractsAssembly.cs" />
@@ -52,9 +55,7 @@
     <Compile Include="FireBaseSubscriptions\FireBaseSubscriptionId.cs" />
     <Compile Include="UserId.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PushNotifications\Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

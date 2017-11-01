@@ -72,23 +72,30 @@
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="Attributes\ClaimsIdentityAttribute.cs" />
+    <Compile Include="Attributes\ScopeAttribute.cs" />
+    <Compile Include="AvailableScopes.cs" />
+    <Compile Include="Controllers\PushNotifications\Commands\PushNotificationsController.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\FireBaseSubscriptionController.cs" />
-    <Compile Include="Converters\Class1.cs" />
+    <Compile Include="Controllers\Subscriptions\Queries\FireBaseSubscriptionController.cs" />
+    <Compile Include="Converters\ClaimFillConverter.cs" />
     <Compile Include="Converters\GenericJsonConverter.cs" />
     <Compile Include="Converters\StringTenantIdConverter.cs" />
     <Compile Include="Converters\SubscriptionTokenConverter.cs" />
+    <Compile Include="Converters\TenantAwareStringTenantIdConverter.cs" />
+    <Compile Include="Converters\UrlBinder.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotificationsApiAssembly.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\PushNotifications\" />
-    <Folder Include="Controllers\Subscriptions\Queries\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{53ab2dd6-f42f-44bb-bb6d-a7497c720e68}</Project>
       <Name>PushNotifications.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.Projections\PushNotifications.Projections.csproj">
+      <Project>{03CF41C9-3167-4431-BDF0-C44497C057E8}</Project>
+      <Name>PushNotifications.Projections</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

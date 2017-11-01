@@ -16,17 +16,17 @@ namespace PushNotifications.Subscriptions
 
         public bool IsSubscriptionActive { get; set; }
 
-        public void When(UserSubscribedForFireBase e)
+        public void When(SubscriberSubscribedForFireBase e)
         {
             if (ReferenceEquals(null, e) == true) throw new ArgumentNullException(nameof(e));
 
             Id = e.Id;
-            UserId = e.UserId;
+            UserId = e.SubscriberId;
             Token = e.Token;
             IsSubscriptionActive = true;
         }
 
-        public void When(UserUnSubscribedFromFireBase e)
+        public void When(SubscriberUnSubscribedFromFireBase e)
         {
             if (ReferenceEquals(null, e) == true) throw new ArgumentNullException(nameof(e));
             IsSubscriptionActive = false;

@@ -18,7 +18,7 @@ namespace PushNotifications.Subscriptions
 
             state = new FireBaseSubscriptionState();
 
-            IEvent evnt = new UserSubscribedForFireBase(id, userId, token);
+            IEvent evnt = new SubscriberSubscribedForFireBase(id, userId, token);
             Apply(evnt);
         }
 
@@ -27,9 +27,9 @@ namespace PushNotifications.Subscriptions
             if (StringTenantId.IsValid(userId) == false) throw new ArgumentException(nameof(userId));
             if (SubscriptionToken.IsValid(token) == false) throw new ArgumentException(nameof(token));
 
-            if (state.IsSubscriptionActive == false && state.UserId != userId)
+            if (state.IsSubscriptionActive == false || state.UserId != userId)
             {
-                IEvent evnt = new UserSubscribedForFireBase(state.Id, userId, state.Token);
+                IEvent evnt = new SubscriberSubscribedForFireBase(state.Id, userId, state.Token);
                 Apply(evnt);
             }
         }
@@ -41,7 +41,7 @@ namespace PushNotifications.Subscriptions
 
             if (state.IsSubscriptionActive == true)
             {
-                IEvent evnt = new UserUnSubscribedFromFireBase(state.Id, userId, state.Token);
+                IEvent evnt = new SubscriberUnSubscribedFromFireBase(state.Id, userId, state.Token);
                 Apply(evnt);
             }
         }

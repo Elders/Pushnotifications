@@ -4,14 +4,14 @@ using System.Runtime.Serialization;
 namespace PushNotifications.Contracts.FireBaseSubscriptions.Events
 {
     [DataContract(Name = "8c3a0c94-9115-43d8-bfa1-ba614bbd07d8")]
-    public class UserSubscribedForFireBase : IEvent
+    public class SubscriberSubscribedForFireBase : IEvent
     {
-        protected UserSubscribedForFireBase() { }
+        protected SubscriberSubscribedForFireBase() { }
 
-        public UserSubscribedForFireBase(FireBaseSubscriptionId id, SubscriberId userId, SubscriptionToken token)
+        public SubscriberSubscribedForFireBase(FireBaseSubscriptionId id, SubscriberId userId, SubscriptionToken token)
         {
             Id = id;
-            UserId = userId;
+            SubscriberId = userId;
             Token = token;
         }
 
@@ -19,14 +19,14 @@ namespace PushNotifications.Contracts.FireBaseSubscriptions.Events
         public FireBaseSubscriptionId Id { get; private set; }
 
         [DataMember(Order = 2)]
-        public SubscriberId UserId { get; private set; }
+        public SubscriberId SubscriberId { get; private set; }
 
         [DataMember(Order = 3)]
         public SubscriptionToken Token { get; private set; }
 
         public override string ToString()
         {
-            return $"[FireBase] User '{UserId.Urn.Value}' has subscribed with token '{Token}'. Id: '{Id.Urn.Value}' ";
+            return $"[FireBase] User '{SubscriberId.Urn.Value}' has subscribed with token '{Token}'. Id: '{Id.Urn.Value}' ";
         }
     }
 }

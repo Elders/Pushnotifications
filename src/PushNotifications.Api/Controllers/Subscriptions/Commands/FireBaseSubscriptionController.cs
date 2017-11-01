@@ -16,10 +16,16 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
     {
         public IPublisher<ICommand> Publisher { get; set; }
 
+        /// <summary>
+        /// Subscribes for push notifications with FireBase token
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost, Route("Subscribe"), Discoverable("FireBaseSubscriptionSubscribe", "v1")]
         public IHttpActionResult Subscribe(FireBaseSubscriptionModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
+            if (Urn.IsUrn(model.SubscriberId) == false) return this.NotAcceptable($"{nameof(model.SubscriberId)} must be URN.");
 
             var command = model.AsSubscribeCommand();
             if (command.IsValid())
@@ -33,10 +39,16 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
                 : this.NotAcceptable(result);
         }
 
+        /// <summary>
+        /// UnSubscribes from push notifications with FireBase token
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost, Route("UnSubscribe"), Discoverable("FireBaseSubscriptionUnSubscribe", "v1")]
         public IHttpActionResult UnSubscribe(FireBaseSubscriptionModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
+            if (Urn.IsUrn(model.SubscriberId) == false) return this.NotAcceptable($"{nameof(model.SubscriberId)} must be URN.");
 
             var command = model.AsUnSubscribeCommand();
             if (command.IsValid())
@@ -57,14 +69,14 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         public string Tenant { get; set; }
 
         [ClaimsIdentity(AuthorizeClaimType.Subject, ClaimTypes.NameIdentifier)]
-        public string UserId { get; set; }
+        public string SubscriberId { get; set; }
 
         [Required]
         public SubscriptionToken Token { get; set; }
 
         public SubscribeUserForFireBase AsSubscribeCommand()
         {
-            var urn = StringTenantUrn.Parse(UserId);
+            var urn = StringTenantUrn.Parse(SubscriberId);
             var subscriptionId = new FireBaseSubscriptionId(Token, Tenant);
             var subscriberId = new SubscriberId(urn.Id, urn.Tenant);
             return new SubscribeUserForFireBase(subscriptionId, subscriberId, Token);
@@ -72,7 +84,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
         public UnSubscribeUserFromFireBase AsUnSubscribeCommand()
         {
-            var urn = StringTenantUrn.Parse(UserId);
+            var urn = StringTenantUrn.Parse(SubscriberId);
             var subscriptionId = new FireBaseSubscriptionId(Token, Tenant);
             var subscriberId = new SubscriberId(urn.Id, urn.Tenant);
             return new UnSubscribeUserFromFireBase(subscriptionId, subscriberId, Token);

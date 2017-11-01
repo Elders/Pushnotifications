@@ -6,15 +6,15 @@ using PushNotifications.Ports.Logging;
 namespace PushNotifications.Ports
 {
     public class FireBasePort : IPort,
-        IEventHandler<PushNotificationWasSent>
+        IEventHandler<PushNotificationSent>
     {
         static ILog log = LogProvider.GetLogger(typeof(FireBasePort));
 
         public IPublisher<ICommand> CommandPublisher { get; set; }
 
-        public void Handle(PushNotificationWasSent @event)
+        public void Handle(PushNotificationSent @event)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

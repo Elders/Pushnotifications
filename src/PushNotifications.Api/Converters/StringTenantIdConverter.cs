@@ -23,14 +23,14 @@ namespace PushNotifications.Api.Converters
             if (jObject.CanUrlTokenDecode())
                 jObject = jObject.UrlDecode();
 
-            var constructor = objectType.GetConstructors().SingleOrDefault(x => Match(this, x));
+            var constructor = objectType.GetConstructors().SingleOrDefault(x => Match(x));
             if (constructor == null)
-                throw new InvalidOperationException(String.Format("There is no constructor for '{0}' to match (IUrn urn)", objectType.FullName));
+                throw new InvalidOperationException(string.Format("There is no constructor for '{0}' to match (IUrn urn)", objectType.FullName));
 
             return (StringTenantId)constructor.Invoke(new object[] { Urn.Parse(jObject) });
         }
 
-        static bool Match(StringTenantIdConverter instance, ConstructorInfo info)
+        static bool Match(ConstructorInfo info)
         {
             var parameterts = info.GetParameters().ToList().OrderBy(x => x.Position).ToList();
             if (parameterts.Count != 1)
@@ -40,7 +40,7 @@ namespace PushNotifications.Api.Converters
 
         public override object GetValue(StringTenantId instance)
         {
-            return instance.Urn.Value;
+            return instance.Urn.Value.UrlEncode();
         }
     }
 }

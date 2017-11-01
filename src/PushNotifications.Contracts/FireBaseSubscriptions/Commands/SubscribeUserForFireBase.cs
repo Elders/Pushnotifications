@@ -11,10 +11,6 @@ namespace PushNotifications.Contracts.FireBaseSubscriptions.Commands
 
         public SubscribeUserForFireBase(FireBaseSubscriptionId id, SubscriberId userId, SubscriptionToken token)
         {
-            if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
-            if (StringTenantId.IsValid(userId) == false) throw new ArgumentException(nameof(userId));
-            if (SubscriptionToken.IsValid(token) == false) throw new ArgumentException(nameof(token));
-
             Id = id;
             UserId = userId;
             Token = token;

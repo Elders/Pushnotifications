@@ -17,7 +17,7 @@ namespace PushNotifications.Api.Converters
 
         public override object GetValue(SubscriptionToken instance)
         {
-            return instance;
+            return instance.ToString();
         }
     }
 }
