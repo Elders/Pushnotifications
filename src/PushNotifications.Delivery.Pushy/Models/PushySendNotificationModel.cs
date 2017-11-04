@@ -1,8 +1,8 @@
-﻿namespace PushNotifications.Delivery.FireBase
+﻿namespace PushNotifications.Delivery.Pushy.Models
 {
-    public class FireBaseSendNotificationModel
+    public class PushySendNotificationModel
     {
-        public FireBaseSendNotificationModel(string title, string body, string sound, string badge)
+        public PushySendNotificationModel(string title, string body, string sound, string badge)
         {
             Title = title;
             Body = body;

@@ -48,7 +48,7 @@ namespace PushNotifications.Delivery.FireBase
                 }
                 catch (Exception ex)
                 {
-                    log.ErrorException("[FireBase] failure. PN body '{notification.NotificationPayload.Body}'", ex);
+                    log.ErrorException($"[FireBase] failure. PN body '{notification.NotificationPayload.Body}'", ex);
                 }
             }
         }
