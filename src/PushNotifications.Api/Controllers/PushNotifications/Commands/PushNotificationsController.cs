@@ -33,7 +33,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         {
             var result = new ResponseResult(Constants.InvalidCommand);
 
-            var projectionReponse = Projections.Get<SubscriberTokensProjection>(model.SubscriberId);
+            var projectionReponse = Projections.Get<SubscriberTokensForAllProvidersProjection>(model.SubscriberId);
             if (projectionReponse.Success == false || projectionReponse.Projection.State.Tokens.Count == 0)
             {
                 return this.NotAcceptable($"Subscription not found for provided subscriber '{model.SubscriberId.Urn.Value.UrlEncode()}'");
@@ -54,6 +54,11 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
     public class PushNotificationSendModel
     {
+        public PushNotificationSendModel()
+        {
+            ExpiresAt = Timestamp.JudgementDay();
+        }
+
         [AuthorizeClaim(AuthorizeClaimType.Tenant, AuthorizeClaimType.TenantClient)]
         public string Tenant { get; set; }
 
@@ -72,11 +77,15 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
         public int Badge { get; set; }
 
+        public Timestamp ExpiresAt { get; set; }
+
+        public bool ContentAvailable { get; set; }
+
         public SendPushNotification AsCommand()
         {
             var id = new PushNotificationId(Guid.NewGuid().ToString(), Tenant);
             var notificationPayload = new NotificationPayload(Title, Body, Sound, Icon, Badge);
-            return new SendPushNotification(id, SubscriberId, notificationPayload);
+            return new SendPushNotification(id, SubscriberId, notificationPayload, ExpiresAt, ContentAvailable);
         }
     }
 }

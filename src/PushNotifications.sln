@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Api.Host"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Contracts", "PushNotifications.Contracts\PushNotifications.Contracts.csproj", "{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Throttling", "PushNotifications.Throttling\PushNotifications.Throttling.csproj", "{E3C3B727-6953-4C0B-8837-E207C72C8AF8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "delivery", "delivery", "{FA881070-30AA-4176-AC15-599D9F50D247}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Delivery.Pushy", "PushNotifications.Delivery.Pushy\PushNotifications.Delivery.Pushy.csproj", "{F94F30FE-DE14-45B8-BCAE-D3269B768711}"
@@ -32,8 +30,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Projections", "PushNotifications.Projections\PushNotifications.Projections.csproj", "{03CF41C9-3167-4431-BDF0-C44497C057E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Api.Reference", "PushNotifications.Api.Reference\PushNotifications.Api.Reference.csproj", "{9AFA033C-F2A0-44EA-B317-6F1869850FF1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotification.Monitors", "PushNotification.Monitors\PushNotification.Monitors.csproj", "{6680CBD6-1954-408D-9026-062BBD2A0B60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications", "PushNotifications\PushNotifications.csproj", "{036A4749-3D48-41BD-852B-0B47A12C9477}"
 EndProject
@@ -55,10 +51,6 @@ Global
 		{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E3C3B727-6953-4C0B-8837-E207C72C8AF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3C3B727-6953-4C0B-8837-E207C72C8AF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E3C3B727-6953-4C0B-8837-E207C72C8AF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E3C3B727-6953-4C0B-8837-E207C72C8AF8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F94F30FE-DE14-45B8-BCAE-D3269B768711}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F94F30FE-DE14-45B8-BCAE-D3269B768711}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F94F30FE-DE14-45B8-BCAE-D3269B768711}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -87,10 +79,6 @@ Global
 		{9AFA033C-F2A0-44EA-B317-6F1869850FF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AFA033C-F2A0-44EA-B317-6F1869850FF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AFA033C-F2A0-44EA-B317-6F1869850FF1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6680CBD6-1954-408D-9026-062BBD2A0B60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6680CBD6-1954-408D-9026-062BBD2A0B60}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6680CBD6-1954-408D-9026-062BBD2A0B60}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6680CBD6-1954-408D-9026-062BBD2A0B60}.Release|Any CPU.Build.0 = Release|Any CPU
 		{036A4749-3D48-41BD-852B-0B47A12C9477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{036A4749-3D48-41BD-852B-0B47A12C9477}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{036A4749-3D48-41BD-852B-0B47A12C9477}.Release|Any CPU.ActiveCfg = Release|Any CPU

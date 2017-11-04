@@ -75,8 +75,10 @@
     <Compile Include="Attributes\ScopeAttribute.cs" />
     <Compile Include="AvailableScopes.cs" />
     <Compile Include="Controllers\PushNotifications\Commands\PushNotificationsController.cs" />
-    <Compile Include="Controllers\Subscriptions\Commands\FireBaseSubscriptionController.cs" />
-    <Compile Include="Controllers\Subscriptions\Queries\FireBaseSubscriptionController.cs" />
+    <Compile Include="Controllers\Subscriptions\Commands\FireBaseSubscriptionCommandController.cs" />
+    <Compile Include="Controllers\Subscriptions\Models\SubscriberTokensModel.cs" />
+    <Compile Include="Controllers\Subscriptions\Queries\FireBaseSubscriptionQueryController.cs" />
+    <Compile Include="Controllers\Subscriptions\Queries\SubscriptionQueryController.cs" />
     <Compile Include="Converters\ClaimFillConverter.cs" />
     <Compile Include="Converters\GenericJsonConverter.cs" />
     <Compile Include="Converters\StringTenantIdConverter.cs" />

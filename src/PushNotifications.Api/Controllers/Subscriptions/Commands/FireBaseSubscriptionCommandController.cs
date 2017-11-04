@@ -12,7 +12,7 @@ using Discovery.Contracts;
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
     [RoutePrefix("Subscriptions/FireBaseSubscription")]
-    public class FireBaseSubscriptionController : ApiController
+    public class FireBaseSubscriptionCommandController : ApiController
     {
         public IPublisher<ICommand> Publisher { get; set; }
 
@@ -22,7 +22,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost, Route("Subscribe"), Discoverable("FireBaseSubscriptionSubscribe", "v1")]
-        public IHttpActionResult Subscribe(FireBaseSubscriptionModel model)
+        public IHttpActionResult SubscribeToFireBase(FireBaseSubscribeModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
             if (Urn.IsUrn(model.SubscriberId) == false) return this.NotAcceptable($"{nameof(model.SubscriberId)} must be URN.");
@@ -45,7 +45,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost, Route("UnSubscribe"), Discoverable("FireBaseSubscriptionUnSubscribe", "v1")]
-        public IHttpActionResult UnSubscribe(FireBaseSubscriptionModel model)
+        public IHttpActionResult UnSubscribeFromFireBase(FireBaseSubscribeModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
             if (Urn.IsUrn(model.SubscriberId) == false) return this.NotAcceptable($"{nameof(model.SubscriberId)} must be URN.");
@@ -63,7 +63,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         }
     }
 
-    public class FireBaseSubscriptionModel
+    public class FireBaseSubscribeModel
     {
         [AuthorizeClaim(AuthorizeClaimType.Tenant, AuthorizeClaimType.TenantClient)]
         public string Tenant { get; set; }

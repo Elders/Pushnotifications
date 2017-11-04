@@ -6,11 +6,13 @@ namespace PushNotifications.Contracts.PushNotifications.Commands
     [DataContract(Name = "5e1e1ae0-d1d6-4243-92fc-b0b6652ecb5b")]
     public class SendPushNotification : ICommand
     {
-        public SendPushNotification(PushNotificationId id, SubscriberId subscriberId, NotificationPayload notificationPayload)
+        public SendPushNotification(PushNotificationId id, SubscriberId subscriberId, NotificationPayload notificationPayload, Timestamp expiresAt, bool contentAvailable)
         {
             Id = id;
             SubscriberId = subscriberId;
             NotificationPayload = notificationPayload;
+            ExpiresAt = expiresAt;
+            ContentAvailable = contentAvailable;
         }
 
         [DataMember(Order = 1)]
@@ -21,6 +23,20 @@ namespace PushNotifications.Contracts.PushNotifications.Commands
 
         [DataMember(Order = 3)]
         public NotificationPayload NotificationPayload { get; private set; }
+
+        [DataMember(Order = 4)]
+        public Timestamp ExpiresAt { get; private set; }
+
+        /// <summary>
+        /// On iOS, use this field to represent content-available in the APNs payload.
+        /// When a notification or message is sent and this is set to true,
+        /// an inactive client app is awoken, and the message is sent through APNs as a silent notification and not through the FCM connection server.
+        /// Note that silent notifications in APNs are not guaranteed to be delivered, and can depend on factors such as the user turning on Low Power Mode,
+        /// force quitting the app, etc. On Android, data messages wake the app by default.
+        /// On Chrome, currently not supported.
+        /// </summary>
+        [DataMember(Order = 5)]
+        public bool ContentAvailable { get; private set; }
 
         public bool IsValid()
         {

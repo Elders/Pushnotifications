@@ -17,9 +17,11 @@ using Elders.Cronus.Projections.Cassandra.Config;
 using Elders.Cronus.Projections.Cassandra.Snapshots;
 using Elders.Pandora;
 using PushNotifications.Contracts;
+using PushNotifications.Delivery.FireBase;
 using PushNotifications.Ports;
 using PushNotifications.Projections;
 using PushNotifications.WS.Logging;
+using PushNotifications.WS.Serialization;
 
 namespace PushNotifications.WS
 {
@@ -51,6 +53,7 @@ namespace PushNotifications.WS
                     .UsePushNotifications(pandora)
                     .UsePushNotificationProjections(pandora)
                     .UsePorts(pandora)
+                    .RegisterFireBaseDelivery(pandora)
                     .Build();
 
                 host = containerWhichYouShouldNotUse.Resolve<CronusHost>();
@@ -189,6 +192,15 @@ namespace PushNotifications.WS
                             .SetProjectionsWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_write_consistency_level"))
                             .SetProjectionsReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_read_consistency_level")))));
 
+            return cronusSettings;
+        }
+
+        static ICronusSettings RegisterFireBaseDelivery(this ICronusSettings cronusSettings, Pandora pandora)
+        {
+            var fireBaseBaseUrl = "https://fcm.googleapis.com/";
+            var serverKey = "AAAAqg7V420:APA91bEggfsid7oJGnlravJ0gwCJ8ZMthEfWTfecHMOQjYVFdToIXxLXQj0oomBeVDNYCFZQ_sfbqASpsGcqOkJdKASpxCxGYHvof3ngENX_iSD_bl65PriDIAESPhhvqNeBZqw0wb4Z";
+            RestSharp.IRestClient fireBaseRestClient = new RestSharp.RestClient(fireBaseBaseUrl);
+            cronusSettings.Container.RegisterSingleton(() => new FireBaseDelivery(fireBaseRestClient, NewtonsoftJsonSerializer.Default(), serverKey));
             return cronusSettings;
         }
     }

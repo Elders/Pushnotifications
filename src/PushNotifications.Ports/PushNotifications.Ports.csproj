@@ -53,6 +53,14 @@
       <Project>{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}</Project>
       <Name>PushNotifications.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.Delivery.FireBase\PushNotifications.Delivery.FireBase.csproj">
+      <Project>{89131F71-9D65-4027-BC8B-E8C18FC0DB2D}</Project>
+      <Name>PushNotifications.Delivery.FireBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.Projections\PushNotifications.Projections.csproj">
+      <Project>{03CF41C9-3167-4431-BDF0-C44497C057E8}</Project>
+      <Name>PushNotifications.Projections</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

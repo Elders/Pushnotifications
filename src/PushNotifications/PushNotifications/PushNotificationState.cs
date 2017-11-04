@@ -13,11 +13,17 @@ namespace PushNotifications
 
         public SubscriberId SubscriberId { get; private set; }
 
+        public Timestamp ExpiresAt { get; private set; }
+
+        public bool ContentAvailable { get; private set; }
+
         public void When(PushNotificationSent e)
         {
             Id = e.Id;
             NotificationPayload = e.NotificationPayload;
             SubscriberId = e.SubscriberId;
+            ExpiresAt = e.ExpiresAt;
+            ContentAvailable = e.ContentAvailable;
         }
     }
 }

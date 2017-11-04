@@ -109,6 +109,10 @@
       <HintPath>..\packages\RabbitMQ.Client.3.6.5\lib\net45\RabbitMQ.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="StackExchange.Redis, Version=1.2.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\StackExchange.Redis.1.2.6\lib\net46\StackExchange.Redis.dll</HintPath>
       <Private>True</Private>
@@ -137,6 +141,9 @@
     </Compile>
     <Compile Include="PushNotificationStartup.cs" />
     <Compile Include="PushNotificationsWSAssembly.cs" />
+    <Compile Include="Serialization\IJsonSerializer.cs" />
+    <Compile Include="Serialization\NewtonsoftJsonSerializer.cs" />
+    <Compile Include="Serialization\SerializerFactory.cs" />
     <Compile Include="ServiceLocator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +154,10 @@
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}</Project>
       <Name>PushNotifications.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.Delivery.FireBase\PushNotifications.Delivery.FireBase.csproj">
+      <Project>{89131F71-9D65-4027-BC8B-E8C18FC0DB2D}</Project>
+      <Name>PushNotifications.Delivery.FireBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Ports\PushNotifications.Ports.csproj">
       <Project>{6233E2AA-3B13-47A2-BEF2-E641B7BDA622}</Project>

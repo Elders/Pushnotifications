@@ -10,15 +10,16 @@ namespace PushNotifications
     {
         PushNotification() { }
 
-        public PushNotification(PushNotificationId id, SubscriberId subscriberId, NotificationPayload notificationPayload)
+        public PushNotification(PushNotificationId id, SubscriberId subscriberId, NotificationPayload notificationPayload, Timestamp expiresAt, bool contentAvailable)
         {
             if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
             if (StringTenantId.IsValid(subscriberId) == false) throw new ArgumentException(nameof(subscriberId));
             if (ReferenceEquals(null, notificationPayload) == true) throw new ArgumentException(nameof(notificationPayload));
+            if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentException(nameof(expiresAt));
 
             state = new PushNotificationState();
 
-            IEvent @event = new PushNotificationSent(id, subscriberId, notificationPayload);
+            IEvent @event = new PushNotificationSent(id, subscriberId, notificationPayload, expiresAt, contentAvailable);
             Apply(@event);
         }
     }
