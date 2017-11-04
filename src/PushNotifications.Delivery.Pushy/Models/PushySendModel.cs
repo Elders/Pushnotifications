@@ -11,17 +11,19 @@ namespace PushNotifications.Delivery.Pushy.Models
 
         const long MAX_TTL_DAYS = 365; // 1 year
 
-        public PushySendModel(string token, PushySendNotificationModel notification, Timestamp expiresAt, bool contentAvailable)
-            : this(new List<string> { token }, notification, expiresAt, contentAvailable) { }
+        public PushySendModel(string token, PushySendNotificationModel notification, PushySendDataModel data, Timestamp expiresAt, bool contentAvailable)
+            : this(new List<string> { token }, notification, data, expiresAt, contentAvailable) { }
 
-        public PushySendModel(List<string> tokens, PushySendNotificationModel notification, Timestamp expiresAt, bool contentAvailable)
+        public PushySendModel(List<string> tokens, PushySendNotificationModel notification, PushySendDataModel data, Timestamp expiresAt, bool contentAvailable)
         {
             if (ReferenceEquals(null, tokens) == true || tokens.Count == 0) throw new ArgumentException(nameof(tokens));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
+            if (ReferenceEquals(null, data) == true) throw new ArgumentNullException(nameof(data));
             if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
 
             RegistrationIds = new List<string>(tokens);
             Notification = notification;
+            Data = data;
             TTL = ExpirationTimeToSeconds(expiresAt);
             ContentAvailable = contentAvailable;
         }
@@ -33,6 +35,8 @@ namespace PushNotifications.Delivery.Pushy.Models
         public bool ContentAvailable { get; private set; }
 
         public PushySendNotificationModel Notification { get; private set; }
+
+        public PushySendDataModel Data { get; private set; }
 
         /// <summary>
         /// Specifies how long (in seconds) the push notification should be kept if the device is offline.

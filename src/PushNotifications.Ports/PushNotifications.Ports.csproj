@@ -44,6 +44,7 @@
     <Compile Include="FireBasePort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotificationsPortsAssembly.cs" />
+    <Compile Include="PushyPort.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -56,6 +57,10 @@
     <ProjectReference Include="..\PushNotifications.Delivery.FireBase\PushNotifications.Delivery.FireBase.csproj">
       <Project>{89131F71-9D65-4027-BC8B-E8C18FC0DB2D}</Project>
       <Name>PushNotifications.Delivery.FireBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.Delivery.Pushy\PushNotifications.Delivery.Pushy.csproj">
+      <Project>{F94F30FE-DE14-45B8-BCAE-D3269B768711}</Project>
+      <Name>PushNotifications.Delivery.Pushy</Name>
     </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Projections\PushNotifications.Projections.csproj">
       <Project>{03CF41C9-3167-4431-BDF0-C44497C057E8}</Project>

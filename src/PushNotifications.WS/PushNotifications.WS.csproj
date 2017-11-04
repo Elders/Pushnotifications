@@ -159,6 +159,10 @@
       <Project>{89131F71-9D65-4027-BC8B-E8C18FC0DB2D}</Project>
       <Name>PushNotifications.Delivery.FireBase</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.Delivery.Pushy\PushNotifications.Delivery.Pushy.csproj">
+      <Project>{F94F30FE-DE14-45B8-BCAE-D3269B768711}</Project>
+      <Name>PushNotifications.Delivery.Pushy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Ports\PushNotifications.Ports.csproj">
       <Project>{6233E2AA-3B13-47A2-BEF2-E641B7BDA622}</Project>
       <Name>PushNotifications.Ports</Name>

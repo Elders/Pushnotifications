@@ -1,8 +1,8 @@
 ﻿namespace PushNotifications.Delivery.Pushy.Models
 {
-    public class PushySendNotificationModel
+    public class PushySendDataModel
     {
-        public PushySendNotificationModel(string title, string body, string sound, int badge)
+        public PushySendDataModel(string title, string body, string sound, string badge)
         {
             Title = title;
             Body = body;
@@ -16,6 +16,6 @@
 
         public string Sound { get; private set; }
 
-        public int Badge { get; private set; }
+        public string Badge { get; private set; }
     }
 }

@@ -4,7 +4,7 @@ using Elders.Cronus.DomainModeling.Projections;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.FireBaseSubscriptions.Events;
 
-namespace PushNotifications.Projections
+namespace PushNotifications.Projections.FireBase
 {
     [DataContract(Name = "cab5caa4-192b-405c-a96c-438fe5a3ff70")]
     public class SubscriberTokensForFireBaseProjection : ProjectionDefinition<SubscriberTokens, SubscriberId>, IProjection,

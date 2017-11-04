@@ -33,8 +33,9 @@ namespace PushNotifications.Delivery.Pushy
             string resource = "push?api_key=" + serverKey;
 
             var payload = notification.NotificationPayload;
-            var pushySendNotificationModel = new PushySendNotificationModel(payload.Title, payload.Body, payload.Sound, payload.Badge.ToString());
-            var model = new PushySendModel(notification.Token, pushySendNotificationModel, notification.ExpiresAt, notification.ContentAvailable);
+            var pushySendNotificationModel = new PushySendNotificationModel(payload.Title, payload.Body, payload.Sound, payload.Badge);
+            var pushySendDataModel = new PushySendDataModel(payload.Title, payload.Body, payload.Sound, payload.Badge.ToString());
+            var model = new PushySendModel(notification.Token, pushySendNotificationModel, pushySendDataModel, notification.ExpiresAt, notification.ContentAvailable);
             var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
             var result = restClient.Execute<PushyResponseModel>(request);
 

@@ -2,33 +2,33 @@
 using Elders.Cronus.DomainModeling.Projections;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts.PushNotifications.Events;
-using PushNotifications.Delivery.FireBase;
+using PushNotifications.Delivery.Pushy;
 using PushNotifications.Ports.Logging;
-using PushNotifications.Projections.FireBase;
+using PushNotifications.Projections.Pushy;
 
 namespace PushNotifications.Ports
 {
-    public class FireBasePort : IPort,
+    public class PushyPort : IPort,
         IEventHandler<PushNotificationSent>
     {
-        static ILog log = LogProvider.GetLogger(typeof(FireBasePort));
+        static ILog log = LogProvider.GetLogger(typeof(PushyPort));
 
         public IPublisher<ICommand> CommandPublisher { get; set; }
 
         public IProjectionRepository Projections { get; set; }
 
-        public FireBaseDelivery FireBaseDelivery { get; set; }
+        public PushyDelivery PushyDelivery { get; set; }
 
         public void Handle(PushNotificationSent @event)
         {
-            var projectionReponse = Projections.Get<SubscriberTokensForFireBaseProjection>(@event.SubscriberId);
+            var projectionReponse = Projections.Get<SubscriberTokensForPushyProjection>(@event.SubscriberId);
             if (projectionReponse.Success == false)
                 return;
 
             foreach (var token in projectionReponse.Projection.State.Tokens)
             {
                 var notification = new NotificationDelivery(token, @event.NotificationPayload, @event.ExpiresAt, @event.ContentAvailable);
-                FireBaseDelivery.Send(notification);
+                PushyDelivery.Send(notification);
             }
         }
     }

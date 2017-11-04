@@ -6,6 +6,7 @@ using Discovery.Contracts;
 using Elders.Cronus.DomainModeling.Projections;
 using PushNotifications.Projections;
 using PushNotifications.Api.Controllers.Subscriptions.Models;
+using PushNotifications.Projections.General;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Queries
 {
@@ -36,6 +37,5 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Queries
 
             return Ok(new ResponseResult());
         }
-
     }
 }
