@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using PushNotifications.Contracts;
 
-namespace PushNotifications.Delivery.FireBase
+namespace PushNotifications.Delivery.FireBase.Models
 {
     public class FireBaseSendModel
     {
@@ -17,15 +18,17 @@ namespace PushNotifications.Delivery.FireBase
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
             if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
 
-            Registration_ids = new List<string>(tokens);
+            RegistrationIds = new List<string>(tokens);
             Notification = notification;
-            Time_to_live = ExpirationTimeToSeconds(expiresAt);
-            Content_available = contentAvailable;
+            TTL = ExpirationTimeToSeconds(expiresAt);
+            ContentAvailable = contentAvailable;
         }
 
-        public List<string> Registration_ids { get; private set; }
+        [JsonProperty(PropertyName = "Registration_ids")]
+        public List<string> RegistrationIds { get; private set; }
 
-        public bool Content_available { get; private set; }
+        [JsonProperty(PropertyName = "Content_available")]
+        public bool ContentAvailable { get; private set; }
 
         public FireBaseSendNotificationModel Notification { get; private set; }
 
@@ -33,7 +36,8 @@ namespace PushNotifications.Delivery.FireBase
         /// This parameter specifies how long (in seconds) the message should be kept in FCM storage if the device is offline.
         /// The maximum time to live supported is 4 weeks, and the default value is 4 weeks.
         /// </summary>
-        public long Time_to_live { get; private set; }
+        [JsonProperty(PropertyName = "Time_to_live")]
+        public long TTL { get; private set; }
 
         long ExpirationTimeToSeconds(Timestamp t)
         {

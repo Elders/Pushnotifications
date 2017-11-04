@@ -1,4 +1,4 @@
-﻿namespace PushNotifications.Delivery.FireBase
+﻿namespace PushNotifications.Delivery.FireBase.Models
 {
     public class FireBaseSendNotificationModel
     {
