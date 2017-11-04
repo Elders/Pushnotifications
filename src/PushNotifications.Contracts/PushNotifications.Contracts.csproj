@@ -41,6 +41,9 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PushySubscriptions\Commands\SubscribeUserForPushy.cs" />
+    <Compile Include="PushySubscriptions\Commands\UnSubscribeUserFromPushy.cs" />
+    <Compile Include="PushySubscriptions\Events\SubscriberSubscribedForPushy.cs" />
     <Compile Include="IProcessorMonitor.cs" />
     <Compile Include="PushNotifications\Commands\SendPushNotification.cs" />
     <Compile Include="PushNotifications\Delivery\IPushNotificationDeliver.cs" />
@@ -48,6 +51,8 @@
     <Compile Include="PushNotifications\Events\PushNotificationSent.cs" />
     <Compile Include="PushNotifications\NotificationPayload.cs" />
     <Compile Include="PushNotifications\PushNotificationId.cs" />
+    <Compile Include="PushySubscriptions\Events\SubscriberUnSubscribedFromPushy.cs" />
+    <Compile Include="PushySubscriptions\PushySubscriptionId.cs" />
     <Compile Include="SubscriptionToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotificationsContractsAssembly.cs" />

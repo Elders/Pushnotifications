@@ -52,8 +52,15 @@
     <Compile Include="Subscriptions\FireBaseSubscriptionAppService.cs">
       <DependentUpon>FireBaseSubscription.cs</DependentUpon>
     </Compile>
-    <Compile Include="Subscriptions\SubscriptionState.cs">
+    <Compile Include="Subscriptions\FireBaseSubscriptionState.cs">
       <DependentUpon>FireBaseSubscription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Subscriptions\PushySubscription.cs" />
+    <Compile Include="Subscriptions\PushySubscriptionAppService.cs">
+      <DependentUpon>PushySubscription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Subscriptions\PushySubscriptionState.cs">
+      <DependentUpon>PushySubscription.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

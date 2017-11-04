@@ -1,5 +1,4 @@
 ﻿using Elders.Cronus.DomainModeling;
-using System;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.FireBaseSubscriptions;
 using PushNotifications.Contracts.FireBaseSubscriptions.Events;
@@ -18,8 +17,6 @@ namespace PushNotifications.Subscriptions
 
         public void When(SubscriberSubscribedForFireBase e)
         {
-            if (ReferenceEquals(null, e) == true) throw new ArgumentNullException(nameof(e));
-
             Id = e.Id;
             UserId = e.SubscriberId;
             Token = e.Token;
@@ -28,7 +25,6 @@ namespace PushNotifications.Subscriptions
 
         public void When(SubscriberUnSubscribedFromFireBase e)
         {
-            if (ReferenceEquals(null, e) == true) throw new ArgumentNullException(nameof(e));
             IsSubscriptionActive = false;
         }
     }
