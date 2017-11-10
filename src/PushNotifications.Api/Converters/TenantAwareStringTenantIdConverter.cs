@@ -4,10 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
 using Elders.Cronus.DomainModeling;
-using PushNotifications.Api.Converters;
-using PushNotifications.Api.Extensions;
+using PushNotifications.Converters;
+using PushNotifications.Converters.Extensions;
 
-namespace Qore.IdentityAndAccess.Converters
+namespace PushNotifications.Api.Converters
 {
     public class TenantAwareStringTenantIdConverter : GenericJsonConverter<string, StringTenantId>
     {

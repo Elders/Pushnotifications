@@ -17,6 +17,7 @@ using Elders.Cronus.Projections.Cassandra.Config;
 using Elders.Cronus.Projections.Cassandra.Snapshots;
 using Elders.Pandora;
 using PushNotifications.Contracts;
+using PushNotifications.Delivery.Bulk;
 using PushNotifications.Delivery.FireBase;
 using PushNotifications.Delivery.Pushy;
 using PushNotifications.Ports;
@@ -54,8 +55,8 @@ namespace PushNotifications.WS
                     .UsePushNotifications(pandora)
                     .UsePushNotificationProjections(pandora)
                     .UsePorts(pandora)
-                    .RegisterFireBaseDelivery(pandora)
-                    .RegisterPushyDelivery(pandora)
+                    .RegisterBulkFireBaseDelivery(pandora)
+                    .RegisterBulkPushyDelivery(pandora)
                     .Build();
 
                 host = containerWhichYouShouldNotUse.Resolve<CronusHost>();
@@ -197,21 +198,29 @@ namespace PushNotifications.WS
             return cronusSettings;
         }
 
-        static ICronusSettings RegisterFireBaseDelivery(this ICronusSettings cronusSettings, Pandora pandora)
+        static ICronusSettings RegisterBulkFireBaseDelivery(this ICronusSettings cronusSettings, Pandora pandora)
         {
             var fireBaseBaseUrl = "https://fcm.googleapis.com/";
             var serverKey = "AAAAqg7V420:APA91bEggfsid7oJGnlravJ0gwCJ8ZMthEfWTfecHMOQjYVFdToIXxLXQj0oomBeVDNYCFZQ_sfbqASpsGcqOkJdKASpxCxGYHvof3ngENX_iSD_bl65PriDIAESPhhvqNeBZqw0wb4Z";
-            RestSharp.IRestClient fireBaseRestClient = new RestSharp.RestClient(fireBaseBaseUrl);
-            cronusSettings.Container.RegisterSingleton(() => new FireBaseDelivery(fireBaseRestClient, NewtonsoftJsonSerializer.Default(), serverKey));
+            var timeSpanBeforeFlush = new TimeSpan(0, 0, 5);
+            var recipientsCountBeforeFlush = 100;
+
+            var fireBaseRestClient = new RestSharp.RestClient(fireBaseBaseUrl);
+            var fireBasedelivery = new FireBaseDelivery(fireBaseRestClient, NewtonsoftJsonSerializer.Default(), serverKey);
+            cronusSettings.Container.RegisterSingleton(() => new BulkDelivery<FireBaseDelivery>(fireBasedelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush));
             return cronusSettings;
         }
 
-        static ICronusSettings RegisterPushyDelivery(this ICronusSettings cronusSettings, Pandora pandora)
+        static ICronusSettings RegisterBulkPushyDelivery(this ICronusSettings cronusSettings, Pandora pandora)
         {
             var pushyBaseUrl = "https://api.pushy.me/";
-            var serverKey = "test";
-            RestSharp.IRestClient pushyRestClient = new RestSharp.RestClient(pushyBaseUrl);
-            cronusSettings.Container.RegisterSingleton(() => new PushyDelivery(pushyRestClient, NewtonsoftJsonSerializer.Default(), serverKey));
+            var serverKey = "cd8100e3f367777f2dd999c5d97c5cc30d099fcf4da073749232140e365e09f9";
+            var timeSpanBeforeFlush = new TimeSpan(0, 0, 5);
+            var recipientsCountBeforeFlush = 100;
+
+            var pushyRestClient = new RestSharp.RestClient(pushyBaseUrl);
+            var pushyDelivery = new PushyDelivery(pushyRestClient, NewtonsoftJsonSerializer.Default(), serverKey);
+            cronusSettings.Container.RegisterSingleton(() => new BulkDelivery<PushyDelivery>(pushyDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush));
             return cronusSettings;
         }
     }

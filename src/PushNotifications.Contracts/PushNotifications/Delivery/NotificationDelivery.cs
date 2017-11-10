@@ -1,16 +1,15 @@
-﻿namespace PushNotifications.Contracts.PushNotifications.Delivery
+﻿using Elders.Cronus.DomainModeling;
+
+namespace PushNotifications.Contracts.PushNotifications.Delivery
 {
-    public class NotificationDelivery
+    public class NotificationDelivery : ValueObject<NotificationDelivery>
     {
-        public NotificationDelivery(SubscriptionToken token, NotificationPayload notificationPayload, Timestamp expiresAt, bool contentAvailable)
+        public NotificationDelivery(NotificationPayload notificationPayload, Timestamp expiresAt, bool contentAvailable)
         {
-            Token = token;
             NotificationPayload = notificationPayload;
             ExpiresAt = expiresAt;
             ContentAvailable = contentAvailable;
         }
-
-        public SubscriptionToken Token { get; private set; }
 
         public NotificationPayload NotificationPayload { get; private set; }
 

@@ -2,11 +2,11 @@
 using Elders.Cronus.DomainModeling;
 using System.Linq;
 using System.Reflection;
-using PushNotifications.Api.Extensions;
 using System.Collections.Generic;
 using System.Security.Claims;
+using PushNotifications.Converters.Extensions;
 
-namespace PushNotifications.Api.Converters
+namespace PushNotifications.Converters
 {
     public class StringTenantIdConverter : GenericJsonConverter<string, StringTenantId>
     {

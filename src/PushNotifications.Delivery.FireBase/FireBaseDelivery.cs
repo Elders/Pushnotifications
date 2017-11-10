@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Delivery.FireBase.Logging;
 using PushNotifications.Delivery.FireBase.Models;
@@ -8,7 +10,7 @@ using RestSharp.Serializers;
 
 namespace PushNotifications.Delivery.FireBase
 {
-    public class FireBaseDelivery : IPushNotificationDeliver
+    public class FireBaseDelivery : IPushNotificationDeliver, IPushNotificationBulkDeliver
     {
         static ILog log = LogProvider.GetLogger(typeof(FireBaseDelivery));
 
@@ -29,13 +31,19 @@ namespace PushNotifications.Delivery.FireBase
             this.serverKey = serverKey;
         }
 
-        public void Send(NotificationDelivery notification)
+        public void Send(SubscriptionToken token, NotificationDelivery notification)
+        {
+            Send(new List<SubscriptionToken> { token }, notification);
+        }
+
+        public void Send(IList<SubscriptionToken> tokens, NotificationDelivery notification)
         {
             const string resource = "fcm/send";
 
+            var tokensAsStrings = tokens.Select(x => x.ToString()).ToList();
             var payload = notification.NotificationPayload;
             var fireBaseSendNotificationModel = new FireBaseSendNotificationModel(payload.Title, payload.Body, payload.Sound, payload.Badge.ToString());
-            var model = new FireBaseSendModel(notification.Token, fireBaseSendNotificationModel, notification.ExpiresAt, notification.ContentAvailable);
+            var model = new FireBaseSendModel(tokensAsStrings, fireBaseSendNotificationModel, notification.ExpiresAt, notification.ContentAvailable);
             var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
             var result = restClient.Execute<FireBaseResponseModel>(request);
 

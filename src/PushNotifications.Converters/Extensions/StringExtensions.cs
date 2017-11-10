@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace PushNotifications.Api.Extensions
+namespace PushNotifications.Converters.Extensions
 {
     public static class StringExtensions
     {

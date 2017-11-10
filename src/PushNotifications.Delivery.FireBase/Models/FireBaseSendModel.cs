@@ -11,10 +11,7 @@ namespace PushNotifications.Delivery.FireBase.Models
 
         const long MAX_TTL_DAYS = 28; // 4 weeks
 
-        public FireBaseSendModel(string token, FireBaseSendNotificationModel notification, Timestamp expiresAt, bool contentAvailable)
-            : this(new List<string> { token }, notification, expiresAt, contentAvailable) { }
-
-        public FireBaseSendModel(List<string> tokens, FireBaseSendNotificationModel notification, Timestamp expiresAt, bool contentAvailable)
+        public FireBaseSendModel(IList<string> tokens, FireBaseSendNotificationModel notification, Timestamp expiresAt, bool contentAvailable)
         {
             if (ReferenceEquals(null, tokens) == true || tokens.Count == 0) throw new ArgumentException(nameof(tokens));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));

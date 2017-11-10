@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Consul;
 using Discovery.Consul;
-using Discovery.Contracts;
 using Elders.Cronus.DomainModeling;
 using Elders.Pandora;
 using Elders.Web.Api.Filters;
 using Newtonsoft.Json;
+using PushNotifications.Converters;
 
 namespace PushNotifications.Api.Host.App_Start
 {
@@ -80,7 +79,12 @@ namespace PushNotifications.Api.Host.App_Start
             settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
             settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 
-            var converters = typeof(PushNotificationsApiAssembly).Assembly.GetTypes()
+            var assemblies = new[]
+            {
+                typeof(PushNotificationsApiAssembly).Assembly,
+                typeof(PushNotificationsConvertersAssembly).Assembly
+            };
+            var converters = assemblies.SelectMany(x => x.GetTypes())
                 .Where(x => typeof(JsonConverter).IsAssignableFrom(x) && x.IsAbstract == false);
 
             foreach (var item in converters)

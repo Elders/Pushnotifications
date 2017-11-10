@@ -11,6 +11,7 @@
     <AssemblyName>PushNotifications.Api</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -83,12 +84,9 @@
     <Compile Include="Controllers\Subscriptions\Queries\PushySubscriptionQueryController.cs" />
     <Compile Include="Controllers\Subscriptions\Queries\SubscriptionQueryController.cs" />
     <Compile Include="Converters\ClaimFillConverter.cs" />
-    <Compile Include="Converters\GenericJsonConverter.cs" />
-    <Compile Include="Converters\StringTenantIdConverter.cs" />
     <Compile Include="Converters\SubscriptionTokenConverter.cs" />
     <Compile Include="Converters\TenantAwareStringTenantIdConverter.cs" />
     <Compile Include="Converters\UrlBinder.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotificationsApiAssembly.cs" />
   </ItemGroup>
@@ -97,6 +95,10 @@
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{53ab2dd6-f42f-44bb-bb6d-a7497c720e68}</Project>
       <Name>PushNotifications.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.Converters\PushNotifications.Converters.csproj">
+      <Project>{9D4233BF-4282-4A44-8F54-1175A43BF763}</Project>
+      <Name>PushNotifications.Converters</Name>
     </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Projections\PushNotifications.Projections.csproj">
       <Project>{03CF41C9-3167-4431-BDF0-C44497C057E8}</Project>

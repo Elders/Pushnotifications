@@ -9,8 +9,8 @@ using PushNotifications.Contracts.PushNotifications.Commands;
 using PushNotifications.Contracts.PushNotifications;
 using System;
 using Elders.Cronus.DomainModeling.Projections;
-using PushNotifications.Api.Extensions;
 using PushNotifications.Projections.General;
+using PushNotifications.Converters.Extensions;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {

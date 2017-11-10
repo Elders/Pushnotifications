@@ -4,7 +4,7 @@ using System.Security.Claims;
 using PushNotifications.Contracts;
 using PushNotifications.Converters;
 
-namespace PushNotifications.Api.Converters
+namespace PushNotifications.Converters
 {
     public class SubscriptionTokenConverter : GenericJsonConverter<string, SubscriptionToken>
     {

@@ -2,6 +2,7 @@
 using Elders.Cronus.DomainModeling.Projections;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts.PushNotifications.Events;
+using PushNotifications.Delivery.Bulk;
 using PushNotifications.Delivery.Pushy;
 using PushNotifications.Ports.Logging;
 using PushNotifications.Projections.Pushy;
@@ -17,7 +18,7 @@ namespace PushNotifications.Ports
 
         public IProjectionRepository Projections { get; set; }
 
-        public PushyDelivery PushyDelivery { get; set; }
+        public BulkDelivery<PushyDelivery> PushyDelivery { get; set; }
 
         public void Handle(PushNotificationSent @event)
         {
@@ -27,8 +28,8 @@ namespace PushNotifications.Ports
 
             foreach (var token in projectionReponse.Projection.State.Tokens)
             {
-                var notification = new NotificationDelivery(token, @event.NotificationPayload, @event.ExpiresAt, @event.ContentAvailable);
-                PushyDelivery.Send(notification);
+                var notification = new NotificationDelivery(@event.NotificationPayload, @event.ExpiresAt, @event.ContentAvailable);
+                PushyDelivery.Send(token, notification);
             }
         }
     }

@@ -11,10 +11,7 @@ namespace PushNotifications.Delivery.Pushy.Models
 
         const long MAX_TTL_DAYS = 365; // 1 year
 
-        public PushySendModel(string token, PushySendNotificationModel notification, PushySendDataModel data, Timestamp expiresAt, bool contentAvailable)
-            : this(new List<string> { token }, notification, data, expiresAt, contentAvailable) { }
-
-        public PushySendModel(List<string> tokens, PushySendNotificationModel notification, PushySendDataModel data, Timestamp expiresAt, bool contentAvailable)
+        public PushySendModel(IList<string> tokens, PushySendNotificationModel notification, PushySendDataModel data, Timestamp expiresAt, bool contentAvailable)
         {
             if (ReferenceEquals(null, tokens) == true || tokens.Count == 0) throw new ArgumentException(nameof(tokens));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
