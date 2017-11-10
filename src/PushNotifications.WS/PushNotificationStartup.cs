@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Cassandra;
 using Elders.Cronus.AtomicAction.Config;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.Cluster.Config;
 using Elders.Cronus.DomainModeling;
 using Elders.Cronus.DomainModeling.Projections;
+using Elders.Cronus.EventStore;
 using Elders.Cronus.IocContainer;
 using Elders.Cronus.Persistence.Cassandra.Config;
 using Elders.Cronus.Pipeline.Config;
@@ -23,6 +25,7 @@ using PushNotifications.Delivery.Pushy;
 using PushNotifications.Ports;
 using PushNotifications.Projections;
 using PushNotifications.WS.Logging;
+using PushNotifications.WS.Multitenancy;
 using PushNotifications.WS.Serialization;
 
 namespace PushNotifications.WS
@@ -120,7 +123,7 @@ namespace PushNotifications.WS
                     x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
                 })
                 .WithDefaultPublishers()
-                .UseCassandraEventStore(eventStore =>
+                .UseMultiTenantCassandraEventStore(eventStore =>
                     CassandraEventStoreExtensions.SetConnectionString(eventStore, pandora.Get("pn_cassandra_event_store_conn_str"))
                     .SetReplicationStrategy(eventStoreReplicationStrategy)
                     .SetWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_event_store_write_consistency_level"))
@@ -222,6 +225,32 @@ namespace PushNotifications.WS
             var pushyDelivery = new PushyDelivery(pushyRestClient, NewtonsoftJsonSerializer.Default(), serverKey);
             cronusSettings.Container.RegisterSingleton(() => new BulkDelivery<PushyDelivery>(pushyDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush));
             return cronusSettings;
+        }
+
+
+    }
+
+    public class DefaultTenantUdiDahan : ITenantUdiDahan // Strategy? blah
+    {
+        public string GetTenantFriendlyName(IAggregateRootId id)
+        {
+            if (id is StringTenantId)
+                return ((StringTenantId)id).Tenant;
+            else
+                return "elders/default";// we could have cross tenant agreegates
+                                        //? or throw new NotSupportedException() ?
+        }
+
+        public string GetTenantFriendlyName(AggregateCommit aggregateCommit)
+        {
+            var urn = Encoding.UTF8.GetString(aggregateCommit.AggregateRootId);
+            StringTenantUrn stringTenantUrn;
+
+            if (StringTenantUrn.TryParse(urn, out stringTenantUrn))
+                return stringTenantUrn.Tenant;
+
+            return "elders/default";// we could have cross tenant agreegates
+                                    //? or throw new NotSupportedException() ?
         }
     }
 }
