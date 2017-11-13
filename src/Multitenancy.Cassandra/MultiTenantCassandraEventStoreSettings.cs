@@ -1,6 +1,8 @@
 ﻿using Elders.Cronus.IocContainer;
+using Multitenancy.EventStore;
+using Multitenancy.TenantResolver;
 
-namespace PushNotifications.WS.Multitenancy
+namespace Multitenancy.Cassandra
 {
     public class MultiTenantCassandraEventStoreSettings : Elders.Cronus.Persistence.Cassandra.Config.CassandraEventStoreSettings
     {
@@ -12,7 +14,7 @@ namespace PushNotifications.WS.Multitenancy
             Elders.Cronus.Persistence.Cassandra.Config.ICassandraEventStoreSettings settings = this as Elders.Cronus.Persistence.Cassandra.Config.ICassandraEventStoreSettings;
 
             var provisioner = new CassandraEventStoreProvisioner(builder, settings);
-            var tenantResolver = new DefaultTenantResolver("elders");
+            var tenantResolver = new DefaultTenantResolver();
             builder.Container.RegisterSingleton<Elders.Cronus.EventStore.IEventStore>(() => new MultiTenantEventStore(provisioner, tenantResolver), builder.Name);
             //builder.Container.RegisterSingleton<IEventStorePlayer>(() => player, builder.Name); probably should not be here
         }

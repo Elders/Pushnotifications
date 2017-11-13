@@ -1,6 +1,7 @@
 ﻿using System;
+using Multitenancy.TenantResolver;
 
-namespace PushNotifications.WS.Multitenancy
+namespace Multitenancy.EventStore
 {
     public class MultiTenantEventStore : Elders.Cronus.EventStore.IEventStore
     {

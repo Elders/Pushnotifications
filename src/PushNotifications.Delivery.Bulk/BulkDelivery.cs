@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 
 namespace PushNotifications.Delivery.Bulk
 {
-    public class BulkDelivery<T> : IPushNotificationDeliver where T : IPushNotificationBulkDeliver
+    public class BulkDelivery<T> : IPushNotificationDelivery where T : IPushNotificationBulkDelivery
     {
         readonly T delivery;
 
@@ -16,8 +15,7 @@ namespace PushNotifications.Delivery.Bulk
 
         readonly int recipientsCountBeforeFlush;
 
-        ConcurrentDictionary<NotificationDelivery, List<SubscriptionToken>> store;
-
+        ConcurrentDictionary<NotificationDeliveryModel, List<SubscriptionToken>> store;
 
         public BulkDelivery(T delivery, TimeSpan timeSpanBeforeFlush, int recipientsCountBeforeFlush)
         {
@@ -28,11 +26,11 @@ namespace PushNotifications.Delivery.Bulk
             this.timeSpanBeforeFlush = timeSpanBeforeFlush;
             this.recipientsCountBeforeFlush = recipientsCountBeforeFlush;
 
-            store = new ConcurrentDictionary<NotificationDelivery, List<SubscriptionToken>>();
+            store = new ConcurrentDictionary<NotificationDeliveryModel, List<SubscriptionToken>>();
             Flush();
         }
 
-        public void Send(SubscriptionToken token, NotificationDelivery notification)
+        public void Send(SubscriptionToken token, NotificationDeliveryModel notification)
         {
             store.AddOrUpdate(notification, new List<SubscriptionToken> { token }, (k, v) => { v.Add(token); return v; });
 

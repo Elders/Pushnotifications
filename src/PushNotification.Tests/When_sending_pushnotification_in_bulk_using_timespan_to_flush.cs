@@ -17,11 +17,11 @@ namespace PushNotification.Tests
             timeSpanBeforeFlush = new TimeSpan(0, 0, 0, 1);
             countOfRecipientsBeforeFlus = int.MaxValue;
             concreateDelivery = new TestDelivery();
-            bulkDelivery = new BulkDelivery<IPushNotificationBulkDeliver>(concreateDelivery, timeSpanBeforeFlush, countOfRecipientsBeforeFlus);
+            bulkDelivery = new BulkDelivery<IPushNotificationBulkDelivery>(concreateDelivery, timeSpanBeforeFlush, countOfRecipientsBeforeFlus);
 
             expirationDateOfNotification = Timestamp.JudgementDay();
             countOfRecipients = 10000;
-            notification = new NotificationDelivery(new NotificationPayload("title", "body"), expirationDateOfNotification, true);
+            notification = new TestNotificationDelivery(new PushNotificationId(Guid.NewGuid().ToString(), "elders"), new NotificationPayload("title", "body"), expirationDateOfNotification, true);
         };
 
         Because of = () =>
@@ -33,11 +33,11 @@ namespace PushNotification.Tests
         It should_have_sent_notifications_to_all_recipients_after_waiting_for_the_timespan = () => concreateDelivery.Store.Count().ShouldEqual(countOfRecipients);
 
         static TestDelivery concreateDelivery;
-        static BulkDelivery<IPushNotificationBulkDeliver> bulkDelivery;
+        static BulkDelivery<IPushNotificationBulkDelivery> bulkDelivery;
         static TimeSpan timeSpanBeforeFlush;
         static int countOfRecipientsBeforeFlus;
         static Timestamp expirationDateOfNotification;
         static int countOfRecipients;
-        static NotificationDelivery notification;
+        static NotificationDeliveryModel notification;
     }
 }

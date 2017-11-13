@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using DataStaxCassandra = Cassandra;
 using Elders.Cronus.IocContainer;
+using Multitenancy.EventStore;
 
-namespace PushNotifications.WS.Multitenancy
+namespace Multitenancy.Cassandra
 {
     public class CassandraEventStoreProvisioner : IEventStoreProvisioner
     {

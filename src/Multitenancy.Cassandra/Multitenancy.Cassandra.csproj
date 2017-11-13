@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}</ProjectGuid>
+    <ProjectGuid>{61E2A02A-743A-46D6-94A1-3E9C97DB93B6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PushNotification.Tests</RootNamespace>
-    <AssemblyName>PushNotification.Tests</AssemblyName>
+    <RootNamespace>Multitenancy.Cassandra</RootNamespace>
+    <AssemblyName>Multitenancy.Cassandra</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,49 +30,50 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Elders.Cronus.DomainModeling, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.3.3.0\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+    <Reference Include="Cassandra, Version=3.0.0.0, Culture=neutral, PublicKeyToken=10b231fbfc8c4b4d, processorArchitecture=MSIL">
+      <HintPath>..\packages\CassandraCSharpDriver.3.0.9\lib\net40\Cassandra.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Machine.Specifications, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Machine.Specifications.0.11.0\lib\net45\Machine.Specifications.dll</HintPath>
+    <Reference Include="Elders.Cronus, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.3.1.0\lib\net45-full\Elders.Cronus.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Machine.Specifications.Should, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Machine.Specifications.Should.0.11.0\lib\net45\Machine.Specifications.Should.dll</HintPath>
+    <Reference Include="Elders.Cronus.DomainModeling, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.DomainModeling.3.1.4\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elders.Cronus.Persistence.Cassandra, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.Persistence.Cassandra.3.3.1\lib\net45-full\Elders.Cronus.Persistence.Cassandra.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elders.Multithreading.Scheduler, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Multithreading.Scheduler.1.1.2\lib\net45-full\Elders.Multithreading.Scheduler.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LZ4, Version=1.0.5.93, Culture=neutral, PublicKeyToken=fd2bda0a70c5a705, processorArchitecture=MSIL">
+      <HintPath>..\packages\lz4net.1.0.5.93\lib\net40-client\LZ4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml.Serialization" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helper.cs" />
+    <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
+    <Compile Include="CassandraEventStoreProvisioner.cs" />
+    <Compile Include="MultiTenantCassandraEventStore.cs" />
+    <Compile Include="MultiTenantCassandraEventStoreSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestDelivery.cs" />
-    <Compile Include="TestNotificationDelivery.cs" />
-    <Compile Include="When_sending_pushnotification_in_bulk_using_timespan_to_flush.cs" />
-    <Compile Include="When_sending_pushnotification_in_bulk_using_tokens_count_to_flush.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
-      <Project>{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}</Project>
-      <Name>PushNotifications.Contracts</Name>
+    <ProjectReference Include="..\Multitenancy\Multitenancy.csproj">
+      <Project>{C7B50755-9DE7-4217-89A9-31688B2DEF21}</Project>
+      <Name>Multitenancy</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PushNotifications.Delivery.Bulk\PushNotifications.Delivery.Bulk.csproj">
-      <Project>{9BF5032E-B8A6-4F8C-B6FE-05BA192DCD5B}</Project>
-      <Name>PushNotifications.Delivery.Bulk</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

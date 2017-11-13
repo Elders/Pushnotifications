@@ -1,7 +1,7 @@
 ﻿using Elders.Cronus.DomainModeling;
 using Elders.Cronus.EventStore;
 
-namespace PushNotifications.WS.Multitenancy
+namespace Multitenancy.TenantResolver
 {
     public interface ITenantResolver
     {

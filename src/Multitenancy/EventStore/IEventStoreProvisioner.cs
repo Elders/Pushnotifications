@@ -1,6 +1,6 @@
 ﻿using Elders.Cronus.EventStore;
 
-namespace PushNotifications.WS.Multitenancy
+namespace Multitenancy.EventStore
 {
     public interface IEventStoreProvisioner
     {

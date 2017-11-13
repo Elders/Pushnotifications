@@ -10,7 +10,7 @@ using RestSharp.Serializers;
 
 namespace PushNotifications.Delivery.Pushy
 {
-    public class PushyDelivery : IPushNotificationDeliver, IPushNotificationBulkDeliver
+    public class PushyDelivery : IPushNotificationDelivery, IPushNotificationBulkDelivery
     {
         static ILog log = LogProvider.GetLogger(typeof(PushyDelivery));
 
@@ -31,12 +31,12 @@ namespace PushNotifications.Delivery.Pushy
             this.serverKey = serverKey;
         }
 
-        public void Send(SubscriptionToken token, NotificationDelivery notification)
+        public void Send(SubscriptionToken token, NotificationDeliveryModel notification)
         {
             Send(new List<SubscriptionToken> { token }, notification);
         }
 
-        public void Send(IList<SubscriptionToken> tokens, NotificationDelivery notification)
+        public void Send(IList<SubscriptionToken> tokens, NotificationDeliveryModel notification)
         {
             string resource = "push?api_key=" + serverKey;
 

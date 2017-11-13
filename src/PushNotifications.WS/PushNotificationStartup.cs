@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using Cassandra;
 using Elders.Cronus.AtomicAction.Config;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.Cluster.Config;
 using Elders.Cronus.DomainModeling;
 using Elders.Cronus.DomainModeling.Projections;
-using Elders.Cronus.EventStore;
 using Elders.Cronus.IocContainer;
 using Elders.Cronus.Persistence.Cassandra.Config;
 using Elders.Cronus.Pipeline.Config;
@@ -18,15 +16,14 @@ using Elders.Cronus.Pipeline.Transport.RabbitMQ.Config;
 using Elders.Cronus.Projections.Cassandra.Config;
 using Elders.Cronus.Projections.Cassandra.Snapshots;
 using Elders.Pandora;
+using Multitenancy.Cassandra;
+using Multitenancy.TenantResolver;
 using PushNotifications.Contracts;
-using PushNotifications.Delivery.Bulk;
-using PushNotifications.Delivery.FireBase;
-using PushNotifications.Delivery.Pushy;
+using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Ports;
 using PushNotifications.Projections;
 using PushNotifications.WS.Logging;
 using PushNotifications.WS.Multitenancy;
-using PushNotifications.WS.Serialization;
 
 namespace PushNotifications.WS
 {
@@ -58,8 +55,7 @@ namespace PushNotifications.WS
                     .UsePushNotifications(pandora)
                     .UsePushNotificationProjections(pandora)
                     .UsePorts(pandora)
-                    .RegisterBulkFireBaseDelivery(pandora)
-                    .RegisterBulkPushyDelivery(pandora)
+                    .UseMultiTenantDelivery(pandora)
                     .Build();
 
                 host = containerWhichYouShouldNotUse.Resolve<CronusHost>();
@@ -201,56 +197,12 @@ namespace PushNotifications.WS
             return cronusSettings;
         }
 
-        static ICronusSettings RegisterBulkFireBaseDelivery(this ICronusSettings cronusSettings, Pandora pandora)
+        static ICronusSettings UseMultiTenantDelivery(this ICronusSettings cronusSettings, Pandora pandora)
         {
-            var fireBaseBaseUrl = "https://fcm.googleapis.com/";
-            var serverKey = "AAAAqg7V420:APA91bEggfsid7oJGnlravJ0gwCJ8ZMthEfWTfecHMOQjYVFdToIXxLXQj0oomBeVDNYCFZQ_sfbqASpsGcqOkJdKASpxCxGYHvof3ngENX_iSD_bl65PriDIAESPhhvqNeBZqw0wb4Z";
-            var timeSpanBeforeFlush = new TimeSpan(0, 0, 5);
-            var recipientsCountBeforeFlush = 100;
-
-            var fireBaseRestClient = new RestSharp.RestClient(fireBaseBaseUrl);
-            var fireBasedelivery = new FireBaseDelivery(fireBaseRestClient, NewtonsoftJsonSerializer.Default(), serverKey);
-            cronusSettings.Container.RegisterSingleton(() => new BulkDelivery<FireBaseDelivery>(fireBasedelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush));
+            cronusSettings.Container.RegisterSingleton<ITenantResolver>(() => new DefaultTenantResolver());
+            cronusSettings.Container.RegisterSingleton(() => new MultiTenantDeliveryResolver(cronusSettings.Container.Resolve<ITenantResolver>(), pandora));
+            cronusSettings.Container.RegisterTransient<IPushNotificationDelivery>(() => new DeliveryThatSupportsMultipleDeleries(cronusSettings.Container.Resolve<MultiTenantDeliveryResolver>()));
             return cronusSettings;
-        }
-
-        static ICronusSettings RegisterBulkPushyDelivery(this ICronusSettings cronusSettings, Pandora pandora)
-        {
-            var pushyBaseUrl = "https://api.pushy.me/";
-            var serverKey = "cd8100e3f367777f2dd999c5d97c5cc30d099fcf4da073749232140e365e09f9";
-            var timeSpanBeforeFlush = new TimeSpan(0, 0, 5);
-            var recipientsCountBeforeFlush = 100;
-
-            var pushyRestClient = new RestSharp.RestClient(pushyBaseUrl);
-            var pushyDelivery = new PushyDelivery(pushyRestClient, NewtonsoftJsonSerializer.Default(), serverKey);
-            cronusSettings.Container.RegisterSingleton(() => new BulkDelivery<PushyDelivery>(pushyDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush));
-            return cronusSettings;
-        }
-
-
-    }
-
-    public class DefaultTenantUdiDahan : ITenantUdiDahan // Strategy? blah
-    {
-        public string GetTenantFriendlyName(IAggregateRootId id)
-        {
-            if (id is StringTenantId)
-                return ((StringTenantId)id).Tenant;
-            else
-                return "elders/default";// we could have cross tenant agreegates
-                                        //? or throw new NotSupportedException() ?
-        }
-
-        public string GetTenantFriendlyName(AggregateCommit aggregateCommit)
-        {
-            var urn = Encoding.UTF8.GetString(aggregateCommit.AggregateRootId);
-            StringTenantUrn stringTenantUrn;
-
-            if (StringTenantUrn.TryParse(urn, out stringTenantUrn))
-                return stringTenantUrn.Tenant;
-
-            return "elders/default";// we could have cross tenant agreegates
-                                    //? or throw new NotSupportedException() ?
         }
     }
 }

@@ -7,7 +7,7 @@ namespace PushNotification.Tests
 {
     public class Helper
     {
-        public void Send(BulkDelivery<IPushNotificationBulkDeliver> theDelivery, int count, NotificationDelivery notification)
+        public void Send(BulkDelivery<IPushNotificationBulkDelivery> theDelivery, int count, NotificationDeliveryModel notification)
         {
             for (int i = 0; i < count; i++)
             {

@@ -2,14 +2,17 @@
 
 namespace PushNotifications.Contracts.PushNotifications.Delivery
 {
-    public class NotificationDelivery : ValueObject<NotificationDelivery>
+    public abstract class NotificationDeliveryModel : ValueObject<NotificationDeliveryModel>
     {
-        public NotificationDelivery(NotificationPayload notificationPayload, Timestamp expiresAt, bool contentAvailable)
+        public NotificationDeliveryModel(PushNotificationId pushNotificationId, NotificationPayload notificationPayload, Timestamp expiresAt, bool contentAvailable)
         {
+            Id = pushNotificationId;
             NotificationPayload = notificationPayload;
             ExpiresAt = expiresAt;
             ContentAvailable = contentAvailable;
         }
+
+        public PushNotificationId Id { get; private set; }
 
         public NotificationPayload NotificationPayload { get; private set; }
 

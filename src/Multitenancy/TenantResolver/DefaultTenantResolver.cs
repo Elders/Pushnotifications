@@ -3,18 +3,10 @@ using System.Text;
 using Elders.Cronus.DomainModeling;
 using Elders.Cronus.EventStore;
 
-namespace PushNotifications.WS.Multitenancy
+namespace Multitenancy.TenantResolver
 {
     public class DefaultTenantResolver : ITenantResolver
     {
-        readonly string defaultTenant;
-
-        public DefaultTenantResolver(string defaultTenant)
-        {
-            if (string.IsNullOrEmpty(defaultTenant) == true) throw new ArgumentNullException(nameof(defaultTenant));
-            this.defaultTenant = defaultTenant;
-        }
-
         public string Resolve(IAggregateRootId id)
         {
             if (ReferenceEquals(null, id) == true) throw new ArgumentNullException(nameof(id));
@@ -22,7 +14,7 @@ namespace PushNotifications.WS.Multitenancy
             if (id is StringTenantId)
                 return ((StringTenantId)id).Tenant;
 
-            return defaultTenant;
+            throw new NotSupportedException($"Unable to resolve tenant for id {id}");
         }
 
         public string Resolve(AggregateCommit aggregateCommit)
@@ -35,7 +27,7 @@ namespace PushNotifications.WS.Multitenancy
             if (StringTenantUrn.TryParse(urn, out stringTenantUrn))
                 return stringTenantUrn.Tenant;
 
-            return defaultTenant;
+            throw new NotSupportedException($"Unable to resolve tenant for id {aggregateCommit.AggregateRootId}");
         }
     }
 }

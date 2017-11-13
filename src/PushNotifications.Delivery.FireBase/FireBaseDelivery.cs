@@ -10,7 +10,7 @@ using RestSharp.Serializers;
 
 namespace PushNotifications.Delivery.FireBase
 {
-    public class FireBaseDelivery : IPushNotificationDeliver, IPushNotificationBulkDeliver
+    public class FireBaseDelivery : IPushNotificationDelivery, IPushNotificationBulkDelivery
     {
         static ILog log = LogProvider.GetLogger(typeof(FireBaseDelivery));
 
@@ -31,12 +31,12 @@ namespace PushNotifications.Delivery.FireBase
             this.serverKey = serverKey;
         }
 
-        public void Send(SubscriptionToken token, NotificationDelivery notification)
+        public void Send(SubscriptionToken token, NotificationDeliveryModel notification)
         {
             Send(new List<SubscriptionToken> { token }, notification);
         }
 
-        public void Send(IList<SubscriptionToken> tokens, NotificationDelivery notification)
+        public void Send(IList<SubscriptionToken> tokens, NotificationDeliveryModel notification)
         {
             const string resource = "fcm/send";
 
