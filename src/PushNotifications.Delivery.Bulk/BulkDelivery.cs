@@ -15,6 +15,8 @@ namespace PushNotifications.Delivery.Bulk
 
         readonly int recipientsCountBeforeFlush;
 
+        DateTime nextExecution;
+
         ConcurrentDictionary<NotificationDeliveryModel, List<SubscriptionToken>> store;
 
         public BulkDelivery(T delivery, TimeSpan timeSpanBeforeFlush, int recipientsCountBeforeFlush)
@@ -27,6 +29,7 @@ namespace PushNotifications.Delivery.Bulk
             this.recipientsCountBeforeFlush = recipientsCountBeforeFlush;
 
             store = new ConcurrentDictionary<NotificationDeliveryModel, List<SubscriptionToken>>();
+            nextExecution = DateTime.UtcNow;
             Flush();
         }
 
@@ -50,9 +53,9 @@ namespace PushNotifications.Delivery.Bulk
                 }
             }
 
-            // (nextExecution < DateTime.UtcNow)
+            if (nextExecution < DateTime.UtcNow)
             {
-                var nextExecution = DateTime.UtcNow.Add(timeSpanBeforeFlush);
+                nextExecution = DateTime.UtcNow.Add(timeSpanBeforeFlush);
                 Task.Delay(timeSpanBeforeFlush).ContinueWith(t => Flush());
             }
         }
