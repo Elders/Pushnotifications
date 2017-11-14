@@ -17,6 +17,7 @@ using Elders.Cronus.Projections.Cassandra.Config;
 using Elders.Cronus.Projections.Cassandra.Snapshots;
 using Elders.Cronus.Serializer;
 using Elders.Pandora;
+using Multitenancy.Cassandra.Projections;
 using PushNotifications.Api.Host.Logging;
 using PushNotifications.Contracts;
 using PushNotifications.Projections;
@@ -65,7 +66,7 @@ namespace PushNotifications.Api.Host.App_Start
                      x.Password = pandora.Get("rabbitmq_password");
                      x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
                  })
-                        .ConfigureCassandraProjectionsStore(x => x
+                        .ConfigureMultiTenantCassandraProjectionsStore(x => x
                         .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
                         .UseSnapshots(Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly)).ExportedTypes)
                         .UseSnapshotStrategy(new DefaultSnapshotStrategy(TimeSpan.FromDays(10), 500))

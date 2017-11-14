@@ -228,6 +228,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Multitenancy.Cassandra.Projections\Multitenancy.Cassandra.Projections.csproj">
+      <Project>{f97585ba-c305-4443-b5a6-63a07ef787e9}</Project>
+      <Name>Multitenancy.Cassandra.Projections</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Api\PushNotifications.Api.csproj">
       <Project>{9F3F8DB4-F738-4F20-B95C-91483E94B266}</Project>
       <Name>PushNotifications.Api</Name>

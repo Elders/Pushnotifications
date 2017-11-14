@@ -18,6 +18,7 @@ using Elders.Cronus.Projections.Cassandra.Snapshots;
 using Elders.Pandora;
 using Multitenancy.Cassandra;
 using Multitenancy.Cassandra.EventStore;
+using Multitenancy.Cassandra.Projections;
 using Multitenancy.TenantResolver;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Delivery;
@@ -186,7 +187,7 @@ namespace PushNotifications.WS
                     })
                      .UseProjections(h => h
                         .RegisterHandlerTypes(cassandraProjetions, pnProjHandlerFactory.Resolve)
-                        .UseCassandraProjections(p => p
+                        .UseMultiTenantCassandraProjections(p => p
                             .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
                             .UseSnapshots(cassandraProjetions)
                             .UseSnapshotStrategy(new DefaultSnapshotStrategy(TimeSpan.FromDays(10), 500))

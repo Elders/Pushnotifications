@@ -154,9 +154,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Multitenancy.Cassandra\Multitenancy.Cassandra.csproj">
+    <ProjectReference Include="..\Multitenancy.Cassandra.Projections\Multitenancy.Cassandra.Projections.csproj">
+      <Project>{F97585BA-C305-4443-B5A6-63A07EF787E9}</Project>
+      <Name>Multitenancy.Cassandra.Projections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Multitenancy.Cassandra\Multitenancy.Cassandra.EventStore.csproj">
       <Project>{61e2a02a-743a-46d6-94a1-3e9c97db93b6}</Project>
-      <Name>Multitenancy.Cassandra</Name>
+      <Name>Multitenancy.Cassandra.EventStore</Name>
     </ProjectReference>
     <ProjectReference Include="..\Multitenancy\Multitenancy.csproj">
       <Project>{C7B50755-9DE7-4217-89A9-31688B2DEF21}</Project>

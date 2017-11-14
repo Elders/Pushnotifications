@@ -2,11 +2,30 @@
 using System.Text;
 using Elders.Cronus.DomainModeling;
 using Elders.Cronus.EventStore;
+using Elders.Cronus.Projections;
 
 namespace Multitenancy.TenantResolver
 {
     public class DefaultTenantResolver : ITenantResolver
     {
+        public string Resolve(ProjectionCommit projectionCommit)
+        {
+            var tenant = string.Empty;
+            if (TryResolve(projectionCommit.ProjectionId.RawId, out tenant))
+                return tenant;
+
+            throw new NotSupportedException($"Unable to resolve tenant for id {projectionCommit.ProjectionId}");
+        }
+
+        public string Resolve(IBlobId id)
+        {
+            var tenant = string.Empty;
+            if (TryResolve(id.RawId, out tenant))
+                return tenant;
+
+            throw new NotSupportedException($"Unable to resolve tenant for id {id}");
+        }
+
         public string Resolve(IAggregateRootId id)
         {
             if (ReferenceEquals(null, id) == true) throw new ArgumentNullException(nameof(id));
@@ -21,13 +40,26 @@ namespace Multitenancy.TenantResolver
         {
             if (ReferenceEquals(null, aggregateCommit) == true) throw new ArgumentNullException(nameof(aggregateCommit));
 
-            var urn = Encoding.UTF8.GetString(aggregateCommit.AggregateRootId);
+            var tenant = string.Empty;
+            if (TryResolve(aggregateCommit.AggregateRootId, out tenant))
+                return tenant;
+
+            throw new NotSupportedException($"Unable to resolve tenant for id {aggregateCommit.AggregateRootId}");
+        }
+
+        bool TryResolve(byte[] id, out string tenant)
+        {
+            tenant = string.Empty;
+            var urn = Encoding.UTF8.GetString(id);
             StringTenantUrn stringTenantUrn;
 
             if (StringTenantUrn.TryParse(urn, out stringTenantUrn))
-                return stringTenantUrn.Tenant;
+            {
+                tenant = stringTenantUrn.Tenant;
+                return true;
+            }
 
-            throw new NotSupportedException($"Unable to resolve tenant for id {aggregateCommit.AggregateRootId}");
+            return false;
         }
     }
 }
