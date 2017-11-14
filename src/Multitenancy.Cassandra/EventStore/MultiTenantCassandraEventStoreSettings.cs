@@ -2,7 +2,7 @@
 using Multitenancy.EventStore;
 using Multitenancy.TenantResolver;
 
-namespace Multitenancy.Cassandra
+namespace Multitenancy.Cassandra.EventStore
 {
     public class MultiTenantCassandraEventStoreSettings : Elders.Cronus.Persistence.Cassandra.Config.CassandraEventStoreSettings
     {

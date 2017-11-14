@@ -3,7 +3,7 @@ using DataStaxCassandra = Cassandra;
 using Elders.Cronus.IocContainer;
 using Multitenancy.EventStore;
 
-namespace Multitenancy.Cassandra
+namespace Multitenancy.Cassandra.EventStore
 {
     public class CassandraEventStoreProvisioner : IEventStoreProvisioner
     {

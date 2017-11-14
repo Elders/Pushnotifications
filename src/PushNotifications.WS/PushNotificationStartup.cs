@@ -17,6 +17,7 @@ using Elders.Cronus.Projections.Cassandra.Config;
 using Elders.Cronus.Projections.Cassandra.Snapshots;
 using Elders.Pandora;
 using Multitenancy.Cassandra;
+using Multitenancy.Cassandra.EventStore;
 using Multitenancy.TenantResolver;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Delivery;

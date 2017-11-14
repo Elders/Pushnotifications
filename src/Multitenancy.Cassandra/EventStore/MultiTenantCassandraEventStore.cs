@@ -2,7 +2,7 @@
 using DataStaxCassandra = Cassandra;
 using Elders.Cronus.Persistence.Cassandra.Config;
 
-namespace Multitenancy.Cassandra
+namespace Multitenancy.Cassandra.EventStore
 {
     public static class MultiTenantCassandraEventStore
     {

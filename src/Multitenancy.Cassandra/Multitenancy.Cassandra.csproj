@@ -61,9 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
-    <Compile Include="CassandraEventStoreProvisioner.cs" />
-    <Compile Include="MultiTenantCassandraEventStore.cs" />
-    <Compile Include="MultiTenantCassandraEventStoreSettings.cs" />
+    <Compile Include="EventStore\CassandraEventStoreProvisioner.cs" />
+    <Compile Include="EventStore\MultiTenantCassandraEventStore.cs" />
+    <Compile Include="EventStore\MultiTenantCassandraEventStoreSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +74,9 @@
       <Project>{C7B50755-9DE7-4217-89A9-31688B2DEF21}</Project>
       <Name>Multitenancy</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Projections\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
