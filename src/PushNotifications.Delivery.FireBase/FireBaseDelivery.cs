@@ -38,6 +38,10 @@ namespace PushNotifications.Delivery.FireBase
 
         public void Send(IList<SubscriptionToken> tokens, NotificationDeliveryModel notification)
         {
+            if (ReferenceEquals(null, tokens) == true) throw new ArgumentNullException(nameof(tokens));
+            if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
+            if (tokens.Count == 0) throw new ArgumentException("Tokens are missing");
+
             const string resource = "fcm/send";
 
             var tokensAsStrings = tokens.Select(x => x.ToString()).ToList();

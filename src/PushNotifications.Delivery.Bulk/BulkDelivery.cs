@@ -35,6 +35,9 @@ namespace PushNotifications.Delivery.Bulk
 
         public void Send(SubscriptionToken token, NotificationDeliveryModel notification)
         {
+            if (ReferenceEquals(null, token) == true) throw new ArgumentNullException(nameof(token));
+            if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
+
             store.AddOrUpdate(notification, new List<SubscriptionToken> { token }, (k, v) => { v.Add(token); return v; });
 
             List<SubscriptionToken> tokens;
