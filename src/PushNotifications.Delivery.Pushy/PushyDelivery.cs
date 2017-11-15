@@ -50,14 +50,7 @@ namespace PushNotifications.Delivery.Pushy
 
             if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Success == false)
             {
-                try
-                {
-                    log.Error(() => $"[PushyBase] failure: status code '{result.StatusCode}' and error '{result.Data.Error}'. PN body '{notification.NotificationPayload.Body}'");
-                }
-                catch (Exception ex)
-                {
-                    log.ErrorException($"[PushyBase] failure. PN body '{notification.NotificationPayload.Body}'", ex);
-                }
+                log.Error(() => $"[PushyBase] failure: status code '{result.StatusCode}' and error '{result.Data.Error}'. PN body '{notification.NotificationPayload.Body}'");
             }
         }
 

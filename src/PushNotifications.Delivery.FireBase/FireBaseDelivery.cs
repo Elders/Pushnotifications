@@ -49,15 +49,8 @@ namespace PushNotifications.Delivery.FireBase
 
             if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Failure == true)
             {
-                try
-                {
-                    var error = string.Join(",", result.Data.Results.Select(x => x.Error));
-                    log.Error(() => $"[FireBase] failure: status code '{result.StatusCode}' and error '{error}'. PN body '{notification.NotificationPayload.Body}'");
-                }
-                catch (Exception ex)
-                {
-                    log.ErrorException($"[FireBase] failure. PN body '{notification.NotificationPayload.Body}'", ex);
-                }
+                var error = string.Join(",", result.Data.Results.Select(x => x.Error));
+                log.Error(() => $"[FireBase] failure: status code '{result.StatusCode}' and error '{error}'. PN body '{notification.NotificationPayload.Body}'");
             }
         }
 
