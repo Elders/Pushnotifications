@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 
 namespace PushNotifications.Delivery.Bulk
 {
-    public class BulkDelivery<T> : IPushNotificationDelivery where T : IPushNotificationBulkDelivery
+    public class BulkDelivery<T> : IDisposable, IPushNotificationDelivery where T : IPushNotificationBulkDelivery
     {
         readonly T delivery;
 
@@ -15,7 +16,7 @@ namespace PushNotifications.Delivery.Bulk
 
         readonly int recipientsCountBeforeFlush;
 
-        DateTime nextExecution;
+        private Timer timer;
 
         ConcurrentDictionary<NotificationDeliveryModel, List<SubscriptionToken>> store;
 
@@ -29,8 +30,7 @@ namespace PushNotifications.Delivery.Bulk
             this.recipientsCountBeforeFlush = recipientsCountBeforeFlush;
 
             store = new ConcurrentDictionary<NotificationDeliveryModel, List<SubscriptionToken>>();
-            nextExecution = DateTime.UtcNow;
-            Flush();
+            timer = new Timer(x => Flush(), this, TimeSpan.Zero, timeSpanBeforeFlush);
         }
 
         public void Send(SubscriptionToken token, NotificationDeliveryModel notification)
@@ -55,11 +55,17 @@ namespace PushNotifications.Delivery.Bulk
                     delivery.Send(tokens, key);
                 }
             }
+        }
 
-            if (nextExecution < DateTime.UtcNow)
+        public void Dispose()
+        {
+            if (timer != null)
             {
-                nextExecution = DateTime.UtcNow.Add(timeSpanBeforeFlush);
-                Task.Delay(timeSpanBeforeFlush).ContinueWith(t => Flush());
+                lock (this)
+                {
+                    timer?.Dispose();
+                    timer = null;
+                }
             }
         }
     }
