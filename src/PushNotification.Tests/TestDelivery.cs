@@ -13,17 +13,19 @@ namespace PushNotification.Tests
             this.store = new List<KeyValuePair<SubscriptionToken, NotificationDeliveryModel>>();
         }
 
-        public void Send(SubscriptionToken token, NotificationDeliveryModel notification)
+        public bool Send(SubscriptionToken token, NotificationDeliveryModel notification)
         {
             store.Add(new KeyValuePair<SubscriptionToken, NotificationDeliveryModel>(token, notification));
+            return true;
         }
 
-        public void Send(IList<SubscriptionToken> tokens, NotificationDeliveryModel notification)
+        public bool Send(IList<SubscriptionToken> tokens, NotificationDeliveryModel notification)
         {
             foreach (var token in tokens)
             {
                 store.Add(new KeyValuePair<SubscriptionToken, NotificationDeliveryModel>(token, notification));
             }
+            return true;
         }
 
         public List<KeyValuePair<SubscriptionToken, NotificationDeliveryModel>> Store { get { return new List<KeyValuePair<SubscriptionToken, NotificationDeliveryModel>>(store); } }

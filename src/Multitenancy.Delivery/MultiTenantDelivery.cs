@@ -15,14 +15,14 @@ namespace Multitenancy.Delivery
             this.multiTenantDeliveryProvisioner = multiTenantDeliveryProvisioner;
         }
 
-        public void Send(SubscriptionToken token, NotificationDeliveryModel notification)
+        public bool Send(SubscriptionToken token, NotificationDeliveryModel notification)
         {
             if (ReferenceEquals(null, token) == true) throw new ArgumentNullException(nameof(token));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
 
             var delivery = multiTenantDeliveryProvisioner.ResolveDelivery(notification);
 
-            delivery.Send(token, notification);
+            return delivery.Send(token, notification);
         }
     }
 }

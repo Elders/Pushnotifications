@@ -63,7 +63,7 @@ namespace Multitenancy.Delivery
 
             var fireBaseRestClient = new RestSharp.RestClient(baseUrl);
             var fireBaseDelivery = new FireBaseDelivery(fireBaseRestClient, NewtonsoftJsonSerializer.Default(), settings.ServerKey);
-            var fireBaseBulkDelivery = new BulkDelivery<FireBaseDelivery>(fireBaseDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush);
+            var fireBaseBulkDelivery = new InMemoryBufferedDelivery<FireBaseDelivery>(fireBaseDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush);
 
             var type = typeof(FireBaseNotificationDelivery);
             store.Add(new MultiTenantStoreItem(settings.Tenant, type, fireBaseBulkDelivery));
@@ -77,7 +77,7 @@ namespace Multitenancy.Delivery
 
             var pushyRestClient = new RestSharp.RestClient(baseUrl);
             var pushyDelivery = new PushyDelivery(pushyRestClient, NewtonsoftJsonSerializer.Default(), settings.ServerKey);
-            var pushyBulkDelivery = new BulkDelivery<PushyDelivery>(pushyDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush);
+            var pushyBulkDelivery = new InMemoryBufferedDelivery<PushyDelivery>(pushyDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush);
 
             var type = typeof(PushyNotificationDelivery);
             store.Add(new MultiTenantStoreItem(settings.Tenant, type, pushyBulkDelivery));

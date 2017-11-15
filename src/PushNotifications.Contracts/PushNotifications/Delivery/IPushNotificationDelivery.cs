@@ -2,6 +2,6 @@
 {
     public interface IPushNotificationDelivery
     {
-        void Send(SubscriptionToken token, NotificationDeliveryModel notification);
+        bool Send(SubscriptionToken token, NotificationDeliveryModel notification);
     }
 }

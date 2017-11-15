@@ -4,6 +4,6 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
 {
     public interface IPushNotificationBulkDelivery
     {
-        void Send(IList<SubscriptionToken> tokens, NotificationDeliveryModel notification);
+        bool Send(IList<SubscriptionToken> tokens, NotificationDeliveryModel notification);
     }
 }

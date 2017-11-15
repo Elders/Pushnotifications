@@ -31,12 +31,12 @@ namespace PushNotifications.Delivery.Pushy
             this.serverKey = serverKey;
         }
 
-        public void Send(SubscriptionToken token, NotificationDeliveryModel notification)
+        public bool Send(SubscriptionToken token, NotificationDeliveryModel notification)
         {
-            Send(new List<SubscriptionToken> { token }, notification);
+            return Send(new List<SubscriptionToken> { token }, notification);
         }
 
-        public void Send(IList<SubscriptionToken> tokens, NotificationDeliveryModel notification)
+        public bool Send(IList<SubscriptionToken> tokens, NotificationDeliveryModel notification)
         {
             if (ReferenceEquals(null, tokens) == true) throw new ArgumentNullException(nameof(tokens));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
@@ -55,7 +55,9 @@ namespace PushNotifications.Delivery.Pushy
             if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Success == false)
             {
                 log.Error(() => $"[PushyBase] failure: status code '{result.StatusCode}' and error '{result.Data.Error}'. PN body '{notification.NotificationPayload.Body}'");
+                return false;
             }
+            return true;
         }
 
         IRestRequest CreateRestRequest(string resource, Method method)

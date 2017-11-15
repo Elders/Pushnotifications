@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace PushNotification.Tests
 {
-    [Subject(typeof(BulkDelivery<TestDelivery>))]
+    [Subject(typeof(InMemoryBufferedDelivery<TestDelivery>))]
     public class When_sending_pushnotification_in_bulk_using_timespan_to_flush
     {
         Establish ctx = () =>
@@ -17,7 +17,7 @@ namespace PushNotification.Tests
             timeSpanBeforeFlush = new TimeSpan(0, 0, 0, 1);
             countOfRecipientsBeforeFlus = int.MaxValue;
             concreateDelivery = new TestDelivery();
-            bulkDelivery = new BulkDelivery<IPushNotificationBulkDelivery>(concreateDelivery, timeSpanBeforeFlush, countOfRecipientsBeforeFlus);
+            bulkDelivery = new InMemoryBufferedDelivery<IPushNotificationBulkDelivery>(concreateDelivery, timeSpanBeforeFlush, countOfRecipientsBeforeFlus);
 
             expirationDateOfNotification = Timestamp.JudgementDay();
             countOfRecipients = 10000;
@@ -33,7 +33,7 @@ namespace PushNotification.Tests
         It should_have_sent_notifications_to_all_recipients_after_waiting_for_the_timespan = () => concreateDelivery.Store.Count().ShouldEqual(countOfRecipients);
 
         static TestDelivery concreateDelivery;
-        static BulkDelivery<IPushNotificationBulkDelivery> bulkDelivery;
+        static InMemoryBufferedDelivery<IPushNotificationBulkDelivery> bulkDelivery;
         static TimeSpan timeSpanBeforeFlush;
         static int countOfRecipientsBeforeFlus;
         static Timestamp expirationDateOfNotification;

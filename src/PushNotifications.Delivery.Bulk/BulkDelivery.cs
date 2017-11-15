@@ -2,13 +2,12 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 
 namespace PushNotifications.Delivery.Bulk
 {
-    public class BulkDelivery<T> : IDisposable, IPushNotificationDelivery where T : IPushNotificationBulkDelivery
+    public class InMemoryBufferedDelivery<T> : IDisposable, IPushNotificationDelivery where T : IPushNotificationBulkDelivery
     {
         readonly T delivery;
 
@@ -18,9 +17,11 @@ namespace PushNotifications.Delivery.Bulk
 
         private Timer timer;
 
-        ConcurrentDictionary<NotificationDeliveryModel, List<SubscriptionToken>> store;
+        bool canSend;
 
-        public BulkDelivery(T delivery, TimeSpan timeSpanBeforeFlush, int recipientsCountBeforeFlush)
+        ConcurrentDictionary<NotificationDeliveryModel, List<SubscriptionToken>> buffer;
+
+        public InMemoryBufferedDelivery(T delivery, TimeSpan timeSpanBeforeFlush, int recipientsCountBeforeFlush)
         {
             if (ReferenceEquals(null, delivery) == true) throw new ArgumentNullException(nameof(delivery));
             if (ReferenceEquals(null, timeSpanBeforeFlush) == true) throw new ArgumentNullException(nameof(timeSpanBeforeFlush));
@@ -28,33 +29,37 @@ namespace PushNotifications.Delivery.Bulk
             this.delivery = delivery;
             this.timeSpanBeforeFlush = timeSpanBeforeFlush;
             this.recipientsCountBeforeFlush = recipientsCountBeforeFlush;
-
-            store = new ConcurrentDictionary<NotificationDeliveryModel, List<SubscriptionToken>>();
+            canSend = true;
+            buffer = new ConcurrentDictionary<NotificationDeliveryModel, List<SubscriptionToken>>();
             timer = new Timer(x => Flush(), this, TimeSpan.Zero, timeSpanBeforeFlush);
         }
 
-        public void Send(SubscriptionToken token, NotificationDeliveryModel notification)
+        public bool Send(SubscriptionToken token, NotificationDeliveryModel notification)
         {
             if (ReferenceEquals(null, token) == true) throw new ArgumentNullException(nameof(token));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
-
-            store.AddOrUpdate(notification, new List<SubscriptionToken> { token }, (k, v) => { v.Add(token); return v; });
+            if (canSend == false)
+                return false;
+            buffer.AddOrUpdate(notification, new List<SubscriptionToken> { token }, (k, v) => { v.Add(token); return v; });
 
             List<SubscriptionToken> tokens;
-            if (store.TryGetValue(notification, out tokens) && tokens.Count >= recipientsCountBeforeFlush)
-                Flush();
+            if (buffer.TryGetValue(notification, out tokens) && tokens.Count >= recipientsCountBeforeFlush)
+                return Flush();
+
+            return true;
         }
 
-        void Flush()
+        bool Flush()
         {
-            foreach (var key in store.Keys)
+            foreach (var key in buffer.Keys)
             {
                 List<SubscriptionToken> tokens;
-                if (store.TryRemove(key, out tokens))
+                if (buffer.TryRemove(key, out tokens))
                 {
-                    delivery.Send(tokens, key);
+                    return delivery.Send(tokens, key);
                 }
             }
+            return true;
         }
 
         public void Dispose()
@@ -63,8 +68,10 @@ namespace PushNotifications.Delivery.Bulk
             {
                 lock (this)
                 {
+                    Flush();
                     timer?.Dispose();
                     timer = null;
+                    canSend = false;
                 }
             }
         }
