@@ -6,9 +6,9 @@ namespace Multitenancy.Delivery
 {
     public class MultiTenantDelivery : IPushNotificationDelivery
     {
-        readonly IMultiTenantDeliveryProvisioner multiTenantDeliveryProvisioner;
+        readonly IDeliveryProvisioner multiTenantDeliveryProvisioner;
 
-        public MultiTenantDelivery(IMultiTenantDeliveryProvisioner multiTenantDeliveryProvisioner)
+        public MultiTenantDelivery(IDeliveryProvisioner multiTenantDeliveryProvisioner)
         {
             if (ReferenceEquals(null, multiTenantDeliveryProvisioner)) throw new ArgumentNullException(nameof(multiTenantDeliveryProvisioner));
 
@@ -17,9 +17,7 @@ namespace Multitenancy.Delivery
 
         public void Send(SubscriptionToken token, NotificationDeliveryModel notification)
         {
-            var tenant = notification.Id.Tenant;
-            var notificationType = notification.GetType();
-            var delivery = multiTenantDeliveryProvisioner.GetDelivery(tenant, notificationType);
+            var delivery = multiTenantDeliveryProvisioner.ResolveDelivery(notification);
 
             delivery.Send(token, notification);
         }

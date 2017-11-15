@@ -84,14 +84,14 @@ namespace PushNotifications.Converters.Extensions
         public static string UrlDecode(this string self)
         {
             var urlDecoded = System.Web.HttpServerUtility.UrlTokenDecode(self);
-            var decodedString = System.Text.ASCIIEncoding.ASCII.GetString(urlDecoded);
+            var decodedString = System.Text.Encoding.ASCII.GetString(urlDecoded);
 
             return decodedString;
         }
 
         public static string UrlEncode(this string self)
         {
-            var stringBytes = System.Text.ASCIIEncoding.ASCII.GetBytes(self);
+            var stringBytes = System.Text.Encoding.ASCII.GetBytes(self);
             var urlEncoded = System.Web.HttpServerUtility.UrlTokenEncode(stringBytes);
 
             return urlEncoded;

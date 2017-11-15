@@ -12,7 +12,7 @@ using PushNotifications.Delivery.Pushy;
 
 namespace Multitenancy.Delivery
 {
-    public class PandoraMultiTenantDeliveryProvisioner : IMultiTenantDeliveryProvisioner
+    public class PandoraMultiTenantDeliveryProvisioner : IDeliveryProvisioner
     {
         readonly ISet<MultiTenantStoreItem> store;
 
@@ -25,8 +25,10 @@ namespace Multitenancy.Delivery
             Initialize();
         }
 
-        public IPushNotificationDelivery GetDelivery(string tenant, Type notificationType)
+        public IPushNotificationDelivery ResolveDelivery(NotificationDeliveryModel notification)
         {
+            var tenant = notification.Id.Tenant;
+            var notificationType = notification.GetType();
             var storeItem = store.SingleOrDefault(x => x.Tenant == tenant && x.Type == notificationType);
 
             if (ReferenceEquals(null, storeItem) == true) throw new NotSupportedException($"There is no registered delivery for type {notificationType.Name} and tenant {tenant}");
