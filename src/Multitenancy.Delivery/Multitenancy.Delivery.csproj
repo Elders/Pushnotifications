@@ -56,7 +56,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IMultiTenantDeliveryProvisioner.cs" />
+    <Compile Include="IDeliveryProvisioner.cs" />
     <Compile Include="MultiTenantDelivery.cs" />
     <Compile Include="MultiTenantStoreItem.cs" />
     <Compile Include="PandoraMultiTenantDeliveryProvisioner.cs" />

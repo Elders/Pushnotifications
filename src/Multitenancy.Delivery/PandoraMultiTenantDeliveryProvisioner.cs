@@ -20,6 +20,8 @@ namespace Multitenancy.Delivery
 
         public PandoraMultiTenantDeliveryProvisioner(Pandora pandora)
         {
+            if (ReferenceEquals(null, pandora) == true) throw new ArgumentNullException(nameof(pandora));
+
             this.store = new HashSet<MultiTenantStoreItem>();
             this.pandora = pandora;
             Initialize();
@@ -27,6 +29,8 @@ namespace Multitenancy.Delivery
 
         public IPushNotificationDelivery ResolveDelivery(NotificationDeliveryModel notification)
         {
+            if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
+
             var tenant = notification.Id.Tenant;
             var notificationType = notification.GetType();
             var storeItem = store.SingleOrDefault(x => x.Tenant == tenant && x.Type == notificationType);

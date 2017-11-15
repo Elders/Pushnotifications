@@ -8,6 +8,10 @@ namespace Multitenancy.Delivery
     {
         public MultiTenantStoreItem(string tenant, Type type, IPushNotificationDelivery delivery)
         {
+            if (string.IsNullOrEmpty(tenant) == true) throw new ArgumentNullException(nameof(tenant));
+            if (ReferenceEquals(null, type) == true) throw new ArgumentNullException(nameof(type));
+            if (ReferenceEquals(null, delivery) == true) throw new ArgumentNullException(nameof(delivery));
+
             Tenant = tenant;
             Type = type;
             Delivery = delivery;
