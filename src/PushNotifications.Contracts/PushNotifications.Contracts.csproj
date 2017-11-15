@@ -45,7 +45,6 @@
     <Compile Include="FireBaseSubscriptions\FireBaseNotificationDelivery.cs" />
     <Compile Include="PushNotifications\Delivery\IPushNotificationBulkDelivery.cs" />
     <Compile Include="PushNotifications\Delivery\IPushNotificationDelivery.cs" />
-    <Compile Include="PushNotifications\Delivery\IPushNotificationDeliveryResolver.cs" />
     <Compile Include="PushNotifications\Delivery\NotificationDeliveryModel.cs" />
     <Compile Include="PushySubscriptions\Commands\SubscribeUserForPushy.cs" />
     <Compile Include="PushySubscriptions\Commands\UnSubscribeUserFromPushy.cs" />

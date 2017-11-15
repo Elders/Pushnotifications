@@ -2,44 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using Elders.Pandora;
-using Multitenancy.TenantResolver;
+using Multitenancy.Delivery.Serialization;
 using PushNotifications.Contracts.FireBaseSubscriptions;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts.PushySubscriptions;
 using PushNotifications.Delivery.Bulk;
 using PushNotifications.Delivery.FireBase;
 using PushNotifications.Delivery.Pushy;
-using PushNotifications.WS.Serialization;
 
-namespace PushNotifications.WS.Multitenancy
+namespace Multitenancy.Delivery
 {
-    public class MultiTenantDeliveryResolver : IPushNotificationDeliveryResolver
+    public class PandoraMultiTenantDeliveryProvisioner : IMultiTenantDeliveryProvisioner
     {
         readonly ISet<MultiTenantStoreItem> store;
 
-        readonly ITenantResolver tenantResolver;
-
         readonly Pandora pandora;
 
-        public MultiTenantDeliveryResolver(ITenantResolver tenantResolver, Pandora pandora)
+        public PandoraMultiTenantDeliveryProvisioner(Pandora pandora)
         {
-            if (ReferenceEquals(null, tenantResolver) == true) throw new ArgumentNullException(nameof(tenantResolver));
-            if (ReferenceEquals(null, pandora) == true) throw new ArgumentNullException(nameof(pandora));
-
-            store = new HashSet<MultiTenantStoreItem>();
-            this.tenantResolver = tenantResolver;
+            this.store = new HashSet<MultiTenantStoreItem>();
             this.pandora = pandora;
-
             Initialize();
         }
 
-        public IPushNotificationDelivery Resolve(NotificationDeliveryModel notification)
+        public IPushNotificationDelivery GetDelivery(string tenant, Type notificationType)
         {
-            var tenant = tenantResolver.Resolve(notification.Id);
-            var type = notification.GetType();
-            var storeItem = store.FirstOrDefault(x => x.Tenant == tenant && x.Type == type);
+            var storeItem = store.SingleOrDefault(x => x.Tenant == tenant && x.Type == notificationType);
 
-            if (ReferenceEquals(null, storeItem) == true) throw new NotSupportedException($"There is no registered delivery for type {type.Name} and tenant {tenant}");
+            if (ReferenceEquals(null, storeItem) == true) throw new NotSupportedException($"There is no registered delivery for type {notificationType.Name} and tenant {tenant}");
             return storeItem.Delivery;
         }
 
@@ -62,7 +52,6 @@ namespace PushNotifications.WS.Multitenancy
         void RegisterFireBaseDelivery(FireBaseSettings settings)
         {
             var baseUrl = "https://fcm.googleapis.com/";
-            //var serverKey = "AAAAqg7V420:APA91bEggfsid7oJGnlravJ0gwCJ8ZMthEfWTfecHMOQjYVFdToIXxLXQj0oomBeVDNYCFZQ_sfbqASpsGcqOkJdKASpxCxGYHvof3ngENX_iSD_bl65PriDIAESPhhvqNeBZqw0wb4Z";
             var timeSpanBeforeFlush = TimeSpan.FromSeconds(settings.TimeSpanBeforeFlushInSeconds);
             var recipientsCountBeforeFlush = settings.RecipientsCountBeforeFlush;
 
@@ -77,7 +66,6 @@ namespace PushNotifications.WS.Multitenancy
         void RegisterPushyDelivery(PushySettings settings)
         {
             var baseUrl = "https://api.pushy.me/";
-            //var serverKey = "cd8100e3f367777f2dd999c5d97c5cc30d099fcf4da073749232140e365e09f9";
             var timeSpanBeforeFlush = TimeSpan.FromSeconds(settings.TimeSpanBeforeFlushInSeconds);
             var recipientsCountBeforeFlush = settings.RecipientsCountBeforeFlush;
 
@@ -88,27 +76,27 @@ namespace PushNotifications.WS.Multitenancy
             var type = typeof(PushyNotificationDelivery);
             store.Add(new MultiTenantStoreItem(settings.Tenant, type, pushyBulkDelivery));
         }
-    }
 
-    public class FireBaseSettings
-    {
-        public long TimeSpanBeforeFlushInSeconds { get; set; }
+        class PushySettings
+        {
+            public long TimeSpanBeforeFlushInSeconds { get; set; }
 
-        public int RecipientsCountBeforeFlush { get; set; }
+            public int RecipientsCountBeforeFlush { get; set; }
 
-        public string ServerKey { get; set; }
+            public string ServerKey { get; set; }
 
-        public string Tenant { get; set; }
-    }
+            public string Tenant { get; set; }
+        }
 
-    public class PushySettings
-    {
-        public long TimeSpanBeforeFlushInSeconds { get; set; }
+        class FireBaseSettings
+        {
+            public long TimeSpanBeforeFlushInSeconds { get; set; }
 
-        public int RecipientsCountBeforeFlush { get; set; }
+            public int RecipientsCountBeforeFlush { get; set; }
 
-        public string ServerKey { get; set; }
+            public string ServerKey { get; set; }
 
-        public string Tenant { get; set; }
+            public string Tenant { get; set; }
+        }
     }
 }

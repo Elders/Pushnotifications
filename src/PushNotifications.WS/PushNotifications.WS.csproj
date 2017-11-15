@@ -132,9 +132,6 @@
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="CustomeEndpointConsumerRegistrations.cs" />
     <Compile Include="LogStartup.cs" />
-    <Compile Include="Multitenancy\DeliveryThatSupportsMultipleDeleries.cs" />
-    <Compile Include="Multitenancy\MultiTenantDeliveryResolver.cs" />
-    <Compile Include="Multitenancy\MultiTenantStoreItem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotificationService.cs">
@@ -145,9 +142,6 @@
     </Compile>
     <Compile Include="PushNotificationStartup.cs" />
     <Compile Include="PushNotificationsWSAssembly.cs" />
-    <Compile Include="Serialization\IJsonSerializer.cs" />
-    <Compile Include="Serialization\NewtonsoftJsonSerializer.cs" />
-    <Compile Include="Serialization\SerializerFactory.cs" />
     <Compile Include="ServiceLocator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -163,9 +157,9 @@
       <Project>{61e2a02a-743a-46d6-94a1-3e9c97db93b6}</Project>
       <Name>Multitenancy.Cassandra.EventStore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Multitenancy\Multitenancy.csproj">
-      <Project>{C7B50755-9DE7-4217-89A9-31688B2DEF21}</Project>
-      <Name>Multitenancy</Name>
+    <ProjectReference Include="..\Multitenancy.Delivery\Multitenancy.Delivery.csproj">
+      <Project>{FC795C4C-F0F4-49C3-B0CC-4227390E4F07}</Project>
+      <Name>Multitenancy.Delivery</Name>
     </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}</Project>

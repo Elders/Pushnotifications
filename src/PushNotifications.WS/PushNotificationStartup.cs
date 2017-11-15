@@ -16,16 +16,14 @@ using Elders.Cronus.Pipeline.Transport.RabbitMQ.Config;
 using Elders.Cronus.Projections.Cassandra.Config;
 using Elders.Cronus.Projections.Cassandra.Snapshots;
 using Elders.Pandora;
-using Multitenancy.Cassandra;
 using Multitenancy.Cassandra.EventStore;
 using Multitenancy.Cassandra.Projections;
-using Multitenancy.TenantResolver;
+using Multitenancy.Delivery;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Ports;
 using PushNotifications.Projections;
 using PushNotifications.WS.Logging;
-using PushNotifications.WS.Multitenancy;
 
 namespace PushNotifications.WS
 {
@@ -201,9 +199,8 @@ namespace PushNotifications.WS
 
         static ICronusSettings UseMultiTenantDelivery(this ICronusSettings cronusSettings, Pandora pandora)
         {
-            cronusSettings.Container.RegisterSingleton<ITenantResolver>(() => new DefaultTenantResolver());
-            cronusSettings.Container.RegisterSingleton(() => new MultiTenantDeliveryResolver(cronusSettings.Container.Resolve<ITenantResolver>(), pandora));
-            cronusSettings.Container.RegisterTransient<IPushNotificationDelivery>(() => new DeliveryThatSupportsMultipleDeleries(cronusSettings.Container.Resolve<MultiTenantDeliveryResolver>()));
+            cronusSettings.Container.RegisterSingleton<IMultiTenantDeliveryProvisioner>(() => new PandoraMultiTenantDeliveryProvisioner(pandora));
+            cronusSettings.Container.RegisterSingleton<IPushNotificationDelivery>(() => new MultiTenantDelivery(cronusSettings.Container.Resolve<IMultiTenantDeliveryProvisioner>()));
             return cronusSettings;
         }
     }

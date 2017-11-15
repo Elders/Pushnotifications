@@ -2,7 +2,7 @@
 using Elders.Cronus.DomainModeling;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 
-namespace PushNotifications.WS.Multitenancy
+namespace Multitenancy.Delivery
 {
     public class MultiTenantStoreItem : ValueObject<MultiTenantStoreItem>
     {

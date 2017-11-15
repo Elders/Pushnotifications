@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Newtonsoft.Json;
 
-namespace PushNotifications.WS.Serialization
+namespace Multitenancy.Delivery.Serialization
 {
     public class NewtonsoftJsonSerializer : IJsonSerializer
     {
