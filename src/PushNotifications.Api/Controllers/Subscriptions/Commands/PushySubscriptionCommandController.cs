@@ -19,7 +19,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         public IHttpActionResult SubscribeToPushy(PushySubscribeModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
-            if (Urn.IsUrn(model.SubscriberId) == false) return this.NotAcceptable($"{nameof(model.SubscriberId)} must be URN.");
+            if (Urn.IsUrn(model.SubscriberUrn) == false) return this.NotAcceptable($"{nameof(model.SubscriberUrn)} must be URN.");
 
             var command = model.AsSubscribeCommand();
             if (command.IsValid())
@@ -42,7 +42,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         public IHttpActionResult UnSubscribeFromPushy(PushySubscribeModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
-            if (Urn.IsUrn(model.SubscriberId) == false) return this.NotAcceptable($"{nameof(model.SubscriberId)} must be URN.");
+            if (Urn.IsUrn(model.SubscriberUrn) == false) return this.NotAcceptable($"{nameof(model.SubscriberUrn)} must be URN.");
 
             var command = model.AsUnSubscribeCommand();
             if (command.IsValid())

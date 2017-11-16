@@ -1,5 +1,4 @@
-﻿using Elders.Cronus.DomainModeling;
-using Elders.Web.Api;
+﻿using Elders.Web.Api;
 using System.Web.Http;
 using PushNotifications.Contracts;
 using Discovery.Contracts;
@@ -23,11 +22,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Queries
         [HttpGet, Route("PushySubscriberTokens"), Discoverable("PushySubscriberTokens", "v1")]
         public IHttpActionResult GetPushySubscriberTokens(SubscriberTokensModel model)
         {
-            if (Urn.IsUrn(model.SubscriberId) == false)
-                return Ok(new ResponseResult());
-
-            var urn = StringTenantUrn.Parse(model.SubscriberId);
-            var subscriberId = new SubscriberId(urn.Id, urn.Tenant);
+            var subscriberId = new SubscriberId(model.SubscriberUrn.Id, model.SubscriberUrn.Tenant);
 
             var projectionReponse = Projections.Get<SubscriberTokensForPushyProjection>(subscriberId);
             if (projectionReponse.Success == true)

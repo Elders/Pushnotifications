@@ -1,13 +1,14 @@
-﻿using PushNotifications.Contracts;
+﻿using Elders.Cronus.DomainModeling;
+using PushNotifications.Contracts;
 
 namespace PushNotifications.Api.Client.Models
 {
     public class PushNotificationSendModel
     {
-        public PushNotificationSendModel(string tenant, SubscriberId subscriberId, string title, string body, string sound, string icon, int badge, Timestamp expiresAt, bool contentAvailable)
+        public PushNotificationSendModel(StringTenantUrn subscriberUrn, string title, string body, string sound, string icon, int badge, Timestamp expiresAt, bool contentAvailable)
         {
-            Tenant = tenant;
-            SubscriberId = subscriberId;
+            Tenant = subscriberUrn.Tenant;
+            SubscriberUrn = subscriberUrn;
             Title = title;
             Body = body;
             Sound = sound;
@@ -19,7 +20,7 @@ namespace PushNotifications.Api.Client.Models
 
         public string Tenant { get; private set; }
 
-        public SubscriberId SubscriberId { get; private set; }
+        public StringTenantUrn SubscriberUrn { get; private set; }
 
         public string Title { get; private set; }
 

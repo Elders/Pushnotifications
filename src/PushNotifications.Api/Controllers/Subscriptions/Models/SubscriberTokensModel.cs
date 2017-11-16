@@ -3,6 +3,7 @@ using PushNotifications.Api.Attributes;
 using System.Security.Claims;
 using System.Web.Http.ModelBinding;
 using PushNotifications.Api.Converters;
+using Elders.Cronus.DomainModeling;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Models
 {
@@ -13,6 +14,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Models
         public string Tenant { get; set; }
 
         [ClaimsIdentity(AuthorizeClaimType.Subject, ClaimTypes.NameIdentifier)]
-        public string SubscriberId { get; set; }
+        public StringTenantUrn SubscriberUrn { get; set; }
     }
 }

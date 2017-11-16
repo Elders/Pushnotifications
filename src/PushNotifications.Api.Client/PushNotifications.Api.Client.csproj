@@ -82,11 +82,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
+    <Compile Include="Models\SubscribeForPushyModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotificationsApiClientAssembly.cs" />
     <Compile Include="Models\PushNotificationSendModel.cs" />
     <Compile Include="PushNotificationsRestClient.cs" />
     <Compile Include="Models\ResponseResult.cs" />
+    <Compile Include="Models\SubscribeForFireBaseModel.cs" />
     <Compile Include="Usage.cs" />
   </ItemGroup>
   <ItemGroup>

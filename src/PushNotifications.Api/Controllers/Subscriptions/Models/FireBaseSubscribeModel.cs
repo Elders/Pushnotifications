@@ -1,15 +1,15 @@
 ﻿using Elders.Cronus.DomainModeling;
 using Elders.Web.Api;
 using System.ComponentModel.DataAnnotations;
-using PushNotifications.Contracts.PushySubscriptions.Commands;
-using PushNotifications.Contracts.PushySubscriptions;
+using PushNotifications.Contracts.FireBaseSubscriptions.Commands;
+using PushNotifications.Contracts.FireBaseSubscriptions;
 using PushNotifications.Contracts;
 using PushNotifications.Api.Attributes;
 using System.Security.Claims;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
-    public class PushySubscribeModel
+    public class FireBaseSubscribeModel
     {
         [AuthorizeClaim(AuthorizeClaimType.Tenant, AuthorizeClaimType.TenantClient)]
         public string Tenant { get; set; }
@@ -20,18 +20,18 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         [Required]
         public SubscriptionToken Token { get; set; }
 
-        public SubscribeUserForPushy AsSubscribeCommand()
+        public SubscribeUserForFireBase AsSubscribeCommand()
         {
-            var subscriptionId = new PushySubscriptionId(Token, Tenant);
+            var subscriptionId = new FireBaseSubscriptionId(Token, Tenant);
             var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
-            return new SubscribeUserForPushy(subscriptionId, subscriberId, Token);
+            return new SubscribeUserForFireBase(subscriptionId, subscriberId, Token);
         }
 
-        public UnSubscribeUserFromPushy AsUnSubscribeCommand()
+        public UnSubscribeUserFromFireBase AsUnSubscribeCommand()
         {
-            var subscriptionId = new PushySubscriptionId(Token, Tenant);
+            var subscriptionId = new FireBaseSubscriptionId(Token, Tenant);
             var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
-            return new UnSubscribeUserFromPushy(subscriptionId, subscriberId, Token);
+            return new UnSubscribeUserFromFireBase(subscriptionId, subscriberId, Token);
         }
     }
 }

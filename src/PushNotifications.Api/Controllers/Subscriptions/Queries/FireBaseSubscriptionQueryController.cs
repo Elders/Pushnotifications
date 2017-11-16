@@ -23,10 +23,10 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Queries
         [HttpGet, Route("FireBaseSubscriberTokens"), Discoverable("FireBaseSubscriberTokens", "v1")]
         public IHttpActionResult GetFireBaseSubscriberTokens(SubscriberTokensModel model)
         {
-            if (Urn.IsUrn(model.SubscriberId) == false)
+            if (Urn.IsUrn(model.SubscriberUrn) == false)
                 return Ok(new ResponseResult());
 
-            var urn = StringTenantUrn.Parse(model.SubscriberId);
+            var urn = StringTenantUrn.Parse(model.SubscriberUrn);
             var subscriberId = new SubscriberId(urn.Id, urn.Tenant);
 
             var projectionReponse = Projections.Get<SubscriberTokensForFireBaseProjection>(subscriberId);
@@ -37,6 +37,5 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Queries
 
             return Ok(new ResponseResult());
         }
-
     }
 }

@@ -8,6 +8,34 @@ using PushNotifications.Converters.Extensions;
 
 namespace PushNotifications.Converters
 {
+    public class StringTenantUrnConverter : GenericJsonConverter<string, StringTenantUrn>
+    {
+        public override bool CanConvertValue(Type valueType, IEnumerable<Claim> claims)
+        {
+            return typeof(IConvertible).IsAssignableFrom(valueType);
+        }
+
+        public override StringTenantUrn Convert(string jObject, Type objectType, IEnumerable<Claim> claims)
+        {
+            if (string.IsNullOrEmpty(jObject))
+                return null;
+
+            if (jObject.CanUrlTokenDecode())
+                jObject = jObject.UrlDecode();
+
+            StringTenantUrn x;
+            if (StringTenantUrn.TryParse(jObject, out x))
+                return x;
+
+            throw new InvalidOperationException($"Unable to create StringTenantUrn based on {jObject}");
+        }
+
+        public override object GetValue(StringTenantUrn instance)
+        {
+            return instance.Value.UrlEncode();
+        }
+    }
+
     public class StringTenantIdConverter : GenericJsonConverter<string, StringTenantId>
     {
         public override bool CanConvertValue(Type valueType, IEnumerable<Claim> claims)

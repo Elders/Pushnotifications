@@ -57,21 +57,13 @@ namespace PushNotifications.Api.Client
             return restSharpIdentityModelClient.Execute<ResponseResult>(resource, Method.POST, subscription, authenticator);
         }
 
-    }
-
-    public class SubscribeForFireBaseModel
-    {
-        public SubscribeForFireBaseModel(string tenant, string subscriberId, SubscriptionToken token)
+        public IRestResponse SubscribeForPushy(SubscribeForPushyModel subscription, Authenticator authenticator = null)
         {
-            Tenant = tenant;
-            SubscriberId = subscriberId;
-            Token = token;
+            if (ReferenceEquals(null, subscription) == true) throw new ArgumentNullException(nameof(subscription));
+
+            const string resource = "Subscriptions/PushySubscription/Subscribe";
+
+            return restSharpIdentityModelClient.Execute<ResponseResult>(resource, Method.POST, subscription, authenticator);
         }
-
-        public string Tenant { get; private set; }
-
-        public string SubscriberId { get; private set; }
-
-        public SubscriptionToken Token { get; private set; }
     }
 }

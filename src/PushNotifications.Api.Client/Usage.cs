@@ -1,4 +1,5 @@
 ﻿using System;
+using Elders.Cronus.DomainModeling;
 using PushNotifications.Contracts;
 
 namespace PushNotifications.Api.Client
@@ -24,13 +25,15 @@ namespace PushNotifications.Api.Client
             //}
 
             var pruvitSubscriber = new Contracts.SubscriberId("76277", "pruvit");
-            var pruvitSubscribe = pnClient.SubscribeForFireBase(new SubscribeForFireBaseModel("pruvit", pruvitSubscriber.Urn.Value, new SubscriptionToken("exk_tnns_OI:APA91bFzlzvFysNlYpVmvdBbT1gVS66PeJ8izHLGwO0i3nu8TZGYBQrorURNM_fu2tPupGi9Zm1k-u1wIjwwclqdz-9IGjxbtqLa4PlH2B8h6T4xr1JMULKJbVeaZEcGJO1K2_0tmBxd")));
-            var x = pnClient.SendPushNotification(new Models.PushNotificationSendModel("pruvit", new Contracts.SubscriberId("76277", "pruvit"), $"titleee", "bodyy", "default", string.Empty, 0, t, true));
+            var pruvitUrn = StringTenantUrn.Parse(pruvitSubscriber.Urn.Value);
+            var pruvitSubscribe = pnClient.SubscribeForFireBase(new SubscribeForFireBaseModel(pruvitUrn, new SubscriptionToken("exk_tnns_OI:APA91bFzlzvFysNlYpVmvdBbT1gVS66PeJ8izHLGwO0i3nu8TZGYBQrorURNM_fu2tPupGi9Zm1k-u1wIjwwclqdz-9IGjxbtqLa4PlH2B8h6T4xr1JMULKJbVeaZEcGJO1K2_0tmBxd")));
+            var x = pnClient.SendPushNotification(new Models.PushNotificationSendModel(pruvitUrn, $"titleee", "bodyy", "default", string.Empty, 0, t, true));
 
 
             var mvSubscriber = new Contracts.SubscriberId("76277", "mv");
-            var s = pnClient.SubscribeForFireBase(new SubscribeForFireBaseModel("mv", mvSubscriber.Urn.Value, new SubscriptionToken("exk_tnns_OI:APA91bFzlzvFysNlYpVmvdBbT1gVS66PeJ8izHLGwO0i3nu8TZGYBQrorURNM_fu2tPupGi9Zm1k-u1wIjwwclqdz-9IGjxbtqLa4PlH2B8h6T4xr1JMULKJbVeaZEcGJO1K2_0tmBxd")));
-            var xx = pnClientForMarketVision.SendPushNotification(new Models.PushNotificationSendModel("mv", mvSubscriber, $"titleee - MV", "bodyy", "default", string.Empty, 0, t, true));
+            var mvUrn = StringTenantUrn.Parse(mvSubscriber.Urn.Value);
+            var s = pnClient.SubscribeForFireBase(new SubscribeForFireBaseModel(mvUrn, new SubscriptionToken("exk_tnns_OI:APA91bFzlzvFysNlYpVmvdBbT1gVS66PeJ8izHLGwO0i3nu8TZGYBQrorURNM_fu2tPupGi9Zm1k-u1wIjwwclqdz-9IGjxbtqLa4PlH2B8h6T4xr1JMULKJbVeaZEcGJO1K2_0tmBxd")));
+            var xx = pnClientForMarketVision.SendPushNotification(new Models.PushNotificationSendModel( mvUrn, $"titleee - MV", "bodyy", "default", string.Empty, 0, t, true));
         }
     }
 }

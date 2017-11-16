@@ -78,6 +78,8 @@
     <Compile Include="Attributes\ScopeAttribute.cs" />
     <Compile Include="AvailableScopes.cs" />
     <Compile Include="Controllers\PushNotifications\Commands\PushNotificationsController.cs" />
+    <Compile Include="Controllers\PushNotifications\Models\PushNotificationSendModel.cs" />
+    <Compile Include="Controllers\Subscriptions\Models\FireBaseSubscribeModel.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\FireBaseSubscriptionCommandController.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\PushySubscriptionCommandController.cs" />
     <Compile Include="Controllers\Subscriptions\Models\PushySubscribeModel.cs" />
