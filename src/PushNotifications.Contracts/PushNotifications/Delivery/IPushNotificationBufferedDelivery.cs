@@ -2,7 +2,7 @@
 
 namespace PushNotifications.Contracts.PushNotifications.Delivery
 {
-    public interface IPushNotificationBulkDelivery
+    public interface IPushNotificationBufferedDelivery
     {
         bool Send(IList<SubscriptionToken> tokens, NotificationDeliveryModel notification);
     }

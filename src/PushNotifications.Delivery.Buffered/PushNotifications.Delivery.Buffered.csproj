@@ -7,8 +7,8 @@
     <ProjectGuid>{9BF5032E-B8A6-4F8C-B6FE-05BA192DCD5B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PushNotifications.Delivery.Bulk</RootNamespace>
-    <AssemblyName>PushNotifications.Delivery.Bulk</AssemblyName>
+    <RootNamespace>PushNotifications.Delivery.Buffered</RootNamespace>
+    <AssemblyName>PushNotifications.Delivery.Buffered</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -41,7 +41,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BulkDelivery.cs" />
+    <Compile Include="InMemoryBufferedDelivery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,13 +1,13 @@
 ﻿using System;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts;
-using PushNotifications.Delivery.Bulk;
+using PushNotifications.Delivery.Buffered;
 
 namespace PushNotification.Tests
 {
     public class Helper
     {
-        public void Send(InMemoryBufferedDelivery<IPushNotificationBulkDelivery> theDelivery, int count, NotificationDeliveryModel notification)
+        public void Send(InMemoryBufferedDelivery<IPushNotificationBufferedDelivery> theDelivery, int count, NotificationDeliveryModel notification)
         {
             for (int i = 0; i < count; i++)
             {

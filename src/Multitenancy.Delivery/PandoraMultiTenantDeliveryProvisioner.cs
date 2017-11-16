@@ -6,7 +6,7 @@ using Multitenancy.Delivery.Serialization;
 using PushNotifications.Contracts.FireBaseSubscriptions;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts.PushySubscriptions;
-using PushNotifications.Delivery.Bulk;
+using PushNotifications.Delivery.Buffered;
 using PushNotifications.Delivery.FireBase;
 using PushNotifications.Delivery.Pushy;
 
@@ -63,10 +63,10 @@ namespace Multitenancy.Delivery
 
             var fireBaseRestClient = new RestSharp.RestClient(baseUrl);
             var fireBaseDelivery = new FireBaseDelivery(fireBaseRestClient, NewtonsoftJsonSerializer.Default(), settings.ServerKey);
-            var fireBaseBulkDelivery = new InMemoryBufferedDelivery<FireBaseDelivery>(fireBaseDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush);
+            var fireBaseBufferedDelivery = new InMemoryBufferedDelivery<FireBaseDelivery>(fireBaseDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush);
 
             var type = typeof(FireBaseNotificationDelivery);
-            store.Add(new MultiTenantStoreItem(settings.Tenant, type, fireBaseBulkDelivery));
+            store.Add(new MultiTenantStoreItem(settings.Tenant, type, fireBaseBufferedDelivery));
         }
 
         void RegisterPushyDelivery(PushySettings settings)
@@ -77,10 +77,10 @@ namespace Multitenancy.Delivery
 
             var pushyRestClient = new RestSharp.RestClient(baseUrl);
             var pushyDelivery = new PushyDelivery(pushyRestClient, NewtonsoftJsonSerializer.Default(), settings.ServerKey);
-            var pushyBulkDelivery = new InMemoryBufferedDelivery<PushyDelivery>(pushyDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush);
+            var pushyBufferedDelivery = new InMemoryBufferedDelivery<PushyDelivery>(pushyDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush);
 
             var type = typeof(PushyNotificationDelivery);
-            store.Add(new MultiTenantStoreItem(settings.Tenant, type, pushyBulkDelivery));
+            store.Add(new MultiTenantStoreItem(settings.Tenant, type, pushyBufferedDelivery));
         }
 
         class PushySettings

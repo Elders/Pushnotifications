@@ -5,9 +5,9 @@ using System.Threading;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 
-namespace PushNotifications.Delivery.Bulk
+namespace PushNotifications.Delivery.Buffered
 {
-    public class InMemoryBufferedDelivery<T> : IDisposable, IPushNotificationDelivery where T : IPushNotificationBulkDelivery
+    public class InMemoryBufferedDelivery<T> : IDisposable, IPushNotificationDelivery where T : IPushNotificationBufferedDelivery
     {
         readonly T delivery;
 

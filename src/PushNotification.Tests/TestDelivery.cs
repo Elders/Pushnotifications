@@ -4,7 +4,7 @@ using PushNotifications.Contracts.PushNotifications.Delivery;
 
 namespace PushNotification.Tests
 {
-    public class TestDelivery : IPushNotificationDelivery, IPushNotificationBulkDelivery
+    public class TestDelivery : IPushNotificationDelivery, IPushNotificationBufferedDelivery
     {
         readonly List<KeyValuePair<SubscriptionToken, NotificationDeliveryModel>> store;
 

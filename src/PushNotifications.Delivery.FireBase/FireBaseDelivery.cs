@@ -10,7 +10,7 @@ using RestSharp.Serializers;
 
 namespace PushNotifications.Delivery.FireBase
 {
-    public class FireBaseDelivery : IPushNotificationDelivery, IPushNotificationBulkDelivery
+    public class FireBaseDelivery : IPushNotificationDelivery, IPushNotificationBufferedDelivery
     {
         static ILog log = LogProvider.GetLogger(typeof(FireBaseDelivery));
 
