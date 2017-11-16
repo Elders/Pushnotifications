@@ -55,8 +55,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDelivery.cs" />
     <Compile Include="TestNotificationDelivery.cs" />
-    <Compile Include="When_sending_pushnotification_in_bulk_using_timespan_to_flush.cs" />
-    <Compile Include="When_sending_pushnotification_in_bulk_using_tokens_count_to_flush.cs" />
+    <Compile Include="When_sending_pushnotification_with_buffer_using_timespan_to_flush.cs" />
+    <Compile Include="When_sending_pushnotification_with_buffer_using_tokens_count_to_flush.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
