@@ -1,18 +1,16 @@
 ﻿using Elders.Cronus.DomainModeling;
 using Elders.Web.Api;
-using System.ComponentModel.DataAnnotations;
 using System.Web.Http;
-using PushNotifications.Contracts.FireBaseSubscriptions.Commands;
-using PushNotifications.Contracts.FireBaseSubscriptions;
 using PushNotifications.Contracts;
-using PushNotifications.Api.Attributes;
-using System.Security.Claims;
 using Discovery.Contracts;
+using System.Collections.Generic;
+using PushNotifications.Contracts.FireBaseSubscriptions;
+using System;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
     [RoutePrefix("Subscriptions/FireBaseSubscription")]
-    public class FireBaseSubscriptionCommandController : ApiController
+    public class FireBaseSubscribeController : ApiController
     {
         public IPublisher<ICommand> Publisher { get; set; }
 
@@ -31,7 +29,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             if (command.IsValid())
             {
                 result = Publisher.Publish(command)
-                    ? new ResponseResult<ResponseResult>(new ResponseResult())
+                    ? new ResponseResult()
                     : new ResponseResult(Constants.CommandPublishFailed);
             }
             return result.IsSuccess
@@ -39,26 +37,24 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
                 : this.NotAcceptable(result);
         }
 
-        /// <summary>
-        /// UnSubscribes from push notifications with FireBase token
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [HttpPost, Route("UnSubscribe"), Discoverable("FireBaseSubscriptionUnSubscribe", "v1")]
-        public IHttpActionResult UnSubscribeFromFireBase(FireBaseSubscribeModel model)
+        public class Examples : IProvideRExamplesFor<FireBaseSubscribeController>
         {
-            var result = new ResponseResult(Constants.InvalidCommand);
-
-            var command = model.AsUnSubscribeCommand();
-            if (command.IsValid())
+            public IEnumerable<IRExample> GetRExamples()
             {
-                result = Publisher.Publish(command)
-                    ? new ResponseResult<ResponseResult>(new ResponseResult())
-                    : new ResponseResult(Constants.CommandPublishFailed);
+                var tenant = "elders";
+                var subscriberId = new SubscriberId(Guid.NewGuid().ToString(), tenant);
+                var fireBaseSubscriptionId = new FireBaseSubscriptionId(Guid.NewGuid().ToString(), tenant);
+
+                yield return new RExample(new FireBaseSubscribeModel()
+                {
+                    Tenant = tenant,
+                    SubscriberUrn = StringTenantUrn.Parse(subscriberId.Urn.Value),
+                    Token = new SubscriptionToken("token")
+                });
+
+                yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.NotAcceptable, new ResponseResult(Constants.InvalidCommand));
+                yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.Accepted, new ResponseResult());
             }
-            return result.IsSuccess
-                ? this.Accepted(result)
-                : this.NotAcceptable(result);
         }
     }
 }

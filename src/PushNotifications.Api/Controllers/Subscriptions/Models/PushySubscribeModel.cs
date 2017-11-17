@@ -14,9 +14,15 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         [AuthorizeClaim(AuthorizeClaimType.Tenant, AuthorizeClaimType.TenantClient)]
         public string Tenant { get; set; }
 
+        /// <summary>
+        /// URN of the subscriber. This must be string tenant urn
+        /// </summary>
         [ClaimsIdentity(AuthorizeClaimType.Subject, ClaimTypes.NameIdentifier)]
         public StringTenantUrn SubscriberUrn { get; set; }
 
+        /// <summary>
+        /// Registration token
+        /// </summary>
         [Required]
         public SubscriptionToken Token { get; set; }
 

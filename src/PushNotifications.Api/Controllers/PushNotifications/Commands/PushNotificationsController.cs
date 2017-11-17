@@ -7,6 +7,8 @@ using Discovery.Contracts;
 using Elders.Cronus.DomainModeling.Projections;
 using PushNotifications.Projections.General;
 using PushNotifications.Converters.Extensions;
+using System.Collections.Generic;
+using System;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
@@ -46,6 +48,31 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             return result.IsSuccess
                 ? this.Accepted(result)
                 : this.NotAcceptable(result);
+        }
+
+        public class Examples : IProvideRExamplesFor<PushNotificationsController>
+        {
+            public IEnumerable<IRExample> GetRExamples()
+            {
+                var tenant = "elders";
+                var subscriberId = new SubscriberId(Guid.NewGuid().ToString(), tenant);
+                var stringTenantUrn = StringTenantUrn.Parse(subscriberId.Urn.Value);
+                yield return new RExample(new PushNotificationSendModel
+                {
+                    Badge = 0,
+                    Body = "test body",
+                    ContentAvailable = true,
+                    ExpiresAt = Timestamp.UtcNow(),
+                    Icon = string.Empty,
+                    Sound = "default",
+                    SubscriberUrn = stringTenantUrn,
+                    Tenant = tenant,
+                    Title = "The title"
+                });
+
+                yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.NotAcceptable, new ResponseResult(Constants.InvalidCommand));
+                yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.Accepted, new ResponseResult());
+            }
         }
     }
 }

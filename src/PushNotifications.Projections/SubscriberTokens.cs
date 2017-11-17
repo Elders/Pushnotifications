@@ -16,6 +16,6 @@ namespace PushNotifications.Projections
         public SubscriberId SubscriberId { get; set; }
 
         [DataMember(Order = 2)]
-        public HashSet<SubscriptionToken> Tokens { get; private set; }
+        public HashSet<SubscriptionToken> Tokens { get; set; }
     }
 }

@@ -10,6 +10,7 @@ using System.Net.Http;
 using PushNotifications.Api.Attributes;
 using PushNotifications.Converters;
 using System;
+using Newtonsoft.Json.Linq;
 
 namespace PushNotifications.Api.Reference
 {
@@ -58,7 +59,9 @@ namespace PushNotifications.Api.Reference
                     var rex = rexamples.SingleOrDefault(x => x.RType == param.ParameterType);
                     if (rex != null)
                     {
-                        Newtonsoft.Json.Linq.JObject formatted = ((dynamic)FormatAsJson(rex.Example))["application/json"];
+                        Newtonsoft.Json.Linq.JObject formatted = JObject.FromObject(FormatAsJson(rex.Example));
+                        if (ReferenceEquals(null, formatted) == true) continue;
+
                         var propertiesFromToken = rex.RType.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Where(x => x.GetCustomAttributes(false).Any(a => a is ClaimsIdentityAttribute)).ToList().Select(x => x.Name.ToLower());
                         var requiiredProperties = rex.RType.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Where(x => x.GetCustomAttributes(false).Any(a => a is System.ComponentModel.DataAnnotations.RequiredAttribute || a is ClaimsIdentityAttribute)).ToList().Select(x => x.Name.ToLower());
                         foreach (var item in formatted)
@@ -75,7 +78,6 @@ namespace PushNotifications.Api.Reference
 
                             operation.parameters.Add(paramuhj);
                         }
-
                     }
                     else
                     {
@@ -96,6 +98,7 @@ namespace PushNotifications.Api.Reference
             var responseStatus = rexamples.Where(x => x is StatusRExample).Select(x => x as StatusRExample).OrderBy(x => (int)x.StatusCode);
             if (responseStatus.Count() > 0)
                 operation.responses.Clear();
+
             foreach (var rs in responseStatus)
             {
                 operation.responses.Add(((int)rs.StatusCode).ToString(), new Response

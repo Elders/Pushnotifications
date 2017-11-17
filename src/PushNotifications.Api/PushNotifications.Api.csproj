@@ -79,12 +79,13 @@
     <Compile Include="AvailableScopes.cs" />
     <Compile Include="Controllers\PushNotifications\Commands\PushNotificationsController.cs" />
     <Compile Include="Controllers\PushNotifications\Models\PushNotificationSendModel.cs" />
+    <Compile Include="Controllers\Subscriptions\Commands\FireBaseSubscribeController.cs" />
+    <Compile Include="Controllers\Subscriptions\Commands\FireBaseUnSubscribeController.cs" />
+    <Compile Include="Controllers\Subscriptions\Commands\PushyUnSubscriptionController.cs" />
     <Compile Include="Controllers\Subscriptions\Models\FireBaseSubscribeModel.cs" />
-    <Compile Include="Controllers\Subscriptions\Commands\FireBaseSubscriptionCommandController.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\PushySubscriptionCommandController.cs" />
     <Compile Include="Controllers\Subscriptions\Models\PushySubscribeModel.cs" />
-    <Compile Include="Controllers\Subscriptions\Models\SubscriberTokensModel.cs" />
-    <Compile Include="Controllers\Subscriptions\Queries\FireBaseSubscriptionQueryController.cs" />
+    <Compile Include="Controllers\Subscriptions\Queries\GetFireBaseSubscriberTokensController.cs" />
     <Compile Include="Controllers\Subscriptions\Queries\PushySubscriptionQueryController.cs" />
     <Compile Include="Controllers\Subscriptions\Queries\SubscriptionQueryController.cs" />
     <Compile Include="Converters\ClaimFillConverter.cs" />
