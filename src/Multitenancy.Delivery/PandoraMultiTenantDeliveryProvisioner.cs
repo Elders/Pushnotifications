@@ -57,6 +57,7 @@ namespace Multitenancy.Delivery
 
         void RegisterFireBaseDelivery(FireBaseSettings settings)
         {
+            if (settings.RecipientsCountBeforeFlush >= 1000) throw new ArgumentException($"FireBase limits the number of tokens to 1000. Use lower number for {nameof(settings.RecipientsCountBeforeFlush)}");
             var baseUrl = "https://fcm.googleapis.com/";
             var timeSpanBeforeFlush = TimeSpan.FromSeconds(settings.TimeSpanBeforeFlushInSeconds);
             var recipientsCountBeforeFlush = settings.RecipientsCountBeforeFlush;
