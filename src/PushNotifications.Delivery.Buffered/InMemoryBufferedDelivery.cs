@@ -31,7 +31,7 @@ namespace PushNotifications.Delivery.Buffered
             this.recipientsCountBeforeFlush = recipientsCountBeforeFlush;
             canSend = true;
             buffer = new ConcurrentDictionary<NotificationDeliveryModel, List<SubscriptionToken>>();
-            timer = new Timer(x => Flush(), this, TimeSpan.Zero, timeSpanBeforeFlush);
+            timer = new Timer(x => Flush(), this, TimeSpan.FromSeconds(0), timeSpanBeforeFlush);
         }
 
         public bool Send(SubscriptionToken token, NotificationDeliveryModel notification)
