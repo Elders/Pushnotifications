@@ -33,16 +33,18 @@ namespace PushNotifications.Api.Reference
                 if (request != null)
                 {
                     var parts = schema.@ref.Split('/');
+                    if (parts == null)
+                        continue;
+
                     var name = parts.Last();
 
                     var definitionToUpdate = schemaRegistry.Definitions[name];
 
                     if (definitionToUpdate != null)
                     {
-                        dynamic formatted = (dynamic)FormatAsJson(rex.Example);
-                        definitionToUpdate.example = formatted["application/json"];
+                        var formattedAsJson = FormatAsJson(rex.Example);
+                        definitionToUpdate.example = formattedAsJson;
                     }
-
                 }
             }
 
@@ -85,7 +87,6 @@ namespace PushNotifications.Api.Reference
             }
         }
 
-
         private static void SetResponseModelExamples(Operation operation, SchemaRegistry schemaRegistry, ApiDescription apiDescription)
         {
             if (apiDescription.HttpMethod == HttpMethod.Head) return;
@@ -122,7 +123,7 @@ namespace PushNotifications.Api.Reference
             }
         }
 
-        private static object ConvertToCamelCase(Dictionary<string, object> examples)
+        private static object FormatAsJson(object example)
         {
             var settings = new JsonSerializerSettings();
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -140,21 +141,9 @@ namespace PushNotifications.Api.Reference
                 settings.Converters.Add(Activator.CreateInstance(item) as JsonConverter);
             }
 
-            var jsonString = JsonConvert.SerializeObject(examples, settings);
+            var jsonString = JsonConvert.SerializeObject(example, settings);
             var result = JsonConvert.DeserializeObject(jsonString);
             return result;
-        }
-
-        private static object FormatAsJson(object example)
-        {
-            var examples = new Dictionary<string, object>
-            {
-                {
-                    "application/json", example
-                }
-            };
-
-            return ConvertToCamelCase(examples);
         }
     }
 }
