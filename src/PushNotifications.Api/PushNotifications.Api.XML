@@ -156,6 +156,7 @@
             <summary>
             Sends push notification with notification payload. This endpoint is accessable only with admin scope.
             Sending of push notification won't be trigger if existing subscription is not found for specified subscriber
+            Restricted with admin scope
             </summary>
             <param name="model"></param>
             <returns></returns>
@@ -250,21 +251,21 @@
         </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Queries.GetFireBaseSubscriberTokensController.GetFireBaseSubscriberTokens(PushNotifications.Api.Controllers.Subscriptions.Queries.GetFireBaseSubscriberTokensController.GetFireBaseSubscriberTokensModel)">
             <summary>
-            Provides registered tokens via FireBase for user
+            Provides registered tokens via FireBase for user. Restricted for administrators
             </summary>
             <param name="model"></param>
             <returns></returns>
         </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Queries.PushySubscriptionQueryController.GetPushySubscriberTokens(PushNotifications.Api.Controllers.Subscriptions.Queries.PushySubscriptionQueryController.GetPushySubscriberTokensModel)">
             <summary>
-            Provides registered tokens via Pushy for user
+            Provides registered tokens via Pushy for user. Restricted for administrators
             </summary>
             <param name="model"></param>
             <returns></returns>
         </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Queries.GetSubscriberTokensController.GetSubscriberTokens(PushNotifications.Api.Controllers.Subscriptions.Queries.GetSubscriberTokensController.SubscriberTokensModel)">
             <summary>
-            Provides registered tokens for user for all delivery providers e.g FireBase, Pushy etc
+            Provides registered tokens for user for all delivery providers e.g FireBase, Pushy etc. Restricted for administrators
             </summary>
             <param name="model"></param>
             <returns></returns>

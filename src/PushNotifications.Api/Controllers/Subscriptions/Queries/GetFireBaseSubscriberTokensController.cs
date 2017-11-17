@@ -11,6 +11,8 @@ using System;
 using System.Web.Http.ModelBinding;
 using PushNotifications.Api.Converters;
 using System.ComponentModel.DataAnnotations;
+using PushNotifications.Api.Attributes;
+using System.Security.Claims;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Queries
 {
@@ -20,10 +22,11 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Queries
         public IProjectionRepository Projections { get; set; }
 
         /// <summary>
-        /// Provides registered tokens via FireBase for user
+        /// Provides registered tokens via FireBase for user. Restricted for administrators
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+        [ClaimsAuthorization(ClaimTypes.Role, AvailableRoles.Admin)]
         [HttpGet, Route("FireBaseSubscriberTokens"), Discoverable("FireBaseSubscriberTokens", "v1")]
         public IHttpActionResult GetFireBaseSubscriberTokens(GetFireBaseSubscriberTokensModel model)
         {

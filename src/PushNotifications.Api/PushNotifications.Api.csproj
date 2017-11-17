@@ -74,8 +74,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
+    <Compile Include="Attributes\ClaimsAuthorizationAttribute.cs" />
     <Compile Include="Attributes\ClaimsIdentityAttribute.cs" />
     <Compile Include="Attributes\ScopeAttribute.cs" />
+    <Compile Include="AvailableRoles.cs" />
     <Compile Include="AvailableScopes.cs" />
     <Compile Include="Controllers\PushNotifications\Commands\PushNotificationsController.cs" />
     <Compile Include="Controllers\PushNotifications\Models\PushNotificationSendModel.cs" />

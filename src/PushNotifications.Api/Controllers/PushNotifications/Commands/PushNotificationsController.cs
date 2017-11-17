@@ -23,9 +23,12 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         /// <summary>
         /// Sends push notification with notification payload. This endpoint is accessable only with admin scope.
         /// Sending of push notification won't be trigger if existing subscription is not found for specified subscriber
+        /// Restricted with admin scope
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+
+        [Scope(AvailableScopes.Admin)]
         [HttpPost, Route("Send"), Discoverable("PushNotificationsSend", "v1")]
         public IHttpActionResult Send(PushNotificationSendModel model)
         {
