@@ -1,1 +1,0 @@
-﻿[assembly: Elders.Cronus.DomainModeling.BoundedContext("Pushnotifications")]
