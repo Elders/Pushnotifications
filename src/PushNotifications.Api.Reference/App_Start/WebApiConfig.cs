@@ -11,6 +11,9 @@ namespace PushNotifications.Api.Reference
             // Web API routes
             config.MapHttpAttributeRoutes();
 
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
+            config.Formatters.Remove(config.Formatters.FormUrlEncodedFormatter);
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
