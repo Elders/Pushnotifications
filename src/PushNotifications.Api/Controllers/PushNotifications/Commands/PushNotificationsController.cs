@@ -28,7 +28,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         /// <param name="model"></param>
         /// <returns></returns>
 
-        [Scope(AvailableScopes.Admin)]
+        [UsefulAuthorize(Roles = AvailableRoles.Admin, Scopes = AvailableScopes.Admin)]
         [HttpPost, Route("Send"), Discoverable("PushNotificationsSend", "v1")]
         public IHttpActionResult Send(PushNotificationSendModel model)
         {

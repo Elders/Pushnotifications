@@ -12,7 +12,6 @@ using System.Web.Http.ModelBinding;
 using PushNotifications.Api.Converters;
 using System.ComponentModel.DataAnnotations;
 using PushNotifications.Api.Attributes;
-using System.Security.Claims;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Queries
 {
@@ -26,7 +25,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Queries
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [ClaimsAuthorization(ClaimTypes.Role, AvailableRoles.Admin)]
+        [UsefulAuthorize(Roles = AvailableRoles.Admin, Scopes = AvailableScopes.Admin)]
         [HttpGet, Route("FireBaseSubscriberTokens"), Discoverable("FireBaseSubscriberTokens", "v1")]
         public IHttpActionResult GetFireBaseSubscriberTokens(GetFireBaseSubscriberTokensModel model)
         {

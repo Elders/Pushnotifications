@@ -11,7 +11,6 @@ using System;
 using System.Web.Http.ModelBinding;
 using PushNotifications.Api.Converters;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 using PushNotifications.Api.Attributes;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Queries
@@ -26,7 +25,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Queries
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [ClaimsAuthorization(ClaimTypes.Role, AvailableRoles.Admin)]
+        [UsefulAuthorize(Roles = AvailableRoles.Admin, Scopes = AvailableScopes.Admin)]
         [HttpGet, Route("PushySubscriberTokens"), Discoverable("PushySubscriberTokens", "v1")]
         public IHttpActionResult GetPushySubscriberTokens(GetPushySubscriberTokensModel model)
         {

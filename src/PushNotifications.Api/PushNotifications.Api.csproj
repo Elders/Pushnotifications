@@ -77,6 +77,7 @@
     <Compile Include="Attributes\ClaimsAuthorizationAttribute.cs" />
     <Compile Include="Attributes\ClaimsIdentityAttribute.cs" />
     <Compile Include="Attributes\ScopeAttribute.cs" />
+    <Compile Include="Attributes\UsefulAuthorizeAttribute.cs" />
     <Compile Include="AvailableRoles.cs" />
     <Compile Include="AvailableScopes.cs" />
     <Compile Include="Controllers\PushNotifications\Commands\PushNotificationsController.cs" />
