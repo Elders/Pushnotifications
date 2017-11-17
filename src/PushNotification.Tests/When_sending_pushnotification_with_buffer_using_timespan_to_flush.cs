@@ -14,7 +14,7 @@ namespace PushNotification.Tests
     {
         Establish ctx = () =>
         {
-            timeSpanBeforeFlush = new TimeSpan(0, 0, 0, 1);
+            timeSpanBeforeFlush = TimeSpan.FromSeconds(1);
             countOfRecipientsBeforeFlus = int.MaxValue;
             concreateDelivery = new TestDelivery();
             bufferedDelivery = new InMemoryBufferedDelivery<IPushNotificationBufferedDelivery>(concreateDelivery, timeSpanBeforeFlush, countOfRecipientsBeforeFlus);
@@ -27,7 +27,7 @@ namespace PushNotification.Tests
         Because of = () =>
         {
             new Helper().Send(bufferedDelivery, countOfRecipients, notification);
-            Thread.Sleep(timeSpanBeforeFlush);
+            Thread.Sleep((int)timeSpanBeforeFlush.TotalMilliseconds * 2);
         };
 
         It should_have_sent_notifications_to_all_recipients_after_waiting_for_the_timespan = () => concreateDelivery.Store.Count().ShouldEqual(countOfRecipients);

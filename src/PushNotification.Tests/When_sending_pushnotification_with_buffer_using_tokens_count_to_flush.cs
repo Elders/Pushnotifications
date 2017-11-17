@@ -13,7 +13,7 @@ namespace PushNotification.Tests
     {
         Establish ctx = () =>
         {
-            timeSpanBeforeFlush = new TimeSpan(1, 0, 0); // 1 day
+            timeSpanBeforeFlush = TimeSpan.FromDays(1);
             countOfRecipientsBeforeFlus = 5;
             concreateDelivery = new TestDelivery();
             bufferedDelivery = new InMemoryBufferedDelivery<IPushNotificationBufferedDelivery>(concreateDelivery, timeSpanBeforeFlush, countOfRecipientsBeforeFlus);
