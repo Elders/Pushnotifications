@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1B006263-401F-41D6-A002-F4B6FBE4AB11}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PushNotifications.Api.Client</RootNamespace>
     <AssemblyName>PushNotifications.Api.Client</AssemblyName>
@@ -31,7 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>PushNotifications.Api.Client.Usage</StartupObject>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Elders.Cronus.DomainModeling, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">

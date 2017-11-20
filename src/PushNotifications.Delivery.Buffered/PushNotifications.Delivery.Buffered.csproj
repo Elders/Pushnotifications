@@ -42,13 +42,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InMemoryBufferedDelivery.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}</Project>
       <Name>PushNotifications.Contracts</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

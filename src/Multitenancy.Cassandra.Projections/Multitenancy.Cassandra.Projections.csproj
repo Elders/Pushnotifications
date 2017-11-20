@@ -74,7 +74,6 @@
     <Compile Include="MultiTenantCassandraProjectionsStoreSettings.cs" />
     <Compile Include="MultiTenantProjectionStore.cs" />
     <Compile Include="MultiTenantSnapshotStore.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -85,6 +84,9 @@
       <Project>{C7B50755-9DE7-4217-89A9-31688B2DEF21}</Project>
       <Name>Multitenancy</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -95,10 +95,11 @@
     <Compile Include="Converters\SubscriptionTokenConverter.cs" />
     <Compile Include="Converters\TenantAwareStringTenantIdConverter.cs" />
     <Compile Include="Converters\UrlBinder.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushNotificationsApiAssembly.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{53ab2dd6-f42f-44bb-bb6d-a7497c720e68}</Project>

@@ -237,7 +237,7 @@
       <Name>PushNotifications.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
-      <Project>{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}</Project>
+      <Project>{53ab2dd6-f42f-44bb-bb6d-a7497c720e68}</Project>
       <Name>PushNotifications.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Converters\PushNotifications.Converters.csproj">
