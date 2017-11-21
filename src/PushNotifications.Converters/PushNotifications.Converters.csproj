@@ -55,6 +55,7 @@
     <Compile Include="PushNotificationsConvertersAssembly.cs" />
     <Compile Include="StringTenantIdConverter.cs" />
     <Compile Include="SubscriptionTokenConverter.cs" />
+    <Compile Include="SubscriptionTypeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
