@@ -43,8 +43,8 @@
   <ItemGroup>
     <Compile Include="Subscriptions\SubscriberTokensProjection.cs" />
     <Compile Include="PushNotificationsProjectionsAssembly.cs" />
-    <Compile Include="SubscriberTokens.cs" />
-    <Compile Include="SubscriptionTokenSubscriptionTypePair.cs" />
+    <Compile Include="Subscriptions\SubscriberTokens.cs" />
+    <Compile Include="Subscriptions\SubscriptionTokenSubscriptionTypePair.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">

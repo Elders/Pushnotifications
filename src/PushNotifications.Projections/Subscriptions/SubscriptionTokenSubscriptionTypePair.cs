@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using Elders.Cronus.DomainModeling;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.Subscriptions;
@@ -10,14 +11,17 @@ namespace PushNotifications.Projections
     {
         public SubscriptionTokenSubscriptionTypePair(SubscriptionToken subscriptionToken, SubscriptionType subscriptionType)
         {
+            if (ReferenceEquals(null, subscriptionToken) == true) throw new ArgumentNullException(nameof(subscriptionToken));
+            if (ReferenceEquals(null, subscriptionType) == true) throw new ArgumentNullException(nameof(subscriptionType));
+
             SubscriptionToken = subscriptionToken;
             SubscriptionType = subscriptionType;
         }
 
         [DataMember(Order = 1)]
-        public SubscriptionToken SubscriptionToken { get; set; }
+        public SubscriptionToken SubscriptionToken { get; private set; }
 
         [DataMember(Order = 2)]
-        public SubscriptionType SubscriptionType { get; set; }
+        public SubscriptionType SubscriptionType { get; private set; }
     }
 }

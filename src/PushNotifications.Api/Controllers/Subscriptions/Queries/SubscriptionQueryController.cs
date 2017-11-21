@@ -57,14 +57,13 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Queries
                 var stringTenantUrn = StringTenantUrn.Parse(subscriberId.Urn.Value);
                 yield return new RExample(new SubscriberTokensModel { SubscriberUrn = stringTenantUrn });
 
-                var model = new SubscriberTokens()
+                var tokenTypePairs = new HashSet<SubscriptionTokenSubscriptionTypePair>
                 {
-                    SubscriberId = subscriberId,
-                    TokenTypePairs = new HashSet<SubscriptionTokenSubscriptionTypePair> {
                         new SubscriptionTokenSubscriptionTypePair(new SubscriptionToken("t1"), SubscriptionType.FireBase),
                         new SubscriptionTokenSubscriptionTypePair(new SubscriptionToken("t2"), SubscriptionType.Pushy)
-                    }
                 };
+                var model = new SubscriberTokens(subscriberId, tokenTypePairs);
+
                 yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.NotFound, "This is null. Oh well should be null.");
                 yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.OK, new ResponseResult<SubscriberTokens>(model));
             }
