@@ -4,7 +4,6 @@ using System.Linq;
 using Elders.Pandora;
 using Multitenancy.Delivery.Serialization;
 using PushNotifications.Contracts.PushNotifications.Delivery;
-using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Delivery.Buffered;
 using PushNotifications.Delivery.FireBase;
 using PushNotifications.Delivery.Pushy;
@@ -40,24 +39,28 @@ namespace Multitenancy.Delivery
 
         void Initialize()
         {
+            var firebaseUrl = pandora.Get("delivery_firebase_baseurl");
             var firebaseSettings = pandora.Get<List<FireBaseSettings>>("delivery_firebase_settings");
+
+            var pushyUrl = pandora.Get("delivery_pushy_baseurl");
             var pushySettings = pandora.Get<List<PushySettings>>("delivery_pushy_settings");
 
             foreach (var fb in firebaseSettings)
             {
-                RegisterFireBaseDelivery(fb);
+                RegisterFireBaseDelivery(firebaseUrl, fb);
             }
 
             foreach (var pushy in pushySettings)
             {
-                RegisterPushyDelivery(pushy);
+                RegisterPushyDelivery(pushyUrl, pushy);
             }
         }
 
-        void RegisterFireBaseDelivery(FireBaseSettings settings)
+        void RegisterFireBaseDelivery(string baseUrl, FireBaseSettings settings)
         {
+            if (string.IsNullOrEmpty(baseUrl) == true) throw new ArgumentNullException(nameof(baseUrl));
             if (settings.RecipientsCountBeforeFlush >= 1000) throw new ArgumentException($"FireBase limits the number of tokens to 1000. Use lower number for {nameof(settings.RecipientsCountBeforeFlush)}");
-            var baseUrl = "https://fcm.googleapis.com/";
+
             var timeSpanBeforeFlush = TimeSpan.FromSeconds(settings.TimeSpanBeforeFlushInSeconds);
             var recipientsCountBeforeFlush = settings.RecipientsCountBeforeFlush;
 
@@ -69,9 +72,10 @@ namespace Multitenancy.Delivery
             store.Add(new MultiTenantStoreItem(settings.Tenant, type, fireBaseBufferedDelivery));
         }
 
-        void RegisterPushyDelivery(PushySettings settings)
+        void RegisterPushyDelivery(string baseUrl, PushySettings settings)
         {
-            var baseUrl = "https://api.pushy.me/";
+            if (string.IsNullOrEmpty(baseUrl) == true) throw new ArgumentNullException(nameof(baseUrl));
+
             var timeSpanBeforeFlush = TimeSpan.FromSeconds(settings.TimeSpanBeforeFlushInSeconds);
             var recipientsCountBeforeFlush = settings.RecipientsCountBeforeFlush;
 
