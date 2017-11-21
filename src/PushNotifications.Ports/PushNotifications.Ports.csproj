@@ -45,6 +45,10 @@
     <Compile Include="PushNotificationsPortsAssembly.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Multitenancy.Delivery\Multitenancy.Delivery.csproj">
+      <Project>{FC795C4C-F0F4-49C3-B0CC-4227390E4F07}</Project>
+      <Name>Multitenancy.Delivery</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}</Project>
       <Name>PushNotifications.Contracts</Name>

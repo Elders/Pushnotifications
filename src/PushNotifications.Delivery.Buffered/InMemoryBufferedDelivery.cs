@@ -19,7 +19,7 @@ namespace PushNotifications.Delivery.Buffered
 
         bool canSend;
 
-        ConcurrentDictionary<NotificationDeliveryModel, List<SubscriptionToken>> buffer;
+        ConcurrentDictionary<NotificationForDelivery, List<SubscriptionToken>> buffer;
 
         public InMemoryBufferedDelivery(T delivery, TimeSpan timeSpanBeforeFlush, int recipientsCountBeforeFlush)
         {
@@ -30,11 +30,11 @@ namespace PushNotifications.Delivery.Buffered
             this.timeSpanBeforeFlush = timeSpanBeforeFlush;
             this.recipientsCountBeforeFlush = recipientsCountBeforeFlush;
             canSend = true;
-            buffer = new ConcurrentDictionary<NotificationDeliveryModel, List<SubscriptionToken>>();
+            buffer = new ConcurrentDictionary<NotificationForDelivery, List<SubscriptionToken>>();
             timer = new Timer(x => Flush(), this, TimeSpan.FromSeconds(0), timeSpanBeforeFlush);
         }
 
-        public bool Send(SubscriptionToken token, NotificationDeliveryModel notification)
+        public bool Send(SubscriptionToken token, NotificationForDelivery notification)
         {
             if (ReferenceEquals(null, token) == true) throw new ArgumentNullException(nameof(token));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));

@@ -23,7 +23,7 @@ namespace PushNotification.Tests
 
             t1 = new SubscriptionToken("t1");
             t2 = new SubscriptionToken("t2");
-            n1 = new TestNotificationDelivery(new PushNotificationId("n1", "elders"), new NotificationPayload("title-1", "body"), expirationDateOfNotification, true);
+            n1 = new NotificationForDelivery(new PushNotificationId("n1", "elders"), new NotificationPayload("title-1", "body"), expirationDateOfNotification, true);
         };
 
         Because of = () =>
@@ -47,6 +47,6 @@ namespace PushNotification.Tests
 
         static SubscriptionToken t1;
         static SubscriptionToken t2;
-        static TestNotificationDelivery n1;
+        static NotificationForDelivery n1;
     }
 }

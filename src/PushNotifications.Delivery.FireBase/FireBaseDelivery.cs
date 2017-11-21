@@ -31,12 +31,12 @@ namespace PushNotifications.Delivery.FireBase
             this.serverKey = serverKey;
         }
 
-        public bool Send(SubscriptionToken token, NotificationDeliveryModel notification)
+        public bool Send(SubscriptionToken token, NotificationForDelivery notification)
         {
             return Send(new List<SubscriptionToken> { token }, notification);
         }
 
-        public bool Send(IList<SubscriptionToken> tokens, NotificationDeliveryModel notification)
+        public bool Send(IList<SubscriptionToken> tokens, NotificationForDelivery notification)
         {
             if (ReferenceEquals(null, tokens) == true) throw new ArgumentNullException(nameof(tokens));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));

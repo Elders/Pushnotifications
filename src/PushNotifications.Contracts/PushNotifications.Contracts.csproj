@@ -42,12 +42,10 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PushNotifications\Delivery\FireBaseNotificationDelivery.cs" />
     <Compile Include="PushNotifications\Delivery\IPushNotificationBufferedDelivery.cs" />
     <Compile Include="PushNotifications\Delivery\IPushNotificationDelivery.cs" />
-    <Compile Include="PushNotifications\Delivery\NotificationDeliveryModel.cs" />
     <Compile Include="PushNotifications\Commands\SendPushNotification.cs" />
-    <Compile Include="PushNotifications\Delivery\PushyNotificationDelivery.cs" />
+    <Compile Include="PushNotifications\Delivery\NotificationForDelivery.cs" />
     <Compile Include="PushNotifications\Events\PushNotificationSent.cs" />
     <Compile Include="PushNotifications\NotificationPayload.cs" />
     <Compile Include="PushNotifications\PushNotificationId.cs" />

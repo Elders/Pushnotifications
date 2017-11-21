@@ -200,7 +200,6 @@ namespace PushNotifications.WS
         static ICronusSettings UseMultiTenantDelivery(this ICronusSettings cronusSettings, Pandora pandora)
         {
             cronusSettings.Container.RegisterSingleton<IDeliveryProvisioner>(() => new PandoraMultiTenantDeliveryProvisioner(pandora));
-            cronusSettings.Container.RegisterSingleton<IPushNotificationDelivery>(() => new MultiTenantDelivery(cronusSettings.Container.Resolve<IDeliveryProvisioner>()));
             return cronusSettings;
         }
     }

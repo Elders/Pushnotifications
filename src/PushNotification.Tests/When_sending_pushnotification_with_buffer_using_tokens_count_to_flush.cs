@@ -20,12 +20,12 @@ namespace PushNotification.Tests
 
             expirationDateOfNotification = Timestamp.JudgementDay();
             countOfRecipients = 10;
-            notification = new TestNotificationDelivery(new PushNotificationId(Guid.NewGuid().ToString(), "elders"), new NotificationPayload("title", "body"), expirationDateOfNotification, true);
+            notification = new NotificationForDelivery(new PushNotificationId(Guid.NewGuid().ToString(), "elders"), new NotificationPayload("title", "body"), expirationDateOfNotification, true);
         };
 
         Because of = () =>
         {
-            new Helper().Send(bufferedDelivery, countOfRecipients, notification);
+            Helper.Send(bufferedDelivery, countOfRecipients, notification);
         };
 
         It should_have_sent_notifications_to_all_recipients = () => concreateDelivery.Store.Count().ShouldEqual(countOfRecipients);
@@ -36,6 +36,6 @@ namespace PushNotification.Tests
         static int countOfRecipientsBeforeFlus;
         static Timestamp expirationDateOfNotification;
         static int countOfRecipients;
-        static NotificationDeliveryModel notification;
+        static NotificationForDelivery notification;
     }
 }

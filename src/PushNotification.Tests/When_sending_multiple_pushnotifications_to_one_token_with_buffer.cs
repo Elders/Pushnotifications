@@ -22,22 +22,24 @@ namespace PushNotification.Tests
             expirationDateOfNotification = Timestamp.JudgementDay();
 
             t1 = new SubscriptionToken("t1");
-            n1 = new TestNotificationDelivery(new PushNotificationId("n1", "elders"), new NotificationPayload("title-1", "body"), expirationDateOfNotification, true);
-            n2 = new TestNotificationDelivery(new PushNotificationId("n2", "elders"), new NotificationPayload("title-2", "body"), expirationDateOfNotification, true);
+            n1 = new NotificationForDelivery(new PushNotificationId("n1", "elders"), new NotificationPayload("title-1", "body"), expirationDateOfNotification, true);
+            n2 = new NotificationForDelivery(new PushNotificationId("n2", "elders"), new NotificationPayload("title-2", "body"), expirationDateOfNotification, true);
         };
 
         Because of = () =>
         {
             bufferedDelivery.Send(t1, n1);
             bufferedDelivery.Send(t1, n2);
-            Thread.Sleep((int)timeSpanBeforeFlush.TotalMilliseconds * 2);
+            Thread.Sleep((int)timeSpanBeforeFlush.TotalMilliseconds * 3);
         };
 
         It should_send_correct_number_of_notifications = () => concreateDelivery.Store.Count().ShouldEqual(2);
 
         It should_send_to_correct_tokens = () => { concreateDelivery.Store.Where(x => x.Key == t1).Count().ShouldEqual(2); };
 
-        It should_send_to_correct_notifications = () => { concreateDelivery.Store.First().Value.ShouldEqual(n1); concreateDelivery.Store.Last().Value.ShouldEqual(n2); };
+        It should_send_to_correct_first_notification = () => concreateDelivery.Store.Where(x => x.Value.Equals(n1)).Count().ShouldEqual(1);
+
+        It should_send_to_correct_second_notification = () => concreateDelivery.Store.Where(x => x.Value.Equals(n2)).Count().ShouldEqual(1);
 
         static TestDelivery concreateDelivery;
         static InMemoryBufferedDelivery<IPushNotificationBufferedDelivery> bufferedDelivery;
@@ -46,7 +48,7 @@ namespace PushNotification.Tests
         static Timestamp expirationDateOfNotification;
 
         static SubscriptionToken t1;
-        static NotificationDeliveryModel n1;
-        static NotificationDeliveryModel n2;
+        static NotificationForDelivery n1;
+        static NotificationForDelivery n2;
     }
 }

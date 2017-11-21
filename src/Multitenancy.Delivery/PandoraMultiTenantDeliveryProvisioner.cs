@@ -4,6 +4,7 @@ using System.Linq;
 using Elders.Pandora;
 using Multitenancy.Delivery.Serialization;
 using PushNotifications.Contracts.PushNotifications.Delivery;
+using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Delivery.Buffered;
 using PushNotifications.Delivery.FireBase;
 using PushNotifications.Delivery.Pushy;
@@ -25,15 +26,15 @@ namespace Multitenancy.Delivery
             Initialize();
         }
 
-        public IPushNotificationDelivery ResolveDelivery(NotificationDeliveryModel notification)
+        public IPushNotificationDelivery ResolveDelivery(SubscriptionType subscriptionType, NotificationForDelivery notification)
         {
+            if (ReferenceEquals(null, subscriptionType) == true) throw new ArgumentNullException(nameof(subscriptionType));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
 
             var tenant = notification.Id.Tenant;
-            var notificationType = notification.GetType();
-            var storeItem = store.SingleOrDefault(x => x.Tenant == tenant && x.Type == notificationType);
+            var storeItem = store.SingleOrDefault(x => x.Tenant == tenant && x.SubscriptionType == subscriptionType);
 
-            if (ReferenceEquals(null, storeItem) == true) throw new NotSupportedException($"There is no registered delivery for type '{notificationType.Name}' and tenant '{tenant}'");
+            if (ReferenceEquals(null, storeItem) == true) throw new NotSupportedException($"There is no registered delivery for type '{subscriptionType}' and tenant '{tenant}'");
             return storeItem.Delivery;
         }
 
@@ -68,8 +69,7 @@ namespace Multitenancy.Delivery
             var fireBaseDelivery = new FireBaseDelivery(fireBaseRestClient, NewtonsoftJsonSerializer.Default(), settings.ServerKey);
             var fireBaseBufferedDelivery = new InMemoryBufferedDelivery<FireBaseDelivery>(fireBaseDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush);
 
-            var type = typeof(FireBaseNotificationDelivery);
-            store.Add(new MultiTenantStoreItem(settings.Tenant, type, fireBaseBufferedDelivery));
+            store.Add(new MultiTenantStoreItem(settings.Tenant, SubscriptionType.FireBase, fireBaseBufferedDelivery));
         }
 
         void RegisterPushyDelivery(string baseUrl, PushySettings settings)
@@ -83,8 +83,7 @@ namespace Multitenancy.Delivery
             var pushyDelivery = new PushyDelivery(pushyRestClient, NewtonsoftJsonSerializer.Default(), settings.ServerKey);
             var pushyBufferedDelivery = new InMemoryBufferedDelivery<PushyDelivery>(pushyDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush);
 
-            var type = typeof(PushyNotificationDelivery);
-            store.Add(new MultiTenantStoreItem(settings.Tenant, type, pushyBufferedDelivery));
+            store.Add(new MultiTenantStoreItem(settings.Tenant, SubscriptionType.Pushy, pushyBufferedDelivery));
         }
 
         class PushySettings

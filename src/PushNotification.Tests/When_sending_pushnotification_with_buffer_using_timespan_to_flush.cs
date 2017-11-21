@@ -20,14 +20,14 @@ namespace PushNotification.Tests
             bufferedDelivery = new InMemoryBufferedDelivery<IPushNotificationBufferedDelivery>(concreateDelivery, timeSpanBeforeFlush, countOfRecipientsBeforeFlus);
 
             expirationDateOfNotification = Timestamp.JudgementDay();
-            countOfRecipients = 10000;
-            notification = new TestNotificationDelivery(new PushNotificationId(Guid.NewGuid().ToString(), "elders"), new NotificationPayload("title", "body"), expirationDateOfNotification, true);
+            countOfRecipients = 100000;
+            notification = new NotificationForDelivery(new PushNotificationId(Guid.NewGuid().ToString(), "elders"), new NotificationPayload("title", "body"), expirationDateOfNotification, true);
         };
 
         Because of = () =>
         {
-            new Helper().Send(bufferedDelivery, countOfRecipients, notification);
-            Thread.Sleep((int)timeSpanBeforeFlush.TotalMilliseconds * 2);
+            Helper.Send(bufferedDelivery, countOfRecipients, notification);
+            Thread.Sleep((int)timeSpanBeforeFlush.TotalMilliseconds * 3);
         };
 
         It should_have_sent_notifications_to_all_recipients_after_waiting_for_the_timespan = () => concreateDelivery.Store.Count().ShouldEqual(countOfRecipients);
@@ -38,6 +38,6 @@ namespace PushNotification.Tests
         static int countOfRecipientsBeforeFlus;
         static Timestamp expirationDateOfNotification;
         static int countOfRecipients;
-        static NotificationDeliveryModel notification;
+        static NotificationForDelivery notification;
     }
 }

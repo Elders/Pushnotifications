@@ -1,5 +1,6 @@
 ﻿using Elders.Cronus.DomainModeling;
 using Elders.Cronus.DomainModeling.Projections;
+using Multitenancy.Delivery;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts.PushNotifications.Events;
 using PushNotifications.Contracts.Subscriptions;
@@ -17,7 +18,7 @@ namespace PushNotifications.Ports
 
         public IProjectionRepository Projections { get; set; }
 
-        public IPushNotificationDelivery Delivery { get; set; }
+        public IDeliveryProvisioner DeliveryProvisioner { get; set; }
 
         public void Handle(PushNotificationSent @event)
         {
@@ -29,8 +30,15 @@ namespace PushNotifications.Ports
             {
                 if (tokenTypePairs.SubscriptionType == SubscriptionType.FireBase)
                 {
-                    var notification = new FireBaseNotificationDelivery(@event.Id, @event.NotificationPayload, @event.ExpiresAt, @event.ContentAvailable);
-                    Delivery.Send(tokenTypePairs.SubscriptionToken, notification);
+                    var notification = new NotificationForDelivery(@event.Id, @event.NotificationPayload, @event.ExpiresAt, @event.ContentAvailable);
+                    var delivery = DeliveryProvisioner.ResolveDelivery(tokenTypePairs.SubscriptionType, notification);
+                    delivery.Send(tokenTypePairs.SubscriptionToken, notification);
+                }
+                else if (tokenTypePairs.SubscriptionType == SubscriptionType.Pushy)
+                {
+                    var notification = new NotificationForDelivery(@event.Id, @event.NotificationPayload, @event.ExpiresAt, @event.ContentAvailable);
+                    var delivery = DeliveryProvisioner.ResolveDelivery(tokenTypePairs.SubscriptionType, notification);
+                    delivery.Send(tokenTypePairs.SubscriptionToken, notification);
                 }
             }
         }
