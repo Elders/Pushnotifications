@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 
@@ -28,6 +29,9 @@ namespace PushNotification.Tests
             return true;
         }
 
-        public List<KeyValuePair<SubscriptionToken, NotificationDeliveryModel>> Store { get { return new List<KeyValuePair<SubscriptionToken, NotificationDeliveryModel>>(store); } }
+        public ReadOnlyCollection<KeyValuePair<SubscriptionToken, NotificationDeliveryModel>> Store
+        {
+            get { return store.AsReadOnly(); }
+        }
     }
 }
