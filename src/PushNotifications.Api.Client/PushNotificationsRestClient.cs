@@ -4,7 +4,6 @@ using PushNotifications.Converters;
 using RestSharp;
 using System.Linq;
 using Newtonsoft.Json;
-using PushNotifications.Contracts;
 
 namespace PushNotifications.Api.Client
 {

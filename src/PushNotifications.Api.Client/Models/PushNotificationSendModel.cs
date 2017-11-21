@@ -1,4 +1,5 @@
-﻿using Elders.Cronus.DomainModeling;
+﻿using System;
+using Elders.Cronus.DomainModeling;
 using PushNotifications.Contracts;
 
 namespace PushNotifications.Api.Client.Models
@@ -7,6 +8,11 @@ namespace PushNotifications.Api.Client.Models
     {
         public PushNotificationSendModel(StringTenantUrn subscriberUrn, string title, string body, string sound, string icon, int badge, Timestamp expiresAt, bool contentAvailable)
         {
+            if (ReferenceEquals(subscriberUrn, null) == true) throw new ArgumentNullException(nameof(subscriberUrn));
+            if (ReferenceEquals(expiresAt, null) == true) throw new ArgumentNullException(nameof(expiresAt));
+            if (string.IsNullOrEmpty(title) == true) throw new ArgumentNullException(nameof(title));
+            if (string.IsNullOrEmpty(body) == true) throw new ArgumentNullException(nameof(body));
+
             Tenant = subscriberUrn.Tenant;
             SubscriberUrn = subscriberUrn;
             Title = title;

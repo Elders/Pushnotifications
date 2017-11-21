@@ -24,9 +24,10 @@ namespace PushNotifications.Api.Client
             //    //var x = pnClient.SubscribeForFireBase(new SubscribeForFireBaseModel("pruvit", new SubscriberId(i.ToString(), "pruvit").Urn.Value, new SubscriptionToken($"token-{i}")));
             //}
 
-            var pruvitSubscriber = new Contracts.SubscriberId("76278", "pruvit");
+            var pruvitSubscriber = new Contracts.SubscriberId("76277", "pruvit");
             var pruvitUrn = StringTenantUrn.Parse(pruvitSubscriber.Urn.Value);
-            var pruvitSubscribe = pnClient.SubscribeForFireBase(new SubscribeForFireBaseModel(pruvitUrn, new SubscriptionToken("eh31SYk_ELA:APA91bHwJN5-hBY6KBmN01kFnSSPBFeJeTixnYQBvny77KsFTDgIY0Gb0JnTUd6q7AEfedg_qWMvJQ-IpyzjUpa4EA1VDupMkwNCz179YDCkRueTRxDCE_SkdpfLYkO96M09JZowK5K5")));
+            var pruvitSubscribe = pnClient.UnSubscribeForFireBase(new SubscriptionForFireBase(pruvitUrn, new SubscriptionToken("eh31SYk_ELA:APA91bHwJN5-hBY6KBmN01kFnSSPBFeJeTixnYQBvny77KsFTDgIY0Gb0JnTUd6q7AEfedg_qWMvJQ-IpyzjUpa4EA1VDupMkwNCz179YDCkRueTRxDCE_SkdpfLYkO96M09JZowK5K5")));
+            var s = pnClient.SubscribeForFireBase(new SubscriptionForFireBase(pruvitUrn, new SubscriptionToken("exk_tnns_OI:APA91bFzlzvFysNlYpVmvdBbT1gVS66PeJ8izHLGwO0i3nu8TZGYBQrorURNM_fu2tPupGi9Zm1k-u1wIjwwclqdz-9IGjxbtqLa4PlH2B8h6T4xr1JMULKJbVeaZEcGJO1K2_0tmBxd")));
             //var pushyPruvitSubscribe = pnClient.SubscribeForPushy(new SubscribeForPushyModel(pruvitUrn, new SubscriptionToken("2c11c380e4ba86c8da983a")));
             var x = pnClient.SendPushNotification(new Models.PushNotificationSendModel(pruvitUrn, $"hiiiiiiiiiiiiii from KV", "this is body", "default", string.Empty, 0, t, true));
 
