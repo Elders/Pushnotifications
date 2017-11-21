@@ -55,10 +55,10 @@
     <Compile Include="TestDelivery.cs" />
     <Compile Include="When_sending_multiple_pushnotifications_to_one_token_with_buffer.cs" />
     <Compile Include="When_sending_one_pushnotification_to_mutiple_recipients_with_buffer.cs" />
-    <Compile Include="When_sending_pushnotification_with_buffer_using_timespan_to_flush - Copy.cs" />
     <Compile Include="When_sending_pushnotification_with_buffer_using_timespan_to_flush.cs" />
-    <Compile Include="When_sending_pushnotification_with_buffer_using_tokens_count_to_flush - Copy.cs" />
+    <Compile Include="When_sending_pushnotification_with_buffer_using_timespan_to_flush_and_does_not_wait.cs" />
     <Compile Include="When_sending_pushnotification_with_buffer_using_tokens_count_to_flush.cs" />
+    <Compile Include="When_sending_pushnotification_with_buffer_using_tokens_count_to_flush_and_flush_count_is_not_reached.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
