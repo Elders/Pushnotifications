@@ -10,7 +10,7 @@ using PushNotifications.Delivery.Buffered;
 namespace PushNotification.Tests
 {
     [Subject(typeof(InMemoryBufferedDelivery<TestDelivery>))]
-    public class When_sending_pushnotification_with_buffer_using_timespan_to_flush
+    public class When_sending_pushnotification_with_buffer_using_timespan_to_flush_and_does_not_wait
     {
         Establish ctx = () =>
         {
@@ -27,10 +27,9 @@ namespace PushNotification.Tests
         Because of = () =>
         {
             Helper.Send(bufferedDelivery, countOfRecipients, notification);
-            Thread.Sleep((int)timeSpanBeforeFlush.TotalMilliseconds * 3);
         };
 
-        It should_have_sent_notifications_to_all_recipients_after_waiting_for_the_timespan = () => concreateDelivery.Store.Count().ShouldEqual(countOfRecipients);
+        It should_have_sent_zero_notifications = () => concreateDelivery.Store.Count().ShouldEqual(0);
 
         static TestDelivery concreateDelivery;
         static InMemoryBufferedDelivery<IPushNotificationBufferedDelivery> bufferedDelivery;

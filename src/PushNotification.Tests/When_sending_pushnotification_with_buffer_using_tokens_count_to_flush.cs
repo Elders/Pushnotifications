@@ -14,9 +14,9 @@ namespace PushNotification.Tests
         Establish ctx = () =>
         {
             timeSpanBeforeFlush = TimeSpan.FromDays(1);
-            countOfRecipientsBeforeFlus = 5;
+            countOfRecipientsBeforeFlush = 5;
             concreateDelivery = new TestDelivery();
-            bufferedDelivery = new InMemoryBufferedDelivery<IPushNotificationBufferedDelivery>(concreateDelivery, timeSpanBeforeFlush, countOfRecipientsBeforeFlus);
+            bufferedDelivery = new InMemoryBufferedDelivery<IPushNotificationBufferedDelivery>(concreateDelivery, timeSpanBeforeFlush, countOfRecipientsBeforeFlush);
 
             expirationDateOfNotification = Timestamp.JudgementDay();
             countOfRecipients = 10;
@@ -33,7 +33,7 @@ namespace PushNotification.Tests
         static TestDelivery concreateDelivery;
         static InMemoryBufferedDelivery<IPushNotificationBufferedDelivery> bufferedDelivery;
         static TimeSpan timeSpanBeforeFlush;
-        static int countOfRecipientsBeforeFlus;
+        static int countOfRecipientsBeforeFlush;
         static Timestamp expirationDateOfNotification;
         static int countOfRecipients;
         static NotificationForDelivery notification;

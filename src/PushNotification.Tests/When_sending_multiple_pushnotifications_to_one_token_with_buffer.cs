@@ -35,7 +35,7 @@ namespace PushNotification.Tests
 
         It should_send_correct_number_of_notifications = () => concreateDelivery.Store.Count().ShouldEqual(2);
 
-        It should_send_to_correct_tokens = () => { concreateDelivery.Store.Where(x => x.Key == t1).Count().ShouldEqual(2); };
+        It should_send_to_correct_number_of_tokens = () => { concreateDelivery.Store.Where(x => x.Key == t1).Count().ShouldEqual(2); };
 
         It should_send_to_correct_first_notification = () => concreateDelivery.Store.Where(x => x.Value.Equals(n1)).Count().ShouldEqual(1);
 
