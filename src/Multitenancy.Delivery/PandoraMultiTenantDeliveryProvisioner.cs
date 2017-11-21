@@ -33,7 +33,7 @@ namespace Multitenancy.Delivery
             var notificationType = notification.GetType();
             var storeItem = store.SingleOrDefault(x => x.Tenant == tenant && x.Type == notificationType);
 
-            if (ReferenceEquals(null, storeItem) == true) throw new NotSupportedException($"There is no registered delivery for type {notificationType.Name} and tenant {tenant}");
+            if (ReferenceEquals(null, storeItem) == true) throw new NotSupportedException($"There is no registered delivery for type '{notificationType.Name}' and tenant '{tenant}'");
             return storeItem.Delivery;
         }
 
@@ -59,7 +59,7 @@ namespace Multitenancy.Delivery
         void RegisterFireBaseDelivery(string baseUrl, FireBaseSettings settings)
         {
             if (string.IsNullOrEmpty(baseUrl) == true) throw new ArgumentNullException(nameof(baseUrl));
-            if (settings.RecipientsCountBeforeFlush >= 1000) throw new ArgumentException($"FireBase limits the number of tokens to 1000. Use lower number for {nameof(settings.RecipientsCountBeforeFlush)}");
+            if (settings.RecipientsCountBeforeFlush >= 1000) throw new ArgumentException($"FireBase limits the number of tokens to 1000. Use lower number for '{nameof(settings.RecipientsCountBeforeFlush)}'");
 
             var timeSpanBeforeFlush = TimeSpan.FromSeconds(settings.TimeSpanBeforeFlushInSeconds);
             var recipientsCountBeforeFlush = settings.RecipientsCountBeforeFlush;
