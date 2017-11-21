@@ -2,6 +2,7 @@
 using DataStaxCassandra = Cassandra;
 using Elders.Cronus.IocContainer;
 using Multitenancy.EventStore;
+using System;
 
 namespace Multitenancy.Cassandra.EventStore
 {
@@ -17,6 +18,9 @@ namespace Multitenancy.Cassandra.EventStore
 
         public CassandraEventStoreProvisioner(Elders.Cronus.Pipeline.Config.ISettingsBuilder builder, Elders.Cronus.Persistence.Cassandra.Config.ICassandraEventStoreSettings settings)
         {
+            if (ReferenceEquals(null, builder) == true) throw new ArgumentNullException(nameof(builder));
+            if (ReferenceEquals(null, settings) == true) throw new ArgumentNullException(nameof(settings));
+
             this.settings = settings;
             this.builder = builder;
             tenantStores = new Dictionary<string, Elders.Cronus.EventStore.IEventStore>();
@@ -25,6 +29,7 @@ namespace Multitenancy.Cassandra.EventStore
 
         public Elders.Cronus.EventStore.IEventStore GetEventStore(string tenant)
         {
+            if (string.IsNullOrEmpty(tenant) == true) throw new ArgumentNullException(nameof(tenant));
             if (tenantStores.ContainsKey(tenant) == false)
                 InitializeTenant(tenant);
 
@@ -33,6 +38,8 @@ namespace Multitenancy.Cassandra.EventStore
 
         public Elders.Cronus.EventStore.IEventStorePlayer GetEventStorePlayer(string tenant)
         {
+            if (string.IsNullOrEmpty(tenant) == true) throw new ArgumentNullException(nameof(tenant));
+
             if (tenantStores.ContainsKey(tenant) == false)
                 InitializeTenant(tenant);
 
@@ -41,8 +48,10 @@ namespace Multitenancy.Cassandra.EventStore
 
         void InitializeTenant(string tenant)
         {
+            if (string.IsNullOrEmpty(tenant) == true) throw new ArgumentNullException(nameof(tenant));
+
             var keyspace = $"{tenant}_{settings.Keyspace}";
-            if (keyspace.Length > 48) throw new System.ArgumentException($"Cassandra keyspace exceeds maximum length of 48. Keyspace: {keyspace}");
+            if (keyspace.Length > 48) throw new ArgumentException($"Cassandra keyspace exceeds maximum length of 48. Keyspace: {keyspace}");
 
             DataStaxCassandra.Cluster cluster = null;
             if (ReferenceEquals(null, settings.Cluster))
