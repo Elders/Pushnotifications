@@ -20,6 +20,8 @@ namespace Multitenancy.EventStore
 
         public void Append(Elders.Cronus.EventStore.AggregateCommit aggregateCommit)
         {
+            if (ReferenceEquals(null, aggregateCommit) == true) throw new ArgumentNullException(nameof(aggregateCommit));
+
             var tenant = tenantResolver.Resolve(aggregateCommit);
             var store = provisioner.GetEventStore(tenant);
             store.Append(aggregateCommit);
@@ -27,6 +29,8 @@ namespace Multitenancy.EventStore
 
         public Elders.Cronus.EventStore.EventStream Load(Elders.Cronus.DomainModeling.IAggregateRootId aggregateId)
         {
+            if (ReferenceEquals(null, aggregateId) == true) throw new ArgumentNullException(nameof(aggregateId));
+
             var tenant = tenantResolver.Resolve(aggregateId);
             var store = provisioner.GetEventStore(tenant);
             return store.Load(aggregateId);

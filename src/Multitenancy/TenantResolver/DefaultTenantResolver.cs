@@ -10,6 +10,8 @@ namespace Multitenancy.TenantResolver
     {
         public string Resolve(ProjectionCommit projectionCommit)
         {
+            if (ReferenceEquals(null, projectionCommit) == true) throw new ArgumentNullException(nameof(projectionCommit));
+
             var tenant = string.Empty;
             if (TryResolve(projectionCommit.ProjectionId.RawId, out tenant))
                 return tenant;
@@ -19,6 +21,8 @@ namespace Multitenancy.TenantResolver
 
         public string Resolve(IBlobId id)
         {
+            if (ReferenceEquals(null, id) == true) throw new ArgumentNullException(nameof(id));
+
             var tenant = string.Empty;
             if (TryResolve(id.RawId, out tenant))
                 return tenant;
