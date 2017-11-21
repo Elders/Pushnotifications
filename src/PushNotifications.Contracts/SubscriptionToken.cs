@@ -11,7 +11,7 @@ namespace PushNotifications.Contracts
 
         public SubscriptionToken(string token)
         {
-            if (string.IsNullOrEmpty(token)) throw new ArgumentNullException(nameof(SubscriptionToken));
+            if (string.IsNullOrEmpty(token)) throw new ArgumentNullException(nameof(token));
             Token = token;
         }
 
@@ -23,9 +23,9 @@ namespace PushNotifications.Contracts
             return Token;
         }
 
-        public static implicit operator string(SubscriptionToken TokenTitle)
+        public static implicit operator string(SubscriptionToken token)
         {
-            return TokenTitle.Token;
+            return token.Token;
         }
 
         public static bool IsValid(SubscriptionToken token)

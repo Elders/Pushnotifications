@@ -14,6 +14,7 @@ namespace PushNotifications.Contracts.Subscriptions
 
         SubscriptionType(string value)
         {
+            if (string.IsNullOrEmpty(value) == true) throw new ArgumentNullException(nameof(value));
             this.value = value;
         }
 

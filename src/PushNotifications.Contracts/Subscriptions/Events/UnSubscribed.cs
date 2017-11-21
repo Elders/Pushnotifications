@@ -7,7 +7,7 @@ namespace PushNotifications.Contracts.Subscriptions.Events
     [DataContract(Name = "9e655fe8-75d2-4481-a358-aec9d24e9e3d")]
     public class UnSubscribed : IEvent
     {
-        protected UnSubscribed() { }
+        UnSubscribed() { }
 
         public UnSubscribed(SubscriptionId id, SubscriberId subscriberId, SubscriptionToken subscriptionToken, SubscriptionType subscriptionType)
         {

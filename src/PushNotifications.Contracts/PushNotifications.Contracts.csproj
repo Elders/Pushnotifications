@@ -46,7 +46,6 @@
     <Compile Include="PushNotifications\Delivery\IPushNotificationBufferedDelivery.cs" />
     <Compile Include="PushNotifications\Delivery\IPushNotificationDelivery.cs" />
     <Compile Include="PushNotifications\Delivery\NotificationDeliveryModel.cs" />
-    <Compile Include="IProcessorMonitor.cs" />
     <Compile Include="PushNotifications\Commands\SendPushNotification.cs" />
     <Compile Include="PushNotifications\Delivery\PushyNotificationDelivery.cs" />
     <Compile Include="PushNotifications\Events\PushNotificationSent.cs" />

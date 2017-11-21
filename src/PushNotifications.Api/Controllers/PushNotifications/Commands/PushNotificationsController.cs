@@ -42,12 +42,10 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             }
 
             var command = model.AsCommand();
-            if (command.IsValid())
-            {
-                result = Publisher.Publish(command)
-                    ? new ResponseResult<ResponseResult>(new ResponseResult())
-                    : new ResponseResult(Constants.CommandPublishFailed);
-            }
+            result = Publisher.Publish(command)
+                   ? new ResponseResult<ResponseResult>(new ResponseResult())
+                   : new ResponseResult(Constants.CommandPublishFailed);
+
             return result.IsSuccess
                 ? this.Accepted(result)
                 : this.NotAcceptable(result);

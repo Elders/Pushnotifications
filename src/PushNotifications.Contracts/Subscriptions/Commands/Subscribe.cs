@@ -7,8 +7,7 @@ namespace PushNotifications.Contracts.Subscriptions.Commands
     [DataContract(Name = "61948e19-1087-4f93-90f3-f39d448cbaba")]
     public class Subscribe : ICommand
     {
-        Subscribe()
-        { }
+        Subscribe() { }
 
         public Subscribe(SubscriptionId id, SubscriberId subscriberId, SubscriptionToken subscriptionToken, SubscriptionType subscriptionType)
         {

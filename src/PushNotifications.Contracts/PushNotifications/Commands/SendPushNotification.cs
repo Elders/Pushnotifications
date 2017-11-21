@@ -1,5 +1,6 @@
 ﻿using Elders.Cronus.DomainModeling;
 using System.Runtime.Serialization;
+using System;
 
 namespace PushNotifications.Contracts.PushNotifications.Commands
 {
@@ -8,6 +9,11 @@ namespace PushNotifications.Contracts.PushNotifications.Commands
     {
         public SendPushNotification(PushNotificationId id, SubscriberId subscriberId, NotificationPayload notificationPayload, Timestamp expiresAt, bool contentAvailable)
         {
+            if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
+            if (StringTenantId.IsValid(subscriberId) == false) throw new ArgumentException(nameof(subscriberId));
+            if (ReferenceEquals(null, notificationPayload) == true) throw new ArgumentNullException(nameof(notificationPayload));
+            if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
+
             Id = id;
             SubscriberId = subscriberId;
             NotificationPayload = notificationPayload;
@@ -37,12 +43,6 @@ namespace PushNotifications.Contracts.PushNotifications.Commands
         /// </summary>
         [DataMember(Order = 5)]
         public bool ContentAvailable { get; private set; }
-
-        public bool IsValid()
-        {
-            return
-               StringTenantId.IsValid(Id) && StringTenantId.IsValid(SubscriberId) && ReferenceEquals(null, NotificationPayload) == false;
-        }
 
         public override string ToString()
         {

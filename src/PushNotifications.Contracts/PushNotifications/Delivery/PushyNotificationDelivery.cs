@@ -1,7 +1,4 @@
-﻿using PushNotifications.Contracts.PushNotifications;
-using PushNotifications.Contracts.PushNotifications.Delivery;
-
-namespace PushNotifications.Contracts.Subscriptions
+﻿namespace PushNotifications.Contracts.PushNotifications.Delivery
 {
     public class PushyNotificationDelivery : NotificationDeliveryModel
     {
