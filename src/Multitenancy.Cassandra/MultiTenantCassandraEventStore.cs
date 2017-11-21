@@ -8,6 +8,8 @@ namespace Multitenancy.Cassandra.EventStore
     {
         public static T UseMultiTenantCassandraEventStore<T>(this T self, Action<MultiTenantCassandraEventStoreSettings> configure) where T : Elders.Cronus.Pipeline.Config.IConsumerSettings<Elders.Cronus.DomainModeling.ICommand>
         {
+            if (ReferenceEquals(null, configure) == true) throw new ArgumentNullException(nameof(configure));
+
             MultiTenantCassandraEventStoreSettings settings = new MultiTenantCassandraEventStoreSettings(self);
             settings.SetReconnectionPolicy(new DataStaxCassandra.ExponentialReconnectionPolicy(100, 100000));
             settings.SetRetryPolicy(new DataStaxCassandra.DefaultRetryPolicy());

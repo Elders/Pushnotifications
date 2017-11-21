@@ -3,6 +3,7 @@ using Elders.Cronus.Projections.Cassandra.Config;
 using Elders.Cronus.Projections.Cassandra.EventSourcing;
 using Elders.Cronus.Projections.Cassandra.Snapshots;
 using Elders.Cronus.IocContainer;
+using System;
 
 namespace Multitenancy.Cassandra.Projections
 {
@@ -12,6 +13,7 @@ namespace Multitenancy.Cassandra.Projections
 
         public MultiTenantCassandraProjectionsSettings(ISettingsBuilder settingsBuilder, ISubscrptionMiddlewareSettings subscrptionMiddlewareSettings) : base(settingsBuilder)
         {
+            if (ReferenceEquals(null, subscrptionMiddlewareSettings) == true) throw new ArgumentNullException(nameof(subscrptionMiddlewareSettings));
             this.subscrptionMiddlewareSettings = subscrptionMiddlewareSettings;
         }
 

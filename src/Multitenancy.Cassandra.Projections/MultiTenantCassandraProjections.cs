@@ -12,6 +12,8 @@ namespace Multitenancy.Cassandra.Projections
     {
         public static T UseMultiTenantCassandraProjections<T>(this T self, Action<MultiTenantCassandraProjectionsSettings> configure) where T : ISubscrptionMiddlewareSettings
         {
+            if (ReferenceEquals(null, configure) == true) throw new ArgumentNullException(nameof(configure));
+
             MultiTenantCassandraProjectionsSettings settings = new MultiTenantCassandraProjectionsSettings(self, self as ISubscrptionMiddlewareSettings);
             settings.SetProjectionsReconnectionPolicy(new DataStaxCassandra.ExponentialReconnectionPolicy(100, 100000));
             settings.SetProjectionsRetryPolicy(new NoHintedHandOffRetryPolicy());
@@ -30,6 +32,8 @@ namespace Multitenancy.Cassandra.Projections
 
         public static T ConfigureMultiTenantCassandraProjectionsStore<T>(this T self, Action<MultiTenantCassandraProjectionsStoreSettings> configure) where T : ISettingsBuilder
         {
+            if (ReferenceEquals(null, configure) == true) throw new ArgumentNullException(nameof(configure));
+
             MultiTenantCassandraProjectionsStoreSettings settings = new MultiTenantCassandraProjectionsStoreSettings(self);
             settings.SetProjectionsReconnectionPolicy(new DataStaxCassandra.ExponentialReconnectionPolicy(100, 100000));
             settings.SetProjectionsRetryPolicy(new NoHintedHandOffRetryPolicy());

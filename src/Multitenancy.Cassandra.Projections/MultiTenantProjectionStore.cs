@@ -1,13 +1,6 @@
-﻿using Elders.Cronus.Pipeline.Config;
-using Elders.Cronus.Projections.Cassandra.Config;
-using Elders.Cronus.Projections.Cassandra.EventSourcing;
+﻿using Elders.Cronus.Projections.Cassandra.EventSourcing;
 using Elders.Cronus.Projections.Cassandra.Snapshots;
-using Elders.Cronus.IocContainer;
-using DataStaxCassandra = Cassandra;
-using Elders.Cronus.Serializer;
-using Elders.Cronus.DomainModeling.Projections;
 using System;
-using System.Collections.Generic;
 using Multitenancy.TenantResolver;
 using Elders.Cronus.DomainModeling;
 using Elders.Cronus.Projections;
@@ -31,11 +24,15 @@ namespace Multitenancy.Cassandra.Projections
 
         public IProjectionBuilder GetBuilder(Type projectionType)
         {
+            if (ReferenceEquals(null, projectionType) == true) throw new ArgumentNullException(nameof(projectionType));
             throw new NotImplementedException($"Unable to resolve tenant based only on type. If you need builder provide {nameof(ProjectionCommit)} to {nameof(MultiTenantProjectionStore)}");
         }
 
         public IProjectionBuilder GetBuilder(Type projectionType, ProjectionCommit commit)
         {
+            if (ReferenceEquals(null, projectionType) == true) throw new ArgumentNullException(nameof(projectionType));
+            if (ReferenceEquals(null, commit) == true) throw new ArgumentNullException(nameof(commit));
+
             var tenant = tenantResolver.Resolve(commit);
             var store = provisioner.GetProjectionStore(tenant);
 
@@ -44,6 +41,10 @@ namespace Multitenancy.Cassandra.Projections
 
         public ProjectionStream Load(string contractId, IBlobId projectionId, ISnapshot snapshot)
         {
+            if (string.IsNullOrEmpty(contractId) == true) throw new ArgumentNullException(nameof(contractId));
+            if (ReferenceEquals(null, projectionId) == true) throw new ArgumentNullException(nameof(projectionId));
+            if (ReferenceEquals(null, snapshot) == true) throw new ArgumentNullException(nameof(snapshot));
+
             var tenant = tenantResolver.Resolve(projectionId);
             var store = provisioner.GetProjectionStore(tenant);
 
@@ -52,6 +53,8 @@ namespace Multitenancy.Cassandra.Projections
 
         public void Save(ProjectionCommit commit)
         {
+            if (ReferenceEquals(null, commit) == true) throw new ArgumentNullException(nameof(commit));
+
             var tenant = tenantResolver.Resolve(commit);
             var store = provisioner.GetProjectionStore(tenant);
 

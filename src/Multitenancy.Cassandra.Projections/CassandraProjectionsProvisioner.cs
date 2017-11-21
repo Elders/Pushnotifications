@@ -5,6 +5,7 @@ using Elders.Cronus.Projections.Cassandra.Snapshots;
 using Elders.Cronus.IocContainer;
 using DataStaxCassandra = Cassandra;
 using System.Collections.Generic;
+using System;
 
 namespace Multitenancy.Cassandra.Projections
 {
@@ -20,6 +21,9 @@ namespace Multitenancy.Cassandra.Projections
 
         public CassandraProjectionsProvisioner(ISettingsBuilder builder, ICassandraProjectionsStoreSettings settings)
         {
+            if (ReferenceEquals(null, builder) == true) throw new ArgumentNullException(nameof(builder));
+            if (ReferenceEquals(null, settings) == true) throw new ArgumentNullException(nameof(settings));
+
             this.builder = builder;
             this.settings = settings;
 
@@ -29,8 +33,10 @@ namespace Multitenancy.Cassandra.Projections
 
         void InitializeTenant(string tenant)
         {
+            if (string.IsNullOrEmpty(tenant) == true) throw new ArgumentNullException(nameof(tenant));
+
             var keyspace = $"{tenant}_{settings.Keyspace}";
-            if (keyspace.Length > 48) throw new System.ArgumentException($"Cassandra keyspace exceeds maximum length of 48. Keyspace: {keyspace}");
+            if (keyspace.Length > 48) throw new ArgumentException($"Cassandra keyspace exceeds maximum length of 48. Keyspace: {keyspace}");
 
             DataStaxCassandra.Cluster cluster = null;
             if (ReferenceEquals(null, settings.Cluster))
@@ -61,6 +67,8 @@ namespace Multitenancy.Cassandra.Projections
 
         public IProjectionStore GetProjectionStore(string tenant)
         {
+            if (string.IsNullOrEmpty(tenant) == true) throw new ArgumentNullException(nameof(tenant));
+
             if (tenantProjectionStores.ContainsKey(tenant) == false)
                 InitializeTenant(tenant);
 
@@ -69,6 +77,8 @@ namespace Multitenancy.Cassandra.Projections
 
         public ISnapshotStore GetSnapshotStore(string tenant)
         {
+            if (string.IsNullOrEmpty(tenant) == true) throw new ArgumentNullException(nameof(tenant));
+
             if (tenantSnapshotStores.ContainsKey(tenant) == false)
                 InitializeTenant(tenant);
 
