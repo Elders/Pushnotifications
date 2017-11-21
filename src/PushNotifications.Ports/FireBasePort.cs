@@ -1,17 +1,17 @@
 ﻿using Elders.Cronus.DomainModeling;
 using Elders.Cronus.DomainModeling.Projections;
-using PushNotifications.Contracts.FireBaseSubscriptions;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts.PushNotifications.Events;
+using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Ports.Logging;
-using PushNotifications.Projections.FireBase;
+using PushNotifications.Projections.Subscriptions;
 
 namespace PushNotifications.Ports
 {
-    public class FireBasePort : IPort,
+    public class PushNotificationsPort : IPort,
         IEventHandler<PushNotificationSent>
     {
-        static ILog log = LogProvider.GetLogger(typeof(FireBasePort));
+        static ILog log = LogProvider.GetLogger(typeof(PushNotificationsPort));
 
         public IPublisher<ICommand> CommandPublisher { get; set; }
 
@@ -21,14 +21,17 @@ namespace PushNotifications.Ports
 
         public void Handle(PushNotificationSent @event)
         {
-            var projectionReponse = Projections.Get<SubscriberTokensForFireBaseProjection>(@event.SubscriberId);
+            var projectionReponse = Projections.Get<SubscriberTokensProjection>(@event.SubscriberId);
             if (projectionReponse.Success == false)
                 return;
 
-            foreach (var token in projectionReponse.Projection.State.Tokens)
+            foreach (var tokenTypePairs in projectionReponse.Projection.State.TokenTypePairs)
             {
-                var notification = new FireBaseNotificationDelivery(@event.Id, @event.NotificationPayload, @event.ExpiresAt, @event.ContentAvailable);
-                Delivery.Send(token, notification);
+                if (tokenTypePairs.SubscriptionType == SubscriptionType.FireBase)
+                {
+                    var notification = new FireBaseNotificationDelivery(@event.Id, @event.NotificationPayload, @event.ExpiresAt, @event.ContentAvailable);
+                    Delivery.Send(tokenTypePairs.SubscriptionToken, notification);
+                }
             }
         }
     }

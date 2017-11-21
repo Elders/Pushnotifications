@@ -1,7 +1,7 @@
 ﻿using PushNotifications.Contracts.PushNotifications;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 
-namespace PushNotifications.Contracts.FireBaseSubscriptions
+namespace PushNotifications.Contracts.Subscriptions
 {
     public class FireBaseNotificationDelivery : NotificationDeliveryModel
     {

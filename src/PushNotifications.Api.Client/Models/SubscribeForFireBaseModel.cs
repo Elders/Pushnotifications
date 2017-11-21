@@ -3,9 +3,9 @@ using PushNotifications.Contracts;
 
 namespace PushNotifications.Api.Client
 {
-    public class SubscribeForFireBaseModel
+    public class SubscriptionForFireBase
     {
-        public SubscribeForFireBaseModel(StringTenantUrn subscriberUrn, SubscriptionToken token)
+        public SubscriptionForFireBase(StringTenantUrn subscriberUrn, SubscriptionToken token)
         {
             Tenant = subscriberUrn.Tenant;
             SubscriberUrn = subscriberUrn;

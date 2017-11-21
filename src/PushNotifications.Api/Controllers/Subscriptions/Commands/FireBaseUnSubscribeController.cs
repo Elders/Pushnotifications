@@ -1,15 +1,11 @@
 ﻿using Elders.Cronus.DomainModeling;
 using Elders.Web.Api;
-using System.ComponentModel.DataAnnotations;
 using System.Web.Http;
-using PushNotifications.Contracts.FireBaseSubscriptions.Commands;
-using PushNotifications.Contracts.FireBaseSubscriptions;
 using PushNotifications.Contracts;
-using PushNotifications.Api.Attributes;
-using System.Security.Claims;
 using Discovery.Contracts;
 using System.Collections.Generic;
 using System;
+using PushNotifications.Contracts.Subscriptions;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
@@ -29,12 +25,10 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             var result = new ResponseResult(Constants.InvalidCommand);
 
             var command = model.AsUnSubscribeCommand();
-            if (command.IsValid())
-            {
-                result = Publisher.Publish(command)
+            result = Publisher.Publish(command)
                     ? new ResponseResult<ResponseResult>(new ResponseResult())
                     : new ResponseResult(Constants.CommandPublishFailed);
-            }
+
             return result.IsSuccess
                 ? this.Accepted(result)
                 : this.NotAcceptable(result);
@@ -46,7 +40,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             {
                 var tenant = "elders";
                 var subscriberId = new SubscriberId(Guid.NewGuid().ToString(), tenant);
-                var fireBaseSubscriptionId = new FireBaseSubscriptionId(Guid.NewGuid().ToString(), tenant);
+                var fireBaseSubscriptionId = new SubscriptionId(Guid.NewGuid().ToString(), tenant);
 
                 yield return new RExample(new FireBaseSubscribeModel()
                 {

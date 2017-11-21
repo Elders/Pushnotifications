@@ -4,8 +4,8 @@ using System.Web.Http;
 using PushNotifications.Contracts;
 using Discovery.Contracts;
 using System.Collections.Generic;
-using PushNotifications.Contracts.FireBaseSubscriptions;
 using System;
+using PushNotifications.Contracts.Subscriptions;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
@@ -26,12 +26,10 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             //if (Urn.IsUrn(model.SubscriberId) == false) return this.NotAcceptable($"{nameof(model.SubscriberId)} must be URN.");
 
             var command = model.AsSubscribeCommand();
-            if (command.IsValid())
-            {
-                result = Publisher.Publish(command)
-                    ? new ResponseResult()
-                    : new ResponseResult(Constants.CommandPublishFailed);
-            }
+            result = Publisher.Publish(command)
+                   ? new ResponseResult()
+                   : new ResponseResult(Constants.CommandPublishFailed);
+
             return result.IsSuccess
                 ? this.Accepted(result)
                 : this.NotAcceptable(result);
@@ -43,7 +41,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             {
                 var tenant = "elders";
                 var subscriberId = new SubscriberId(Guid.NewGuid().ToString(), tenant);
-                var fireBaseSubscriptionId = new FireBaseSubscriptionId(Guid.NewGuid().ToString(), tenant);
+                var fireBaseSubscriptionId = new SubscriptionId(Guid.NewGuid().ToString(), tenant);
 
                 yield return new RExample(new FireBaseSubscribeModel()
                 {

@@ -47,19 +47,12 @@
     <Compile Include="PushNotifications\PushNotificationState.cs">
       <DependentUpon>PushNotification.cs</DependentUpon>
     </Compile>
-    <Compile Include="Subscriptions\FireBaseSubscription.cs" />
-    <Compile Include="Subscriptions\FireBaseSubscriptionAppService.cs">
-      <DependentUpon>FireBaseSubscription.cs</DependentUpon>
+    <Compile Include="Subscriptions\Subscription.cs" />
+    <Compile Include="Subscriptions\SubscriptionAppService.cs">
+      <DependentUpon>Subscription.cs</DependentUpon>
     </Compile>
-    <Compile Include="Subscriptions\FireBaseSubscriptionState.cs">
-      <DependentUpon>FireBaseSubscription.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Subscriptions\PushySubscription.cs" />
-    <Compile Include="Subscriptions\PushySubscriptionAppService.cs">
-      <DependentUpon>PushySubscription.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Subscriptions\PushySubscriptionState.cs">
-      <DependentUpon>PushySubscription.cs</DependentUpon>
+    <Compile Include="Subscriptions\SubscriptionState.cs">
+      <DependentUpon>Subscription.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -69,10 +62,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

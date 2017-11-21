@@ -46,7 +46,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.AtomicAction.Redis, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.AtomicAction.Redis.0.3.0\lib\net45-full\Elders.Cronus.AtomicAction.Redis.dll</HintPath>
+      <HintPath>..\packages\Cronus.AtomicAction.Redis.0.3.1\lib\net45-full\Elders.Cronus.AtomicAction.Redis.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.DomainModeling, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -145,7 +145,7 @@
     <Compile Include="ServiceLocator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

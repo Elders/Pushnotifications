@@ -5,10 +5,10 @@ using PushNotifications.Contracts;
 using PushNotifications.Api.Attributes;
 using Discovery.Contracts;
 using Elders.Cronus.DomainModeling.Projections;
-using PushNotifications.Projections.General;
 using PushNotifications.Converters.Extensions;
 using System.Collections.Generic;
 using System;
+using PushNotifications.Projections.Subscriptions;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
@@ -35,8 +35,8 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             var result = new ResponseResult(Constants.InvalidCommand);
 
             var subscriberId = new SubscriberId(model.SubscriberUrn);
-            var projectionReponse = Projections.Get<SubscriberTokensForAllProvidersProjection>(subscriberId);
-            if (projectionReponse.Success == false || projectionReponse.Projection.State.Tokens.Count == 0)
+            var projectionReponse = Projections.Get<SubscriberTokensProjection>(subscriberId);
+            if (projectionReponse.Success == false || projectionReponse.Projection.State.TokenTypePairs.Count == 0)
             {
                 return this.NotAcceptable($"Subscription not found for provided subscriber '{model.SubscriberUrn.Value.UrlEncode()}'");
             }

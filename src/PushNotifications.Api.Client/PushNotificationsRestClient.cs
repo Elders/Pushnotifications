@@ -48,7 +48,7 @@ namespace PushNotifications.Api.Client
             return restSharpIdentityModelClient.Execute<ResponseResult>(resource, Method.POST, pushNotification, authenticator);
         }
 
-        public IRestResponse SubscribeForFireBase(SubscribeForFireBaseModel subscription, Authenticator authenticator = null)
+        public IRestResponse SubscribeForFireBase(SubscriptionForFireBase subscription, Authenticator authenticator = null)
         {
             if (ReferenceEquals(null, subscription) == true) throw new ArgumentNullException(nameof(subscription));
 
@@ -57,11 +57,29 @@ namespace PushNotifications.Api.Client
             return restSharpIdentityModelClient.Execute<ResponseResult>(resource, Method.POST, subscription, authenticator);
         }
 
-        public IRestResponse SubscribeForPushy(SubscribeForPushyModel subscription, Authenticator authenticator = null)
+        public IRestResponse SubscribeForPushy(SubscriptionForPushy subscription, Authenticator authenticator = null)
         {
             if (ReferenceEquals(null, subscription) == true) throw new ArgumentNullException(nameof(subscription));
 
             const string resource = "Subscriptions/PushySubscription/Subscribe";
+
+            return restSharpIdentityModelClient.Execute<ResponseResult>(resource, Method.POST, subscription, authenticator);
+        }
+
+        public IRestResponse UnSubscribeForFireBase(SubscriptionForFireBase subscription, Authenticator authenticator = null)
+        {
+            if (ReferenceEquals(null, subscription) == true) throw new ArgumentNullException(nameof(subscription));
+
+            const string resource = "Subscriptions/FireBaseSubscription/UnSubscribe";
+
+            return restSharpIdentityModelClient.Execute<ResponseResult>(resource, Method.POST, subscription, authenticator);
+        }
+
+        public IRestResponse UnSubscribeForPushy(SubscriptionForPushy subscription, Authenticator authenticator = null)
+        {
+            if (ReferenceEquals(null, subscription) == true) throw new ArgumentNullException(nameof(subscription));
+
+            const string resource = "Subscriptions/PushySubscription/UnSubscribe";
 
             return restSharpIdentityModelClient.Execute<ResponseResult>(resource, Method.POST, subscription, authenticator);
         }

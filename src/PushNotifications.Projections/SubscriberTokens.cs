@@ -4,18 +4,18 @@ using PushNotifications.Contracts;
 
 namespace PushNotifications.Projections
 {
-    [DataContract(Name = "f648e05a-b5d9-4947-ade6-789b7ffb3601")]
+    [DataContract(Name = "4cc819b1-6f29-4cdd-a4d8-0eeb37cb88ec")]
     public class SubscriberTokens
     {
         public SubscriberTokens()
         {
-            Tokens = new HashSet<SubscriptionToken>();
+            TokenTypePairs = new HashSet<SubscriptionTokenSubscriptionTypePair>();
         }
 
         [DataMember(Order = 1)]
         public SubscriberId SubscriberId { get; set; }
 
         [DataMember(Order = 2)]
-        public HashSet<SubscriptionToken> Tokens { get; set; }
+        public HashSet<SubscriptionTokenSubscriptionTypePair> TokenTypePairs { get; set; }
     }
 }

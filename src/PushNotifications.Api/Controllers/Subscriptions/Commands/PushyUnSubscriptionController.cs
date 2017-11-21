@@ -3,9 +3,9 @@ using Elders.Web.Api;
 using System.Web.Http;
 using Discovery.Contracts;
 using System.Collections.Generic;
-using PushNotifications.Contracts.PushySubscriptions;
 using PushNotifications.Contracts;
 using System;
+using PushNotifications.Contracts.Subscriptions;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
@@ -26,12 +26,10 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             if (Urn.IsUrn(model.SubscriberUrn) == false) return this.NotAcceptable($"{nameof(model.SubscriberUrn)} must be URN.");
 
             var command = model.AsUnSubscribeCommand();
-            if (command.IsValid())
-            {
-                result = Publisher.Publish(command)
-                    ? new ResponseResult<ResponseResult>(new ResponseResult())
-                    : new ResponseResult(Constants.CommandPublishFailed);
-            }
+            result = Publisher.Publish(command)
+                  ? new ResponseResult<ResponseResult>(new ResponseResult())
+                  : new ResponseResult(Constants.CommandPublishFailed);
+
             return result.IsSuccess
                 ? this.Accepted(result)
                 : this.NotAcceptable(result);
@@ -43,7 +41,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             {
                 var tenant = "elders";
                 var subscriberId = new SubscriberId(Guid.NewGuid().ToString(), tenant);
-                var fireBaseSubscriptionId = new PushySubscriptionId(Guid.NewGuid().ToString(), tenant);
+                var fireBaseSubscriptionId = new SubscriptionId(Guid.NewGuid().ToString(), tenant);
 
                 yield return new RExample(new PushySubscribeModel()
                 {

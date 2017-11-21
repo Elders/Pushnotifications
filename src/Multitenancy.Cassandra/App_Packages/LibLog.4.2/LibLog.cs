@@ -40,23 +40,23 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace", Target = "Multitenancy.Cassandra.Logging")]
-[assembly: SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Scope = "member", Target = "Multitenancy.Cassandra.Logging.Logger.#Invoke(Multitenancy.Cassandra.Logging.LogLevel,System.Func`1<System.String>,System.Exception,System.Object[])")]
+[assembly: SuppressMessage("Microsoft.Design", "CA1020:AvoidNamespacesWithFewTypes", Scope = "namespace", Target = "Multitenancy.Cassandra.EventStore.Logging")]
+[assembly: SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed", Scope = "member", Target = "Multitenancy.Cassandra.EventStore.Logging.Logger.#Invoke(Multitenancy.Cassandra.EventStore.Logging.LogLevel,System.Func`1<System.String>,System.Exception,System.Object[])")]
 
 // If you copied this file manually, you need to change all "YourRootNameSpace" so not to clash with other libraries
 // that use LibLog
 #if LIBLOG_PROVIDERS_ONLY
-namespace Multitenancy.Cassandra.LibLog
+namespace Multitenancy.Cassandra.EventStore.LibLog
 #else
-namespace Multitenancy.Cassandra.Logging
+namespace Multitenancy.Cassandra.EventStore.Logging
 #endif
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 #if LIBLOG_PROVIDERS_ONLY
-    using Multitenancy.Cassandra.LibLog.LogProviders;
+    using Multitenancy.Cassandra.EventStore.LibLog.LogProviders;
 #else
-    using Multitenancy.Cassandra.Logging.LogProviders;
+    using Multitenancy.Cassandra.EventStore.Logging.LogProviders;
 #endif
     using System;
 #if !LIBLOG_PROVIDERS_ONLY
@@ -714,9 +714,9 @@ namespace Multitenancy.Cassandra.Logging
 }
 
 #if LIBLOG_PROVIDERS_ONLY
-namespace Multitenancy.Cassandra.LibLog.LogProviders
+namespace Multitenancy.Cassandra.EventStore.LibLog.LogProviders
 #else
-namespace Multitenancy.Cassandra.Logging.LogProviders
+namespace Multitenancy.Cassandra.EventStore.Logging.LogProviders
 #endif
 {
     using System;

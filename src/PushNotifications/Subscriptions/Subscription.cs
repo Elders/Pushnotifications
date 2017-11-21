@@ -1,24 +1,25 @@
 ﻿using System;
 using Elders.Cronus.DomainModeling;
 using PushNotifications.Contracts;
-using PushNotifications.Contracts.PushySubscriptions;
-using PushNotifications.Contracts.PushySubscriptions.Events;
+using PushNotifications.Contracts.Subscriptions;
+using PushNotifications.Contracts.Subscriptions.Events;
 
 namespace PushNotifications.Subscriptions
 {
-    public class PushySubscription : AggregateRoot<PushySubscriptionState>
+    public class Subscription : AggregateRoot<SubscriptionState>
     {
-        PushySubscription() { }
+        Subscription() { }
 
-        public PushySubscription(PushySubscriptionId id, SubscriberId userId, SubscriptionToken token)
+        public Subscription(SubscriptionId id, SubscriberId userId, SubscriptionToken token, SubscriptionType subscriptionType)
         {
             if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
             if (StringTenantId.IsValid(userId) == false) throw new ArgumentException(nameof(userId));
             if (SubscriptionToken.IsValid(token) == false) throw new ArgumentException(nameof(token));
+            if (ReferenceEquals(null, subscriptionType) == true) throw new ArgumentNullException(nameof(subscriptionType));
 
-            state = new PushySubscriptionState();
+            state = new SubscriptionState();
 
-            IEvent evnt = new SubscriberSubscribedForPushy(id, userId, token);
+            IEvent evnt = new Subscribed(id, userId, token, subscriptionType);
             Apply(evnt);
         }
 
@@ -27,9 +28,9 @@ namespace PushNotifications.Subscriptions
             if (StringTenantId.IsValid(userId) == false) throw new ArgumentException(nameof(userId));
             if (SubscriptionToken.IsValid(token) == false) throw new ArgumentException(nameof(token));
 
-            if (state.IsSubscriptionActive == false || state.UserId != userId)
+            if (state.IsSubscriptionActive == false || state.SubscriberId != userId)
             {
-                IEvent evnt = new SubscriberSubscribedForPushy(state.Id, userId, state.Token);
+                IEvent evnt = new Subscribed(state.Id, userId, state.SubscriptionToken, state.SubscriptionType);
                 Apply(evnt);
             }
         }
@@ -41,7 +42,7 @@ namespace PushNotifications.Subscriptions
 
             if (state.IsSubscriptionActive == true)
             {
-                IEvent evnt = new SubscriberUnSubscribedFromPushy(state.Id, userId, state.Token);
+                IEvent evnt = new UnSubscribed(state.Id, userId, state.SubscriptionToken, state.SubscriptionType);
                 Apply(evnt);
             }
         }

@@ -4,7 +4,6 @@ using PushNotifications.Contracts;
 using Discovery.Contracts;
 using Elders.Cronus.DomainModeling.Projections;
 using PushNotifications.Projections;
-using PushNotifications.Projections.General;
 using Elders.Cronus.DomainModeling;
 using System.Web.Http.ModelBinding;
 using PushNotifications.Api.Converters;
@@ -12,6 +11,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System;
 using PushNotifications.Api.Attributes;
+using PushNotifications.Projections.Subscriptions;
+using PushNotifications.Contracts.Subscriptions;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Queries
 {
@@ -31,7 +32,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Queries
         {
             var subscriberId = new SubscriberId(model.SubscriberUrn.Id, model.SubscriberUrn.Tenant);
 
-            var projectionReponse = Projections.Get<SubscriberTokensForAllProvidersProjection>(subscriberId);
+            var projectionReponse = Projections.Get<SubscriberTokensProjection>(subscriberId);
             if (projectionReponse.Success == true)
             {
                 return Ok(new ResponseResult<SubscriberTokens>(projectionReponse.Projection.State));
@@ -59,7 +60,10 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Queries
                 var model = new SubscriberTokens()
                 {
                     SubscriberId = subscriberId,
-                    Tokens = new HashSet<SubscriptionToken> { new SubscriptionToken("t1"), new SubscriptionToken("t2") }
+                    TokenTypePairs = new HashSet<SubscriptionTokenSubscriptionTypePair> {
+                        new SubscriptionTokenSubscriptionTypePair(new SubscriptionToken("t1"), SubscriptionType.FireBase),
+                        new SubscriptionTokenSubscriptionTypePair(new SubscriptionToken("t2"), SubscriptionType.Pushy)
+                    }
                 };
                 yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.NotFound, "This is null. Oh well should be null.");
                 yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.OK, new ResponseResult<SubscriberTokens>(model));

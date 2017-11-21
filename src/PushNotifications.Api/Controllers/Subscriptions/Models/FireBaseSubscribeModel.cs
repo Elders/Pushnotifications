@@ -1,11 +1,11 @@
 ﻿using Elders.Cronus.DomainModeling;
 using Elders.Web.Api;
 using System.ComponentModel.DataAnnotations;
-using PushNotifications.Contracts.FireBaseSubscriptions.Commands;
-using PushNotifications.Contracts.FireBaseSubscriptions;
 using PushNotifications.Contracts;
 using PushNotifications.Api.Attributes;
 using System.Security.Claims;
+using PushNotifications.Contracts.Subscriptions;
+using PushNotifications.Contracts.Subscriptions.Commands;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
@@ -26,18 +26,18 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         [Required]
         public SubscriptionToken Token { get; set; }
 
-        public SubscribeUserForFireBase AsSubscribeCommand()
+        public Subscribe AsSubscribeCommand()
         {
-            var subscriptionId = new FireBaseSubscriptionId(Token, Tenant);
+            var subscriptionId = new SubscriptionId(Token, Tenant);
             var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
-            return new SubscribeUserForFireBase(subscriptionId, subscriberId, Token);
+            return new Subscribe(subscriptionId, subscriberId, Token, SubscriptionType.FireBase);
         }
 
-        public UnSubscribeUserFromFireBase AsUnSubscribeCommand()
+        public UnSubscribe AsUnSubscribeCommand()
         {
-            var subscriptionId = new FireBaseSubscriptionId(Token, Tenant);
+            var subscriptionId = new SubscriptionId(Token, Tenant);
             var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
-            return new UnSubscribeUserFromFireBase(subscriptionId, subscriberId, Token);
+            return new UnSubscribe(subscriptionId, subscriberId, Token, SubscriptionType.FireBase);
         }
     }
 }
