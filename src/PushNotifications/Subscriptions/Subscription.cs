@@ -10,39 +10,37 @@ namespace PushNotifications.Subscriptions
     {
         Subscription() { }
 
-        public Subscription(SubscriptionId id, SubscriberId userId, SubscriptionToken token, SubscriptionType subscriptionType)
+        public Subscription(SubscriptionId id, SubscriberId subscriberId, SubscriptionToken subscriptionToken, SubscriptionType subscriptionType)
         {
             if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
-            if (StringTenantId.IsValid(userId) == false) throw new ArgumentException(nameof(userId));
-            if (SubscriptionToken.IsValid(token) == false) throw new ArgumentException(nameof(token));
+            if (StringTenantId.IsValid(subscriberId) == false) throw new ArgumentException(nameof(subscriberId));
+            if (SubscriptionToken.IsValid(subscriptionToken) == false) throw new ArgumentException(nameof(subscriptionToken));
             if (ReferenceEquals(null, subscriptionType) == true) throw new ArgumentNullException(nameof(subscriptionType));
 
             state = new SubscriptionState();
 
-            IEvent evnt = new Subscribed(id, userId, token, subscriptionType);
+            IEvent evnt = new Subscribed(id, subscriberId, subscriptionToken, subscriptionType);
             Apply(evnt);
         }
 
-        public void Subscribe(SubscriberId userId, SubscriptionToken token)
+        public void Subscribe(SubscriberId subscriberId)
         {
-            if (StringTenantId.IsValid(userId) == false) throw new ArgumentException(nameof(userId));
-            if (SubscriptionToken.IsValid(token) == false) throw new ArgumentException(nameof(token));
+            if (StringTenantId.IsValid(subscriberId) == false) throw new ArgumentException(nameof(subscriberId));
 
-            if (state.IsSubscriptionActive == false || state.SubscriberId != userId)
+            if (state.IsSubscriptionActive == false || state.SubscriberId != subscriberId)
             {
-                IEvent evnt = new Subscribed(state.Id, userId, state.SubscriptionToken, state.SubscriptionType);
+                IEvent evnt = new Subscribed(state.Id, subscriberId, state.SubscriptionToken, state.SubscriptionType);
                 Apply(evnt);
             }
         }
 
-        public void UnSubscribe(SubscriberId userId, SubscriptionToken token)
+        public void UnSubscribe(SubscriberId subscriberId)
         {
-            if (StringTenantId.IsValid(userId) == false) throw new ArgumentException(nameof(userId));
-            if (SubscriptionToken.IsValid(token) == false) throw new ArgumentException(nameof(token));
+            if (StringTenantId.IsValid(subscriberId) == false) throw new ArgumentException(nameof(subscriberId));
 
             if (state.IsSubscriptionActive == true)
             {
-                IEvent evnt = new UnSubscribed(state.Id, userId, state.SubscriptionToken, state.SubscriptionType);
+                IEvent evnt = new UnSubscribed(state.Id, subscriberId, state.SubscriptionToken, state.SubscriptionType);
                 Apply(evnt);
             }
         }

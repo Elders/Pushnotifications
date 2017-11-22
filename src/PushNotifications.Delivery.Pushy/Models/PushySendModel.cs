@@ -9,8 +9,6 @@ namespace PushNotifications.Delivery.Pushy.Models
     {
         const long MAX_TTL_SECONDS = 31536000; // 1 year
 
-        const long MAX_TTL_DAYS = 365; // 1 year
-
         public PushySendModel(IList<string> tokens, PushySendNotificationModel notification, PushySendDataModel data, Timestamp expiresAt, bool contentAvailable)
         {
             if (ReferenceEquals(null, tokens) == true || tokens.Count == 0) throw new ArgumentException(nameof(tokens));
@@ -47,7 +45,7 @@ namespace PushNotifications.Delivery.Pushy.Models
             var utcNow = DateTime.UtcNow;
             var difference = t.DateTime - utcNow;
 
-            if (difference.TotalDays > MAX_TTL_DAYS)
+            if (difference.TotalSeconds > MAX_TTL_SECONDS)
                 return MAX_TTL_SECONDS;
 
             return (long)difference.TotalSeconds;

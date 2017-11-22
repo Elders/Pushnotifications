@@ -7,9 +7,7 @@ namespace PushNotifications.Delivery.FireBase.Models
 {
     public class FireBaseSendModel
     {
-        const long MAX_TTL = 1209600; // 4 weeks
-
-        const long MAX_TTL_DAYS = 28; // 4 weeks
+        const long MAX_TTL_SECONDS = 1209600; // 4 weeks
 
         public FireBaseSendModel(IList<string> tokens, FireBaseSendNotificationModel notification, Timestamp expiresAt, bool contentAvailable)
         {
@@ -43,8 +41,8 @@ namespace PushNotifications.Delivery.FireBase.Models
             var utcNow = DateTime.UtcNow;
             var difference = t.DateTime - utcNow;
 
-            if (difference.TotalDays > MAX_TTL_DAYS)
-                return MAX_TTL;
+            if (difference.TotalSeconds > MAX_TTL_SECONDS)
+                return MAX_TTL_SECONDS;
 
             return (long)difference.TotalSeconds;
         }

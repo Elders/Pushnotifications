@@ -41,8 +41,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications", "PushNo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Converters", "PushNotifications.Converters\PushNotifications.Converters.csproj", "{9D4233BF-4282-4A44-8F54-1175A43BF763}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotification.Tests", "PushNotification.Tests\PushNotification.Tests.csproj", "{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multitenancy", "Multitenancy\Multitenancy.csproj", "{C7B50755-9DE7-4217-89A9-31688B2DEF21}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multitenancy.Cassandra.EventStore", "Multitenancy.Cassandra\Multitenancy.Cassandra.EventStore.csproj", "{61E2A02A-743A-46D6-94A1-3E9C97DB93B6}"
@@ -56,6 +54,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Aggregator.InMemory", "PushNotifications.Aggregator.InMemory\PushNotifications.Aggregator.InMemory.csproj", "{9BF5032E-B8A6-4F8C-B6FE-05BA192DCD5B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Aggregator.InMemory.Tests", "PushNotifications.Aggregator.InMemory.Tests\PushNotifications.Aggregator.InMemory.Tests.csproj", "{AEF2E404-D7F7-48C1-8F15-12B62152BA08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Tests", "PushNotifications.Tests\PushNotifications.Tests.csproj", "{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,10 +111,6 @@ Global
 		{9D4233BF-4282-4A44-8F54-1175A43BF763}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D4233BF-4282-4A44-8F54-1175A43BF763}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D4233BF-4282-4A44-8F54-1175A43BF763}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C7B50755-9DE7-4217-89A9-31688B2DEF21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C7B50755-9DE7-4217-89A9-31688B2DEF21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7B50755-9DE7-4217-89A9-31688B2DEF21}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -139,6 +135,10 @@ Global
 		{AEF2E404-D7F7-48C1-8F15-12B62152BA08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEF2E404-D7F7-48C1-8F15-12B62152BA08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEF2E404-D7F7-48C1-8F15-12B62152BA08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

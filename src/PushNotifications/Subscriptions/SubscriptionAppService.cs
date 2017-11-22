@@ -12,7 +12,7 @@ namespace PushNotifications.Subscriptions
             Subscription sub;
             if (Repository.TryLoad(command.Id, out sub))
             {
-                Update(command.Id, x => x.Subscribe(command.SubscriberId, command.SubscriptionToken));
+                Update(command.Id, x => x.Subscribe(command.SubscriberId));
             }
             else
             {
@@ -23,7 +23,7 @@ namespace PushNotifications.Subscriptions
 
         public void Handle(UnSubscribe command)
         {
-            Update(command.Id, x => x.UnSubscribe(command.SubscriberId, command.SubscriptionToken));
+            Update(command.Id, x => x.UnSubscribe(command.SubscriberId));
         }
     }
 }

@@ -7,8 +7,8 @@
     <ProjectGuid>{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PushNotification.Tests</RootNamespace>
-    <AssemblyName>PushNotification.Tests</AssemblyName>
+    <RootNamespace>PushNotifications.Tests</RootNamespace>
+    <AssemblyName>PushNotifications.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -55,6 +55,10 @@
       <Project>{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}</Project>
       <Name>PushNotifications.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PushNotifications\PushNotifications.csproj">
+      <Project>{036A4749-3D48-41BD-852B-0B47A12C9477}</Project>
+      <Name>PushNotifications</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
@@ -64,6 +68,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AggregateRootExtensions.cs" />
+    <Compile Include="MachineExtentions.cs" />
+    <Compile Include="PushNotifications\When_adding_new_features_to_the_push_notification_aggregate.cs" />
+    <Compile Include="PushNotifications\When_expired_push_notification_is_send.cs" />
+    <Compile Include="PushNotifications\When_push_notification_is_sent.cs" />
+    <Compile Include="Subscriptions\When_adding_new_features_to_the_subscription_aggregate.cs" />
+    <Compile Include="Subscriptions\When_subscriber_different_then_original_one_subscribes_to_not_active_subscription.cs" />
+    <Compile Include="Subscriptions\When_subscriber_subscribes.cs" />
+    <Compile Include="Subscriptions\When_subscriber_subscribes_to_not_active_subscription.cs" />
+    <Compile Include="Subscriptions\When_subscriber_unsubscribes.cs" />
+    <Compile Include="Subscriptions\When_subscriber_unsubscribes_from_not_active_subscription.cs" />
+    <Compile Include="Subscriptions\When_subscription_subscriber_change.cs" />
+    <Compile Include="Subscriptions\When_subscription_subscriber_changes_to_itself.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
