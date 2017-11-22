@@ -17,7 +17,7 @@ namespace PushNotification.Tests
             timeSpanBeforeFlush = TimeSpan.FromSeconds(1);
             countOfRecipientsBeforeFlus = int.MaxValue;
             concreateDelivery = new TestDelivery();
-            bufferedDelivery = new InMemoryBufferedDelivery<IPushNotificationBufferedDelivery>(concreateDelivery, timeSpanBeforeFlush, countOfRecipientsBeforeFlus);
+            bufferedDelivery = new InMemoryBufferedDelivery<IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce>(concreateDelivery, timeSpanBeforeFlush, countOfRecipientsBeforeFlus);
 
             expirationDateOfNotification = Timestamp.JudgementDay();
             countOfRecipients = 10;
@@ -33,7 +33,7 @@ namespace PushNotification.Tests
         It should_have_sent_notifications_to_all_recipients_after_waiting_for_the_timespan = () => concreateDelivery.Store.Count().ShouldEqual(countOfRecipients);
 
         static TestDelivery concreateDelivery;
-        static InMemoryBufferedDelivery<IPushNotificationBufferedDelivery> bufferedDelivery;
+        static InMemoryBufferedDelivery<IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce> bufferedDelivery;
         static TimeSpan timeSpanBeforeFlush;
         static int countOfRecipientsBeforeFlus;
         static Timestamp expirationDateOfNotification;

@@ -2,7 +2,7 @@
 
 namespace PushNotifications.Contracts.PushNotifications.Delivery
 {
-    public interface IPushNotificationBufferedDelivery
+    public interface IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce
     {
         bool Send(IList<SubscriptionToken> tokens, NotificationForDelivery notification);
     }

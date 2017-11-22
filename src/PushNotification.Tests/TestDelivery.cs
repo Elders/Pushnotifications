@@ -7,7 +7,7 @@ using PushNotifications.Contracts.PushNotifications.Delivery;
 
 namespace PushNotification.Tests
 {
-    public class TestDelivery : IPushNotificationDelivery, IPushNotificationBufferedDelivery
+    public class TestDelivery : IPushNotificationDelivery, IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce
     {
         readonly ConcurrentBag<KeyValuePair<SubscriptionToken, NotificationForDelivery>> store;
 

@@ -7,7 +7,7 @@ namespace PushNotification.Tests
 {
     public static class Helper
     {
-        public static void Send(InMemoryBufferedDelivery<IPushNotificationBufferedDelivery> theDelivery, int count, NotificationForDelivery notification)
+        public static void Send(InMemoryBufferedDelivery<IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce> theDelivery, int count, NotificationForDelivery notification)
         {
             for (int i = 0; i < count; i++)
             {

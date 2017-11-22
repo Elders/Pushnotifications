@@ -10,7 +10,7 @@ using RestSharp.Serializers;
 
 namespace PushNotifications.Delivery.Pushy
 {
-    public class PushyDelivery : IPushNotificationDelivery, IPushNotificationBufferedDelivery
+    public class PushyDelivery : IPushNotificationDelivery, IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce
     {
         static ILog log = LogProvider.GetLogger(typeof(PushyDelivery));
 

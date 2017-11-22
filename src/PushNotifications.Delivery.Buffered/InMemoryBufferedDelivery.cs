@@ -7,7 +7,7 @@ using PushNotifications.Contracts.PushNotifications.Delivery;
 
 namespace PushNotifications.Delivery.Buffered
 {
-    public class InMemoryBufferedDelivery<T> : IDisposable, IPushNotificationDelivery where T : IPushNotificationBufferedDelivery
+    public class InMemoryBufferedDelivery<T> : IDisposable, IPushNotificationDelivery where T : IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce
     {
         readonly T delivery;
 

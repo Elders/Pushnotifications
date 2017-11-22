@@ -17,7 +17,7 @@ namespace PushNotification.Tests
             timeSpanBeforeFlush = TimeSpan.FromSeconds(1);
             countOfRecipientsBeforeFlush = int.MaxValue;
             concreateDelivery = new TestDelivery();
-            bufferedDelivery = new InMemoryBufferedDelivery<IPushNotificationBufferedDelivery>(concreateDelivery, timeSpanBeforeFlush, countOfRecipientsBeforeFlush);
+            bufferedDelivery = new InMemoryBufferedDelivery<IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce>(concreateDelivery, timeSpanBeforeFlush, countOfRecipientsBeforeFlush);
 
             expirationDateOfNotification = Timestamp.JudgementDay();
 
@@ -42,7 +42,7 @@ namespace PushNotification.Tests
         It should_send_to_correct_second_notification = () => concreateDelivery.Store.Where(x => x.Value.Equals(n2)).Count().ShouldEqual(1);
 
         static TestDelivery concreateDelivery;
-        static InMemoryBufferedDelivery<IPushNotificationBufferedDelivery> bufferedDelivery;
+        static InMemoryBufferedDelivery<IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce> bufferedDelivery;
         static TimeSpan timeSpanBeforeFlush;
         static int countOfRecipientsBeforeFlush;
         static Timestamp expirationDateOfNotification;
