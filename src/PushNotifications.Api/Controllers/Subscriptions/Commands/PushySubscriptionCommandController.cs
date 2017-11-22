@@ -50,8 +50,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
                     Token = new SubscriptionToken("token")
                 });
 
-                var result = new ResponseResult(Constants.InvalidCommand);
-                yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.NotAcceptable, new ResponseResult(Constants.InvalidCommand));
+                yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.NotAcceptable, new ResponseResult(Constants.CommandPublishFailed));
                 yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.Accepted, new ResponseResult());
             }
         }
