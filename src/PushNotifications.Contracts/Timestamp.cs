@@ -11,8 +11,8 @@ namespace PushNotifications.Contracts
 
         public Timestamp(DateTime dateTime)
         {
-            if (dateTime.Kind != DateTimeKind.Utc)
-                throw new ArgumentException("All timestamps should be utc!");
+            if (ReferenceEquals(null, dateTime) == true) throw new ArgumentNullException(nameof(dateTime));
+            if (dateTime.Kind != DateTimeKind.Utc) throw new ArgumentException("All timestamps should be utc!");
 
             FileTimeUtc = dateTime.ToFileTimeUtc();
         }
@@ -34,6 +34,8 @@ namespace PushNotifications.Contracts
 
         public static Timestamp RandomMilliseconds(Timestamp source)
         {
+            if (ReferenceEquals(null, source) == true) throw new ArgumentNullException(nameof(source));
+
             var random = new Random();
             var dateTime = source.DateTime.AddMilliseconds(random.Next(1, 100));
             return new Timestamp(dateTime);
