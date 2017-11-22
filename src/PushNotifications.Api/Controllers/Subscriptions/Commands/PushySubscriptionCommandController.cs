@@ -23,7 +23,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         public IHttpActionResult SubscribeToPushy(PushySubscribeModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
-            if (Urn.IsUrn(model.SubscriberUrn) == false) return this.NotAcceptable($"{nameof(model.SubscriberUrn)} must be URN.");
 
             var command = model.AsSubscribeCommand();
             result = Publisher.Publish(command)
@@ -41,7 +40,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             {
                 var tenant = "elders";
                 var subscriberId = new SubscriberId(Guid.NewGuid().ToString(), tenant);
-                var fireBaseSubscriptionId = new SubscriptionId(Guid.NewGuid().ToString(), tenant);
 
                 yield return new RExample(new PushySubscribeModel()
                 {

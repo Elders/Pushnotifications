@@ -23,7 +23,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         public IHttpActionResult SubscribeToFireBase(FireBaseSubscribeModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
-            //if (Urn.IsUrn(model.SubscriberId) == false) return this.NotAcceptable($"{nameof(model.SubscriberId)} must be URN.");
 
             var command = model.AsSubscribeCommand();
             result = Publisher.Publish(command)
@@ -41,7 +40,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             {
                 var tenant = "elders";
                 var subscriberId = new SubscriberId(Guid.NewGuid().ToString(), tenant);
-                var fireBaseSubscriptionId = new SubscriptionId(Guid.NewGuid().ToString(), tenant);
 
                 yield return new RExample(new FireBaseSubscribeModel()
                 {

@@ -40,7 +40,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             {
                 var tenant = "elders";
                 var subscriberId = new SubscriberId(Guid.NewGuid().ToString(), tenant);
-                var fireBaseSubscriptionId = new SubscriptionId(Guid.NewGuid().ToString(), tenant);
 
                 yield return new RExample(new FireBaseSubscribeModel()
                 {
