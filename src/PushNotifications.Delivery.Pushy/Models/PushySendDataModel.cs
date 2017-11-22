@@ -1,9 +1,14 @@
-﻿namespace PushNotifications.Delivery.Pushy.Models
+﻿using System;
+
+namespace PushNotifications.Delivery.Pushy.Models
 {
     public class PushySendDataModel
     {
         public PushySendDataModel(string title, string body, string sound, string badge)
         {
+            if (string.IsNullOrEmpty(title) == true) throw new ArgumentNullException(nameof(title));
+            if (string.IsNullOrEmpty(body) == true) throw new ArgumentNullException(nameof(body));
+
             Title = title;
             Body = body;
             Sound = sound;
