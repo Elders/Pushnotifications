@@ -31,14 +31,5 @@ namespace PushNotifications.Contracts
         {
             return new Timestamp(DateTime.UtcNow.AddYears(100));
         }
-
-        public static Timestamp RandomMilliseconds(Timestamp source)
-        {
-            if (ReferenceEquals(null, source) == true) throw new ArgumentNullException(nameof(source));
-
-            var random = new Random();
-            var dateTime = source.DateTime.AddMilliseconds(random.Next(1, 100));
-            return new Timestamp(dateTime);
-        }
     }
 }
