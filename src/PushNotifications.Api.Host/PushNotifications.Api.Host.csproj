@@ -219,7 +219,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Cert.cs" />
     <Compile Include="ErrorConverterWithExpandedErrorMessage.cs" />
-    <Compile Include="Extensions\PandoraExtensions.cs" />
     <Compile Include="Extensions\IAppBuilderExtensions.cs" />
     <Compile Include="LogStartup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
