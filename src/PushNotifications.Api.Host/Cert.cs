@@ -11,25 +11,6 @@ namespace PushNotifications.Api.Host
 {
     public static class Cert
     {
-        public static X509Certificate2 Load(string certThumbprint)
-        {
-            X509Certificate2 certificate = null;
-            var store = new X509Store(StoreLocation.LocalMachine);
-            store.Open(OpenFlags.ReadOnly);
-
-            foreach (var cert in store.Certificates)
-            {
-                if (string.Compare(cert.Thumbprint, certThumbprint, System.StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    certificate = cert;
-                    break;
-                }
-            }
-
-            store.Close();
-            return certificate;
-        }
-
         public static byte[] GetCertBytes(string authority)
         {
             var builder = new UriBuilder(authority);
