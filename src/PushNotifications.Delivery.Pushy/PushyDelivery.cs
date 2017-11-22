@@ -10,7 +10,7 @@ using RestSharp.Serializers;
 
 namespace PushNotifications.Delivery.Pushy
 {
-    public class PushyDelivery : IPushNotificationDelivery, IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce
+    public class PushyDelivery : IPushNotificationDelivery
     {
         static ILog log = LogProvider.GetLogger(typeof(PushyDelivery));
 
@@ -19,6 +19,8 @@ namespace PushNotifications.Delivery.Pushy
         readonly IRestClient restClient;
 
         readonly ISerializer serializer;
+
+        IPushNotificationAggregator pushNotificationAggregator;
 
         public PushyDelivery(IRestClient restClient, ISerializer serializer, string serverKey)
         {
@@ -31,8 +33,20 @@ namespace PushNotifications.Delivery.Pushy
             this.serverKey = serverKey;
         }
 
+        public void UseAggregator(IPushNotificationAggregator pushNotificationAggregator)
+        {
+            if (ReferenceEquals(null, pushNotificationAggregator) == true) throw new ArgumentNullException(nameof(pushNotificationAggregator));
+            this.pushNotificationAggregator = pushNotificationAggregator;
+        }
+
         public bool Send(SubscriptionToken token, NotificationForDelivery notification)
         {
+            if (ReferenceEquals(null, token) == true) throw new ArgumentNullException(nameof(token));
+            if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
+
+            if (ReferenceEquals(null, pushNotificationAggregator) == false)
+                return pushNotificationAggregator.Queue(token, notification);
+
             return Send(new List<SubscriptionToken> { token }, notification);
         }
 

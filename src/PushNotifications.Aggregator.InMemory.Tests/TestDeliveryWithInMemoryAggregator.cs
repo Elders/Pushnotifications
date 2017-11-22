@@ -1,25 +1,28 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 
-namespace PushNotifications.Delivery.Buffered.Tests
+namespace PushNotifications.Aggregator.InMemory.Tests
 {
-    public class TestDelivery : IPushNotificationDelivery, IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce
+    public class TestDeliveryWithInMemoryAggregator : IPushNotificationDelivery
     {
+        InMemoryPushNotificationAggregator aggregator;
+
         readonly ConcurrentBag<KeyValuePair<SubscriptionToken, NotificationForDelivery>> store;
 
-        public TestDelivery()
+        public TestDeliveryWithInMemoryAggregator(TimeSpan timeSpan, int recipientsCountBeforeFlush)
         {
+            aggregator = new InMemoryPushNotificationAggregator(Send, timeSpan, recipientsCountBeforeFlush);
             this.store = new ConcurrentBag<KeyValuePair<SubscriptionToken, NotificationForDelivery>>();
         }
 
         public bool Send(SubscriptionToken token, NotificationForDelivery notification)
         {
-            store.Add(new KeyValuePair<SubscriptionToken, NotificationForDelivery>(token, notification));
-            return true;
+            return aggregator.Queue(token, notification);
         }
 
         public bool Send(IList<SubscriptionToken> tokens, NotificationForDelivery notification)

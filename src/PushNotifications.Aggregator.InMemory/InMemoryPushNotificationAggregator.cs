@@ -5,28 +5,35 @@ using System.Threading;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 
-namespace PushNotifications.Delivery.Buffered
+namespace PushNotifications.Aggregator.InMemory
 {
-    public class InMemoryBufferedDelivery<T> : IDisposable, IPushNotificationDelivery where T : IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce
+    public class InMemoryPushNotificationAggregator : IDisposable, IPushNotificationAggregator
     {
-        readonly T delivery;
+        Func<List<SubscriptionToken>, NotificationForDelivery, bool> send;
 
         readonly TimeSpan timeSpanBeforeFlush;
 
         readonly int recipientsCountBeforeFlush;
 
-        private Timer timer;
+        Timer timer;
 
         bool canSend;
 
         ConcurrentDictionary<NotificationForDelivery, List<SubscriptionToken>> buffer;
 
-        public InMemoryBufferedDelivery(T delivery, TimeSpan timeSpanBeforeFlush, int recipientsCountBeforeFlush)
+        /// <summary>
+        /// Aggregates push notifications and flushes them as single batch
+        /// Aggregation is based on <see cref="NotificationForDelivery"/>
+        /// Flushing is based on time span and number of recipients
+        /// </summary>
+        /// <param name="timeSpanBeforeFlush">Time span on which flushing is happening</param>
+        /// <param name="recipientsCountBeforeFlush">Number of recipients before flushing</param>
+        public InMemoryPushNotificationAggregator(Func<List<SubscriptionToken>, NotificationForDelivery, bool> send, TimeSpan timeSpanBeforeFlush, int recipientsCountBeforeFlush)
         {
-            if (ReferenceEquals(null, delivery) == true) throw new ArgumentNullException(nameof(delivery));
+            if (ReferenceEquals(null, send) == true) throw new ArgumentNullException(nameof(send));
             if (ReferenceEquals(null, timeSpanBeforeFlush) == true) throw new ArgumentNullException(nameof(timeSpanBeforeFlush));
 
-            this.delivery = delivery;
+            this.send = send;
             this.timeSpanBeforeFlush = timeSpanBeforeFlush;
             this.recipientsCountBeforeFlush = recipientsCountBeforeFlush;
             canSend = true;
@@ -34,12 +41,13 @@ namespace PushNotifications.Delivery.Buffered
             timer = new Timer(x => Flush(), this, TimeSpan.FromSeconds(0), timeSpanBeforeFlush);
         }
 
-        public bool Send(SubscriptionToken token, NotificationForDelivery notification)
+        public bool Queue(SubscriptionToken token, NotificationForDelivery notification)
         {
             if (ReferenceEquals(null, token) == true) throw new ArgumentNullException(nameof(token));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
             if (canSend == false)
                 return false;
+
             buffer.AddOrUpdate(notification, new List<SubscriptionToken> { token }, (k, v) => { v.Add(token); return v; });
 
             List<SubscriptionToken> tokens;
@@ -56,7 +64,7 @@ namespace PushNotifications.Delivery.Buffered
                 List<SubscriptionToken> tokens;
                 if (buffer.TryRemove(key, out tokens))
                 {
-                    return delivery.Send(tokens, key);
+                    return send(tokens, key);
                 }
             }
             return true;

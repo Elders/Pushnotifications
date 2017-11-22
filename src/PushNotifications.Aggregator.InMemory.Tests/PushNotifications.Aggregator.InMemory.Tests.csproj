@@ -7,8 +7,8 @@
     <ProjectGuid>{AEF2E404-D7F7-48C1-8F15-12B62152BA08}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PushNotifications.Delivery.Buffered.Tests</RootNamespace>
-    <AssemblyName>PushNotifications.Delivery.Buffered.Tests</AssemblyName>
+    <RootNamespace>PushNotifications.Aggregator.InMemory.Tests</RootNamespace>
+    <AssemblyName>PushNotifications.Aggregator.InMemory.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -69,13 +69,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helper.cs" />
-    <Compile Include="TestDelivery.cs" />
-    <Compile Include="When_sending_multiple_pushnotifications_to_one_token_with_buffer.cs" />
-    <Compile Include="When_sending_one_pushnotification_to_mutiple_recipients_with_buffer.cs" />
-    <Compile Include="When_sending_pushnotification_with_buffer_using_timespan_to_flush.cs" />
-    <Compile Include="When_sending_pushnotification_with_buffer_using_timespan_to_flush_and_does_not_wait.cs" />
-    <Compile Include="When_sending_pushnotification_with_buffer_using_tokens_count_to_flush.cs" />
-    <Compile Include="When_sending_pushnotification_with_buffer_using_tokens_count_to_flush_and_flush_count_is_not_reached.cs" />
+    <Compile Include="TestDeliveryWithInMemoryAggregator.cs" />
+    <Compile Include="When_sending_multiple_pushnotifications_to_one_token_with_aggregator.cs" />
+    <Compile Include="When_sending_one_pushnotification_to_mutiple_tokens_with_aggregator.cs" />
+    <Compile Include="When_sending_pushnotification_with_aggregator_using_timespan_to_flush.cs" />
+    <Compile Include="When_sending_pushnotification_with_aggregator_using_timespan_to_flush_and_does_not_wait.cs" />
+    <Compile Include="When_sending_pushnotification_with_aggregator_using_tokens_count_to_flush.cs" />
+    <Compile Include="When_sending_pushnotification_with_aggregator_using_tokens_count_to_flush_and_flush_count_is_not_reached.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -85,9 +85,9 @@
       <Project>{53ab2dd6-f42f-44bb-bb6d-a7497c720e68}</Project>
       <Name>PushNotifications.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PushNotifications.Delivery.Buffered\PushNotifications.Delivery.Buffered.csproj">
+    <ProjectReference Include="..\PushNotifications.Aggregator.InMemory\PushNotifications.Aggregator.InMemory.csproj">
       <Project>{9bf5032e-b8a6-4f8c-b6fe-05ba192dcd5b}</Project>
-      <Name>PushNotifications.Delivery.Buffered</Name>
+      <Name>PushNotifications.Aggregator.InMemory</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Elders.Pandora;
 using Multitenancy.Delivery.Serialization;
+using PushNotifications.Aggregator.InMemory;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Delivery.Buffered;
 using PushNotifications.Delivery.FireBase;
 using PushNotifications.Delivery.Pushy;
 
@@ -67,9 +67,9 @@ namespace Multitenancy.Delivery
 
             var fireBaseRestClient = new RestSharp.RestClient(baseUrl);
             var fireBaseDelivery = new FireBaseDelivery(fireBaseRestClient, NewtonsoftJsonSerializer.Default(), settings.ServerKey);
-            var fireBaseBufferedDelivery = new InMemoryBufferedDelivery<FireBaseDelivery>(fireBaseDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush);
+            fireBaseDelivery.UseAggregator(new InMemoryPushNotificationAggregator(fireBaseDelivery.Send, timeSpanBeforeFlush, recipientsCountBeforeFlush));
 
-            store.Add(new MultiTenantStoreItem(settings.Tenant, SubscriptionType.FireBase, fireBaseBufferedDelivery));
+            store.Add(new MultiTenantStoreItem(settings.Tenant, SubscriptionType.FireBase, fireBaseDelivery));
         }
 
         void RegisterPushyDelivery(string baseUrl, PushySettings settings)
@@ -81,9 +81,9 @@ namespace Multitenancy.Delivery
 
             var pushyRestClient = new RestSharp.RestClient(baseUrl);
             var pushyDelivery = new PushyDelivery(pushyRestClient, NewtonsoftJsonSerializer.Default(), settings.ServerKey);
-            var pushyBufferedDelivery = new InMemoryBufferedDelivery<PushyDelivery>(pushyDelivery, timeSpanBeforeFlush, recipientsCountBeforeFlush);
+            pushyDelivery.UseAggregator(new InMemoryPushNotificationAggregator(pushyDelivery.Send, timeSpanBeforeFlush, recipientsCountBeforeFlush));
 
-            store.Add(new MultiTenantStoreItem(settings.Tenant, SubscriptionType.Pushy, pushyBufferedDelivery));
+            store.Add(new MultiTenantStoreItem(settings.Tenant, SubscriptionType.Pushy, pushyDelivery));
         }
 
         class PushySettings

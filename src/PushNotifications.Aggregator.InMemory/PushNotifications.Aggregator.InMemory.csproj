@@ -7,8 +7,8 @@
     <ProjectGuid>{9BF5032E-B8A6-4F8C-B6FE-05BA192DCD5B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PushNotifications.Delivery.Buffered</RootNamespace>
-    <AssemblyName>PushNotifications.Delivery.Buffered</AssemblyName>
+    <RootNamespace>PushNotifications.Aggregator.InMemory</RootNamespace>
+    <AssemblyName>PushNotifications.Aggregator.InMemory</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -41,9 +41,6 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InMemoryBufferedDelivery.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}</Project>
       <Name>PushNotifications.Contracts</Name>
@@ -51,6 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="InMemoryPushNotificationAggregator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

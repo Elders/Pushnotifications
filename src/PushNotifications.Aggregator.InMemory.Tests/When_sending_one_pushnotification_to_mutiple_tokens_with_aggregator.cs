@@ -4,20 +4,18 @@ using System.Linq;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications;
-using PushNotifications.Delivery.Buffered;
 using System.Threading;
 
-namespace PushNotifications.Delivery.Buffered.Tests
+namespace PushNotifications.Aggregator.InMemory.Tests
 {
-    [Subject(typeof(InMemoryBufferedDelivery<TestDelivery>))]
-    public class When_sending_one_pushnotification_to_mutiple_tokens_with_buffer
+    [Subject(typeof(InMemoryPushNotificationAggregator))]
+    public class When_sending_one_pushnotification_to_mutiple_tokens_with_aggregator
     {
         Establish ctx = () =>
         {
             timeSpanBeforeFlush = TimeSpan.FromSeconds(1);
             countOfRecipientsBeforeFlush = int.MaxValue;
-            concreateDelivery = new TestDelivery();
-            bufferedDelivery = new InMemoryBufferedDelivery<IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce>(concreateDelivery, timeSpanBeforeFlush, countOfRecipientsBeforeFlush);
+            concreateDelivery = new TestDeliveryWithInMemoryAggregator(timeSpanBeforeFlush, countOfRecipientsBeforeFlush);
 
             expirationDateOfNotification = Timestamp.JudgementDay();
 
@@ -28,8 +26,8 @@ namespace PushNotifications.Delivery.Buffered.Tests
 
         Because of = () =>
         {
-            bufferedDelivery.Send(t1, n1);
-            bufferedDelivery.Send(t2, n1);
+            concreateDelivery.Send(t1, n1);
+            concreateDelivery.Send(t2, n1);
             Thread.Sleep((int)timeSpanBeforeFlush.TotalMilliseconds * 2);
         };
 
@@ -42,8 +40,7 @@ namespace PushNotifications.Delivery.Buffered.Tests
 
         It should_send_to_correct_notifications = () => { concreateDelivery.Store.First().Value.ShouldEqual(n1); };
 
-        static TestDelivery concreateDelivery;
-        static InMemoryBufferedDelivery<IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce> bufferedDelivery;
+        static TestDeliveryWithInMemoryAggregator concreateDelivery;
         static TimeSpan timeSpanBeforeFlush;
         static int countOfRecipientsBeforeFlush;
         static Timestamp expirationDateOfNotification;

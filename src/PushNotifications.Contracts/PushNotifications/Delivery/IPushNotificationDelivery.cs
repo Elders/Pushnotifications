@@ -1,4 +1,6 @@
-﻿namespace PushNotifications.Contracts.PushNotifications.Delivery
+﻿using System.Collections.Generic;
+
+namespace PushNotifications.Contracts.PushNotifications.Delivery
 {
     public interface IPushNotificationDelivery
     {

@@ -51,9 +51,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multitenancy.Cassandra.Proj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multitenancy.Delivery", "Multitenancy.Delivery\Multitenancy.Delivery.csproj", "{FC795C4C-F0F4-49C3-B0CC-4227390E4F07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Delivery.Buffered", "PushNotifications.Delivery.Buffered\PushNotifications.Delivery.Buffered.csproj", "{9BF5032E-B8A6-4F8C-B6FE-05BA192DCD5B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aggregator", "aggregator", "{2DFBB2EB-D84A-4DA5-B649-B4B57199F30C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Delivery.Buffered.Tests", "PushNotifications.Delivery.Buffered.Tests\PushNotifications.Delivery.Buffered.Tests.csproj", "{AEF2E404-D7F7-48C1-8F15-12B62152BA08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Aggregator.InMemory", "PushNotifications.Aggregator.InMemory\PushNotifications.Aggregator.InMemory.csproj", "{9BF5032E-B8A6-4F8C-B6FE-05BA192DCD5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Aggregator.InMemory.Tests", "PushNotifications.Aggregator.InMemory.Tests\PushNotifications.Aggregator.InMemory.Tests.csproj", "{AEF2E404-D7F7-48C1-8F15-12B62152BA08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,7 +153,7 @@ Global
 		{03CF41C9-3167-4431-BDF0-C44497C057E8} = {F180EF95-6C68-457F-BE8A-60396703165F}
 		{9AFA033C-F2A0-44EA-B317-6F1869850FF1} = {F180EF95-6C68-457F-BE8A-60396703165F}
 		{9D4233BF-4282-4A44-8F54-1175A43BF763} = {F180EF95-6C68-457F-BE8A-60396703165F}
-		{9BF5032E-B8A6-4F8C-B6FE-05BA192DCD5B} = {FA881070-30AA-4176-AC15-599D9F50D247}
-		{AEF2E404-D7F7-48C1-8F15-12B62152BA08} = {FA881070-30AA-4176-AC15-599D9F50D247}
+		{9BF5032E-B8A6-4F8C-B6FE-05BA192DCD5B} = {2DFBB2EB-D84A-4DA5-B649-B4B57199F30C}
+		{AEF2E404-D7F7-48C1-8F15-12B62152BA08} = {2DFBB2EB-D84A-4DA5-B649-B4B57199F30C}
 	EndGlobalSection
 EndGlobal
