@@ -19,6 +19,10 @@ namespace PushNotifications
 
             state = new PushNotificationState();
 
+            // Ignore pushnotifications that expired
+            if (Timestamp.UtcNow().DateTime > expiresAt.DateTime)
+                return;
+
             IEvent @event = new PushNotificationSent(id, subscriberId, notificationPayload, expiresAt, contentAvailable);
             Apply(@event);
         }
