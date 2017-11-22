@@ -4,9 +4,9 @@ using PushNotifications.Contracts;
 
 namespace PushNotifications.Api.Client.Models
 {
-    public class PushNotificationSendModel
+    public class SendPushNotificationModel
     {
-        public PushNotificationSendModel(StringTenantUrn subscriberUrn, string title, string body, string sound, string icon, int badge, Timestamp expiresAt, bool contentAvailable)
+        public SendPushNotificationModel(StringTenantUrn subscriberUrn, string title, string body, string sound, string icon, int badge, Timestamp expiresAt, bool contentAvailable)
         {
             if (ReferenceEquals(subscriberUrn, null) == true) throw new ArgumentNullException(nameof(subscriberUrn));
             if (ReferenceEquals(expiresAt, null) == true) throw new ArgumentNullException(nameof(expiresAt));

@@ -81,7 +81,7 @@
     <Compile Include="AvailableRoles.cs" />
     <Compile Include="AvailableScopes.cs" />
     <Compile Include="Controllers\PushNotifications\Commands\PushNotificationsController.cs" />
-    <Compile Include="Controllers\PushNotifications\Models\PushNotificationSendModel.cs" />
+    <Compile Include="Controllers\PushNotifications\Models\SendPushNotificationModel.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\FireBaseSubscribeController.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\FireBaseUnSubscribeController.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\PushyUnSubscriptionController.cs" />

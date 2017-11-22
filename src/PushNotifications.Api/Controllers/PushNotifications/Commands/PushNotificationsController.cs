@@ -9,6 +9,7 @@ using PushNotifications.Converters.Extensions;
 using System.Collections.Generic;
 using System;
 using PushNotifications.Projections.Subscriptions;
+using PushNotifications.Api.Controllers.PushNotifications.Models;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
@@ -30,7 +31,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
         [UsefulAuthorize(Roles = AvailableRoles.Admin, Scopes = AvailableScopes.Admin)]
         [HttpPost, Route("Send"), Discoverable("PushNotificationsSend", "v1")]
-        public IHttpActionResult Send(PushNotificationSendModel model)
+        public IHttpActionResult Send(SendPushNotificationModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
 
@@ -58,7 +59,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
                 var tenant = "elders";
                 var subscriberId = new SubscriberId(Guid.NewGuid().ToString(), tenant);
                 var stringTenantUrn = StringTenantUrn.Parse(subscriberId.Urn.Value);
-                yield return new RExample(new PushNotificationSendModel
+                yield return new RExample(new SendPushNotificationModel
                 {
                     Badge = 0,
                     Body = "test body",

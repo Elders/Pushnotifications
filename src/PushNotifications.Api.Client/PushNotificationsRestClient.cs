@@ -38,7 +38,7 @@ namespace PushNotifications.Api.Client
             restSharpIdentityModelClient = new RestSharpIdentityModelClient(restSharpIdentityModelClientOptions, clientCredentialsAuthenticator);
         }
 
-        public IRestResponse SendPushNotification(PushNotificationSendModel pushNotification, Authenticator authenticator = null)
+        public IRestResponse SendPushNotification(SendPushNotificationModel pushNotification, Authenticator authenticator = null)
         {
             if (ReferenceEquals(null, pushNotification) == true) throw new ArgumentNullException(nameof(pushNotification));
 

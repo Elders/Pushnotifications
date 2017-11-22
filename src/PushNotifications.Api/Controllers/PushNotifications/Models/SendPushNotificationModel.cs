@@ -6,11 +6,11 @@ using PushNotifications.Contracts.PushNotifications.Commands;
 using PushNotifications.Contracts.PushNotifications;
 using System;
 
-namespace PushNotifications.Api.Controllers.Subscriptions.Commands
+namespace PushNotifications.Api.Controllers.PushNotifications.Models
 {
-    public class PushNotificationSendModel
+    public class SendPushNotificationModel
     {
-        public PushNotificationSendModel()
+        public SendPushNotificationModel()
         {
             ExpiresAt = Timestamp.JudgementDay();
         }
