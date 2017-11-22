@@ -3,7 +3,7 @@ using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts;
 using PushNotifications.Delivery.Buffered;
 
-namespace PushNotification.Tests
+namespace PushNotifications.Delivery.Buffered.Tests
 {
     public static class Helper
     {

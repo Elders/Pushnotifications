@@ -7,7 +7,7 @@ using PushNotifications.Contracts.PushNotifications;
 using PushNotifications.Delivery.Buffered;
 using System.Threading;
 
-namespace PushNotification.Tests
+namespace PushNotifications.Delivery.Buffered.Tests
 {
     [Subject(typeof(InMemoryBufferedDelivery<TestDelivery>))]
     public class When_sending_multiple_pushnotifications_to_one_token_with_buffer

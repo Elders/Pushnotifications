@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
-    <Compile Include="FireBasePort.cs" />
+    <Compile Include="PushNotificationsPort.cs" />
     <Compile Include="PushNotificationsPortsAssembly.cs" />
   </ItemGroup>
   <ItemGroup>

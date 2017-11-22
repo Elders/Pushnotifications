@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}</ProjectGuid>
+    <ProjectGuid>{AEF2E404-D7F7-48C1-8F15-12B62152BA08}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PushNotification.Tests</RootNamespace>
-    <AssemblyName>PushNotification.Tests</AssemblyName>
+    <RootNamespace>PushNotifications.Delivery.Buffered.Tests</RootNamespace>
+    <AssemblyName>PushNotifications.Delivery.Buffered.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,8 +34,8 @@
       <HintPath>..\packages\Cronus.DomainModeling.3.3.0\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Machine.Specifications, Version=0.12.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Machine.Specifications.0.12.0\lib\net45\Machine.Specifications.dll</HintPath>
+    <Reference Include="Machine.Specifications, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Machine.Specifications.0.11.0\lib\net45\Machine.Specifications.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Machine.Specifications.Should, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -51,23 +51,33 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper.cs" />
+    <Compile Include="TestDelivery.cs" />
+    <Compile Include="When_sending_multiple_pushnotifications_to_one_token_with_buffer.cs" />
+    <Compile Include="When_sending_one_pushnotification_to_mutiple_recipients_with_buffer.cs" />
+    <Compile Include="When_sending_pushnotification_with_buffer_using_timespan_to_flush.cs" />
+    <Compile Include="When_sending_pushnotification_with_buffer_using_timespan_to_flush_and_does_not_wait.cs" />
+    <Compile Include="When_sending_pushnotification_with_buffer_using_tokens_count_to_flush.cs" />
+    <Compile Include="When_sending_pushnotification_with_buffer_using_tokens_count_to_flush_and_flush_count_is_not_reached.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
-      <Project>{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}</Project>
+      <Project>{53ab2dd6-f42f-44bb-bb6d-a7497c720e68}</Project>
       <Name>PushNotifications.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Delivery.Buffered\PushNotifications.Delivery.Buffered.csproj">
-      <Project>{9BF5032E-B8A6-4F8C-B6FE-05BA192DCD5B}</Project>
+      <Project>{9bf5032e-b8a6-4f8c-b6fe-05ba192dcd5b}</Project>
       <Name>PushNotifications.Delivery.Buffered</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

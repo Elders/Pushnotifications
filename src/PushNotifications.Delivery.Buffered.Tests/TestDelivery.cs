@@ -5,7 +5,7 @@ using System.Linq;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 
-namespace PushNotification.Tests
+namespace PushNotifications.Delivery.Buffered.Tests
 {
     public class TestDelivery : IPushNotificationDelivery, IPushNotificationDeliveryCapableOfSendingMoreThenOneNotificationAtOnce
     {
