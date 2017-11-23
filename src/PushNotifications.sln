@@ -57,6 +57,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Aggregato
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Tests", "PushNotifications.Tests\PushNotifications.Tests.csproj", "{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Projections.Tests", "PushNotifications.Projections.Tests\PushNotifications.Projections.Tests.csproj", "{0BF637F0-0C46-4176-8C4E-A1BA452187D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -139,6 +141,10 @@ Global
 		{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F44F063-6FA8-434D-AAA2-3CA6A7DFB9B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BF637F0-0C46-4176-8C4E-A1BA452187D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BF637F0-0C46-4176-8C4E-A1BA452187D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BF637F0-0C46-4176-8C4E-A1BA452187D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BF637F0-0C46-4176-8C4E-A1BA452187D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
