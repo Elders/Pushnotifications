@@ -27,7 +27,7 @@ namespace PushNotifications.Contracts
 
         public override string ToString()
         {
-            return $"{Token}@@{SubscriptionType}";
+            return Token;
         }
 
         public static implicit operator string(SubscriptionToken token)
