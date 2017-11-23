@@ -5,6 +5,7 @@ using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications;
 using System.Threading;
+using PushNotifications.Contracts.Subscriptions;
 
 namespace PushNotifications.Aggregator.InMemory.Tests
 {
@@ -19,8 +20,8 @@ namespace PushNotifications.Aggregator.InMemory.Tests
 
             expirationDateOfNotification = Timestamp.JudgementDay();
 
-            t1 = new SubscriptionToken("t1");
-            t2 = new SubscriptionToken("t2");
+            t1 = new SubscriptionToken("t1", SubscriptionType.FireBase);
+            t2 = new SubscriptionToken("t2", SubscriptionType.FireBase);
             n1 = new NotificationForDelivery(new PushNotificationId("n1", "elders"), new NotificationPayload("title-1", "body"), expirationDateOfNotification, true);
         };
 

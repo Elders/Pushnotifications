@@ -1,5 +1,4 @@
-﻿using Elders.Cronus.DomainModeling;
-using Machine.Specifications;
+﻿using Machine.Specifications;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Contracts.Subscriptions.Events;
@@ -14,9 +13,8 @@ namespace PushNotifications.Tests.PushNotifications
         {
             id = new SubscriptionId("id", "elders");
             subscriberId = new SubscriberId("kv", "elders");
-            subscriptionToken = new SubscriptionToken("token");
-            subscriptionType = SubscriptionType.FireBase;
-            ar = new Subscription(id, subscriberId, subscriptionToken, subscriptionType);
+            subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
+            ar = new Subscription(id, subscriberId, subscriptionToken);
         };
 
         Because of = () => ar.UnSubscribe(subscriberId);
@@ -26,7 +24,6 @@ namespace PushNotifications.Tests.PushNotifications
             e.Id.ShouldEqual(id);
             e.SubscriberId.ShouldEqual(subscriberId);
             e.SubscriptionToken.ShouldEqual(subscriptionToken);
-            e.SubscriptionType.ShouldEqual(subscriptionType);
         });
 
         It should_have_not_active_subscription = () => ar.RootState().IsSubscriptionActive.ShouldBeFalse();
@@ -35,6 +32,5 @@ namespace PushNotifications.Tests.PushNotifications
         static SubscriptionId id;
         static SubscriberId subscriberId;
         static SubscriptionToken subscriptionToken;
-        static SubscriptionType subscriptionType;
     }
 }

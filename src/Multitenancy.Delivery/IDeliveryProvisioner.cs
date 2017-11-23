@@ -1,5 +1,4 @@
-﻿using System;
-using PushNotifications.Contracts.PushNotifications.Delivery;
+﻿using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts.Subscriptions;
 
 namespace Multitenancy.Delivery

@@ -15,11 +15,10 @@ namespace PushNotifications.Tests.PushNotifications
         {
             var id = new SubscriptionId("id", "elders");
             projection = new SubscriberTokensProjection();
-            var subscriptionToken = new SubscriptionToken("token");
+            var subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
             subscriberId = new SubscriberId("kv", "elders");
-            var subscriptionType = SubscriptionType.FireBase;
-            subscribedEvent = new Subscribed(id, subscriberId, subscriptionToken, subscriptionType);
-            unSubscribedEvent = new UnSubscribed(id, subscriberId, subscriptionToken, subscriptionType);
+            subscribedEvent = new Subscribed(id, subscriberId, subscriptionToken);
+            unSubscribedEvent = new UnSubscribed(id, subscriberId, subscriptionToken);
             projection.Handle(subscribedEvent);
         };
 
@@ -29,7 +28,7 @@ namespace PushNotifications.Tests.PushNotifications
         It should_handle_the_event = () => typeof(IEventHandler<UnSubscribed>).IsAssignableFrom(projection.GetType()).ShouldBeTrue();
 
         It should_have_correct_id = () => projection.State.SubscriberId.ShouldEqual(subscriberId);
-        It should_have_correct_zero_subscriptions = () => projection.State.TokenTypePairs.Count.ShouldEqual(0);
+        It should_have_correct_zero_subscriptions = () => projection.State.Tokens.Count.ShouldEqual(0);
 
         static SubscriberTokensProjection projection;
         static SubscriberId subscriberId;

@@ -45,7 +45,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
                 {
                     Tenant = tenant,
                     SubscriberUrn = StringTenantUrn.Parse(subscriberId.Urn.Value),
-                    Token = new SubscriptionToken("token")
+                    Token = "token"
                 });
 
                 yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.NotAcceptable, new ResponseResult(Constants.CommandPublishFailed));

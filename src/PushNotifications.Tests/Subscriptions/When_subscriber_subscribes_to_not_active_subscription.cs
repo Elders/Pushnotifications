@@ -12,9 +12,8 @@ namespace PushNotifications.Tests.PushNotifications
         {
             id = new SubscriptionId("id", "elders");
             subscriberId = new SubscriberId("kv", "elders");
-            subscriptionToken = new SubscriptionToken("token");
-            subscriptionType = SubscriptionType.FireBase;
-            ar = new Subscription(id, subscriberId, subscriptionToken, subscriptionType);
+            subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
+            ar = new Subscription(id, subscriberId, subscriptionToken);
             ar.UnSubscribe(subscriberId);
         };
 
@@ -26,6 +25,5 @@ namespace PushNotifications.Tests.PushNotifications
         static SubscriptionId id;
         static SubscriberId subscriberId;
         static SubscriptionToken subscriptionToken;
-        static SubscriptionType subscriptionType;
     }
 }

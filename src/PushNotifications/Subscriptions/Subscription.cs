@@ -10,16 +10,15 @@ namespace PushNotifications.Subscriptions
     {
         Subscription() { }
 
-        public Subscription(SubscriptionId id, SubscriberId subscriberId, SubscriptionToken subscriptionToken, SubscriptionType subscriptionType)
+        public Subscription(SubscriptionId id, SubscriberId subscriberId, SubscriptionToken subscriptionToken)
         {
             if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
             if (StringTenantId.IsValid(subscriberId) == false) throw new ArgumentException(nameof(subscriberId));
             if (SubscriptionToken.IsValid(subscriptionToken) == false) throw new ArgumentException(nameof(subscriptionToken));
-            if (ReferenceEquals(null, subscriptionType) == true) throw new ArgumentNullException(nameof(subscriptionType));
 
             state = new SubscriptionState();
 
-            IEvent evnt = new Subscribed(id, subscriberId, subscriptionToken, subscriptionType);
+            IEvent evnt = new Subscribed(id, subscriberId, subscriptionToken);
             Apply(evnt);
         }
 
@@ -29,7 +28,7 @@ namespace PushNotifications.Subscriptions
 
             if (state.IsSubscriptionActive == false || state.SubscriberId != subscriberId)
             {
-                IEvent evnt = new Subscribed(state.Id, subscriberId, state.SubscriptionToken, state.SubscriptionType);
+                IEvent evnt = new Subscribed(state.Id, subscriberId, state.SubscriptionToken);
                 Apply(evnt);
             }
         }
@@ -40,7 +39,7 @@ namespace PushNotifications.Subscriptions
 
             if (state.IsSubscriptionActive == true)
             {
-                IEvent evnt = new UnSubscribed(state.Id, subscriberId, state.SubscriptionToken, state.SubscriptionType);
+                IEvent evnt = new UnSubscribed(state.Id, subscriberId, state.SubscriptionToken);
                 Apply(evnt);
             }
         }

@@ -44,7 +44,6 @@
     <Compile Include="Subscriptions\SubscriberTokensProjection.cs" />
     <Compile Include="PushNotificationsProjectionsAssembly.cs" />
     <Compile Include="Subscriptions\SubscriberTokens.cs" />
-    <Compile Include="Subscriptions\SubscriptionTokenSubscriptionTypePair.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">

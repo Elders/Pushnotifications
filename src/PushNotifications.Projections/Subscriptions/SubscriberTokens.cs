@@ -10,7 +10,7 @@ namespace PushNotifications.Projections.Subscriptions
     {
         public SubscriberTokens()
         {
-            TokenTypePairs = new HashSet<SubscriptionTokenSubscriptionTypePair>();
+            Tokens = new HashSet<SubscriptionToken>();
         }
 
         public SubscriberTokens(SubscriberId subscriberId) : this()
@@ -19,16 +19,16 @@ namespace PushNotifications.Projections.Subscriptions
             SubscriberId = subscriberId;
         }
 
-        public SubscriberTokens(SubscriberId subscriberId, HashSet<SubscriptionTokenSubscriptionTypePair> tokenTypePairs) : this(subscriberId)
+        public SubscriberTokens(SubscriberId subscriberId, HashSet<SubscriptionToken> tokens) : this(subscriberId)
         {
-            if (ReferenceEquals(null, tokenTypePairs) == true) throw new ArgumentNullException(nameof(tokenTypePairs));
-            TokenTypePairs = new HashSet<SubscriptionTokenSubscriptionTypePair>(tokenTypePairs);
+            if (ReferenceEquals(null, tokens) == true) throw new ArgumentNullException(nameof(tokens));
+            Tokens = new HashSet<SubscriptionToken>(tokens);
         }
 
         [DataMember(Order = 1)]
         public SubscriberId SubscriberId { get; set; }
 
         [DataMember(Order = 2)]
-        public HashSet<SubscriptionTokenSubscriptionTypePair> TokenTypePairs { get; private set; }
+        public HashSet<SubscriptionToken> Tokens { get; private set; }
     }
 }

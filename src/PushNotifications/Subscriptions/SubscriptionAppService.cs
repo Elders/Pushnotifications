@@ -16,7 +16,7 @@ namespace PushNotifications.Subscriptions
             }
             else
             {
-                sub = new Subscription(command.Id, command.SubscriberId, command.SubscriptionToken, command.SubscriptionType);
+                sub = new Subscription(command.Id, command.SubscriberId, command.SubscriptionToken);
                 Repository.Save<Subscription>(sub);
             }
         }

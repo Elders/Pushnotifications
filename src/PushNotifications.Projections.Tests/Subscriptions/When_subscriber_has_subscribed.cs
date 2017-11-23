@@ -16,10 +16,9 @@ namespace PushNotifications.Tests.PushNotifications
         {
             var id = new SubscriptionId("id", "elders");
             projection = new SubscriberTokensProjection();
-            subscriptionToken = new SubscriptionToken("token");
+            subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
             subscriberId = new SubscriberId("kv", "elders");
-            subscriptionType = SubscriptionType.FireBase;
-            @event = new Subscribed(id, subscriberId, subscriptionToken, subscriptionType);
+            @event = new Subscribed(id, subscriberId, subscriptionToken);
         };
 
         Because of = () => projection.Handle(@event);
@@ -28,14 +27,12 @@ namespace PushNotifications.Tests.PushNotifications
         It should_handle_the_event = () => typeof(IEventHandler<Subscribed>).IsAssignableFrom(projection.GetType()).ShouldBeTrue();
 
         It should_have_correct_id = () => projection.State.SubscriberId.ShouldEqual(subscriberId);
-        It should_have_correct_subscription_token_type_pair = () => projection.State.TokenTypePairs.ShouldNotBeNull();
-        It should_have_correct_subscription_token = () => projection.State.TokenTypePairs.Single().SubscriptionToken.ShouldEqual(subscriptionToken);
-        It should_have_correct_subscription_type = () => projection.State.TokenTypePairs.Single().SubscriptionType.ShouldEqual(subscriptionType);
+        It should_have_valid_subscription_tokens = () => projection.State.Tokens.ShouldNotBeNull();
+        It should_have_correct_subscription_token = () => projection.State.Tokens.Single().ShouldEqual(subscriptionToken);
 
         static SubscriberTokensProjection projection;
         static SubscriberId subscriberId;
         static SubscriptionToken subscriptionToken;
-        static SubscriptionType subscriptionType;
         static Subscribed @event;
     }
 }

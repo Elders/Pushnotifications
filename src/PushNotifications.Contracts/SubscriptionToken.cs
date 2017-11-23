@@ -1,6 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using Elders.Cronus.DomainModeling;
 using System;
+using PushNotifications.Contracts.Subscriptions;
 
 namespace PushNotifications.Contracts
 {
@@ -9,23 +10,29 @@ namespace PushNotifications.Contracts
     {
         SubscriptionToken() { }
 
-        public SubscriptionToken(string token)
+        public SubscriptionToken(string token, SubscriptionType subscriptionType)
         {
-            if (string.IsNullOrEmpty(token)) throw new ArgumentNullException(nameof(token));
+            if (string.IsNullOrEmpty(token) == true) throw new ArgumentNullException(nameof(token));
+            if (ReferenceEquals(null, subscriptionType) == true) throw new ArgumentNullException(nameof(subscriptionType));
+
             Token = token;
+            SubscriptionType = subscriptionType;
         }
 
         [DataMember(Order = 1)]
-        string Token { get; set; }
+        public string Token { get; private set; }
+
+        [DataMember(Order = 2)]
+        public SubscriptionType SubscriptionType { get; private set; }
 
         public override string ToString()
         {
-            return Token;
+            return $"{Token}@@{SubscriptionType}";
         }
 
         public static implicit operator string(SubscriptionToken token)
         {
-            return token.Token;
+            return token.ToString();
         }
 
         public static bool IsValid(SubscriptionToken token)

@@ -37,7 +37,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
             var subscriberId = new SubscriberId(model.SubscriberUrn);
             var projectionReponse = Projections.Get<SubscriberTokensProjection>(subscriberId);
-            if (projectionReponse.Success == false || projectionReponse.Projection.State.TokenTypePairs.Count == 0)
+            if (projectionReponse.Success == false || projectionReponse.Projection.State.Tokens.Count == 0)
             {
                 return this.NotAcceptable($"Subscription not found for provided subscriber '{model.SubscriberUrn.Value.UrlEncode()}'");
             }

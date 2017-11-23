@@ -24,7 +24,6 @@ namespace PushNotifications.Subscriptions
             SubscriberId = e.SubscriberId;
             SubscriptionToken = e.SubscriptionToken;
             IsSubscriptionActive = true;
-            SubscriptionType = e.SubscriptionType;
         }
 
         public void When(UnSubscribed e)

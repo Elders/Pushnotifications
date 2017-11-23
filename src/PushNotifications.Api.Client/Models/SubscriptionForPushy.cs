@@ -1,15 +1,14 @@
 ﻿using System;
 using Elders.Cronus.DomainModeling;
-using PushNotifications.Contracts;
 
 namespace PushNotifications.Api.Client
 {
     public class SubscriptionForPushy
     {
-        public SubscriptionForPushy(StringTenantUrn subscriberUrn, SubscriptionToken token)
+        public SubscriptionForPushy(StringTenantUrn subscriberUrn, string token)
         {
             if (ReferenceEquals(subscriberUrn, null) == true) throw new ArgumentNullException(nameof(subscriberUrn));
-            if (ReferenceEquals(token, null) == true) throw new ArgumentNullException(nameof(token));
+            if (string.IsNullOrEmpty(token) == true) throw new ArgumentNullException(nameof(token));
 
             Tenant = subscriberUrn.Tenant;
             SubscriberUrn = subscriberUrn;
@@ -20,6 +19,6 @@ namespace PushNotifications.Api.Client
 
         public StringTenantUrn SubscriberUrn { get; private set; }
 
-        public SubscriptionToken Token { get; private set; }
+        public string Token { get; private set; }
     }
 }

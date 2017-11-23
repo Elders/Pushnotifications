@@ -24,20 +24,22 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         /// Registration token
         /// </summary>
         [Required]
-        public SubscriptionToken Token { get; set; }
+        public string Token { get; set; }
 
         public Subscribe AsSubscribeCommand()
         {
-            var subscriptionId = new SubscriptionId(Token, Tenant);
+            var subscriptionToken = new SubscriptionToken(Token, SubscriptionType.FireBase);
+            var subscriptionId = new SubscriptionId(subscriptionToken, Tenant);
             var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
-            return new Subscribe(subscriptionId, subscriberId, Token, SubscriptionType.FireBase);
+            return new Subscribe(subscriptionId, subscriberId, subscriptionToken);
         }
 
         public UnSubscribe AsUnSubscribeCommand()
         {
-            var subscriptionId = new SubscriptionId(Token, Tenant);
+            var subscriptionToken = new SubscriptionToken(Token, SubscriptionType.FireBase);
+            var subscriptionId = new SubscriptionId(subscriptionToken, Tenant);
             var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
-            return new UnSubscribe(subscriptionId, subscriberId, Token, SubscriptionType.FireBase);
+            return new UnSubscribe(subscriptionId, subscriberId, subscriptionToken);
         }
     }
 }

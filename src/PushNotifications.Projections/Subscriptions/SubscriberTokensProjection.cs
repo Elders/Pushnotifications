@@ -20,13 +20,13 @@ namespace PushNotifications.Projections.Subscriptions
         public void Handle(Subscribed @event)
         {
             State.SubscriberId = @event.SubscriberId;
-            State.TokenTypePairs.Add(new SubscriptionTokenSubscriptionTypePair(@event.SubscriptionToken, @event.SubscriptionType));
+            State.Tokens.Add(@event.SubscriptionToken);
         }
 
         public void Handle(UnSubscribed @event)
         {
             State.SubscriberId = @event.SubscriberId;
-            State.TokenTypePairs.Remove(new SubscriptionTokenSubscriptionTypePair(@event.SubscriptionToken, @event.SubscriptionType));
+            State.Tokens.Remove(@event.SubscriptionToken);
         }
     }
 }

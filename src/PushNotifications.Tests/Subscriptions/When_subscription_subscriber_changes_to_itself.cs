@@ -15,9 +15,9 @@ namespace PushNotifications.Tests.PushNotifications
             id = new SubscriptionId("id", "elders");
             subscriberId = new SubscriberId("kv", "elders");
             newSubscriberIdButStillTheSame = new SubscriberId("kv", "elders");
-            subscriptionToken = new SubscriptionToken("token");
-            subscriptionType = SubscriptionType.FireBase;
-            ar = new Subscription(id, subscriberId, subscriptionToken, subscriptionType);
+            subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
+
+            ar = new Subscription(id, subscriberId, subscriptionToken);
         };
 
         Because of = () => ar.Subscribe(newSubscriberIdButStillTheSame);
@@ -29,6 +29,5 @@ namespace PushNotifications.Tests.PushNotifications
         static SubscriberId subscriberId;
         static SubscriberId newSubscriberIdButStillTheSame;
         static SubscriptionToken subscriptionToken;
-        static SubscriptionType subscriptionType;
     }
 }

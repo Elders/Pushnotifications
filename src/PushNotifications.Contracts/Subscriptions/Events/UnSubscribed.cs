@@ -9,17 +9,15 @@ namespace PushNotifications.Contracts.Subscriptions.Events
     {
         UnSubscribed() { }
 
-        public UnSubscribed(SubscriptionId id, SubscriberId subscriberId, SubscriptionToken subscriptionToken, SubscriptionType subscriptionType)
+        public UnSubscribed(SubscriptionId id, SubscriberId subscriberId, SubscriptionToken subscriptionToken)
         {
             if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
             if (StringTenantId.IsValid(subscriberId) == false) throw new ArgumentException(nameof(subscriberId));
             if (SubscriptionToken.IsValid(subscriptionToken) == false) throw new ArgumentException(nameof(subscriptionToken));
-            if (ReferenceEquals(null, subscriptionType) == true) throw new ArgumentNullException(nameof(subscriptionType));
 
             Id = id;
             SubscriberId = subscriberId;
             SubscriptionToken = subscriptionToken;
-            SubscriptionType = subscriptionType;
         }
 
         [DataMember(Order = 1)]
@@ -30,9 +28,6 @@ namespace PushNotifications.Contracts.Subscriptions.Events
 
         [DataMember(Order = 3)]
         public SubscriptionToken SubscriptionToken { get; private set; }
-
-        [DataMember(Order = 4)]
-        public SubscriptionType SubscriptionType { get; private set; }
 
         public override string ToString()
         {

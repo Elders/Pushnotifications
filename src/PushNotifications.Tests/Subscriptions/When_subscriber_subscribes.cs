@@ -14,24 +14,21 @@ namespace PushNotifications.Tests.PushNotifications
         {
             id = new SubscriptionId("id", "elders");
             subscriberId = new SubscriberId("kv", "elders");
-            subscriptionToken = new SubscriptionToken("token");
-            subscriptionType = SubscriptionType.FireBase;
+            subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
         };
 
-        Because of = () => ar = new Subscription(id, subscriberId, subscriptionToken, subscriptionType);
+        Because of = () => ar = new Subscription(id, subscriberId, subscriptionToken);
 
         It should_create_subscription = () => ar.ShouldHaveEvent<Subscribed>(e =>
         {
             e.Id.ShouldEqual(id);
             e.SubscriberId.ShouldEqual(subscriberId);
             e.SubscriptionToken.ShouldEqual(subscriptionToken);
-            e.SubscriptionType.ShouldEqual(subscriptionType);
         });
 
         static IAggregateRoot ar;
         static SubscriptionId id;
         static SubscriberId subscriberId;
         static SubscriptionToken subscriptionToken;
-        static SubscriptionType subscriptionType;
     }
 }

@@ -25,11 +25,11 @@ namespace PushNotifications.Ports
             if (projectionReponse.Success == false)
                 return;
 
-            foreach (var tokenTypePairs in projectionReponse.Projection.State.TokenTypePairs)
+            foreach (var token in projectionReponse.Projection.State.Tokens)
             {
                 var notification = new NotificationForDelivery(@event.Id, @event.NotificationPayload, @event.ExpiresAt, @event.ContentAvailable);
-                var delivery = DeliveryProvisioner.ResolveDelivery(tokenTypePairs.SubscriptionType, notification);
-                delivery.Send(tokenTypePairs.SubscriptionToken, notification);
+                var delivery = DeliveryProvisioner.ResolveDelivery(token.SubscriptionType, notification);
+                delivery.Send(token, notification);
             }
         }
     }

@@ -51,10 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Subscriptions\When_subscriber_has_subscribed - Copy.cs" />
     <Compile Include="Subscriptions\When_subscriber_has_subscribed.cs" />
-    <Compile Include="Subscriptions\When_subscriber_has_subscribed_twice_with_same_token_and_different_type - Copy.cs" />
-    <Compile Include="Subscriptions\When_subscriber_has_subscribed_twice_with_same_token_and_different_type.cs" />
+    <Compile Include="Subscriptions\When_subscriber_has_subscribed_twice_with_same_token.cs" />
     <Compile Include="Subscriptions\When_subscriber_has_unsubscribed.cs" />
   </ItemGroup>
   <ItemGroup>
