@@ -1,3 +1,6 @@
+#### 3.0.0-beta0003 - 24.11.2017
+* Fixes deployment
+
 #### 3.0.0-beta0002 - 24.11.2017
 * Changes app contexts
 

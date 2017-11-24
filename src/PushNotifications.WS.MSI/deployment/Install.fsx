@@ -22,7 +22,7 @@ Target "PreInstall" (fun _ ->
 
 Target "Install" (fun _ ->
 
-    let msi = "Elders.PushNotifications.WS.MSI.msi"
+    let msi = "PushNotifications.WS.MSI.msi"
 
     let tova_e_taka_narochno = InstallUIOptions.Silent |> Installer.SetInternalUI
     Installer.EnableLog(InstallLogModes.Verbose, "InstallLog.txt");
