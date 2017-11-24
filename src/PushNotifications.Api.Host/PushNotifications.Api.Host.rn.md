@@ -1,3 +1,6 @@
+#### 3.0.0-beta0005 - 24.11.2017
+* Fixes missing documentation
+
 #### 3.0.0-beta0004 - 24.11.2017
 * Updates deployment
 
