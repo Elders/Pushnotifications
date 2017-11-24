@@ -1,3 +1,6 @@
+#### 3.0.0-beta0002 - 22.11.2017
+* Accepts datetime instead of timestamp when sending pn
+
 #### 3.0.0-beta0001 - 22.11.2017
 * Initial release for version 3 of pn
 

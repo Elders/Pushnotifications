@@ -6,10 +6,10 @@ namespace PushNotifications.Api.Client.Models
 {
     public class SendPushNotificationModel
     {
-        public SendPushNotificationModel(StringTenantUrn subscriberUrn, string title, string body, string sound, string icon, int badge, Timestamp expiresAt, bool contentAvailable)
+        public SendPushNotificationModel(StringTenantUrn subscriberUrn, string title, string body, string sound, string icon, int badge, DateTime expiresAtUtc, bool contentAvailable)
         {
             if (ReferenceEquals(subscriberUrn, null) == true) throw new ArgumentNullException(nameof(subscriberUrn));
-            if (ReferenceEquals(expiresAt, null) == true) throw new ArgumentNullException(nameof(expiresAt));
+            if (ReferenceEquals(expiresAtUtc, null) == true) throw new ArgumentNullException(nameof(expiresAtUtc));
             if (string.IsNullOrEmpty(title) == true) throw new ArgumentNullException(nameof(title));
             if (string.IsNullOrEmpty(body) == true) throw new ArgumentNullException(nameof(body));
 
@@ -20,7 +20,7 @@ namespace PushNotifications.Api.Client.Models
             Sound = sound;
             Icon = icon;
             Badge = badge;
-            ExpiresAt = expiresAt;
+            ExpiresAt = new Timestamp(expiresAtUtc);
             ContentAvailable = contentAvailable;
         }
 
