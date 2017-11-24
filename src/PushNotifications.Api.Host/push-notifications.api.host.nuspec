@@ -8,6 +8,5 @@
     <language>en-US</language>
     <summary>@summary@</summary>
     <releaseNotes>@releaseNotes@</releaseNotes>
-    @dependencies@
   </metadata>
 </package>

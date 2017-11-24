@@ -1,3 +1,6 @@
+#### 3.0.0-beta0002 - 24.11.2017
+* Removes dependencies from api host
+
 #### 3.0.0-beta0001 - 22.11.2017
 * Initial release for version 3 of pn
 
