@@ -49,7 +49,7 @@ namespace PushNotifications.Api.Host.App_Start
                          {
                              if (pandora.Get<bool>("enable_redis_atomic_action"))
                                  atomic.UseRedis(redis => redis
-                                     .SetConnectionString(pandora.Get("redis_connection_string"))
+                                     .SetConnectionString(pandora.Get("redis_endpoints"))
                                  );
                              else
                                  atomic.WithInMemory();

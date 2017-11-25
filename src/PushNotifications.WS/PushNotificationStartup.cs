@@ -20,7 +20,6 @@ using Multitenancy.Cassandra.EventStore;
 using Multitenancy.Cassandra.Projections;
 using Multitenancy.Delivery;
 using PushNotifications.Contracts;
-using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Ports;
 using PushNotifications.Projections;
 using PushNotifications.WS.Logging;
@@ -47,7 +46,7 @@ namespace PushNotifications.WS
                         {
                             if (pandora.Get<bool>("enable_redis_atomic_action"))
                                 atomic.UseRedis(redis =>
-                                    RedisAggregateRootAtomicActionSettingsExtensions.SetConnectionString(redis, pandora.Get("redis_connection_string"))
+                                    RedisAggregateRootAtomicActionSettingsExtensions.SetConnectionString(redis, pandora.Get("redis_endpoints"))
                                 );
                             else
                                 atomic.WithInMemory();

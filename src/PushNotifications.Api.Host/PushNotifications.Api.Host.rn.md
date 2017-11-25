@@ -1,3 +1,6 @@
+#### 3.0.0-beta0007 - 25.11.2017
+* Fixes redis setting
+
 #### 3.0.0-beta0006 - 25.11.2017
 * Adds normalized discovery
 

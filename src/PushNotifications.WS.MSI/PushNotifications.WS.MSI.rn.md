@@ -1,3 +1,6 @@
+#### 3.0.0-beta0004 - 25.11.2017
+* Fixes redis setting
+
 #### 3.0.0-beta0003 - 24.11.2017
 * Fixes deployment
 
