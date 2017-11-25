@@ -35,7 +35,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         {
             var result = new ResponseResult(Constants.InvalidCommand);
 
-            var subscriberId = new SubscriberId(model.SubscriberUrn);
+            var subscriberId = new SubscriberId(model.SubscriberUrn.Id, model.SubscriberUrn.Tenant);
             var projectionReponse = Projections.Get<SubscriberTokensProjection>(subscriberId);
             if (projectionReponse.Success == false || projectionReponse.Projection.State.Tokens.Count == 0)
             {

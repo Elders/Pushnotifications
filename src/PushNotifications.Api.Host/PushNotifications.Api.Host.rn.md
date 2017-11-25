@@ -1,3 +1,6 @@
+#### 3.0.0-beta0008 - 25.11.2017
+* Fixes issue in the api with bulding subscriber id
+
 #### 3.0.0-beta0007 - 25.11.2017
 * Fixes redis setting
 
