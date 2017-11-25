@@ -1,3 +1,6 @@
+#### 3.0.0-beta0004 - 25.11.2017
+* Fixes issue where is success property was false all the time
+
 #### 3.0.0-beta0003 - 25.11.2017
 * Adds normalized discovery
 
