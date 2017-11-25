@@ -9,8 +9,8 @@ namespace PushNotifications.Api.Client.Models
             Errors = new List<string>();
         }
 
-        public IEnumerable<string> Errors { get; }
-        public bool IsSuccess { get; }
+        public IEnumerable<string> Errors { get; private set; }
+        public bool IsSuccess { get; private set; }
     }
 
 
