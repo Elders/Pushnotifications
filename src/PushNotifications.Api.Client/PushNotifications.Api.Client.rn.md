@@ -1,3 +1,6 @@
+#### 3.0.0-beta0003 - 25.11.2017
+* Adds normalized discovery
+
 #### 3.0.0-beta0002 - 22.11.2017
 * Accepts datetime instead of timestamp when sending pn
 

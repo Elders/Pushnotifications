@@ -100,7 +100,7 @@ namespace PushNotifications.Api.Host.App_Start
             config.EnsureInitialized();
             var baseUri = new Uri(pandora.Get("pn_base_url"));
             var httpHealthCheckUri = new Uri(pandora.Get("pn_health_check_url"));
-            var consulClient = new ConsulClient(x => x.Address = ConsulHelper.ConsulUri);
+            var consulClient = new ConsulClient(x => x.Address = ConsulHelper.DefaultConsulUri);
             var consulRegistrationService = new ConsulRegistrationService(consulClient);
             consulRegistrationService.UnRegisterServices(typeof(PushNotificationsApiAssembly).Assembly.GetBoundedContext().BoundedContextName);
             //RegisterServices(config, typeof(PushNotificationsApiAssembly).Assembly, baseUri);

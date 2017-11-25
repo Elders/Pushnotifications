@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Web.Http;
 using Cassandra;
+using Consul;
+using Discovery.Consul;
+using Discovery.Contracts;
 using Elders.Cronus.AtomicAction.Config;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.Cluster.Config;
@@ -80,6 +83,8 @@ namespace PushNotifications.Api.Host.App_Start
                 Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
                 container.RegisterSingleton<IPublisher<ICommand>>(() => new PipelinePublisher<ICommand>(transport(), serializer()));
 
+                container.RegisterSingleton<ConsulClient>(() => new ConsulClient(x => x.Address = ConsulHelper.DefaultConsulUri));
+                container.RegisterSingleton<IDiscoveryReader>(() => new ConsulDiscoveryReader(container.Resolve<ConsulClient>()));
 
                 config.Services.Replace(typeof(System.Web.Http.Dispatcher.IHttpControllerActivator), new ServiceLocatorFactory(new ServiceLocator(container)));
             }
@@ -92,7 +97,6 @@ namespace PushNotifications.Api.Host.App_Start
 
         static Elders.Cronus.Projections.Cassandra.ReplicationStrategies.ICassandraReplicationStrategy GetProjectionsReplicationStrategy(Pandora pandora)
         {
-
             var projectionsReplicationFactor = pandora.Get<int>("pn_cassandra_projections_replication_factor");
             Elders.Cronus.Projections.Cassandra.ReplicationStrategies.ICassandraReplicationStrategy projectionsReplicationStrategy = new Elders.Cronus.Projections.Cassandra.ReplicationStrategies.SimpleReplicationStrategy(projectionsReplicationFactor);
             if (pandora.Get("pn_cassandra_projections_replication_strategy") == "network_topology")

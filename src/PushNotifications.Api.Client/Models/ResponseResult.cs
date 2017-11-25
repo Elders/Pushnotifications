@@ -12,4 +12,15 @@ namespace PushNotifications.Api.Client.Models
         public IEnumerable<string> Errors { get; }
         public bool IsSuccess { get; }
     }
+
+
+    public class ResponseResult<T> : ResponseResult
+    {
+        public ResponseResult() : base()
+        {
+
+        }
+
+        public T Result { get; private set; }
+    }
 }

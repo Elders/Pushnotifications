@@ -4,6 +4,7 @@ using PushNotifications.Converters;
 using RestSharp;
 using System.Linq;
 using Newtonsoft.Json;
+using Discovery.Contracts;
 
 namespace PushNotifications.Api.Client
 {
@@ -81,6 +82,13 @@ namespace PushNotifications.Api.Client
             const string resource = "Subscriptions/PushySubscription/UnSubscribe";
 
             return restSharpIdentityModelClient.Execute<ResponseResult>(resource, Method.POST, subscription, authenticator);
+        }
+
+        public IRestResponse<ResponseResult<DiscoveryReaderResponseModel>> Discovery(Authenticator authenticator = null)
+        {
+            const string resource = "Discovery/Normalized";
+
+            return restSharpIdentityModelClient.Execute<ResponseResult<DiscoveryReaderResponseModel>>(resource, Method.GET, authenticator);
         }
     }
 }

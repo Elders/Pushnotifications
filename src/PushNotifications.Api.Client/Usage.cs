@@ -12,9 +12,11 @@ namespace PushNotifications.Api.Client
             Uri apiAddress = new Uri("https://pn-new.local.com");
 
             Uri qoreAuthority = new Uri("https://account-qore.local.com");
-
             var pnClient = new PushNotificationsRestClient(authority, "connect/token", "localclient", "localsecret", "read write admin", apiAddress);
             var pnClientForMarketVision = new PushNotificationsRestClient(qoreAuthority, "connect/token", "localclient", "localsecret", "read write admin", apiAddress);
+
+
+            var d = pnClient.Discovery();
 
             var t = Timestamp.JudgementDay();
             //for (int i = 0; i < 10; i++)

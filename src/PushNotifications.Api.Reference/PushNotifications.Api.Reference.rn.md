@@ -1,3 +1,6 @@
+#### 3.0.0-beta0004 - 25.11.2017
+* Adds normalized discovery
+
 #### 3.0.0-beta0003 - 24.11.2017
 * Fixes missing documentation
 

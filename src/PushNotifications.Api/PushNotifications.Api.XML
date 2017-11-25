@@ -152,6 +152,12 @@
             <param name="formatParameters">The format parameters.</param>
             <returns></returns>
         </member>
+        <member name="M:PushNotifications.Api.Controllers.Discovery.HealthCheckController.Discovery">
+            <summary>
+            Health Check endpoint
+            </summary>
+            <returns>Ok</returns>
+        </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.PushNotificationsController.Send(PushNotifications.Api.Controllers.PushNotifications.Models.SendPushNotificationModel)">
             <summary>
             Sends push notification with notification payload. This endpoint is accessable only with admin scope.
@@ -255,6 +261,18 @@
             <summary>
             On iOS, use this field to represent content-available in the APNs payload. When a notification or message is sent and this is set to true, an inactive client app is awoken, and the message is sent through APNs as a silent notification and not through the FCM connection server. Note that silent notifications in APNs are not guaranteed to be delivered, and can depend on factors such as the user turning on Low Power Mode, force quitting the app, etc. On Android, data messages wake the app by default. On Chrome, currently not supported
             </summary>
+        </member>
+        <member name="M:Vapt.Api.Discovery.DiscoveryController.Discovery">
+            <summary>
+            Discovery endpoint
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Vapt.Api.Discovery.NormalizedDiscoveryController.Discovery">
+            <summary>
+            Normalized Discovery endpoint
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>
