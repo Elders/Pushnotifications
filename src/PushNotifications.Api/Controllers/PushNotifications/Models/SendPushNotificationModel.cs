@@ -64,7 +64,7 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
         public SendPushNotification AsCommand()
         {
             var id = new PushNotificationId(Guid.NewGuid().ToString(), Tenant);
-            var subscriberId = new SubscriberId(SubscriberUrn);
+            var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
             var notificationPayload = new NotificationPayload(Title, Body, Sound, Icon, Badge);
             return new SendPushNotification(id, subscriberId, notificationPayload, ExpiresAt, ContentAvailable);
         }

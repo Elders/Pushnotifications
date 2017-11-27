@@ -1,3 +1,6 @@
+#### 3.0.0-beta0009 - 27.11.2017
+* Fixes building of subscriber id
+
 #### 3.0.0-beta0008 - 25.11.2017
 * Fixes issue in the api with bulding subscriber id
 
