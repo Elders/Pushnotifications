@@ -1,3 +1,6 @@
+#### 3.0.0-beta0010 - 28.11.2017
+* Fixes wrong response format
+
 #### 3.0.0-beta0009 - 27.11.2017
 * Fixes building of subscriber id
 

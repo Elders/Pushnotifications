@@ -39,7 +39,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             var projectionReponse = Projections.Get<SubscriberTokensProjection>(subscriberId);
             if (projectionReponse.Success == false || projectionReponse.Projection.State.Tokens.Count == 0)
             {
-                return this.NotAcceptable($"Subscription not found for provided subscriber '{model.SubscriberUrn.Value.UrlEncode()}'");
+                return this.NotAcceptable(new ResponseResult($"Subscription not found for provided subscriber '{model.SubscriberUrn.Value.UrlEncode()}'"));
             }
 
             var command = model.AsCommand();
