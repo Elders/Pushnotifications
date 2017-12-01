@@ -14,9 +14,6 @@ namespace PushNotifications.Contracts.PushNotifications
 
         public NotificationPayload(string title, string body, string sound, string icon, int badge)
         {
-            if (string.IsNullOrEmpty(title) == true) throw new ArgumentNullException(nameof(title));
-            if (string.IsNullOrEmpty(body) == true) throw new ArgumentNullException(nameof(body));
-
             Title = title;
             Body = body;
             Sound = sound;

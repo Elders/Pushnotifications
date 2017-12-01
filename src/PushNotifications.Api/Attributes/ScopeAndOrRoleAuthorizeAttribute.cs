@@ -6,7 +6,7 @@ using System.Web.Http.Controllers;
 
 namespace PushNotifications.Api.Attributes
 {
-    public class UsefulAuthorizeAttribute : AuthorizeAttribute
+    public class ScopeAndOrRoleAuthorizeAttribute : AuthorizeAttribute
     {
         public string Scopes { get; set; }
 

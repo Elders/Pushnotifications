@@ -1,3 +1,6 @@
+#### 3.0.0-beta0005 - 01.12.2017
+* Removes requirement for title and body when sending push notification
+
 #### 3.0.0-beta0004 - 25.11.2017
 * Fixes redis setting
 

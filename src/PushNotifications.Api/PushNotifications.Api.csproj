@@ -75,8 +75,8 @@
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="Attributes\ClaimsIdentityAttribute.cs" />
+    <Compile Include="Attributes\ScopeAndOrRoleAuthorizeAttribute.cs" />
     <Compile Include="Attributes\ScopeAttribute.cs" />
-    <Compile Include="Attributes\UsefulAuthorizeAttribute.cs" />
     <Compile Include="AvailableRoles.cs" />
     <Compile Include="AvailableScopes.cs" />
     <Compile Include="Controllers\Discovery\DiscoveryController.cs" />

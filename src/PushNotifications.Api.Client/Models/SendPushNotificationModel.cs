@@ -10,8 +10,6 @@ namespace PushNotifications.Api.Client.Models
         {
             if (ReferenceEquals(subscriberUrn, null) == true) throw new ArgumentNullException(nameof(subscriberUrn));
             if (ReferenceEquals(expiresAtUtc, null) == true) throw new ArgumentNullException(nameof(expiresAtUtc));
-            if (string.IsNullOrEmpty(title) == true) throw new ArgumentNullException(nameof(title));
-            if (string.IsNullOrEmpty(body) == true) throw new ArgumentNullException(nameof(body));
 
             Tenant = subscriberUrn.Tenant;
             SubscriberUrn = subscriberUrn;

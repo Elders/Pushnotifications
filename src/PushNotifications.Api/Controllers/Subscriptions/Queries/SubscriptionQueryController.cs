@@ -26,7 +26,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Queries
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [UsefulAuthorize(Roles = AvailableRoles.Admin, Scopes = AvailableScopes.Admin)]
+        [ScopeAndOrRoleAuthorize(Roles = AvailableRoles.Admin, Scopes = AvailableScopes.Admin)]
         [HttpGet, Route("SubscriberTokens"), Discoverable("SubscriberTokens", "v1")]
         public IHttpActionResult GetSubscriberTokens(SubscriberTokensModel model)
         {

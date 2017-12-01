@@ -27,13 +27,11 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
         /// <summary>
         /// The notification's title.
         /// </summary>
-        [Required]
         public string Title { get; set; }
 
         /// <summary>
         /// The notification's body text
         /// </summary>
-        [Required]
         public string Body { get; set; }
 
         /// <summary>
