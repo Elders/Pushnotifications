@@ -55,8 +55,8 @@
       <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RestSharp.IdentityModel.Extensions, Version=0.1.11.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.IdentityModel.Extensions.0.1.11\lib\net45-full\RestSharp.IdentityModel.Extensions.dll</HintPath>
+    <Reference Include="RestSharp.IdentityModel.Extensions, Version=0.1.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.IdentityModel.Extensions.0.1.13\lib\net45-full\RestSharp.IdentityModel.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

@@ -66,7 +66,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Cronus.Transport.RabbitMQ, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.Transport.RabbitMQ.3.1.0\lib\net45-full\Elders.Cronus.Transport.RabbitMQ.dll</HintPath>
+      <HintPath>..\packages\Cronus.Transport.RabbitMQ.3.1.1\lib\net45-full\Elders.Cronus.Transport.RabbitMQ.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Multithreading.Scheduler, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">

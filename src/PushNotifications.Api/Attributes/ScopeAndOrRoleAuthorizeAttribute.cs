@@ -8,7 +8,7 @@ namespace PushNotifications.Api.Attributes
 {
     public class ScopeAndOrRoleAuthorizeAttribute : AuthorizeAttribute
     {
-        public string Scopes { get; set; }
+        public string Scope { get; set; }
 
         public bool CombineScopesAndRoles { get; set; }
 
@@ -17,7 +17,7 @@ namespace PushNotifications.Api.Attributes
             var providedScopes = ClaimsPrincipal.Current.FindAll("scope").Select(x => x.Value);
             var providedRoles = ClaimsPrincipal.Current.FindAll("role").Select(x => x.Value);
 
-            var requiredScopes = (Scopes ?? string.Empty).Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            var requiredScopes = (Scope ?? string.Empty).Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             var requiredRoles = (Roles ?? string.Empty).Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
             var hasRequiredScopes = requiredScopes.Any() && requiredScopes.All(x => providedScopes.Contains(x));

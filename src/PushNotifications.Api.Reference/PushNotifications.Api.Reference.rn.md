@@ -1,3 +1,6 @@
+#### 3.0.0-beta0007 - 08.12.2017
+* Updates packages
+
 #### 3.0.0-beta0006 - 01.12.2017
 * Removes requirement for title and body when sending push notification
 
