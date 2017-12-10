@@ -1,22 +1,25 @@
 ﻿using Elders.Cronus.DomainModeling;
 using System.Runtime.Serialization;
 using System;
+using System.Collections.Generic;
 
 namespace PushNotifications.Contracts.PushNotifications.Commands
 {
     [DataContract(Name = "5e1e1ae0-d1d6-4243-92fc-b0b6652ecb5b")]
     public class SendPushNotification : ICommand
     {
-        public SendPushNotification(PushNotificationId id, SubscriberId subscriberId, NotificationPayload notificationPayload, Timestamp expiresAt, bool contentAvailable)
+        public SendPushNotification(PushNotificationId id, SubscriberId subscriberId, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, Timestamp expiresAt, bool contentAvailable)
         {
             if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
             if (StringTenantId.IsValid(subscriberId) == false) throw new ArgumentException(nameof(subscriberId));
             if (ReferenceEquals(null, notificationPayload) == true) throw new ArgumentNullException(nameof(notificationPayload));
+            if (ReferenceEquals(null, notificationData) == true) throw new ArgumentNullException(nameof(notificationData));
             if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
 
             Id = id;
             SubscriberId = subscriberId;
             NotificationPayload = notificationPayload;
+            NotificationData = notificationData;
             ExpiresAt = expiresAt;
             ContentAvailable = contentAvailable;
         }
@@ -43,6 +46,9 @@ namespace PushNotifications.Contracts.PushNotifications.Commands
         /// </summary>
         [DataMember(Order = 5)]
         public bool ContentAvailable { get; private set; }
+
+        [DataMember(Order = 6)]
+        public Dictionary<string, object> NotificationData { get; private set; }
 
         public override string ToString()
         {

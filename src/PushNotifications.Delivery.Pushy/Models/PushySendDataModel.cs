@@ -1,23 +1,27 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace PushNotifications.Delivery.Pushy.Models
 {
     public class PushySendDataModel
     {
-        public PushySendDataModel(string title, string body, string sound, string badge)
+        public PushySendDataModel(string title, string body, string sound, string badge, Dictionary<string, object> data)
         {
-            Title = title;
-            Body = body;
-            Sound = sound;
-            Badge = badge;
+            Data = new Dictionary<string, object>();
+
+            Data.Add("title", title);
+            Data.Add("body", body);
+            Data.Add("sound", sound);
+            Data.Add("badge", badge);
+
+            foreach (var item in data)
+            {
+                if (data.ContainsKey(item.Key) == true)
+                    data[item.Key] = item.Value;
+                else
+                    data.Add(item.Key, item.Value);
+            }
         }
 
-        public string Title { get; private set; }
-
-        public string Body { get; private set; }
-
-        public string Sound { get; private set; }
-
-        public string Badge { get; private set; }
+        public Dictionary<string, object> Data { get; private set; }
     }
 }

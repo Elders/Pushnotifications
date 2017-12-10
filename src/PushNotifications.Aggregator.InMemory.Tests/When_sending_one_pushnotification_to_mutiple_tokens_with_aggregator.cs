@@ -6,6 +6,7 @@ using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications;
 using System.Threading;
 using PushNotifications.Contracts.Subscriptions;
+using System.Collections.Generic;
 
 namespace PushNotifications.Aggregator.InMemory.Tests
 {
@@ -19,10 +20,12 @@ namespace PushNotifications.Aggregator.InMemory.Tests
             concreateDelivery = new TestDeliveryWithInMemoryAggregator(timeSpanBeforeFlush, countOfRecipientsBeforeFlush);
 
             expirationDateOfNotification = Timestamp.JudgementDay();
+            var notificationData = new Dictionary<string, object>();
+            notificationData.Add("test", "test");
 
             t1 = new SubscriptionToken("t1", SubscriptionType.FireBase);
             t2 = new SubscriptionToken("t2", SubscriptionType.FireBase);
-            n1 = new NotificationForDelivery(new PushNotificationId("n1", "elders"), new NotificationPayload("title-1", "body"), expirationDateOfNotification, true);
+            n1 = new NotificationForDelivery(new PushNotificationId("n1", "elders"), new NotificationPayload("title-1", "body"), notificationData, expirationDateOfNotification, true);
         };
 
         Because of = () =>

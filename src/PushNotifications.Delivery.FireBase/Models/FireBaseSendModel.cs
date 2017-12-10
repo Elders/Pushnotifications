@@ -9,16 +9,18 @@ namespace PushNotifications.Delivery.FireBase.Models
     {
         const long MAX_TTL_SECONDS = 1209600; // 4 weeks
 
-        public FireBaseSendModel(IList<string> tokens, FireBaseSendNotificationModel notification, Timestamp expiresAt, bool contentAvailable)
+        public FireBaseSendModel(IList<string> tokens, FireBaseSendNotificationModel notificationPayload, Dictionary<string, object> notificationData, Timestamp expiresAt, bool contentAvailable)
         {
             if (ReferenceEquals(null, tokens) == true || tokens.Count == 0) throw new ArgumentException(nameof(tokens));
-            if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
+            if (ReferenceEquals(null, notificationPayload) == true) throw new ArgumentNullException(nameof(notificationPayload));
             if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
+            if (ReferenceEquals(null, notificationData) == true) throw new ArgumentNullException(nameof(notificationData));
 
             RegistrationIds = new List<string>(tokens);
-            Notification = notification;
+            Notification = notificationPayload;
             TTL = ExpirationTimeToSeconds(expiresAt);
             ContentAvailable = contentAvailable;
+            Data = notificationData;
         }
 
         [JsonProperty(PropertyName = "Registration_ids")]
@@ -28,6 +30,8 @@ namespace PushNotifications.Delivery.FireBase.Models
         public bool ContentAvailable { get; private set; }
 
         public FireBaseSendNotificationModel Notification { get; private set; }
+
+        public Dictionary<string, object> Data { get; private set; }
 
         /// <summary>
         /// This parameter specifies how long (in seconds) the message should be kept in FCM storage if the device is offline.

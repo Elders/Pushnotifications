@@ -1,4 +1,5 @@
-﻿using Elders.Cronus.DomainModeling;
+﻿using System.Collections.Generic;
+using Elders.Cronus.DomainModeling;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications;
 using PushNotifications.Contracts.PushNotifications.Events;
@@ -11,6 +12,8 @@ namespace PushNotifications
 
         public NotificationPayload NotificationPayload { get; set; }
 
+        public Dictionary<string, object> NotificationData { get; private set; }
+
         public SubscriberId SubscriberId { get; private set; }
 
         public Timestamp ExpiresAt { get; private set; }
@@ -21,6 +24,7 @@ namespace PushNotifications
         {
             Id = e.Id;
             NotificationPayload = e.NotificationPayload;
+            NotificationData = e.NotificationData;
             SubscriberId = e.SubscriberId;
             ExpiresAt = e.ExpiresAt;
             ContentAvailable = e.ContentAvailable;

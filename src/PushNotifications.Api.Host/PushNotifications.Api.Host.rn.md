@@ -1,3 +1,6 @@
+#### 3.0.0-beta0013 - 11.12.2017
+* Adds notification data support
+
 #### 3.0.0-beta0012 - 08.12.2017
 * Updates packages
 

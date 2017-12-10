@@ -1,3 +1,6 @@
+#### 3.0.0-beta0006 - 11.12.2017
+* Adds notification data support
+
 #### 3.0.0-beta0005 - 01.12.2017
 * Removes requirement for title and body when sending push notification
 

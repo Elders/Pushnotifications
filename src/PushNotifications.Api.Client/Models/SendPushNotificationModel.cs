@@ -1,15 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using Elders.Cronus.DomainModeling;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using PushNotifications.Contracts;
 
 namespace PushNotifications.Api.Client.Models
 {
     public class SendPushNotificationModel
     {
-        public SendPushNotificationModel(StringTenantUrn subscriberUrn, string title, string body, string sound, string icon, int badge, DateTime expiresAtUtc, bool contentAvailable)
+        public SendPushNotificationModel(StringTenantUrn subscriberUrn, string title, string body, string sound, string icon, int badge,
+            Dictionary<string, object> notificationData,
+            DateTime expiresAtUtc, bool contentAvailable)
         {
             if (ReferenceEquals(subscriberUrn, null) == true) throw new ArgumentNullException(nameof(subscriberUrn));
             if (ReferenceEquals(expiresAtUtc, null) == true) throw new ArgumentNullException(nameof(expiresAtUtc));
+            if (ReferenceEquals(notificationData, null) == true) throw new ArgumentNullException(nameof(notificationData));
 
             Tenant = subscriberUrn.Tenant;
             SubscriberUrn = subscriberUrn;
@@ -20,6 +26,7 @@ namespace PushNotifications.Api.Client.Models
             Badge = badge;
             ExpiresAt = new Timestamp(expiresAtUtc);
             ContentAvailable = contentAvailable;
+            NotificationData = notificationData;
         }
 
         public string Tenant { get; private set; }
@@ -39,5 +46,7 @@ namespace PushNotifications.Api.Client.Models
         public Timestamp ExpiresAt { get; private set; }
 
         public bool ContentAvailable { get; private set; }
+
+        public Dictionary<string, object> NotificationData { get; private set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Elders.Cronus.DomainModeling;
 using PushNotifications.Contracts;
 
@@ -32,7 +33,9 @@ namespace PushNotifications.Api.Client
             var s = pnClient.SubscribeForFireBase(new SubscriptionForFireBase(pruvitUrn, "exk_tnns_OI:APA91bFzlzvFysNlYpVmvdBbT1gVS66PeJ8izHLGwO0i3nu8TZGYBQrorURNM_fu2tPupGi9Zm1k-u1wIjwwclqdz-9IGjxbtqLa4PlH2B8h6T4xr1JMULKJbVeaZEcGJO1K2_0tmBxd"));
             //var pushyPruvitSubscribe = pnClient.SubscribeForPushy(new SubscribeForPushyModel(pruvitUrn, new SubscriptionToken("2c11c380e4ba86c8da983a")));
 
-            var x = pnClient.SendPushNotification(new Models.SendPushNotificationModel(pruvitUrn, string.Empty, "with empty title", "default", string.Empty, 0, t.DateTime, true));
+            var data = new Dictionary<string, object>();
+            data.Add("feedtype", "broadcast");
+            var x = pnClient.SendPushNotification(new Models.SendPushNotificationModel(pruvitUrn, string.Empty, "with empty title", "default", string.Empty, 0, data, t.DateTime, true));
 
 
             //var mvSubscriber = new Contracts.SubscriberId("76277", "mv");

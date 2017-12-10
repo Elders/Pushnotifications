@@ -27,7 +27,7 @@ namespace PushNotifications.Ports
 
             foreach (var token in projectionReponse.Projection.State.Tokens)
             {
-                var notification = new NotificationForDelivery(@event.Id, @event.NotificationPayload, @event.ExpiresAt, @event.ContentAvailable);
+                var notification = new NotificationForDelivery(@event.Id, @event.NotificationPayload, @event.NotificationData, @event.ExpiresAt, @event.ContentAvailable);
                 var delivery = DeliveryProvisioner.ResolveDelivery(token.SubscriptionType, notification);
                 delivery.Send(token, notification);
             }
