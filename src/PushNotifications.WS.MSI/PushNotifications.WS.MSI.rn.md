@@ -1,23 +1,9 @@
-#### 3.0.0-beta0007 - 11.12.2017
+#### 3.0.0 - 11.12.2017
 * Adds notification data support
-
-#### 3.0.0-beta0006 - 08.12.2017
 * Updates packages
-
-#### 3.0.0-beta0005 - 01.12.2017
 * Removes requirement for title and body when sending push notification
-
-#### 3.0.0-beta0004 - 25.11.2017
 * Fixes redis setting
-
-#### 3.0.0-beta0003 - 24.11.2017
 * Fixes deployment
-
-#### 3.0.0-beta0002 - 24.11.2017
 * Changes app contexts
-
-#### 3.0.0-beta0001 - 22.11.2017
 * Initial release for version 3 of pn
-
-#### 0.1.0 - 26.10.2017
 * Initial Release

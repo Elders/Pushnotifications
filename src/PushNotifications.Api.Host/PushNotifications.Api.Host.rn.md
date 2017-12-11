@@ -1,44 +1,16 @@
-#### 3.0.0-beta0014 - 11.12.2017
+#### 3.0.0 - 11.12.2017
 * Fixes possible null reference
-
-#### 3.0.0-beta0013 - 11.12.2017
 * Adds notification data support
-
-#### 3.0.0-beta0012 - 08.12.2017
 * Updates packages
-
-#### 3.0.0-beta0011 - 01.12.2017
 * Removes requirement for title and body when sending push notification
-
-#### 3.0.0-beta0010 - 28.11.2017
 * Fixes wrong response format
-
-#### 3.0.0-beta0009 - 27.11.2017
 * Fixes building of subscriber id
-
-#### 3.0.0-beta0008 - 25.11.2017
 * Fixes issue in the api with bulding subscriber id
-
-#### 3.0.0-beta0007 - 25.11.2017
 * Fixes redis setting
-
-#### 3.0.0-beta0006 - 25.11.2017
 * Adds normalized discovery
-
-#### 3.0.0-beta0005 - 24.11.2017
 * Fixes missing documentation
-
-#### 3.0.0-beta0004 - 24.11.2017
 * Updates deployment
-
-#### 3.0.0-beta0003 - 24.11.2017
 * Changes app contexts
-
-#### 3.0.0-beta0002 - 24.11.2017
 * Removes dependencies from api host
-
-#### 3.0.0-beta0001 - 22.11.2017
 * Initial release for version 3 of pn
-
-#### 0.1.0 - 17.11.2017
 * Initial Release
