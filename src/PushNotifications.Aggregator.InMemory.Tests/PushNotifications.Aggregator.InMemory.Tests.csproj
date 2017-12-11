@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AEF2E404-D7F7-48C1-8F15-12B62152BA08}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PushNotifications.Aggregator.InMemory.Tests</RootNamespace>
+    <AssemblyName>PushNotifications.Aggregator.InMemory.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elders.Cronus.DomainModeling, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.DomainModeling.3.3.0\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Machine.Fakes, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Machine.Fakes.2.9.0\lib\net45\Machine.Fakes.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Machine.Fakes.Moq, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Machine.Fakes.Moq.2.9.0\lib\net45\Machine.Fakes.Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Machine.Specifications, Version=0.12.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Machine.Specifications.0.12.0\lib\net45\Machine.Specifications.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Machine.Specifications.Should, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Machine.Specifications.Should.0.11.0\lib\net45\Machine.Specifications.Should.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Moq, Version=4.7.142.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.7.142\lib\net45\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Helper.cs" />
+    <Compile Include="TestDeliveryWithInMemoryAggregator.cs" />
+    <Compile Include="When_sending_multiple_pushnotifications_to_one_token_with_aggregator.cs" />
+    <Compile Include="When_sending_one_pushnotification_to_mutiple_tokens_with_aggregator.cs" />
+    <Compile Include="When_sending_pushnotification_with_aggregator_using_timespan_to_flush.cs" />
+    <Compile Include="When_sending_pushnotification_with_aggregator_using_timespan_to_flush_and_does_not_wait.cs" />
+    <Compile Include="When_sending_pushnotification_with_aggregator_using_tokens_count_to_flush.cs" />
+    <Compile Include="When_sending_pushnotification_with_aggregator_using_tokens_count_to_flush_and_flush_count_is_not_reached.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
+      <Project>{53ab2dd6-f42f-44bb-bb6d-a7497c720e68}</Project>
+      <Name>PushNotifications.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PushNotifications.Aggregator.InMemory\PushNotifications.Aggregator.InMemory.csproj">
+      <Project>{9bf5032e-b8a6-4f8c-b6fe-05ba192dcd5b}</Project>
+      <Name>PushNotifications.Aggregator.InMemory</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
