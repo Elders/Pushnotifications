@@ -14,6 +14,7 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
         public SendPushNotificationModel()
         {
             ExpiresAt = Timestamp.JudgementDay();
+            NotificationData = new Dictionary<string, object>();
         }
 
         [AuthorizeClaim(AuthorizeClaimType.Tenant, AuthorizeClaimType.TenantClient)]

@@ -69,7 +69,8 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
                     Sound = "default",
                     SubscriberUrn = stringTenantUrn,
                     Tenant = tenant,
-                    Title = "The title"
+                    Title = "The title",
+                    NotificationData = new Dictionary<string, object>()
                 });
 
                 yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.NotAcceptable, new ResponseResult(Constants.CommandPublishFailed));

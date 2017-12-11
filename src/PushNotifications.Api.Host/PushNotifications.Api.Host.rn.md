@@ -1,3 +1,6 @@
+#### 3.0.0-beta0014 - 11.12.2017
+* Fixes possible null reference
+
 #### 3.0.0-beta0013 - 11.12.2017
 * Adds notification data support
 
