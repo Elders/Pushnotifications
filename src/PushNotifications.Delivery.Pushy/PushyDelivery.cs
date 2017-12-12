@@ -61,8 +61,7 @@ namespace PushNotifications.Delivery.Pushy
             var tokensAsStrings = tokens.Select(x => x.ToString()).ToList();
             var payload = notification.NotificationPayload;
             var pushySendNotificationModel = new PushySendNotificationModel(payload.Title, payload.Body, payload.Sound, payload.Badge);
-            var pushySendDataModel = new PushySendDataModel(payload.Title, payload.Body, payload.Sound, payload.Badge.ToString(), notification.NotificationData);
-            var model = new PushySendModel(tokensAsStrings, pushySendNotificationModel, pushySendDataModel, notification.ExpiresAt, notification.ContentAvailable);
+            var model = new PushySendModel(tokensAsStrings, pushySendNotificationModel, notification.NotificationData, notification.ExpiresAt, notification.ContentAvailable);
             var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
             var result = restClient.Execute<PushyResponseModel>(request);
 

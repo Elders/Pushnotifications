@@ -9,7 +9,7 @@ namespace PushNotifications.Delivery.Pushy.Models
     {
         const long MAX_TTL_SECONDS = 31536000; // 1 year
 
-        public PushySendModel(IList<string> tokens, PushySendNotificationModel notification, PushySendDataModel data, Timestamp expiresAt, bool contentAvailable)
+        public PushySendModel(IList<string> tokens, PushySendNotificationModel notification, Dictionary<string, object> data, Timestamp expiresAt, bool contentAvailable)
         {
             if (ReferenceEquals(null, tokens) == true || tokens.Count == 0) throw new ArgumentException(nameof(tokens));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
@@ -18,9 +18,23 @@ namespace PushNotifications.Delivery.Pushy.Models
 
             RegistrationIds = new List<string>(tokens);
             Notification = notification;
-            Data = data;
+            Data = new Dictionary<string, object>();
             TTL = ExpirationTimeToSeconds(expiresAt);
             ContentAvailable = contentAvailable;
+
+
+            Data.Add("title", notification.Title);
+            Data.Add("body", notification.Body);
+            Data.Add("sound", notification.Sound);
+            Data.Add("badge", notification.Badge);
+
+            foreach (var item in data)
+            {
+                if (Data.ContainsKey(item.Key) == true)
+                    Data[item.Key] = item.Value;
+                else
+                    Data.Add(item.Key, item.Value);
+            }
         }
 
         [JsonProperty(PropertyName = "Registration_ids")]
@@ -31,7 +45,7 @@ namespace PushNotifications.Delivery.Pushy.Models
 
         public PushySendNotificationModel Notification { get; private set; }
 
-        public PushySendDataModel Data { get; private set; }
+        public Dictionary<string, object> Data { get; private set; }
 
         /// <summary>
         /// Specifies how long (in seconds) the push notification should be kept if the device is offline.

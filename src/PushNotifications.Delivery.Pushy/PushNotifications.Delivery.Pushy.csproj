@@ -50,7 +50,6 @@
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="Models\PushyResponseModel.cs" />
-    <Compile Include="Models\PushySendDataModel.cs" />
     <Compile Include="PushNotificationsDeliveryPushyAssembly.cs" />
     <Compile Include="PushyDelivery.cs" />
     <Compile Include="Models\PushySendNotificationModel.cs" />
