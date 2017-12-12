@@ -9,15 +9,23 @@ namespace PushNotifications.Api.Client
     {
         static void Main()
         {
+
             Uri authority = new Uri("https://account-vapt.local.com");
             Uri apiAddress = new Uri("https://pn-new.local.com");
 
             Uri qoreAuthority = new Uri("https://account-qore.local.com");
             var pnClient = new PushNotificationsRestClient(authority, "connect/token", "localclient", "localsecret", "read write admin", apiAddress);
-            var pnClientForMarketVision = new PushNotificationsRestClient(qoreAuthority, "connect/token", "localclient", "localsecret", "read write admin", apiAddress);
 
 
-            var d = pnClient.Discovery();
+            //Uri authority = new Uri("https://account-int.marketvision.com");
+            //Uri apiAddress = new Uri("https://push-notifications-int.marketvision.com");
+
+            //Uri qoreAuthority = new Uri("https://account-qore.local.com");
+            //var pnClient = new PushNotificationsRestClient(authority, "connect/token", "pruvitintclient", "pruvitintsecret", "read write admin", apiAddress);
+            //var pnClientForMarketVision = new PushNotificationsRestClient(qoreAuthority, "connect/token", "localclient", "localsecret", "read write admin", apiAddress);
+
+
+            //var d = pnClient.Discovery();
 
             var t = Timestamp.JudgementDay();
             //for (int i = 0; i < 10; i++)
@@ -27,15 +35,16 @@ namespace PushNotifications.Api.Client
             //    //var x = pnClient.SubscribeForFireBase(new SubscribeForFireBaseModel("pruvit", new SubscriberId(i.ToString(), "pruvit").Urn.Value, new SubscriptionToken($"token-{i}")));
             //}
 
-            var pruvitSubscriber = new Contracts.SubscriberId("76277", "pruvit");
-            var pruvitUrn = StringTenantUrn.Parse("urn:pruvit:profile:762771");
-            var pruvitSubscribe = pnClient.SubscribeForFireBase(new SubscriptionForFireBase(pruvitUrn, "eh31SYk_ELA:APA91bHwJN5-hBY6KBmN01kFnSSPBFeJeTixnYQBvny77KsFTDgIY0Gb0JnTUd6q7AEfedg_qWMvJQ-IpyzjUpa4EA1VDupMkwNCz179YDCkRueTRxDCE_SkdpfLYkO96M09JZowK5K5"));
-            var s = pnClient.SubscribeForFireBase(new SubscriptionForFireBase(pruvitUrn, "exk_tnns_OI:APA91bFzlzvFysNlYpVmvdBbT1gVS66PeJ8izHLGwO0i3nu8TZGYBQrorURNM_fu2tPupGi9Zm1k-u1wIjwwclqdz-9IGjxbtqLa4PlH2B8h6T4xr1JMULKJbVeaZEcGJO1K2_0tmBxd"));
-            //var pushyPruvitSubscribe = pnClient.SubscribeForPushy(new SubscribeForPushyModel(pruvitUrn, new SubscriptionToken("2c11c380e4ba86c8da983a")));
+            var pruvitUrn = StringTenantUrn.Parse("urn:pruvit:profile:379266");
+            //var pruvitSubscribe = pnClient.SubscribeForFireBase(new SubscriptionForFireBase(pruvitUrn, "eh31SYk_ELA:APA91bHwJN5-hBY6KBmN01kFnSSPBFeJeTixnYQBvny77KsFTDgIY0Gb0JnTUd6q7AEfedg_qWMvJQ-IpyzjUpa4EA1VDupMkwNCz179YDCkRueTRxDCE_SkdpfLYkO96M09JZowK5K5"));
+            //var s = pnClient.SubscribeForFireBase(new SubscriptionForFireBase(pruvitUrn, "exk_tnns_OI:APA91bFzlzvFysNlYpVmvdBbT1gVS66PeJ8izHLGwO0i3nu8TZGYBQrorURNM_fu2tPupGi9Zm1k-u1wIjwwclqdz-9IGjxbtqLa4PlH2B8h6T4xr1JMULKJbVeaZEcGJO1K2_0tmBxd"));
+            var pushyPruvitSubscribe = pnClient.SubscribeForPushy(new SubscriptionForPushy(pruvitUrn, "3d72ff109aa254dc73ad8d"));
 
             var data = new Dictionary<string, object>();
             data.Add("feedtype", "broadcast");
-            var x = pnClient.SendPushNotification(new Models.SendPushNotificationModel(pruvitUrn, string.Empty, "with empty title", "default", string.Empty, 0, data, t.DateTime, true));
+            var x = pnClient.SendPushNotification(new Models.SendPushNotificationModel(pruvitUrn, string.Empty, "IVAN 12345 with PUSHY", "default", string.Empty, 0, data, t.DateTime, true));
+
+            var tokens = pnClient.GetSubscriberTokens(new SubscriberTokensModel(pruvitUrn));
 
 
             //var mvSubscriber = new Contracts.SubscriberId("76277", "mv");

@@ -15,10 +15,10 @@ namespace PushNotifications.Delivery.Pushy.Models
 
             foreach (var item in data)
             {
-                if (data.ContainsKey(item.Key) == true)
-                    data[item.Key] = item.Value;
+                if (Data.ContainsKey(item.Key) == true)
+                    Data[item.Key] = item.Value;
                 else
-                    data.Add(item.Key, item.Value);
+                    Data.Add(item.Key, item.Value);
             }
         }
 

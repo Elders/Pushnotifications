@@ -1,3 +1,6 @@
+#### 3.0.1 - 12.12.2017
+* Fixes pushy issue with adding custom params
+
 #### 3.0.0 - 11.12.2017
 * Adds notification data support
 * Updates packages

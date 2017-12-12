@@ -5,6 +5,9 @@ using RestSharp;
 using System.Linq;
 using Newtonsoft.Json;
 using Discovery.Contracts;
+using PushNotifications.Contracts;
+using Elders.Cronus.DomainModeling;
+using System.Collections.Generic;
 
 namespace PushNotifications.Api.Client
 {
@@ -90,5 +93,35 @@ namespace PushNotifications.Api.Client
 
             return restSharpIdentityModelClient.Execute<ResponseResult<DiscoveryReaderResponseModel>>(resource, Method.GET, authenticator);
         }
+
+        public IRestResponse<ResponseResult<SubscriberTokens>> GetSubscriberTokens(SubscriberTokensModel model, Authenticator authenticator = null)
+        {
+            const string resource = "Subscriptions/SubscriberTokens";
+
+            return restSharpIdentityModelClient.ExecuteGet<ResponseResult<SubscriberTokens>>(resource, model, new List<Parameter>(), authenticator);
+        }
+    }
+
+
+    public class SubscriberTokensModel
+    {
+        public SubscriberTokensModel(StringTenantUrn subscriberUrn)
+        {
+            SubscriberUrn = subscriberUrn;
+        }
+
+        public StringTenantUrn SubscriberUrn { get; private set; }
+    }
+
+    public class SubscriberTokens
+    {
+        public SubscriberTokens()
+        {
+            Tokens = new HashSet<SubscriptionToken>();
+        }
+
+        public SubscriberId SubscriberId { get; set; }
+
+        public HashSet<SubscriptionToken> Tokens { get; set; }
     }
 }
