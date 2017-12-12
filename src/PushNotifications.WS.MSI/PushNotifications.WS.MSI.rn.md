@@ -1,3 +1,6 @@
+#### 3.1.0-beta0001 - 12.12.2017
+* Rebase from master
+
 #### 3.0.2 - 12.12.2017
 * Fixes pushy issue with adding custom params
 
