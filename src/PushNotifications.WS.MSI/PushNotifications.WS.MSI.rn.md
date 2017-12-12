@@ -1,3 +1,6 @@
+#### 3.1.0-beta0001 - 12.12.2017
+* Rebase from master
+
 #### 3.0.6 - 13.12.2017
 * Adds logging after successfully sending pn
 
