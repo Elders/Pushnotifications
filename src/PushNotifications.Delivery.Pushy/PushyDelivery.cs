@@ -58,6 +58,7 @@ namespace PushNotifications.Delivery.Pushy
 
             string resource = "push?api_key=" + serverKey;
 
+            log.Debug(() => $"[PushyBase] sending '{tokens.Count}' PN for notification '{notification.Id}' with body '{notification.NotificationPayload.Body}'");
             var tokensAsStrings = tokens.Select(x => x.ToString()).ToList();
             var payload = notification.NotificationPayload;
             var pushySendNotificationModel = new PushySendNotificationModel(payload.Title, payload.Body, payload.Sound, payload.Badge);

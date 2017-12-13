@@ -58,6 +58,7 @@ namespace PushNotifications.Delivery.FireBase
 
             const string resource = "fcm/send";
 
+            log.Debug(() => $"[FireBase] sending '{tokens.Count}' PN for notification '{notification.Id}' with body '{notification.NotificationPayload.Body}'");
             var tokensAsStrings = tokens.Select(x => x.ToString()).ToList();
             var payload = notification.NotificationPayload;
             var data = notification.NotificationData;

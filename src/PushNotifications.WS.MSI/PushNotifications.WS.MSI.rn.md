@@ -1,3 +1,6 @@
+#### 3.0.3 - 13.12.2017
+* Adds additional logs
+
 #### 3.0.2 - 12.12.2017
 * Fixes pushy issue with adding custom params
 
