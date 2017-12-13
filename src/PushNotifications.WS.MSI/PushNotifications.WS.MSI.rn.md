@@ -1,3 +1,6 @@
+#### 3.0.4 - 13.12.2017
+* Handles attempts to unsubscribe from not existing aggregate
+
 #### 3.0.3 - 13.12.2017
 * Adds additional logs
 

@@ -23,7 +23,11 @@ namespace PushNotifications.Subscriptions
 
         public void Handle(UnSubscribe command)
         {
-            Update(command.Id, x => x.UnSubscribe(command.SubscriberId));
+            Subscription sub;
+            if (Repository.TryLoad(command.Id, out sub))
+            {
+                Update(command.Id, x => x.UnSubscribe(command.SubscriberId));
+            }
         }
     }
 }
