@@ -71,6 +71,8 @@ namespace PushNotifications.Delivery.Pushy
                 log.Error(() => $"[PushyBase] failure: status code '{result.StatusCode}' and error '{result.Data.Error}'. PN body '{notification.NotificationPayload.Body}'");
                 return false;
             }
+
+            log.Info($"[Pushy] success: pn with body {notification.NotificationPayload?.Body} was sent to {tokens.Count} tokens");
             return true;
         }
 

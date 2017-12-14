@@ -1,3 +1,6 @@
+#### 3.0.6 - 13.12.2017
+* Adds logging after successfully sending pn
+
 #### 3.0.5 - 13.12.2017
 * Adds logging for the aggregator
 

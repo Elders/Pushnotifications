@@ -73,6 +73,8 @@ namespace PushNotifications.Delivery.FireBase
                 log.Error(() => $"[FireBase] failure: status code '{result.StatusCode}' and error '{error}'. PN body '{notification.NotificationPayload.Body}'");
                 return false;
             }
+
+            log.Info($"[FireBase] success: pn with body {notification.NotificationPayload?.Body} was sent to {tokens.Count} tokens");
             return true;
         }
 
