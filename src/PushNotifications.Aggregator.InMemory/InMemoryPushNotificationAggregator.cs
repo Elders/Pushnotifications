@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using PushNotifications.Aggregator.InMemory.Logging;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 
@@ -20,6 +21,8 @@ namespace PushNotifications.Aggregator.InMemory
         bool canSend;
 
         ConcurrentDictionary<NotificationForDelivery, List<SubscriptionToken>> buffer;
+
+        static ILog log = LogProvider.GetLogger(typeof(InMemoryPushNotificationAggregator));
 
         /// <summary>
         /// Aggregates push notifications and flushes them as single batch
@@ -48,6 +51,9 @@ namespace PushNotifications.Aggregator.InMemory
             if (canSend == false)
                 return false;
 
+            if (timeSpanBeforeFlush == TimeSpan.Zero || recipientsCountBeforeFlush == 1)
+                return send(new List<SubscriptionToken> { token }, notification);
+
             buffer.AddOrUpdate(notification, new List<SubscriptionToken> { token }, (k, v) => { v.Add(token); return v; });
 
             List<SubscriptionToken> tokens;
@@ -64,6 +70,7 @@ namespace PushNotifications.Aggregator.InMemory
                 List<SubscriptionToken> tokens;
                 if (buffer.TryRemove(key, out tokens))
                 {
+                    log.Debug($"Sending pn with body {key.NotificationPayload?.Body} to {tokens.Count} tokens");
                     return send(tokens, key);
                 }
             }
@@ -72,6 +79,7 @@ namespace PushNotifications.Aggregator.InMemory
 
         public void Dispose()
         {
+            log.Debug("Disposing the aggregator");
             if (timer != null)
             {
                 lock (this)
