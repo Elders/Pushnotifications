@@ -1,5 +1,5 @@
-#### 3.1.0-beta0001 - 12.12.2017
-* Rebase from master
+#### 3.1.0 - 27.03.2018
+* Fixes nuget package IDs
 
 #### 3.0.0 - 11.12.2017
 * Fixes possible null reference
