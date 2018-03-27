@@ -1,3 +1,6 @@
+#### 3.1.0 - 27.03.2018
+* Fixes nuget package IDs
+
 #### 3.0.6 - 13.12.2017
 * Adds logging after successfully sending pn
 

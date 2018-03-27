@@ -1,3 +1,6 @@
+#### 3.1.0 - 27.03.2018
+* Fixes nuget package IDs
+
 #### 3.0.0 - 11.12.2017
 * Fixes possible null reference
 * Adds notification data support
