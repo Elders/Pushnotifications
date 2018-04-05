@@ -62,8 +62,9 @@ namespace PushNotifications.Delivery.FireBase
             var tokensAsStrings = tokens.Select(x => x.ToString()).ToList();
             var payload = notification.NotificationPayload;
             var data = notification.NotificationData;
-            var fireBaseSendNotificationModel = new FireBaseSendNotificationModel(payload.Title, payload.Body, payload.Sound, payload.Badge.ToString());
-            var model = new FireBaseSendModel(tokensAsStrings, fireBaseSendNotificationModel, data, notification.ExpiresAt, notification.ContentAvailable);
+            string badge = payload.Badge > 0 ? payload.Badge.ToString() : "1";
+            var fireBaseSendNotificationModel = new FireBaseSendNotificationModel(payload.Title, payload.Body, payload.Sound, badge);
+            var model = new FireBaseSendModel(tokensAsStrings, fireBaseSendNotificationModel, data, notification.ExpiresAt);
             var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
             var result = restClient.Execute<FireBaseResponseModel>(request);
 
@@ -74,7 +75,7 @@ namespace PushNotifications.Delivery.FireBase
                 return false;
             }
 
-            log.Info($"[FireBase] success: pn with body {notification.NotificationPayload?.Body} was sent to {tokens.Count} tokens");
+            log.Info($"[FireBase] success: PN with body {notification.NotificationPayload?.Body} was sent to {tokens.Count} tokens");
             return true;
         }
 

@@ -7,37 +7,55 @@ namespace PushNotifications.Delivery.FireBase.Models
 {
     public class FireBaseSendModel
     {
-        const long MAX_TTL_SECONDS = 1209600; // 4 weeks
+        const long MAX_TTL_SECONDS = 432000; // 5 days
 
-        public FireBaseSendModel(IList<string> tokens, FireBaseSendNotificationModel notificationPayload, Dictionary<string, object> notificationData, Timestamp expiresAt, bool contentAvailable)
+        public FireBaseSendModel(IList<string> tokens, FireBaseSendNotificationModel notificationPayload, Dictionary<string, object> notificationData, Timestamp expiresAt)
         {
-            if (ReferenceEquals(null, tokens) == true || tokens.Count == 0) throw new ArgumentException(nameof(tokens));
-            if (ReferenceEquals(null, notificationPayload) == true) throw new ArgumentNullException(nameof(notificationPayload));
-            if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
-            if (ReferenceEquals(null, notificationData) == true) throw new ArgumentNullException(nameof(notificationData));
+            if (ReferenceEquals(null, tokens) || tokens.Count < 0 || tokens.Count > 1000) throw new ArgumentException(nameof(tokens));
+            if (ReferenceEquals(null, notificationPayload)) throw new ArgumentNullException(nameof(notificationPayload));
+            if (ReferenceEquals(null, expiresAt)) throw new ArgumentNullException(nameof(expiresAt));
+            if (ReferenceEquals(null, notificationData)) throw new ArgumentNullException(nameof(notificationData));
 
             RegistrationIds = new List<string>(tokens);
             Notification = notificationPayload;
             TTL = ExpirationTimeToSeconds(expiresAt);
-            ContentAvailable = contentAvailable;
             Data = notificationData;
+            Priority = "high";
         }
 
-        [JsonProperty(PropertyName = "Registration_ids")]
+        /// <summary>
+        /// This parameter specifies the recipient of a multicast message, a message sent to more than one registration token.
+        /// The value should be an array of registration tokens to which to send the multicast message. The array must contain at least 1 and at most 1000 registration tokens.
+        /// To send a message to a single device, use the to parameter.
+        /// </summary>
+        [JsonProperty(PropertyName = "registration_ids")]
         public List<string> RegistrationIds { get; private set; }
 
-        [JsonProperty(PropertyName = "Content_available")]
-        public bool ContentAvailable { get; private set; }
-
+        /// <summary>
+        /// This parameter specifies the predefined, user-visible key-value pairs of the notification payload. See Notification payload support for detail.
+        /// For more information about notification message and data message options, see Message types. If a notification payload is provided, or the content_available
+        /// option is set to true for a message to an iOS device, the message is sent through APNs, otherwise it is sent through the FCM connection server.
+        /// </summary>
+        [JsonProperty(PropertyName = "notification")]
         public FireBaseSendNotificationModel Notification { get; private set; }
 
+        [JsonProperty(PropertyName = "data")]
         public Dictionary<string, object> Data { get; private set; }
+
+        /// <summary>
+        /// Sets the priority of the message. Valid values are "normal" and "high." On iOS, these correspond to APNs priorities 5 and 10.
+        /// By default, notification messages are sent with high priority, and data messages are sent with normal priority. Normal priority optimizes the client app's
+        /// battery consumption and should be used unless immediate delivery is required. For messages with normal priority, the app may receive the message with unspecified delay.
+        /// When a message is sent with high priority, it is sent immediately, and the app can display a notification.
+        /// </summary>
+        [JsonProperty(PropertyName = "priority")]
+        public string Priority { get; set; }
 
         /// <summary>
         /// This parameter specifies how long (in seconds) the message should be kept in FCM storage if the device is offline.
         /// The maximum time to live supported is 4 weeks, and the default value is 4 weeks.
         /// </summary>
-        [JsonProperty(PropertyName = "Time_to_live")]
+        [JsonProperty(PropertyName = "time_to_live")]
         public long TTL { get; private set; }
 
         long ExpirationTimeToSeconds(Timestamp t)
