@@ -11,10 +11,10 @@ namespace PushNotifications.Delivery.FireBase.Models
 
         public FireBaseSendModel(IList<string> tokens, FireBaseSendNotificationModel notificationPayload, Dictionary<string, object> notificationData, Timestamp expiresAt, bool contentAvailable)
         {
-            if (ReferenceEquals(null, tokens) == true || tokens.Count == 0) throw new ArgumentException(nameof(tokens));
-            if (ReferenceEquals(null, notificationPayload) == true) throw new ArgumentNullException(nameof(notificationPayload));
-            if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
-            if (ReferenceEquals(null, notificationData) == true) throw new ArgumentNullException(nameof(notificationData));
+            if (ReferenceEquals(null, tokens) || tokens.Count < 0 || tokens.Count > 1000) throw new ArgumentException(nameof(tokens));
+            if (ReferenceEquals(null, notificationPayload)) throw new ArgumentNullException(nameof(notificationPayload));
+            if (ReferenceEquals(null, expiresAt)) throw new ArgumentNullException(nameof(expiresAt));
+            if (ReferenceEquals(null, notificationData)) throw new ArgumentNullException(nameof(notificationData));
 
             RegistrationIds = new List<string>(tokens);
             Notification = notificationPayload;
