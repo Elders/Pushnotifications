@@ -62,7 +62,8 @@ namespace PushNotifications.Delivery.FireBase
             var tokensAsStrings = tokens.Select(x => x.ToString()).ToList();
             var payload = notification.NotificationPayload;
             var data = notification.NotificationData;
-            var fireBaseSendNotificationModel = new FireBaseSendNotificationModel(payload.Title, payload.Body, payload.Sound, payload.Badge.ToString());
+            string badge = payload.Badge > 0 ? payload.Badge.ToString() : "1";
+            var fireBaseSendNotificationModel = new FireBaseSendNotificationModel(payload.Title, payload.Body, payload.Sound, badge);
             var model = new FireBaseSendModel(tokensAsStrings, fireBaseSendNotificationModel, data, notification.ExpiresAt);
             var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
             var result = restClient.Execute<FireBaseResponseModel>(request);
