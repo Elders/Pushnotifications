@@ -1,5 +1,4 @@
 ﻿using Elders.Cronus.DomainModeling;
-using Elders.Web.Api;
 using System.ComponentModel.DataAnnotations;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Commands;
@@ -16,9 +15,6 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
             ExpiresAt = Timestamp.JudgementDay();
             NotificationData = new Dictionary<string, object>();
         }
-
-        [AuthorizeClaim(AuthorizeClaimType.Tenant, AuthorizeClaimType.TenantClient)]
-        public string Tenant { get; set; }
 
         /// <summary>
         /// URN of who should PN be send to. This must be string tenant urn
@@ -68,7 +64,7 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
 
         public SendPushNotification AsCommand()
         {
-            var id = new PushNotificationId(Guid.NewGuid().ToString(), Tenant);
+            var id = new PushNotificationId(Guid.NewGuid().ToString(), SubscriberUrn.Tenant);
             var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
             var notificationPayload = new NotificationPayload(Title, Body, Sound, Icon, Badge);
             return new SendPushNotification(id, subscriberId, notificationPayload, NotificationData, ExpiresAt, ContentAvailable);

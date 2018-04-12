@@ -28,7 +28,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-
         [ScopeAndOrRoleAuthorize(Roles = AvailableRoles.Admin, Scope = AvailableScopes.Admin)]
         [HttpPost, Route("Send"), Discoverable("PushNotificationsSend", "v1")]
         public IHttpActionResult Send(SendPushNotificationModel model)
@@ -68,7 +67,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
                     Icon = string.Empty,
                     Sound = "default",
                     SubscriberUrn = stringTenantUrn,
-                    Tenant = tenant,
                     Title = "The title",
                     NotificationData = new Dictionary<string, object>()
                 });
