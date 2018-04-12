@@ -15,8 +15,6 @@ using Elders.Cronus.Pipeline.Transport.RabbitMQ.Config;
 using Elders.Cronus.Projections;
 using Elders.Cronus.Projections.Cassandra.Config;
 using Elders.Pandora;
-using Multitenancy.Cassandra.EventStore;
-using Multitenancy.Cassandra.Projections;
 using Multitenancy.Delivery;
 using PushNotifications.Contracts;
 using PushNotifications.Ports;
@@ -183,7 +181,7 @@ namespace PushNotifications.WS
                     })
                      .UseProjections(h => h
                         .RegisterHandlerTypes(cassandraProjetions, pnProjHandlerFactory.Resolve)
-                        .UseMultiTenantCassandraProjections(p => p
+                        .UseCassandraProjections(p => p
                             .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
                             .UseSnapshots(cassandraProjetions)
                             .SetProjectionTypes(cassandraProjetions)

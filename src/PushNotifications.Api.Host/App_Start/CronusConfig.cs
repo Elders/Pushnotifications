@@ -20,7 +20,6 @@ using Elders.Cronus.Projections.Cassandra.Config;
 using Elders.Cronus.Projections.Cassandra.Snapshots;
 using Elders.Cronus.Serializer;
 using Elders.Pandora;
-using Multitenancy.Cassandra.Projections;
 using PushNotifications.Api.Host.Logging;
 using PushNotifications.Contracts;
 using PushNotifications.Projections;
@@ -69,14 +68,14 @@ namespace PushNotifications.Api.Host.App_Start
                      x.Password = pandora.Get("rabbitmq_password");
                      x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
                  })
-                        .ConfigureMultiTenantCassandraProjectionsStore(x => x
-                        .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
-                        .UseSnapshots(Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly)).ExportedTypes)
-                        .UseSnapshotStrategy(new DefaultSnapshotStrategy(TimeSpan.FromDays(10), 500))
-                        .SetProjectionsReplicationStrategy(GetProjectionsReplicationStrategy(pandora))
-                        .SetProjectionsWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_write_consistency_level"))
-                        .SetProjectionsReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_read_consistency_level"))
-                        .SetProjectionTypes(Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly))));
+                .ConfigureCassandraProjectionsStore(x => x
+                    .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
+                    .UseSnapshots(Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly)).ExportedTypes)
+                    .UseSnapshotStrategy(new DefaultSnapshotStrategy(TimeSpan.FromDays(10), 500))
+                    .SetProjectionsReplicationStrategy(GetProjectionsReplicationStrategy(pandora))
+                    .SetProjectionsWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_write_consistency_level"))
+                    .SetProjectionsReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_read_consistency_level"))
+                    .SetProjectionTypes(Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly))));
                 (cfg as ISettingsBuilder).Build();
 
                 Func<IPipelineTransport> transport = () => container.Resolve<IPipelineTransport>();
