@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Cassandra;
+using Elders.Cronus;
 using Elders.Cronus.AtomicAction.Config;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.Cluster.Config;
-using Elders.Cronus.DomainModeling;
-using Elders.Cronus.DomainModeling.Projections;
 using Elders.Cronus.IocContainer;
 using Elders.Cronus.Persistence.Cassandra.Config;
 using Elders.Cronus.Pipeline.Config;
 using Elders.Cronus.Pipeline.Hosts;
 using Elders.Cronus.Pipeline.Transport.RabbitMQ.Config;
+using Elders.Cronus.Projections;
 using Elders.Cronus.Projections.Cassandra.Config;
-using Elders.Cronus.Projections.Cassandra.Snapshots;
 using Elders.Pandora;
 using Multitenancy.Cassandra.EventStore;
 using Multitenancy.Cassandra.Projections;
@@ -118,12 +117,12 @@ namespace PushNotifications.WS
                     x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
                 })
                 .WithDefaultPublishers()
-                .UseMultiTenantCassandraEventStore(eventStore =>
+                .UseCassandraEventStore(eventStore =>
                     CassandraEventStoreExtensions.SetConnectionString(eventStore, pandora.Get("pn_cassandra_event_store_conn_str"))
                     .SetReplicationStrategy(eventStoreReplicationStrategy)
                     .SetWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_event_store_write_consistency_level"))
                     .SetReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_event_store_read_consistency_level"))
-                    .SetAggregateStatesAssembly(typeof(PushNotificationsAssembly)))
+                    .SetBoundedContext(typeof(PushNotificationsAssembly).Assembly.GetBoundedContext().BoundedContextName))
                 .UseApplicationServices(cmdHandler => cmdHandler.RegisterHandlersInAssembly(new[] { typeof(PushNotificationsAssembly).Assembly }, pn_appServiceFactory.Create)));
 
             return cronusSettings;
@@ -187,7 +186,6 @@ namespace PushNotifications.WS
                         .UseMultiTenantCassandraProjections(p => p
                             .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
                             .UseSnapshots(cassandraProjetions)
-                            .UseSnapshotStrategy(new DefaultSnapshotStrategy(TimeSpan.FromDays(10), 500))
                             .SetProjectionTypes(cassandraProjetions)
                             .SetProjectionsReplicationStrategy(projectionsReplicationStrategy)
                             .SetProjectionsWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_write_consistency_level"))

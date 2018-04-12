@@ -1,6 +1,5 @@
 ﻿using System;
 using Elders.Cronus;
-using Elders.Cronus.DomainModeling;
 using Elders.Cronus.IocContainer;
 
 namespace PushNotifications.WS
