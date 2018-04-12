@@ -5,7 +5,6 @@ using PushNotifications.Contracts;
 using Discovery.Contracts;
 using System.Collections.Generic;
 using System;
-using PushNotifications.Contracts.Subscriptions;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {

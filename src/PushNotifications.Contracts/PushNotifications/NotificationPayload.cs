@@ -1,6 +1,5 @@
 ﻿using Elders.Cronus.DomainModeling;
 using System.Runtime.Serialization;
-using System;
 
 namespace PushNotifications.Contracts.PushNotifications
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PushNotifications.Delivery.FireBase
+﻿namespace PushNotifications.Delivery.FireBase
 {
     public class FireBaseSendNotificationModel
     {

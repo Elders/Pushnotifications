@@ -3,7 +3,6 @@ using System.Web.Http;
 using PushNotifications.Contracts;
 using Discovery.Contracts;
 using Elders.Cronus.DomainModeling.Projections;
-using PushNotifications.Projections;
 using Elders.Cronus.DomainModeling;
 using System.Web.Http.ModelBinding;
 using PushNotifications.Api.Converters;
