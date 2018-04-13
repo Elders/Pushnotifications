@@ -1,10 +1,10 @@
-﻿using Elders.Cronus.DomainModeling;
+﻿using Elders.Cronus;
 using Elders.Web.Api;
 using System.Web.Http;
 using PushNotifications.Contracts;
 using PushNotifications.Api.Attributes;
 using Discovery.Contracts;
-using Elders.Cronus.DomainModeling.Projections;
+using Elders.Cronus.Projections;
 using PushNotifications.Converters.Extensions;
 using System.Collections.Generic;
 using System;
@@ -19,7 +19,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
     {
         public IPublisher<ICommand> Publisher { get; set; }
 
-        public IProjectionRepository Projections { get; set; }
+        public IProjectionLoader Projections { get; set; }
 
         /// <summary>
         /// Sends push notification with notification payload. This endpoint is accessable only with admin scope.

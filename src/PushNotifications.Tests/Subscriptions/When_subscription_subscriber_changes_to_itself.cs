@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Elders.Cronus.DomainModeling;
+using Elders.Cronus;
 using Machine.Specifications;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.Subscriptions;

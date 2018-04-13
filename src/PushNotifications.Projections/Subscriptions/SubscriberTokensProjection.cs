@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
-using Elders.Cronus.DomainModeling;
-using Elders.Cronus.DomainModeling.Projections;
+using Elders.Cronus;
+using Elders.Cronus.Projections;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.Subscriptions.Events;
 

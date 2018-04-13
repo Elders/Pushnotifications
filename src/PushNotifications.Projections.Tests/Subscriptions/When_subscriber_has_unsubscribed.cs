@@ -1,5 +1,5 @@
-﻿using Elders.Cronus.DomainModeling;
-using Elders.Cronus.DomainModeling.Projections;
+﻿using Elders.Cronus;
+using Elders.Cronus.Projections;
 using Machine.Specifications;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.Subscriptions;

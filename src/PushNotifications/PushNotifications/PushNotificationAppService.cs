@@ -1,4 +1,4 @@
-﻿using Elders.Cronus.DomainModeling;
+﻿using Elders.Cronus;
 using PushNotifications.Contracts.PushNotifications.Commands;
 
 namespace PushNotifications

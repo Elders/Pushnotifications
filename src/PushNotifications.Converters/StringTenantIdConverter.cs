@@ -1,5 +1,5 @@
 ﻿using System;
-using Elders.Cronus.DomainModeling;
+using Elders.Cronus;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;

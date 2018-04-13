@@ -5,7 +5,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using Consul;
 using Discovery.Consul;
-using Elders.Cronus.DomainModeling;
+using Elders.Cronus;
 using Elders.Pandora;
 using Elders.Web.Api.Filters;
 using Newtonsoft.Json;

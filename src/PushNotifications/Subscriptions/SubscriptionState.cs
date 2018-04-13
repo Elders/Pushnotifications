@@ -1,4 +1,4 @@
-﻿using Elders.Cronus.DomainModeling;
+﻿using Elders.Cronus;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Contracts.Subscriptions.Events;

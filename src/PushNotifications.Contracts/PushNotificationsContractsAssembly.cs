@@ -1,4 +1,4 @@
-﻿[assembly: Elders.Cronus.DomainModeling.BoundedContext("Pushnotifications")]
+﻿[assembly: Elders.Cronus.BoundedContext("Pushnotifications")]
 namespace PushNotifications.Contracts
 {
     public class PushNotificationsContractsAssembly { }
