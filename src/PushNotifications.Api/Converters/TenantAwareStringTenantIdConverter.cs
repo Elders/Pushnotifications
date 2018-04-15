@@ -4,8 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
 using Elders.Cronus;
-using PushNotifications.Converters;
-using PushNotifications.Converters.Extensions;
 
 namespace PushNotifications.Api.Converters
 {

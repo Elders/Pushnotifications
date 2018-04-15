@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using PushNotifications.Contracts.Subscriptions;
 
-namespace PushNotifications.Converters
+namespace PushNotifications.Api.Converters
 {
     public class SubscriptionTypeConverter : GenericJsonConverter<string, SubscriptionType>
     {

@@ -4,9 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Security.Claims;
-using PushNotifications.Converters.Extensions;
 
-namespace PushNotifications.Converters
+namespace PushNotifications.Api.Converters
 {
     public class StringTenantUrnConverter : GenericJsonConverter<string, StringTenantUrn>
     {

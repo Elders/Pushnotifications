@@ -5,7 +5,6 @@ using PushNotifications.Contracts;
 using PushNotifications.Api.Attributes;
 using Discovery.Contracts;
 using Elders.Cronus.Projections;
-using PushNotifications.Converters.Extensions;
 using System.Collections.Generic;
 using System;
 using PushNotifications.Projections.Subscriptions;

@@ -5,7 +5,7 @@ using System.Web.Http;
 using Discovery.Contracts;
 using Elders.Web.Api;
 using Elders.Web.Api.RExamples;
-using PushNotifications.Api.Extensions;
+using PushNotifications.Api;
 
 namespace Vapt.Api.Discovery
 {

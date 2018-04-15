@@ -8,7 +8,6 @@ using Swashbuckle.Swagger;
 using Elders.Web.Api.RExamples;
 using System.Net.Http;
 using PushNotifications.Api.Attributes;
-using PushNotifications.Converters;
 using System;
 using Newtonsoft.Json.Linq;
 
@@ -133,8 +132,7 @@ namespace PushNotifications.Api.Reference
 
             var assemblies = new[]
             {
-                typeof(PushNotificationsApiAssembly).Assembly,
-                typeof(PushNotificationsConvertersAssembly).Assembly
+                typeof(PushNotificationsApiAssembly).Assembly
             };
             var converters = assemblies.SelectMany(x => x.GetTypes())
                 .Where(x => typeof(JsonConverter).IsAssignableFrom(x) && x.IsAbstract == false);

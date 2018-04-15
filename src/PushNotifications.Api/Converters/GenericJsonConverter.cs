@@ -4,7 +4,7 @@ using System.Security.Claims;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace PushNotifications.Converters
+namespace PushNotifications.Api.Converters
 {
     public abstract class GenericJsonConverter<TFrom, TObject> : JsonConverter
     {
