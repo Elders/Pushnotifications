@@ -96,13 +96,14 @@ namespace PushNotifications.Api.Host.App_Start
         static HttpConfiguration RegisterServices(this HttpConfiguration config, Pandora pandora)
         {
             config.EnsureInitialized();
+            string boundedContext = typeof(PushNotificationsApiAssembly).Assembly.GetBoundedContext().BoundedContextName;
             var baseUri = new Uri(pandora.Get("pn_base_url"));
             var httpHealthCheckUri = new Uri(pandora.Get("pn_health_check_url"));
             var consulClient = new ConsulClient(x => x.Address = ConsulHelper.DefaultConsulUri);
             var consulRegistrationService = new ConsulRegistrationService(consulClient);
-            consulRegistrationService.UnRegisterServices(typeof(PushNotificationsApiAssembly).Assembly.GetBoundedContext().BoundedContextName);
+            consulRegistrationService.UnRegisterServices(boundedContext);
             //RegisterServices(config, typeof(PushNotificationsApiAssembly).Assembly, baseUri);
-            consulRegistrationService.RegisterServices(config, typeof(PushNotificationsApiAssembly).Assembly, baseUri);
+            consulRegistrationService.RegisterServices(config, typeof(PushNotificationsApiAssembly).Assembly, boundedContext, baseUri);
             consulRegistrationService.RegisterService("pn", httpHealthCheckUri);
 
             return config;
