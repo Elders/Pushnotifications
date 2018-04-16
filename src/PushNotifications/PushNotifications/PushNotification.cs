@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Elders.Cronus.DomainModeling;
+using Elders.Cronus;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications;
 using PushNotifications.Contracts.PushNotifications.Events;

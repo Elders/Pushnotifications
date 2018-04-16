@@ -1,14 +1,11 @@
-﻿using Elders.Cronus.DomainModeling;
+﻿using Elders.Cronus;
 using Elders.Web.Api;
 using System.Web.Http;
 using PushNotifications.Contracts;
 using PushNotifications.Api.Attributes;
 using Discovery.Contracts;
-using Elders.Cronus.DomainModeling.Projections;
-using PushNotifications.Converters.Extensions;
 using System.Collections.Generic;
 using System;
-using PushNotifications.Projections.Subscriptions;
 using PushNotifications.Api.Controllers.PushNotifications.Models;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
@@ -19,8 +16,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
     {
         public IPublisher<ICommand> Publisher { get; set; }
 
-        public IProjectionRepository Projections { get; set; }
-
         /// <summary>
         /// Sends push notification with notification payload. This endpoint is accessable only with admin scope.
         /// Sending of push notification won't be trigger if existing subscription is not found for specified subscriber
@@ -28,7 +23,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-
         [ScopeAndOrRoleAuthorize(Roles = AvailableRoles.Admin, Scope = AvailableScopes.Admin)]
         [HttpPost, Route("Send"), Discoverable("PushNotificationsSend", "v1")]
         public IHttpActionResult Send(SendPushNotificationModel model)
@@ -36,11 +30,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             var result = new ResponseResult(Constants.InvalidCommand);
 
             var subscriberId = new SubscriberId(model.SubscriberUrn.Id, model.SubscriberUrn.Tenant);
-            var projectionReponse = Projections.Get<SubscriberTokensProjection>(subscriberId);
-            if (projectionReponse.Success == false || projectionReponse.Projection.State.Tokens.Count == 0)
-            {
-                return this.NotAcceptable(new ResponseResult($"Subscription not found for provided subscriber '{model.SubscriberUrn.Value.UrlEncode()}'"));
-            }
 
             var command = model.AsCommand();
             result = Publisher.Publish(command)
@@ -68,7 +57,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
                     Icon = string.Empty,
                     Sound = "default",
                     SubscriberUrn = stringTenantUrn,
-                    Tenant = tenant,
                     Title = "The title",
                     NotificationData = new Dictionary<string, object>()
                 });

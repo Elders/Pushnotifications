@@ -1,4 +1,4 @@
-﻿using Elders.Cronus.DomainModeling;
+﻿using Elders.Cronus;
 
 namespace PushNotifications.Tests
 {

@@ -1,11 +1,10 @@
-﻿using Elders.Cronus.DomainModeling;
+﻿using Elders.Cronus;
 using Elders.Web.Api;
 using System.Web.Http;
 using PushNotifications.Contracts;
 using Discovery.Contracts;
 using System.Collections.Generic;
 using System;
-using PushNotifications.Contracts.Subscriptions;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
@@ -43,7 +42,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
                 yield return new RExample(new FireBaseSubscribeModel()
                 {
-                    Tenant = tenant,
                     SubscriberUrn = StringTenantUrn.Parse(subscriberId.Urn.Value),
                     Token = "token"
                 });

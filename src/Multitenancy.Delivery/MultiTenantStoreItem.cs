@@ -1,5 +1,5 @@
 ﻿using System;
-using Elders.Cronus.DomainModeling;
+using Elders.Cronus;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts.Subscriptions;
 

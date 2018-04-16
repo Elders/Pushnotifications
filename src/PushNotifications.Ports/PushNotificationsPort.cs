@@ -1,5 +1,5 @@
-﻿using Elders.Cronus.DomainModeling;
-using Elders.Cronus.DomainModeling.Projections;
+﻿using Elders.Cronus;
+using Elders.Cronus.Projections;
 using Multitenancy.Delivery;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts.PushNotifications.Events;
@@ -15,7 +15,7 @@ namespace PushNotifications.Ports
 
         public IPublisher<ICommand> CommandPublisher { get; set; }
 
-        public IProjectionRepository Projections { get; set; }
+        public IProjectionLoader Projections { get; set; }
 
         public IDeliveryProvisioner DeliveryProvisioner { get; set; }
 

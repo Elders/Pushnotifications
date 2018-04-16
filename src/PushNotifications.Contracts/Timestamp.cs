@@ -1,4 +1,4 @@
-﻿using Elders.Cronus.DomainModeling;
+﻿using Elders.Cronus;
 using System;
 using System.Runtime.Serialization;
 

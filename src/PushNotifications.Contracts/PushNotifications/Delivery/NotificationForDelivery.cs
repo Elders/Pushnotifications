@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Elders.Cronus.DomainModeling;
+using Elders.Cronus;
 
 namespace PushNotifications.Contracts.PushNotifications.Delivery
 {

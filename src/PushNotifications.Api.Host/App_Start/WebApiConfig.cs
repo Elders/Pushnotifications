@@ -5,11 +5,10 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using Consul;
 using Discovery.Consul;
-using Elders.Cronus.DomainModeling;
+using Elders.Cronus;
 using Elders.Pandora;
 using Elders.Web.Api.Filters;
 using Newtonsoft.Json;
-using PushNotifications.Converters;
 
 namespace PushNotifications.Api.Host.App_Start
 {
@@ -81,8 +80,7 @@ namespace PushNotifications.Api.Host.App_Start
 
             var assemblies = new[]
             {
-                typeof(PushNotificationsApiAssembly).Assembly,
-                typeof(PushNotificationsConvertersAssembly).Assembly
+                typeof(PushNotificationsApiAssembly).Assembly
             };
             var converters = assemblies.SelectMany(x => x.GetTypes())
                 .Where(x => typeof(JsonConverter).IsAssignableFrom(x) && x.IsAbstract == false);

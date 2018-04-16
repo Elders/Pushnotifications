@@ -9,7 +9,7 @@ using Discovery.Contracts;
 using Elders.Cronus.AtomicAction.Config;
 using Elders.Cronus.AtomicAction.Redis.Config;
 using Elders.Cronus.Cluster.Config;
-using Elders.Cronus.DomainModeling;
+using Elders.Cronus;
 using Elders.Cronus.IocContainer;
 using Elders.Cronus.Pipeline;
 using Elders.Cronus.Pipeline.Config;
@@ -20,10 +20,10 @@ using Elders.Cronus.Projections.Cassandra.Config;
 using Elders.Cronus.Projections.Cassandra.Snapshots;
 using Elders.Cronus.Serializer;
 using Elders.Pandora;
-using Multitenancy.Cassandra.Projections;
 using PushNotifications.Api.Host.Logging;
 using PushNotifications.Contracts;
 using PushNotifications.Projections;
+using Elders.Cronus.Projections.Snapshotting;
 
 namespace PushNotifications.Api.Host.App_Start
 {
@@ -69,19 +69,17 @@ namespace PushNotifications.Api.Host.App_Start
                      x.Password = pandora.Get("rabbitmq_password");
                      x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
                  })
-                        .ConfigureMultiTenantCassandraProjectionsStore(x => x
-                        .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
-                        .UseSnapshots(Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly)).ExportedTypes)
-                        .UseSnapshotStrategy(new DefaultSnapshotStrategy(TimeSpan.FromDays(10), 500))
-                        .SetProjectionsReplicationStrategy(GetProjectionsReplicationStrategy(pandora))
-                        .SetProjectionsWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_write_consistency_level"))
-                        .SetProjectionsReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_read_consistency_level"))
-                        .SetProjectionTypes(Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly))));
+                .ConfigureCassandraProjectionsStore(x => x
+                    .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
+                    .SetProjectionsReplicationStrategy(GetProjectionsReplicationStrategy(pandora))
+                    .SetProjectionsWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_write_consistency_level"))
+                    .SetProjectionsReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_read_consistency_level"))
+                    .SetProjectionTypes(Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly))));
                 (cfg as ISettingsBuilder).Build();
 
-                Func<IPipelineTransport> transport = () => container.Resolve<IPipelineTransport>();
+                Func<ITransport> transport = () => container.Resolve<ITransport>();
                 Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
-                container.RegisterSingleton<IPublisher<ICommand>>(() => new PipelinePublisher<ICommand>(transport(), serializer()));
+                container.RegisterSingleton<IPublisher<ICommand>>(() => transport().GetPublisher<ICommand>(serializer()));
 
                 container.RegisterSingleton<ConsulClient>(() => new ConsulClient(x => x.Address = ConsulHelper.DefaultConsulUri));
                 container.RegisterSingleton<IDiscoveryReader>(() => new ConsulDiscoveryReader(container.Resolve<ConsulClient>()));

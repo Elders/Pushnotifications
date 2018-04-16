@@ -1,11 +1,10 @@
-﻿using Elders.Cronus.DomainModeling;
+﻿using Elders.Cronus;
 using Elders.Web.Api;
 using System.Web.Http;
 using Discovery.Contracts;
 using System.Collections.Generic;
 using PushNotifications.Contracts;
 using System;
-using PushNotifications.Contracts.Subscriptions;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Elders.Cronus.DomainModeling;
+using Elders.Cronus;
 using Machine.Specifications;
 
 namespace PushNotifications.Tests

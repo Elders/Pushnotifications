@@ -23,6 +23,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,9 +43,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cassandra, Version=3.1.0.1, Culture=neutral, PublicKeyToken=10b231fbfc8c4b4d, processorArchitecture=MSIL">
-      <HintPath>..\packages\CassandraCSharpDriver.3.1.0.1\lib\net45\Cassandra.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Cassandra, Version=3.99.0.0, Culture=neutral, PublicKeyToken=10b231fbfc8c4b4d, processorArchitecture=MSIL">
+      <HintPath>..\packages\CassandraCSharpDriver.3.4.1\lib\net45\Cassandra.dll</HintPath>
     </Reference>
     <Reference Include="Consul, Version=0.7.2.3, Culture=neutral, PublicKeyToken=20a6ad9a81df1d95, processorArchitecture=MSIL">
       <HintPath>..\packages\Consul.0.7.2.3\lib\net45\Consul.dll</HintPath>
@@ -58,33 +58,26 @@
       <HintPath>..\packages\Discovery.Consul.0.1.6\lib\net45-full\Discovery.Consul.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elders.Cronus, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.3.1.0\lib\net45-full\Elders.Cronus.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Elders.Cronus, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.5.0.0-beta0007\lib\net462\Elders.Cronus.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.AtomicAction.Redis, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.AtomicAction.Redis.0.3.1\lib\net45-full\Elders.Cronus.AtomicAction.Redis.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Cronus.AtomicAction.Redis.1.0.2\lib\net45\Elders.Cronus.AtomicAction.Redis.dll</HintPath>
     </Reference>
-    <Reference Include="Elders.Cronus.DomainModeling, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.3.3.0\lib\net45-full\Elders.Cronus.DomainModeling.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.DomainModeling.4.0.6\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
     </Reference>
-    <Reference Include="Elders.Cronus.Projections.Cassandra, Version=2.2.10.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.Projections.Cassandra.2.2.10\lib\net45-full\Elders.Cronus.Projections.Cassandra.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Elders.Cronus.Projections.Cassandra, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cronus.Projections.Cassandra.5.0.0-beta0003\lib\net462\Elders.Cronus.Projections.Cassandra.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.Serialization.NewtonsoftJson, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.Serialization.NewtonsoftJson.1.0.1\lib\net45-full\Elders.Cronus.Serialization.NewtonsoftJson.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Cronus.Serialization.NewtonsoftJson.2.1.0\lib\net45\Elders.Cronus.Serialization.NewtonsoftJson.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.Transport.RabbitMQ, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.Transport.RabbitMQ.3.1.1\lib\net45-full\Elders.Cronus.Transport.RabbitMQ.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Cronus.Transport.RabbitMQ.4.0.6\lib\net451\Elders.Cronus.Transport.RabbitMQ.dll</HintPath>
     </Reference>
-    <Reference Include="Elders.Multithreading.Scheduler, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Multithreading.Scheduler.1.1.2\lib\net45-full\Elders.Multithreading.Scheduler.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Elders.Multithreading.Scheduler, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Multithreading.Scheduler.2.0.1\lib\net45\Elders.Multithreading.Scheduler.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Pandora, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Pandora.0.9.0\lib\net45-full\Elders.Pandora.dll</HintPath>
@@ -96,10 +89,6 @@
     </Reference>
     <Reference Include="Elders.Pandora.Consul, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Pandora.Consul.0.8.0\lib\net45-full\Elders.Pandora.Consul.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Elders.RedLock, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RedLock.1.0.1\lib\net45-full\Elders.RedLock.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Elders.Web.Api, Version=0.2.4.0, Culture=neutral, processorArchitecture=MSIL">
@@ -119,6 +108,18 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Diagnostics.Tracing.EventSource, Version=1.1.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Diagnostics.Tracing.EventSource.Redist.1.1.28\lib\net46\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.0.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.1.0.0\lib\netstandard1.1\Microsoft.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.1.0.0\lib\netstandard1.1\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.IdentityModel.Logging, Version=1.1.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Logging.1.1.4\lib\net451\Microsoft.IdentityModel.Logging.dll</HintPath>
       <Private>True</Private>
@@ -151,14 +152,17 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RabbitMQ.Client, Version=3.6.5.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
-      <HintPath>..\packages\RabbitMQ.Client.3.6.5\lib\net45\RabbitMQ.Client.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="RabbitMQ.Client, Version=5.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.5.0.1\lib\net451\RabbitMQ.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="RedLock, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RedLock.2.0.1\lib\net45\RedLock.dll</HintPath>
     </Reference>
     <Reference Include="StackExchange.Redis, Version=1.2.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\StackExchange.Redis.1.2.6\lib\net46\StackExchange.Redis.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.IdentityModel" />
@@ -173,6 +177,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Reflection, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.4.1.0\lib\net462\System.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.1.0\lib\net462\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Extensions.4.1.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.4.1.0\lib\net462\System.Runtime.InteropServices.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
       <Private>True</Private>
@@ -227,10 +244,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Multitenancy.Cassandra.Projections\Multitenancy.Cassandra.Projections.csproj">
-      <Project>{f97585ba-c305-4443-b5a6-63a07ef787e9}</Project>
-      <Name>Multitenancy.Cassandra.Projections</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Api\PushNotifications.Api.csproj">
       <Project>{9F3F8DB4-F738-4F20-B95C-91483E94B266}</Project>
       <Name>PushNotifications.Api</Name>
@@ -238,10 +251,6 @@
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{53ab2dd6-f42f-44bb-bb6d-a7497c720e68}</Project>
       <Name>PushNotifications.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PushNotifications.Converters\PushNotifications.Converters.csproj">
-      <Project>{9D4233BF-4282-4A44-8F54-1175A43BF763}</Project>
-      <Name>PushNotifications.Converters</Name>
     </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Projections\PushNotifications.Projections.csproj">
       <Project>{03CF41C9-3167-4431-BDF0-C44497C057E8}</Project>

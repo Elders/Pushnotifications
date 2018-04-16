@@ -1,4 +1,4 @@
-﻿using Elders.Cronus.DomainModeling;
+﻿using Elders.Cronus;
 using Elders.Web.Api;
 using System.ComponentModel.DataAnnotations;
 using PushNotifications.Contracts;
@@ -11,9 +11,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
     public class FireBaseSubscribeModel
     {
-        [AuthorizeClaim(AuthorizeClaimType.Tenant, AuthorizeClaimType.TenantClient)]
-        public string Tenant { get; set; }
-
         /// <summary>
         /// URN of the subscriber. This must be string tenant urn
         /// </summary>
@@ -29,7 +26,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         public Subscribe AsSubscribeCommand()
         {
             var subscriptionToken = new SubscriptionToken(Token, SubscriptionType.FireBase);
-            var subscriptionId = new SubscriptionId(subscriptionToken, Tenant);
+            var subscriptionId = new SubscriptionId(subscriptionToken, SubscriberUrn.Tenant);
             var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
             return new Subscribe(subscriptionId, subscriberId, subscriptionToken);
         }
@@ -37,7 +34,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         public UnSubscribe AsUnSubscribeCommand()
         {
             var subscriptionToken = new SubscriptionToken(Token, SubscriptionType.FireBase);
-            var subscriptionId = new SubscriptionId(subscriptionToken, Tenant);
+            var subscriptionId = new SubscriptionId(subscriptionToken, SubscriberUrn.Tenant);
             var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
             return new UnSubscribe(subscriptionId, subscriberId, subscriptionToken);
         }

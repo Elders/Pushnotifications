@@ -23,6 +23,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -128,10 +129,6 @@
     <ProjectReference Include="..\PushNotifications.Api\PushNotifications.Api.csproj">
       <Project>{9F3F8DB4-F738-4F20-B95C-91483E94B266}</Project>
       <Name>PushNotifications.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PushNotifications.Converters\PushNotifications.Converters.csproj">
-      <Project>{9D4233BF-4282-4A44-8F54-1175A43BF763}</Project>
-      <Name>PushNotifications.Converters</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

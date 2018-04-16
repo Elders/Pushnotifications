@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
-using Elders.Cronus.DomainModeling;
-using PushNotifications.Converters;
-using PushNotifications.Converters.Extensions;
+using Elders.Cronus;
 
 namespace PushNotifications.Api.Converters
 {

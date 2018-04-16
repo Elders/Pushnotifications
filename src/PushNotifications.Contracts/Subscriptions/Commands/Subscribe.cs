@@ -1,5 +1,5 @@
 ﻿using System;
-using Elders.Cronus.DomainModeling;
+using Elders.Cronus;
 using System.Runtime.Serialization;
 
 namespace PushNotifications.Contracts.Subscriptions.Commands

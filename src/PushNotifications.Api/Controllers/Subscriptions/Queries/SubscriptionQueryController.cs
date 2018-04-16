@@ -2,9 +2,8 @@
 using System.Web.Http;
 using PushNotifications.Contracts;
 using Discovery.Contracts;
-using Elders.Cronus.DomainModeling.Projections;
-using PushNotifications.Projections;
-using Elders.Cronus.DomainModeling;
+using Elders.Cronus.Projections;
+using Elders.Cronus;
 using System.Web.Http.ModelBinding;
 using PushNotifications.Api.Converters;
 using System.ComponentModel.DataAnnotations;
@@ -19,7 +18,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Queries
     [RoutePrefix("Subscriptions")]
     public class GetSubscriberTokensController : ApiController
     {
-        public IProjectionRepository Projections { get; set; }
+        public IProjectionLoader Projections { get; set; }
 
         /// <summary>
         /// Provides registered tokens for user for all delivery providers e.g FireBase, Pushy etc. Restricted for administrators
