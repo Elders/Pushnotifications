@@ -4,10 +4,8 @@ using System.Web.Http;
 using PushNotifications.Contracts;
 using PushNotifications.Api.Attributes;
 using Discovery.Contracts;
-using Elders.Cronus.Projections;
 using System.Collections.Generic;
 using System;
-using PushNotifications.Projections.Subscriptions;
 using PushNotifications.Api.Controllers.PushNotifications.Models;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
@@ -17,8 +15,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
     public class PushNotificationsController : ApiController
     {
         public IPublisher<ICommand> Publisher { get; set; }
-
-        public IProjectionLoader Projections { get; set; }
 
         /// <summary>
         /// Sends push notification with notification payload. This endpoint is accessable only with admin scope.
@@ -34,11 +30,6 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             var result = new ResponseResult(Constants.InvalidCommand);
 
             var subscriberId = new SubscriberId(model.SubscriberUrn.Id, model.SubscriberUrn.Tenant);
-            var projectionReponse = Projections.Get<SubscriberTokensProjection>(subscriberId);
-            if (projectionReponse.Success == false || projectionReponse.Projection.State.Tokens.Count == 0)
-            {
-                return this.NotAcceptable(new ResponseResult($"Subscription not found for provided subscriber '{model.SubscriberUrn.Value.UrlEncode()}'"));
-            }
 
             var command = model.AsCommand();
             result = Publisher.Publish(command)

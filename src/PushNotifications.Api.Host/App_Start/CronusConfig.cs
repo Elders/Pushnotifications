@@ -71,8 +71,6 @@ namespace PushNotifications.Api.Host.App_Start
                  })
                 .ConfigureCassandraProjectionsStore(x => x
                     .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
-                    .UseSnapshots(Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly)).ExportedTypes)
-                    .UseSnapshotStrategy(new DefaultSnapshotStrategy(TimeSpan.FromDays(10), 500))
                     .SetProjectionsReplicationStrategy(GetProjectionsReplicationStrategy(pandora))
                     .SetProjectionsWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_write_consistency_level"))
                     .SetProjectionsReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_read_consistency_level"))
