@@ -1,3 +1,6 @@
+#### 4.0.1 - 16.04.2018
+* Updates discovery packages
+
 #### 4.0.0 - 16.04.2018
 * Updates packages which introduced breaking changes
 
