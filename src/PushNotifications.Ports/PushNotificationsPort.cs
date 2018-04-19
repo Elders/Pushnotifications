@@ -1,4 +1,5 @@
-﻿using Elders.Cronus;
+﻿using System;
+using Elders.Cronus;
 using Elders.Cronus.Projections;
 using Multitenancy.Delivery;
 using PushNotifications.Contracts.PushNotifications.Delivery;
@@ -21,9 +22,15 @@ namespace PushNotifications.Ports
 
         public void Handle(PushNotificationSent @event)
         {
+            if (ReferenceEquals(null, Projections)) throw new ArgumentNullException(nameof(Projections));
+            if (ReferenceEquals(null, DeliveryProvisioner)) throw new ArgumentNullException(nameof(DeliveryProvisioner));
+
             var projectionReponse = Projections.Get<SubscriberTokensProjection>(@event.SubscriberId);
             if (projectionReponse.Success == false)
+            {
+                log.Info(() => $"No tokens were found for subscriber {@event.SubscriberId}");
                 return;
+            }
 
             foreach (var token in projectionReponse.Projection.State.Tokens)
             {

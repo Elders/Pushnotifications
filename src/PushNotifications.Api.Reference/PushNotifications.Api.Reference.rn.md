@@ -1,3 +1,6 @@
+#### 4.0.2 - 19.04.2018
+* Make PushNotifications great again
+
 #### 4.0.1 - 16.04.2018
 * Updates discovery packages
 
