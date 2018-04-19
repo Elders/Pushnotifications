@@ -158,6 +158,7 @@ namespace PushNotifications.WS
 
             cronusSettings
                .UsePortConsumer(x => x
+                   .SetNumberOfConsumerThreads(5)
                    .WithDefaultPublishers()
                    .UseRabbitMqTransport(mq =>
                    {
@@ -195,6 +196,7 @@ namespace PushNotifications.WS
 
             cronusSettings
                 .UseProjectionConsumer(Name, consumable => consumable
+                     .SetNumberOfConsumerThreads(5)
                      .WithDefaultPublishers()
                      .UseRabbitMqTransport(x =>
                      {
