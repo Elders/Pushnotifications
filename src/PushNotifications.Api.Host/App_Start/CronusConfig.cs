@@ -77,9 +77,9 @@ namespace PushNotifications.Api.Host.App_Start
                     .SetProjectionTypes(Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly))));
                 (cfg as ISettingsBuilder).Build();
 
-                Func<ITransport> transport = () => container.Resolve<ITransport>();
-                Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
-                container.RegisterSingleton<IPublisher<ICommand>>(() => transport().GetPublisher<ICommand>(serializer()));
+                //Func<ITransport> transport = () => container.Resolve<ITransport>();
+                //Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
+                //container.RegisterSingleton<IPublisher<ICommand>>(() => transport().GetPublisher<ICommand>(serializer()));
 
                 container.RegisterSingleton<ConsulClient>(() => new ConsulClient(x => x.Address = ConsulHelper.DefaultConsulUri));
                 container.RegisterSingleton<IDiscoveryReader>(() => new ConsulDiscoveryReader(container.Resolve<ConsulClient>()));

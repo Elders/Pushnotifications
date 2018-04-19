@@ -19,6 +19,7 @@ using Elders.Cronus.Pipeline.Hosts;
 using Elders.Cronus.Pipeline.Transport.RabbitMQ.Config;
 using Elders.Cronus.Projections;
 using Elders.Cronus.Projections.Cassandra.Config;
+using Elders.Cronus.Projections.Snapshotting;
 using Elders.Cronus.Projections.Versioning;
 using Elders.Pandora;
 using Multitenancy.Delivery;
@@ -46,6 +47,7 @@ namespace PushNotifications.WS
         static CronusHost host;
         static ILog log;
         static Container containerWhichYouShouldNotUse;
+        const string Name = "PushNotifications";
 
         public static void Start(Pandora pandora)
         {
@@ -56,6 +58,13 @@ namespace PushNotifications.WS
 
                 containerWhichYouShouldNotUse = new Container();
                 new CronusSettings(containerWhichYouShouldNotUse)
+
+                    .UseContractsFromAssemblies(new[]
+                    {
+                         Assembly.GetAssembly(typeof(PushNotificationsContractsAssembly)),
+                         Assembly.GetAssembly(typeof(PushNotificationsAssembly)),
+                         Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly))
+                    })
                     .WithTenants(new PushNotificationTenants(pandora.Get<List<string>>("tenants")))
                     .UseCluster(cluster =>
                         cluster.UseAggregateRootAtomicAction(atomic =>
@@ -70,6 +79,7 @@ namespace PushNotifications.WS
                     .UsePushNotifications(pandora)
                     .UsePushNotificationProjections(pandora)
                     .UsePorts(pandora)
+                    .UseCronusSystemServices(pandora)
                     .UseMultiTenantDelivery(pandora)
                     .Build();
 
@@ -118,43 +128,36 @@ namespace PushNotifications.WS
             }
 
             cronusSettings
-                .UseContractsFromAssemblies(new[]
-                {
-                     Assembly.GetAssembly(typeof(PushNotificationsContractsAssembly)),
-                     Assembly.GetAssembly(typeof(PushNotificationsAssembly)),
-                     Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly))
-                })
-                .UseCommandConsumer(pnInstanceName, consumer => consumer
-                    .SetNumberOfConsumerThreads(5)
-                    .UseRabbitMqTransport(x =>
-                    {
-                        x.Server = pandora.Get("rabbitmq_server");
-                        x.Port = pandora.Get<int>("rabbitmq_port");
-                        x.Username = pandora.Get("rabbitmq_username");
-                        x.Password = pandora.Get("rabbitmq_password");
-                        x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
-                    })
-                    .WithDefaultPublishers()
-                    .UseCassandraEventStore(eventStore =>
-                        CassandraEventStoreExtensions.SetConnectionString(eventStore, pandora.Get("pn_cassandra_event_store_conn_str"))
-                        .SetReplicationStrategy(eventStoreReplicationStrategy)
-                        .SetWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_event_store_write_consistency_level"))
-                        .SetReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_event_store_read_consistency_level"))
-                        .SetBoundedContext(typeof(PushNotificationsAssembly).Assembly.GetBoundedContext().BoundedContextName))
-                    .UseApplicationServices(cmdHandler => cmdHandler
-                        .RegisterHandlersInAssembly(new[] { typeof(PushNotificationsAssembly).Assembly }, pn_appServiceFactory.Create).Middleware(x => new InMemoryRetryMiddlewareCustom<HandleContext>(x))));
+               .UseCommandConsumer(pnInstanceName, consumer => consumer
+                   .SetNumberOfConsumerThreads(5)
+                   .UseRabbitMqTransport(x =>
+                   {
+                       x.Server = pandora.Get("rabbitmq_server");
+                       x.Port = pandora.Get<int>("rabbitmq_port");
+                       x.Username = pandora.Get("rabbitmq_username");
+                       x.Password = pandora.Get("rabbitmq_password");
+                       x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
+                   })
+                   .WithDefaultPublishers()
+                   .UseCassandraEventStore(eventStore =>
+                       CassandraEventStoreExtensions.SetConnectionString(eventStore, pandora.Get("pn_cassandra_event_store_conn_str"))
+                       .SetReplicationStrategy(eventStoreReplicationStrategy)
+                       .SetWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_event_store_write_consistency_level"))
+                       .SetReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_event_store_read_consistency_level"))
+                       .SetBoundedContext(typeof(PushNotificationsAssembly).Assembly.GetBoundedContext().BoundedContextName))
+                   .UseApplicationServices(cmdHandler => cmdHandler
+                       .RegisterHandlersInAssembly(new[] { typeof(PushNotificationsAssembly).Assembly }, pn_appServiceFactory.Create).Middleware(x => new InMemoryRetryMiddlewareCustom<HandleContext>(x))));
 
             return cronusSettings;
         }
 
         static ICronusSettings UsePorts(this ICronusSettings cronusSettings, Pandora pandora)
         {
-            var pnPortsName = "pn_ports";
-            var pnProjHandlerFactory = new ServiceLocator(cronusSettings.Container);
+            var pnProjHandlerFactory = new ServiceLocator(cronusSettings.Container, Name);
             var ports = typeof(PushNotificationsPortsAssembly).Assembly.GetTypes().Where(x => typeof(IPort).IsAssignableFrom(x));
 
             cronusSettings
-               .UsePortConsumer(pnPortsName, x => x
+               .UsePortConsumer(x => x
                    .WithDefaultPublishers()
                    .UseRabbitMqTransport(mq =>
                    {
@@ -171,8 +174,7 @@ namespace PushNotifications.WS
 
         static ICronusSettings UsePushNotificationProjections(this ICronusSettings cronusSettings, Pandora pandora)
         {
-            var pnEventSourcedProjectionsName = "pn_event_sourced_projections";
-            var pnProjHandlerFactory = new ServiceLocator(cronusSettings.Container);
+            var pnProjHandlerFactory = new ServiceLocator(cronusSettings.Container, Name);
             var systemProjections = typeof(PersistentProjectionVersionHandler).Assembly.GetTypes().Where(x => typeof(IProjectionDefinition).IsAssignableFrom(x)).ToList();
             var cassandraProjetions = typeof(PushNotificationsProjectionsAssembly).Assembly.GetTypes().Where(x => typeof(IProjectionDefinition).IsAssignableFrom(x)).ToList();
             cassandraProjetions.AddRange(systemProjections);
@@ -192,34 +194,34 @@ namespace PushNotifications.WS
             }
 
             cronusSettings
-                .UseProjectionConsumer(pnEventSourcedProjectionsName, consumable => consumable
-                    .WithDefaultPublishers()
-                    .UseRabbitMqTransport(x =>
-                    {
-                        x.Server = pandora.Get("rabbitmq_server");
-                        x.Port = pandora.Get<int>("rabbitmq_port");
-                        x.Username = pandora.Get("rabbitmq_username");
-                        x.Password = pandora.Get("rabbitmq_password");
-                        x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
-                    })
-                     .UseProjections(h => h
-                        .RegisterHandlerTypes(cassandraProjetions, pnProjHandlerFactory.Resolve)
-                        .UseCassandraProjections(p => p
-                            .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
-                            .SetProjectionTypes(cassandraProjetions)
-                            .SetProjectionsReplicationStrategy(projectionsReplicationStrategy)
-                            .SetProjectionsWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_write_consistency_level"))
-                            .SetProjectionsReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_read_consistency_level"))))
-                    .UseProjectionsIndex(index => index.RegisterHandlersInAssembly(new[] { typeof(PushNotificationsProjectionsAssembly).Assembly })));
+                .UseProjectionConsumer(Name, consumable => consumable
+                     .WithDefaultPublishers()
+                     .UseRabbitMqTransport(x =>
+                     {
+                         x.Server = pandora.Get("rabbitmq_server");
+                         x.Port = pandora.Get<int>("rabbitmq_port");
+                         x.Username = pandora.Get("rabbitmq_username");
+                         x.Password = pandora.Get("rabbitmq_password");
+                         x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
+                     })
+                      .UseProjections(h => h
+                         .RegisterHandlerTypes(cassandraProjetions, pnProjHandlerFactory.Resolve)
+                         .UseCassandraProjections(p => p
+                             .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
+                             .SetProjectionTypes(cassandraProjetions)
+                             .SetProjectionsReplicationStrategy(projectionsReplicationStrategy)
+                             .SetProjectionsWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_write_consistency_level"))
+                             .SetProjectionsReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_read_consistency_level"))))
+                     .UseProjectionsIndex(index => index.RegisterHandlersInAssembly(new[] { typeof(PushNotificationsProjectionsAssembly).Assembly })));
 
             return cronusSettings;
         }
 
         public static ICronusSettings UseCronusSystemServices(this ICronusSettings cronusSettings, Pandora pandora)
         {
-            var projectionsReplicationFactor = pandora.Get<int>("iaa_cassandra_projections_replication_factor");
+            var projectionsReplicationFactor = pandora.Get<int>("pn_cassandra_projections_replication_factor");
             Elders.Cronus.Projections.Cassandra.ReplicationStrategies.ICassandraReplicationStrategy projectionsReplicationStrategy = new Elders.Cronus.Projections.Cassandra.ReplicationStrategies.SimpleReplicationStrategy(projectionsReplicationFactor);
-            if (pandora.Get("iaa_cassandra_projections_replication_strategy") == "network_topology")
+            if (pandora.Get("pn_cassandra_projections_replication_factor") == "network_topology")
             {
                 var settings = new List<Elders.Cronus.Projections.Cassandra.ReplicationStrategies.NetworkTopologyReplicationStrategy.DataCenterSettings>();
                 foreach (var datacenter in pandora.Get<List<string>>("iaa_cassandra_projections_data_centers"))
@@ -273,13 +275,34 @@ namespace PushNotifications.WS
                 .UseSystemSagas(saga => saga.RegisterHandlerTypes(new List<Type>() { typeof(ProjectionBuilder) }, systemSaga_serviceLocator.Resolve))
                 );
 
+            var systemSagaApp_serviceLocator = new ServiceLocator(cronusSettings.Container, "SystemSagaApp");
+            cronusSettings
+                .UseCommandConsumer("SystemSagaApp", consumer => consumer
+                    .SetNumberOfConsumerThreads(5)
+                    .UseRabbitMqTransport(x =>
+                    {
+                        x.Server = pandora.Get("rabbitmq_server");
+                        x.Port = pandora.Get<int>("rabbitmq_port");
+                        x.Username = pandora.Get("rabbitmq_username");
+                        x.Password = pandora.Get("rabbitmq_password");
+                        x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
+                    })
+                    .UseCassandraEventStore(eventStore =>
+                        CassandraEventStoreExtensions.SetConnectionString(eventStore, pandora.Get("pn_cassandra_event_store_conn_str"))
+                        .SetReplicationStrategy(eventStoreReplicationStrategy)
+                        .SetWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_event_store_write_consistency_level"))
+                        .SetReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_event_store_read_consistency_level"))
+                        .SetBoundedContext(typeof(PushNotificationsAssembly).Assembly.GetBoundedContext().BoundedContextName))
+                        .WithDefaultPublishers()
+                    .UseApplicationServices(cmdHandler =>
+                        cmdHandler.RegisterHandlersInAssembly(new[] { typeof(ProjectionVersionManagerAppService).Assembly }, systemSagaApp_serviceLocator.Resolve).Middleware(x => new InMemoryRetryMiddlewareCustom<HandleContext>(x))));
 
             return cronusSettings;
         }
 
         static ICronusSettings UseMultiTenantDelivery(this ICronusSettings cronusSettings, Pandora pandora)
         {
-            cronusSettings.Container.RegisterSingleton<IDeliveryProvisioner>(() => new PandoraMultiTenantDeliveryProvisioner(pandora));
+            cronusSettings.Container.RegisterSingleton<IDeliveryProvisioner>(() => new PandoraMultiTenantDeliveryProvisioner(pandora), Name);
             return cronusSettings;
         }
     }
