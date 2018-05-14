@@ -83,6 +83,9 @@ namespace PushNotifications.WS
                     .UseMultiTenantDelivery(pandora)
                     .Build();
 
+                containerWhichYouShouldNotUse.RegisterSingleton<InMemoryProjectionVersionStore>(() => new InMemoryProjectionVersionStore());
+                containerWhichYouShouldNotUse.RegisterSingleton<IProjectionLoader>(() => new ProjectionRepository(containerWhichYouShouldNotUse.Resolve<IProjectionStore>(), containerWhichYouShouldNotUse.Resolve<ISnapshotStore>(), containerWhichYouShouldNotUse.Resolve<ISnapshotStrategy>(), containerWhichYouShouldNotUse.Resolve<InMemoryProjectionVersionStore>()));
+
                 host = containerWhichYouShouldNotUse.Resolve<CronusHost>();
                 host.Start();
 
