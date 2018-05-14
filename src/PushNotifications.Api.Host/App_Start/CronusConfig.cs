@@ -24,6 +24,8 @@ using PushNotifications.Api.Host.Logging;
 using PushNotifications.Contracts;
 using PushNotifications.Projections;
 using Elders.Cronus.Projections.Snapshotting;
+using Elders.Cronus.Projections.Versioning;
+using Elders.Cronus.Projections;
 
 namespace PushNotifications.Api.Host.App_Start
 {
@@ -80,6 +82,8 @@ namespace PushNotifications.Api.Host.App_Start
                 //Func<ITransport> transport = () => container.Resolve<ITransport>();
                 //Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
                 //container.RegisterSingleton<IPublisher<ICommand>>(() => transport().GetPublisher<ICommand>(serializer()));
+                container.RegisterSingleton<InMemoryProjectionVersionStore>(() => new InMemoryProjectionVersionStore());
+                container.RegisterSingleton<IProjectionLoader>(() => new ProjectionRepository(container.Resolve<IProjectionStore>(), container.Resolve<ISnapshotStore>(), container.Resolve<ISnapshotStrategy>(), container.Resolve<InMemoryProjectionVersionStore>()));
 
                 container.RegisterSingleton<ConsulClient>(() => new ConsulClient(x => x.Address = ConsulHelper.DefaultConsulUri));
                 container.RegisterSingleton<IDiscoveryReader>(() => new ConsulDiscoveryReader(container.Resolve<ConsulClient>()));

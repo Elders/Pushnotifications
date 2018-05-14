@@ -1,3 +1,6 @@
+#### 4.0.3 - 14.05.2018
+* Register IProjectionLoader
+
 #### 4.0.2 - 11.05.2018
 * Updated Cronus, Newtonsoft.Json and RabbitMQ transport
 
