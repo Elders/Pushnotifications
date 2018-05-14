@@ -1,8 +1,5 @@
-#### 4.0.3 - 11.05.2018
+#### 4.0.2 - 11.05.2018
 * Updated Cronus, Newtonsoft.Json and RabbitMQ transport
-
-#### 4.0.2 - 19.04.2018
-* Make PushNotifications great again
 
 #### 4.0.1 - 16.04.2018
 * Updates discovery packages
