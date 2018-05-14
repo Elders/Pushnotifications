@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Discovery, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Discovery.0.2.0\lib\net461\Discovery.dll</HintPath>
+      <HintPath>..\packages\Discovery.0.2.1\lib\net461\Discovery.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Cronus.DomainModeling.4.0.6\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
