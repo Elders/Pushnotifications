@@ -1,3 +1,6 @@
+#### 4.0.6 - 14.05.2018
+* Republish the release
+
 #### 4.0.5 - 14.05.2018
 * Fixes a crash when trying to publish commands
 
