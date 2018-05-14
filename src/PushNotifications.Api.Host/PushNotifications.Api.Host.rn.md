@@ -1,3 +1,6 @@
+#### 4.0.4 - 14.05.2018
+* Updates the Discovery.Consul package
+
 #### 4.0.3 - 14.05.2018
 * Register IProjectionLoader
 
