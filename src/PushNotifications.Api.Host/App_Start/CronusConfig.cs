@@ -79,9 +79,9 @@ namespace PushNotifications.Api.Host.App_Start
                     .SetProjectionTypes(Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly))));
                 (cfg as ISettingsBuilder).Build();
 
-                //Func<ITransport> transport = () => container.Resolve<ITransport>();
-                //Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
-                //container.RegisterSingleton<IPublisher<ICommand>>(() => transport().GetPublisher<ICommand>(serializer()));
+                Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
+                container.RegisterSingleton<IPublisher<ICommand>>(() => container.Resolve<ITransport>().GetPublisher<ICommand>(serializer()));
+
                 container.RegisterSingleton<InMemoryProjectionVersionStore>(() => new InMemoryProjectionVersionStore());
                 container.RegisterSingleton<IProjectionLoader>(() => new ProjectionRepository(container.Resolve<IProjectionStore>(), container.Resolve<ISnapshotStore>(), container.Resolve<ISnapshotStrategy>(), container.Resolve<InMemoryProjectionVersionStore>()));
 

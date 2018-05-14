@@ -1,3 +1,6 @@
+#### 4.0.5 - 14.05.2018
+* Fixes a crash when trying to publish commands
+
 #### 4.0.4 - 14.05.2018
 * Updates the Discovery.Consul package
 
