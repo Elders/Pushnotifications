@@ -50,9 +50,13 @@
     <Compile Include="PushNotifications\PushNotificationId.cs" />
     <Compile Include="SubscriberId.cs" />
     <Compile Include="Subscriptions\Commands\Subscribe.cs" />
+    <Compile Include="Subscriptions\Commands\SubscribeToTopic.cs" />
     <Compile Include="Subscriptions\Commands\UnSubscribe.cs" />
+    <Compile Include="Subscriptions\Commands\UnsubscribeFromTopic.cs" />
     <Compile Include="Subscriptions\Events\Subscribed.cs" />
+    <Compile Include="Subscriptions\Events\SubscribedToTopic.cs" />
     <Compile Include="Subscriptions\Events\UnSubscribed.cs" />
+    <Compile Include="Subscriptions\Events\UnsubscribedFromTopic.cs" />
     <Compile Include="Subscriptions\SubscriptionId.cs" />
     <Compile Include="Subscriptions\SubscriptionType.cs" />
     <Compile Include="SubscriptionToken.cs" />
