@@ -43,5 +43,29 @@ namespace PushNotifications.Subscriptions
                 Apply(evnt);
             }
         }
+
+        public void SubscribeToTopic(SubscriberId subscriberId, string topic)
+        {
+            if (StringTenantId.IsValid(subscriberId) == false) throw new ArgumentException(nameof(subscriberId));
+            if (string.IsNullOrEmpty(topic)) throw new ArgumentNullException(nameof(topic));
+
+            if (state.IsSubscriptionActive)
+            {
+                IEvent evnt = new SubscribedToTopic(state.Id, subscriberId, state.SubscriptionToken, topic);
+                Apply(evnt);
+            }
+        }
+
+        public void UnsubscribeFromTopic(SubscriberId subscriberId, string topic)
+        {
+            if (StringTenantId.IsValid(subscriberId) == false) throw new ArgumentException(nameof(subscriberId));
+            if (string.IsNullOrEmpty(topic)) throw new ArgumentNullException(nameof(topic));
+
+            if (state.IsSubscriptionActive)
+            {
+                IEvent evnt = new UnsubscribedFromTopic(state.Id, subscriberId, state.SubscriptionToken, topic);
+                Apply(evnt);
+            }
+        }
     }
 }
