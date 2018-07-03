@@ -9,34 +9,29 @@ namespace PushNotifications.Contracts.Subscriptions.Commands
     {
         SubscribeToTopic() { }
 
-        public SubscribeToTopic(SubscriptionId id, SubscriberId subscriberId, SubscriptionToken subscriptionToken, string topic)
+        public SubscribeToTopic(TopicSubscriptionId id, SubscriberId subscriberId, Topic topic)
         {
             if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
             if (StringTenantId.IsValid(subscriberId) == false) throw new ArgumentException(nameof(subscriberId));
-            if (SubscriptionToken.IsValid(subscriptionToken) == false) throw new ArgumentException(nameof(subscriptionToken));
-            if (string.IsNullOrEmpty(topic)) throw new ArgumentNullException(nameof(topic));
+            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
 
             Id = id;
             SubscriberId = subscriberId;
-            SubscriptionToken = subscriptionToken;
             Topic = topic;
         }
 
         [DataMember(Order = 1)]
-        public SubscriptionId Id { get; private set; }
+        public TopicSubscriptionId Id { get; private set; }
 
         [DataMember(Order = 2)]
         public SubscriberId SubscriberId { get; private set; }
 
         [DataMember(Order = 3)]
-        public SubscriptionToken SubscriptionToken { get; private set; }
-
-        [DataMember(Order = 4)]
-        public string Topic { get; private set; }
+        public Topic Topic { get; private set; }
 
         public override string ToString()
         {
-            return $"Subscribe with id '{Id.Urn.Value}' SubscriberId '{SubscriberId.Urn.Value}' token '{SubscriptionToken}' to Topic: {Topic}";
+            return $"Subscribe SubscriberId '{SubscriberId.Urn.Value}' to Topic: {Topic}";
         }
     }
 }
