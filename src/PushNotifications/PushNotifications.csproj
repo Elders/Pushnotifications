@@ -53,6 +53,13 @@
     <Compile Include="Subscriptions\SubscriptionState.cs">
       <DependentUpon>Subscription.cs</DependentUpon>
     </Compile>
+    <Compile Include="Subscriptions\TopicSubscription.cs" />
+    <Compile Include="Subscriptions\TopicSubscriptionAppService.cs">
+      <DependentUpon>TopicSubscription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Subscriptions\TopicSubscriptionState.cs">
+      <DependentUpon>TopicSubscription.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
