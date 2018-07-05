@@ -8,13 +8,13 @@ using PushNotifications.Projections.Subscriptions;
 
 namespace PushNotifications.Ports
 {
-    public class TopicsPort : IPort,
+    public class PushNotificationsTopicsPort : IPort,
         IEventHandler<Subscribed>,
         IEventHandler<SubscribedToTopic>,
         IEventHandler<UnSubscribed>,
         IEventHandler<UnsubscribedFromTopic>
     {
-        static ILog log = LogProvider.GetLogger(typeof(TopicsPort));
+        static ILog log = LogProvider.GetLogger(typeof(PushNotificationsTopicsPort));
 
         public IPublisher<ICommand> CommandPublisher { get; set; }
 
@@ -22,10 +22,12 @@ namespace PushNotifications.Ports
 
         public IDeliveryProvisioner DeliveryProvisioner { get; set; }
 
-        public void Handle(Subscribed @event) //In progress
+        public void Handle(Subscribed @event)
         {
             var currentUser = @event.SubscriberId;
+            var tenant = @event.SubscriberId.Tenant;
             var device = @event.SubscriptionToken.Token;
+            var subscriptionType = @event.SubscriptionToken.SubscriptionType;
 
             var projectionReponse = Projections.Get<TopicsPerSubscriberProjection>(@event.SubscriberId);
 
@@ -37,6 +39,7 @@ namespace PushNotifications.Ports
 
             foreach (var topic in projectionReponse.Projection.State.Topics)
             {
+                var delivery = DeliveryProvisioner.ResolveDelivery(subscriptionType, tenant);
                 // Firebase/Pushy Call to subscribe current device for all topics that user is associated with
             }
         }
