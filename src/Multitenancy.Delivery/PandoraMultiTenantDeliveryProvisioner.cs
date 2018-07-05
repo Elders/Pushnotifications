@@ -38,6 +38,17 @@ namespace Multitenancy.Delivery
             return storeItem.Delivery;
         }
 
+        public IPushNotificationDelivery ResolveDelivery(SubscriptionType subscriptionType, string tenant)
+        {
+            if (ReferenceEquals(null, subscriptionType) == true) throw new ArgumentNullException(nameof(subscriptionType));
+            if (string.IsNullOrEmpty(tenant)) throw new ArgumentNullException(nameof(tenant));
+
+            var storeItem = store.SingleOrDefault(x => x.Tenant == tenant && x.SubscriptionType == subscriptionType);
+
+            if (ReferenceEquals(null, storeItem) == true) throw new NotSupportedException($"There is no registered delivery for type '{subscriptionType}' and tenant '{tenant}'");
+            return storeItem.Delivery;
+        }
+
         void Initialize()
         {
             var firebaseUrl = pandora.Get("delivery_firebase_baseurl");

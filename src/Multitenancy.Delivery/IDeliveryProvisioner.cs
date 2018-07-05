@@ -6,5 +6,7 @@ namespace Multitenancy.Delivery
     public interface IDeliveryProvisioner
     {
         IPushNotificationDelivery ResolveDelivery(SubscriptionType subscriptionType, NotificationForDelivery notification);
+
+        IPushNotificationDelivery ResolveDelivery(SubscriptionType subscriptionType, string tenant);
     }
 }
