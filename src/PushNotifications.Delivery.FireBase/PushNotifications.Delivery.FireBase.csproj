@@ -48,9 +48,12 @@
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="FireBaseDelivery.cs" />
+    <Compile Include="FireBaseTopicSubscriptionManager.cs" />
     <Compile Include="Models\FireBaseResponseModel.cs" />
     <Compile Include="Models\FireBaseSendModel.cs" />
     <Compile Include="Models\FireBaseSendNotificationModel.cs" />
+    <Compile Include="Models\FireBaseSubscriptionModel.cs" />
+    <Compile Include="Models\FireBaseTopicSendModel.cs" />
     <Compile Include="PushNotificationsDeliveryFireBaseAssembly.cs" />
   </ItemGroup>
   <ItemGroup>
