@@ -42,7 +42,7 @@
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="PushNotificationsPort.cs" />
     <Compile Include="PushNotificationsPortsAssembly.cs" />
-    <Compile Include="PushNotificationsTopicsPort.cs" />
+    <Compile Include="TopicsSubscriptionsPort.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Multitenancy.Delivery\Multitenancy.Delivery.csproj">
