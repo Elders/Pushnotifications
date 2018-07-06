@@ -75,6 +75,29 @@ namespace PushNotifications.Delivery.Pushy
             log.Info($"[Pushy] success: pn with body {notification.NotificationPayload?.Body} was sent to {tokens.Count} tokens");
             return true;
         }
+        public bool SendToTopic(Topic topic, NotificationForDelivery notification)
+        {
+            if (ReferenceEquals(null, topic) == true) throw new ArgumentNullException(nameof(topic));
+            if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
+
+            string resource = "push?api_key=" + serverKey;
+
+            log.Debug(() => $"[PushyBase] sending PN for notification '{notification.Id}' with body '{notification.NotificationPayload.Body} to topic '{topic}''");
+            var payload = notification.NotificationPayload;
+            var pushySendNotificationModel = new PushySendNotificationModel(payload.Title, payload.Body, payload.Sound, payload.Badge);
+            var model = new PushySendModel(topic, pushySendNotificationModel, notification.NotificationData, notification.ExpiresAt, notification.ContentAvailable);
+            IRestRequest request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
+            var result = restClient.Execute<PushyResponseModel>(request);
+
+            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Success == false)
+            {
+                log.Error(() => $"[PushyBase] failure: status code '{result.StatusCode}' and error '{result.Data.Error}'. PN body '{notification.NotificationPayload.Body}'");
+                return false;
+            }
+
+            log.Info($"[Pushy] success: pn with body {notification.NotificationPayload?.Body} was sent to topic  '{topic}'");
+            return true;
+        }
 
         IRestRequest CreateRestRequest(string resource, Method method)
         {
