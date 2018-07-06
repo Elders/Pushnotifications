@@ -48,10 +48,12 @@
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="Models\PushyResponseModel.cs" />
+    <Compile Include="Models\PushyTopicSubscriptionModel.cs" />
     <Compile Include="PushNotificationsDeliveryPushyAssembly.cs" />
     <Compile Include="PushyDelivery.cs" />
     <Compile Include="Models\PushySendNotificationModel.cs" />
     <Compile Include="Models\PushySendModel.cs" />
+    <Compile Include="PushyTopicSubscriptionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
