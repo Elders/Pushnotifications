@@ -9,14 +9,16 @@ namespace PushNotifications.Contracts.Subscriptions.Commands
     {
         UnsubscribeFromTopic() { }
 
-        public UnsubscribeFromTopic(TopicSubscriptionId id, SubscriberId subscriberId, SubscriptionToken subscriptionToken, Topic topic)
+        public UnsubscribeFromTopic(TopicSubscriptionId id, SubscriberId subscriberId, Topic topic, SubscriptionType subscriptionType)
         {
             if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
             if (StringTenantId.IsValid(subscriberId) == false) throw new ArgumentException(nameof(subscriberId));
+            if (ReferenceEquals(null, subscriptionType)) throw new ArgumentNullException(nameof(subscriptionType));
             if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
 
             Id = id;
             SubscriberId = subscriberId;
+            SubscriptionType = subscriptionType;
             Topic = topic;
         }
 
@@ -28,6 +30,9 @@ namespace PushNotifications.Contracts.Subscriptions.Commands
 
         [DataMember(Order = 3)]
         public Topic Topic { get; private set; }
+
+        [DataMember(Order = 4)]
+        public SubscriptionType SubscriptionType { get; private set; }
 
         public override string ToString()
         {
