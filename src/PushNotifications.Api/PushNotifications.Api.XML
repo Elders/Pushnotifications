@@ -174,9 +174,37 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.FireBaseTopicSubscribeController.SubscribeToTopicFireBase(PushNotifications.Api.Controllers.Subscriptions.Commands.FirebaseTopicSubscriptionModel)">
+            <summary>
+            Subscribes for push notifications with FireBase token
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.FireBaseTopicUnsubscribeController.SubscribeToTopicFireBase(PushNotifications.Api.Controllers.Subscriptions.Commands.FirebaseTopicSubscriptionModel)">
+            <summary>
+            Subscribes for push notifications with FireBase token
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.FireBaseUnSubscribeController.UnSubscribeFromFireBase(PushNotifications.Api.Controllers.Subscriptions.Commands.FireBaseSubscribeModel)">
             <summary>
             UnSubscribes from push notifications with FireBase token
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.PushyTopicSubscribeController.SubscribeToTopicPushy(PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeToTopicModel)">
+            <summary>
+            Subscribes to a topic with a Pushy token
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.PushyTopicUnsubscribeController.UnsubscribeFromTopicPushy(PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeToTopicModel)">
+            <summary>
+            Unsubscribes from a topic with a Pushy token
             </summary>
             <param name="model"></param>
             <returns></returns>
@@ -205,12 +233,32 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.FirebaseTopicSubscriptionModel.SubscriberUrn">
+            <summary>
+            URN of the subscriber. This must be string tenant urn
+            </summary>
+        </member>
+        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.FirebaseTopicSubscriptionModel.Token">
+            <summary>
+            Registration token
+            </summary>
+        </member>
         <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeModel.SubscriberUrn">
             <summary>
             URN of the subscriber. This must be string tenant urn
             </summary>
         </member>
         <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeModel.Token">
+            <summary>
+            Registration token
+            </summary>
+        </member>
+        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeToTopicModel.SubscriberUrn">
+            <summary>
+            URN of the subscriber. This must be string tenant urn
+            </summary>
+        </member>
+        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeToTopicModel.Token">
             <summary>
             Registration token
             </summary>
