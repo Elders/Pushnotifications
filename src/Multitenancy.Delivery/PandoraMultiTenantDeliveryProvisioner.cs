@@ -58,7 +58,6 @@ namespace Multitenancy.Delivery
             var firebaseUrl = pandora.Get("delivery_firebase_baseurl");
             var firebaseSubscriptionsUrl = pandora.Get("subscriptions_firebase_baseurl");
 
-
             var pushyUrl = pandora.Get("delivery_pushy_baseurl");
             var pushySettings = pandora.Get<List<PushySettings>>("delivery_pushy_settings");
 
@@ -75,10 +74,6 @@ namespace Multitenancy.Delivery
             foreach (var pushy in pushySettings)
             {
                 RegisterPushyDelivery(pushyUrl, pushy);
-            }
-
-            foreach (var pushy in pushySettings)
-            {
                 RegisterPushySubscriptionManager(pushyUrl, pushy);
             }
         }
