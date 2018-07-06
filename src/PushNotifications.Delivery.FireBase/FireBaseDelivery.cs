@@ -79,6 +79,35 @@ namespace PushNotifications.Delivery.FireBase
             return true;
         }
 
+        public bool SendToTopic(Topic topic, NotificationForDelivery notification)
+        {
+            if (ReferenceEquals(null, topic) == true) throw new ArgumentNullException(nameof(topic));
+            if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
+
+            const string resource = "fcm/send";
+
+            log.Debug(() => $"[FireBase] sending PN to topic: {topic.Value} for notification '{notification.Id}' with body '{notification.NotificationPayload.Body}'");
+            var payload = notification.NotificationPayload;
+            var data = notification.NotificationData;
+            string badge = payload.Badge > 0 ? payload.Badge.ToString() : "1";
+
+            var fireBaseSendNotificationModel = new FireBaseSendNotificationModel(payload.Title, payload.Body, payload.Sound, badge);
+            var model = new FireBaseTopicSendModel(topic, fireBaseSendNotificationModel, data, notification.ExpiresAt);
+
+            var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
+            var result = restClient.Execute<FireBaseResponseModel>(request);
+
+            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Failure == true)
+            {
+                var error = string.Join(",", result.Data.Results.Select(x => x.Error));
+                log.Error(() => $"[FireBase] failure: status code '{result.StatusCode}' and error '{error}'. PN body '{notification.NotificationPayload.Body}'");
+                return false;
+            }
+
+            log.Info($"[FireBase] success: PN with body {notification.NotificationPayload?.Body} was sent to {topic.Value} topic");
+            return true;
+        }
+
         IRestRequest CreateRestRequest(string resource, Method method)
         {
             var request = new RestRequest(resource, method);
@@ -88,5 +117,6 @@ namespace PushNotifications.Delivery.FireBase
 
             return request;
         }
+
     }
 }
