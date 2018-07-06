@@ -8,19 +8,21 @@ using PushNotifications.Projections.Subscriptions;
 
 namespace PushNotifications.Ports
 {
-    public class PushNotificationsTopicsPort : IPort,
+    public class TopicsSubscriptionsPort : IPort,
         IEventHandler<Subscribed>,
         IEventHandler<SubscribedToTopic>,
         IEventHandler<UnSubscribed>,
         IEventHandler<UnsubscribedFromTopic>
     {
-        static ILog log = LogProvider.GetLogger(typeof(PushNotificationsTopicsPort));
+        static ILog log = LogProvider.GetLogger(typeof(TopicsSubscriptionsPort));
 
         public IPublisher<ICommand> CommandPublisher { get; set; }
 
         public IProjectionLoader Projections { get; set; }
 
         public IDeliveryProvisioner DeliveryProvisioner { get; set; }
+
+        public ITopicSubscriptionProvisioner TopicSubscriptionProvider { get; set; }
 
         public void Handle(Subscribed @event)
         {
@@ -39,15 +41,17 @@ namespace PushNotifications.Ports
 
             foreach (var topic in projectionReponse.Projection.State.Topics)
             {
-                var delivery = DeliveryProvisioner.ResolveDelivery(subscriptionType, tenant);
-                // Firebase/Pushy Call to subscribe current device for all topics that user is associated with
+                var subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(subscriptionType, tenant);
+                subscriptionManager.SubscribeToTopic(@event.SubscriptionToken, topic);
             }
         }
 
         public void Handle(UnSubscribed @event)
         {
             var currentUser = @event.SubscriberId;
+            var tenant = @event.SubscriberId.Tenant;
             var device = @event.SubscriptionToken.Token;
+            var subscriptionType = @event.SubscriptionToken.SubscriptionType;
 
             var projectionReponse = Projections.Get<TopicsPerSubscriberProjection>(@event.SubscriberId);
 
@@ -59,7 +63,8 @@ namespace PushNotifications.Ports
 
             foreach (var topic in projectionReponse.Projection.State.Topics)
             {
-                // Firebase/Pushy Call to unsubscribe current device for all topics that user is associated with
+                var subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(subscriptionType, tenant);
+                subscriptionManager.UnsubscribeFromTopic(@event.SubscriptionToken, topic);
             }
         }
 
@@ -77,10 +82,10 @@ namespace PushNotifications.Ports
 
             foreach (var token in projectionReponse.Projection.State.Tokens)
             {
-                // Firebase/Pushy Call to subscribe all the devices to the current topic
+                var subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(@event.SubscriptionType, @event.SubscriberId.Tenant);
+                subscriptionManager.SubscribeToTopic(token, @event.Topic);
             }
         }
-
 
         public void Handle(UnsubscribedFromTopic @event)
         {
@@ -96,7 +101,8 @@ namespace PushNotifications.Ports
 
             foreach (var token in projectionReponse.Projection.State.Tokens)
             {
-                // Firebase/Pushy Call to unsubscribe all the devices from the current topic
+                var subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(@event.SubscriptionType, @event.SubscriberId.Tenant);
+                subscriptionManager.UnsubscribeFromTopic(token, @event.Topic);
             }
         }
     }
