@@ -54,11 +54,10 @@ namespace Multitenancy.Delivery
 
         void Initialize()
         {
-            var firebaseUrl = pandora.Get("delivery_firebase_baseurl");
             var firebaseSettings = pandora.Get<List<FireBaseSettings>>("delivery_firebase_settings");
+            var firebaseUrl = pandora.Get("delivery_firebase_baseurl");
+            var firebaseSubscriptionsUrl = pandora.Get("subscriptions_firebase_baseurl");
 
-            var firebaseSubscriptionsUrl = pandora.Get("subscriptions_firebase_baseurl"); //'iid.googleapis.com' ~!~
-            var firebaseSubscrpitionsSettings = pandora.Get<List<FireBaseSettings>>("delivery_firebase_settings");
 
             var pushyUrl = pandora.Get("delivery_pushy_baseurl");
             var pushySettings = pandora.Get<List<PushySettings>>("delivery_pushy_settings");
@@ -68,7 +67,7 @@ namespace Multitenancy.Delivery
                 RegisterFireBaseDelivery(firebaseUrl, fb);
             }
 
-            foreach (var fb in firebaseSubscrpitionsSettings)
+            foreach (var fb in firebaseSettings)
             {
                 RegisterFireBaseSubscriptionManager(firebaseUrl, fb);
             }
@@ -76,6 +75,11 @@ namespace Multitenancy.Delivery
             foreach (var pushy in pushySettings)
             {
                 RegisterPushyDelivery(pushyUrl, pushy);
+            }
+
+            foreach (var pushy in pushySettings)
+            {
+                RegisterPushySubscriptionManager(pushyUrl, pushy);
             }
         }
 
@@ -102,6 +106,16 @@ namespace Multitenancy.Delivery
             var firebaseTopicSubscriptionManager = new FireBaseTopicSubscriptionManager(fireBaseRestClient, NewtonsoftJsonSerializer.Default(), settings.ServerKey);
 
             _subscriptionStore.Add(new MultiTenantStoreSubscriptionItem(settings.Tenant, SubscriptionType.FireBase, firebaseTopicSubscriptionManager));
+        }
+
+        void RegisterPushySubscriptionManager(string baseUrl, PushySettings settings)
+        {
+            if (string.IsNullOrEmpty(baseUrl) == true) throw new ArgumentNullException(nameof(baseUrl));
+
+            var pushyRestClient = new RestSharp.RestClient(baseUrl);
+            var pushyTopicSubscriptionManager = new PushyTopicSubscriptionManager(pushyRestClient, NewtonsoftJsonSerializer.Default(), settings.ServerKey);
+
+            _subscriptionStore.Add(new MultiTenantStoreSubscriptionItem(settings.Tenant, SubscriptionType.Pushy, pushyTopicSubscriptionManager));
         }
 
         void RegisterPushyDelivery(string baseUrl, PushySettings settings)
