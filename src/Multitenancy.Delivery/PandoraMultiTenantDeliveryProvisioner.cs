@@ -11,9 +11,11 @@ using PushNotifications.Delivery.Pushy;
 
 namespace Multitenancy.Delivery
 {
-    public class PandoraMultiTenantDeliveryProvisioner : IDeliveryProvisioner
+    public class PandoraMultiTenantDeliveryProvisioner : IDeliveryProvisioner, ITopicSubscriptionProvisioner
     {
-        readonly ISet<MultiTenantStoreItem> store;
+        readonly ISet<MultiTenantStoreItem> _store;
+
+        readonly ISet<MultiTenantStoreSubscriptionItem> _subscriptionStore;
 
         readonly Pandora pandora;
 
@@ -21,7 +23,8 @@ namespace Multitenancy.Delivery
         {
             if (ReferenceEquals(null, pandora) == true) throw new ArgumentNullException(nameof(pandora));
 
-            this.store = new HashSet<MultiTenantStoreItem>();
+            _store = new HashSet<MultiTenantStoreItem>();
+            _subscriptionStore = new HashSet<MultiTenantStoreSubscriptionItem>();
             this.pandora = pandora;
             Initialize();
         }
@@ -32,21 +35,21 @@ namespace Multitenancy.Delivery
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
 
             var tenant = notification.Id.Tenant;
-            var storeItem = store.SingleOrDefault(x => x.Tenant == tenant && x.SubscriptionType == subscriptionType);
+            var storeItem = _store.SingleOrDefault(x => x.Tenant == tenant && x.SubscriptionType == subscriptionType);
 
             if (ReferenceEquals(null, storeItem) == true) throw new NotSupportedException($"There is no registered delivery for type '{subscriptionType}' and tenant '{tenant}'");
             return storeItem.Delivery;
         }
 
-        public IPushNotificationDelivery ResolveDelivery(SubscriptionType subscriptionType, string tenant)
+        public ITopicSubscriptionManager ResolveTopicSubscriptionManager(SubscriptionType subscriptionType, string tenant)
         {
             if (ReferenceEquals(null, subscriptionType) == true) throw new ArgumentNullException(nameof(subscriptionType));
             if (string.IsNullOrEmpty(tenant)) throw new ArgumentNullException(nameof(tenant));
 
-            var storeItem = store.SingleOrDefault(x => x.Tenant == tenant && x.SubscriptionType == subscriptionType);
+            MultiTenantStoreSubscriptionItem storeItem = _subscriptionStore.SingleOrDefault(x => x.Tenant == tenant && x.SubscriptionType == subscriptionType);
 
             if (ReferenceEquals(null, storeItem) == true) throw new NotSupportedException($"There is no registered delivery for type '{subscriptionType}' and tenant '{tenant}'");
-            return storeItem.Delivery;
+            return storeItem.TopicSubscriptionManager;
         }
 
         void Initialize()
@@ -54,12 +57,20 @@ namespace Multitenancy.Delivery
             var firebaseUrl = pandora.Get("delivery_firebase_baseurl");
             var firebaseSettings = pandora.Get<List<FireBaseSettings>>("delivery_firebase_settings");
 
+            var firebaseSubscriptionsUrl = pandora.Get("subscriptions_firebase_baseurl"); //'iid.googleapis.com' ~!~
+            var firebaseSubscrpitionsSettings = pandora.Get<List<FireBaseSettings>>("delivery_firebase_settings");
+
             var pushyUrl = pandora.Get("delivery_pushy_baseurl");
             var pushySettings = pandora.Get<List<PushySettings>>("delivery_pushy_settings");
 
             foreach (var fb in firebaseSettings)
             {
                 RegisterFireBaseDelivery(firebaseUrl, fb);
+            }
+
+            foreach (var fb in firebaseSubscrpitionsSettings)
+            {
+                RegisterFireBaseSubscriptionManager(firebaseUrl, fb);
             }
 
             foreach (var pushy in pushySettings)
@@ -80,7 +91,17 @@ namespace Multitenancy.Delivery
             var fireBaseDelivery = new FireBaseDelivery(fireBaseRestClient, NewtonsoftJsonSerializer.Default(), settings.ServerKey);
             fireBaseDelivery.UseAggregator(new InMemoryPushNotificationAggregator(fireBaseDelivery.Send, timeSpanBeforeFlush, recipientsCountBeforeFlush));
 
-            store.Add(new MultiTenantStoreItem(settings.Tenant, SubscriptionType.FireBase, fireBaseDelivery));
+            _store.Add(new MultiTenantStoreItem(settings.Tenant, SubscriptionType.FireBase, fireBaseDelivery));
+        }
+
+        void RegisterFireBaseSubscriptionManager(string baseUrl, FireBaseSettings settings)
+        {
+            if (string.IsNullOrEmpty(baseUrl) == true) throw new ArgumentNullException(nameof(baseUrl));
+
+            var fireBaseRestClient = new RestSharp.RestClient(baseUrl);
+            var firebaseTopicSubscriptionManager = new FireBaseTopicSubscriptionManager(fireBaseRestClient, NewtonsoftJsonSerializer.Default(), settings.ServerKey);
+
+            _subscriptionStore.Add(new MultiTenantStoreSubscriptionItem(settings.Tenant, SubscriptionType.FireBase, firebaseTopicSubscriptionManager));
         }
 
         void RegisterPushyDelivery(string baseUrl, PushySettings settings)
@@ -94,7 +115,7 @@ namespace Multitenancy.Delivery
             var pushyDelivery = new PushyDelivery(pushyRestClient, NewtonsoftJsonSerializer.Default(), settings.ServerKey);
             pushyDelivery.UseAggregator(new InMemoryPushNotificationAggregator(pushyDelivery.Send, timeSpanBeforeFlush, recipientsCountBeforeFlush));
 
-            store.Add(new MultiTenantStoreItem(settings.Tenant, SubscriptionType.Pushy, pushyDelivery));
+            _store.Add(new MultiTenantStoreItem(settings.Tenant, SubscriptionType.Pushy, pushyDelivery));
         }
 
         class PushySettings
