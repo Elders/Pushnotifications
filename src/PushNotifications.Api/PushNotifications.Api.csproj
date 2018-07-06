@@ -80,11 +80,17 @@
     <Compile Include="Controllers\PushNotifications\Commands\PushNotificationsController.cs" />
     <Compile Include="Controllers\PushNotifications\Models\SendPushNotificationModel.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\FireBaseSubscribeController.cs" />
+    <Compile Include="Controllers\Subscriptions\Commands\FireBaseTopicSubscribeController.cs" />
+    <Compile Include="Controllers\Subscriptions\Commands\FireBaseTopicUnsubscribeController.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\FireBaseUnSubscribeController.cs" />
+    <Compile Include="Controllers\Subscriptions\Commands\PushyTopicSubscribeController.cs" />
+    <Compile Include="Controllers\Subscriptions\Commands\PushyTopicUnsubscribeController.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\PushyUnSubscriptionController.cs" />
     <Compile Include="Controllers\Subscriptions\Models\FireBaseSubscribeModel.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\PushySubscriptionCommandController.cs" />
+    <Compile Include="Controllers\Subscriptions\Models\FirebaseTopicSubscriptionModel.cs" />
     <Compile Include="Controllers\Subscriptions\Models\PushySubscribeModel.cs" />
+    <Compile Include="Controllers\Subscriptions\Models\PushyTopicSubscritionModel.cs" />
     <Compile Include="Controllers\Subscriptions\Queries\SubscriptionQueryController.cs" />
     <Compile Include="Converters\ClaimFillConverter.cs" />
     <Compile Include="Converters\GenericJsonConverter.cs" />
