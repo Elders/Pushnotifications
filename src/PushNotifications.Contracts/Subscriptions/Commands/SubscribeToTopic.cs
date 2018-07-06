@@ -9,15 +9,17 @@ namespace PushNotifications.Contracts.Subscriptions.Commands
     {
         SubscribeToTopic() { }
 
-        public SubscribeToTopic(TopicSubscriptionId id, SubscriberId subscriberId, Topic topic)
+        public SubscribeToTopic(TopicSubscriptionId id, SubscriberId subscriberId, Topic topic, SubscriptionType subscriptionType)
         {
             if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
             if (StringTenantId.IsValid(subscriberId) == false) throw new ArgumentException(nameof(subscriberId));
             if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
+            if (ReferenceEquals(null, subscriptionType)) throw new ArgumentNullException(nameof(subscriptionType));
 
             Id = id;
             SubscriberId = subscriberId;
             Topic = topic;
+            SubscriptionType = subscriptionType;
         }
 
         [DataMember(Order = 1)]
@@ -28,6 +30,9 @@ namespace PushNotifications.Contracts.Subscriptions.Commands
 
         [DataMember(Order = 3)]
         public Topic Topic { get; private set; }
+
+        [DataMember(Order = 4)]
+        public SubscriptionType SubscriptionType { get; private set; }
 
         public override string ToString()
         {
