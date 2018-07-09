@@ -17,6 +17,7 @@ namespace PushNotifications.Subscriptions
 
         public void When(SubscribedToTopic e)
         {
+            Id = e.Id;
             SubscriberId = e.SubscriberId;
             Topic = e.Topic;
             IsSubscriptionActive = true;
