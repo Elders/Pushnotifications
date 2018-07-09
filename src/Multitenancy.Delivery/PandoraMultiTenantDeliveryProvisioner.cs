@@ -52,6 +52,20 @@ namespace Multitenancy.Delivery
             return storeItem.TopicSubscriptionManager;
         }
 
+        public IEnumerable<IPushNotificationDelivery> GetDeliveryProviders(string tenant)
+        {
+            var registeredDeliveriesForTenant = new List<IPushNotificationDelivery>();
+            foreach (var multiTenantStoreItem in _store)
+            {
+                if (string.Equals(multiTenantStoreItem.Tenant, tenant, StringComparison.OrdinalIgnoreCase))
+                {
+                    registeredDeliveriesForTenant.Add(multiTenantStoreItem.Delivery);
+                }
+            }
+
+            return registeredDeliveriesForTenant;
+        }
+
         void Initialize()
         {
             var firebaseSettings = pandora.Get<List<FireBaseSettings>>("delivery_firebase_settings");
@@ -78,16 +92,24 @@ namespace Multitenancy.Delivery
             }
         }
 
+        private IPushNotificationDelivery GetFirebaseDelivery(string baseUrl, string serverKey)
+        {
+            var fireBaseRestClient = new RestSharp.RestClient(baseUrl);
+            var fireBaseDelivery = new FireBaseDelivery(fireBaseRestClient, NewtonsoftJsonSerializer.Default(), serverKey);
+            return fireBaseDelivery;
+        }
+
         void RegisterFireBaseDelivery(string baseUrl, FireBaseSettings settings)
         {
             if (string.IsNullOrEmpty(baseUrl) == true) throw new ArgumentNullException(nameof(baseUrl));
             if (settings.RecipientsCountBeforeFlush >= 1000) throw new ArgumentException($"FireBase limits the number of tokens to 1000. Use lower number for '{nameof(settings.RecipientsCountBeforeFlush)}'");
 
-            var timeSpanBeforeFlush = TimeSpan.FromSeconds(settings.TimeSpanBeforeFlushInSeconds);
-            var recipientsCountBeforeFlush = settings.RecipientsCountBeforeFlush;
 
             var fireBaseRestClient = new RestSharp.RestClient(baseUrl);
             var fireBaseDelivery = new FireBaseDelivery(fireBaseRestClient, NewtonsoftJsonSerializer.Default(), settings.ServerKey);
+
+            var timeSpanBeforeFlush = TimeSpan.FromSeconds(settings.TimeSpanBeforeFlushInSeconds);
+            var recipientsCountBeforeFlush = settings.RecipientsCountBeforeFlush;
             fireBaseDelivery.UseAggregator(new InMemoryPushNotificationAggregator(fireBaseDelivery.Send, timeSpanBeforeFlush, recipientsCountBeforeFlush));
 
             _store.Add(new MultiTenantStoreItem(settings.Tenant, SubscriptionType.FireBase, fireBaseDelivery));
@@ -126,6 +148,7 @@ namespace Multitenancy.Delivery
 
             _store.Add(new MultiTenantStoreItem(settings.Tenant, SubscriptionType.Pushy, pushyDelivery));
         }
+
 
         class PushySettings
         {
