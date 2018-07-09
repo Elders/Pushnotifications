@@ -60,6 +60,13 @@
     <Compile Include="Subscriptions\TopicSubscriptionState.cs">
       <DependentUpon>TopicSubscription.cs</DependentUpon>
     </Compile>
+    <Compile Include="TopicPushNotifications\TopicPushNotification.cs" />
+    <Compile Include="TopicPushNotifications\TopicPushNotificationAppService.cs">
+      <DependentUpon>TopicPushNotification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TopicPushNotifications\TopicPushNotificationState.cs">
+      <DependentUpon>TopicPushNotification.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
