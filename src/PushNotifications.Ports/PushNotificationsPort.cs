@@ -10,7 +10,8 @@ using PushNotifications.Projections.Subscriptions;
 namespace PushNotifications.Ports
 {
     public class PushNotificationsPort : IPort,
-        IEventHandler<PushNotificationSent>
+        IEventHandler<PushNotificationSent>,
+        IEventHandler<TopicPushNotificationSent>
     {
         static ILog log = LogProvider.GetLogger(typeof(PushNotificationsPort));
 
@@ -37,6 +38,23 @@ namespace PushNotifications.Ports
                 var notification = new NotificationForDelivery(@event.Id, @event.NotificationPayload, @event.NotificationData, @event.ExpiresAt, @event.ContentAvailable);
                 var delivery = DeliveryProvisioner.ResolveDelivery(token.SubscriptionType, notification);
                 delivery.Send(token, notification);
+            }
+        }
+
+        public void Handle(TopicPushNotificationSent @event)
+        {
+            if (ReferenceEquals(null, Projections)) throw new ArgumentNullException(nameof(Projections));
+            if (ReferenceEquals(null, DeliveryProvisioner)) throw new ArgumentNullException(nameof(DeliveryProvisioner));
+
+            var topic = @event.Topic;
+
+            var notification = new NotificationForDelivery(@event.Id, @event.NotificationPayload, @event.NotificationData, @event.ExpiresAt, @event.ContentAvailable);
+
+            var provisioners = DeliveryProvisioner.GetDeliveryProviders(@event.Id.Tenant);
+
+            foreach (var provisioner in provisioners)
+            {
+                provisioner.SendToTopic(topic, notification);
             }
         }
     }
