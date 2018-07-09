@@ -78,7 +78,9 @@
     <Compile Include="Controllers\Discovery\HealthCheckController.cs" />
     <Compile Include="Controllers\Discovery\NormalizedDiscoveryController.cs" />
     <Compile Include="Controllers\PushNotifications\Commands\PushNotificationsController.cs" />
+    <Compile Include="Controllers\PushNotifications\Commands\PushNotificationsTopicsController.cs" />
     <Compile Include="Controllers\PushNotifications\Models\SendPushNotificationModel.cs" />
+    <Compile Include="Controllers\PushNotifications\Models\SendPushNotificationToTopicModel.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\FireBaseSubscribeController.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\FireBaseTopicSubscribeController.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\FireBaseTopicUnsubscribeController.cs" />
