@@ -42,12 +42,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IInMemoryPushNotificationAggregator.cs" />
+    <Compile Include="PushNotifications\Commands\TopicSendPushNotification.cs" />
     <Compile Include="PushNotifications\Delivery\IPushNotificationDelivery.cs" />
     <Compile Include="PushNotifications\Commands\SendPushNotification.cs" />
     <Compile Include="PushNotifications\Delivery\NotificationForDelivery.cs" />
     <Compile Include="PushNotifications\Events\PushNotificationSent.cs" />
+    <Compile Include="PushNotifications\Events\TopicPushNotificationSent.cs" />
     <Compile Include="PushNotifications\NotificationPayload.cs" />
     <Compile Include="PushNotifications\PushNotificationId.cs" />
+    <Compile Include="PushNotifications\TopicPushNotificationId.cs" />
     <Compile Include="SubscriberId.cs" />
     <Compile Include="Subscriptions\Commands\Subscribe.cs" />
     <Compile Include="Subscriptions\Commands\SubscribeToTopic.cs" />
