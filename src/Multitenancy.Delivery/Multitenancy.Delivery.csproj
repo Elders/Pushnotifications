@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IDeliveryProvisioner.cs" />
+    <Compile Include="ITopicSubscriptionProvisioner.cs" />
     <Compile Include="MultiTenantStoreItem.cs" />
     <Compile Include="MultiTenantStoreSubscriptionItem.cs" />
     <Compile Include="PandoraMultiTenantDeliveryProvisioner.cs" />
