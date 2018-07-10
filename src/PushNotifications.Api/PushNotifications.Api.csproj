@@ -99,6 +99,7 @@
     <Compile Include="Converters\StringTenantIdConverter.cs" />
     <Compile Include="Converters\SubscriptionTypeConverter.cs" />
     <Compile Include="Converters\TenantAwareStringTenantIdConverter.cs" />
+    <Compile Include="Converters\TopicConverter.cs" />
     <Compile Include="Converters\UrlBinder.cs" />
     <Compile Include="Extensions\HttpActionResultExtensions.cs" />
     <Compile Include="PushNotificationsApiAssembly.cs" />
