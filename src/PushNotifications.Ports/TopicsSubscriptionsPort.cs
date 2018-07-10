@@ -82,7 +82,7 @@ namespace PushNotifications.Ports
 
             foreach (var token in projectionReponse.Projection.State.Tokens)
             {
-                var subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(@event.SubscriptionType, @event.SubscriberId.Tenant);
+                var subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(token.SubscriptionType, @event.SubscriberId.Tenant);
                 subscriptionManager.SubscribeToTopic(token, @event.Topic);
             }
         }
