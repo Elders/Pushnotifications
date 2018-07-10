@@ -241,14 +241,9 @@
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.FirebaseTopicSubscriptionModel.SubscriberUrn">
+        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.FirebaseTopicSubscriptionModel.SubscriberId">
             <summary>
             URN of the subscriber. This must be string tenant urn
-            </summary>
-        </member>
-        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.FirebaseTopicSubscriptionModel.Token">
-            <summary>
-            Registration token
             </summary>
         </member>
         <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeModel.SubscriberUrn">
@@ -261,14 +256,9 @@
             Registration token
             </summary>
         </member>
-        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeToTopicModel.SubscriberUrn">
+        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeToTopicModel.SubscriberId">
             <summary>
             URN of the subscriber. This must be string tenant urn
-            </summary>
-        </member>
-        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeToTopicModel.Token">
-            <summary>
-            Registration token
             </summary>
         </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Queries.GetSubscriberTokensController.GetSubscriberTokens(PushNotifications.Api.Controllers.Subscriptions.Queries.GetSubscriberTokensController.SubscriberTokensModel)">
