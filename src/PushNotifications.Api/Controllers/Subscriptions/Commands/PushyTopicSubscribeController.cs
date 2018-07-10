@@ -42,10 +42,8 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
                 yield return new RExample(new PushySubscribeToTopicModel()
                 {
-                    Tenant = tenant,
-                    SubscriberUrn = StringTenantUrn.Parse(subscriberId.Urn.Value),
-                    Token = "token",
-                    Topic = "topic"
+                    SubscriberId = subscriberId,
+                    Topic = new Topic("topic")
                 });
 
                 yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.NotAcceptable, new ResponseResult(Constants.CommandPublishFailed));
