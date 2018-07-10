@@ -37,15 +37,13 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         {
             public IEnumerable<IRExample> GetRExamples()
             {
-                var tenant = "elders";
-                var subscriberId = new SubscriberId(Guid.NewGuid().ToString(), tenant);
+                var topic = new Topic("test");
+                var subscriberId = new SubscriberId(Guid.NewGuid().ToString(), "elders");
 
                 yield return new RExample(new PushySubscribeToTopicModel()
                 {
-                    Tenant = tenant,
-                    SubscriberUrn = StringTenantUrn.Parse(subscriberId.Urn.Value),
-                    Token = "token",
-                    Topic = "topic"
+                    SubscriberId = subscriberId,
+                    Topic = topic
                 });
 
                 yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.NotAcceptable, new ResponseResult(Constants.CommandPublishFailed));
