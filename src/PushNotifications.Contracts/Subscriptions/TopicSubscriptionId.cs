@@ -10,6 +10,12 @@ namespace PushNotifications.Contracts.Subscriptions
 
         public TopicSubscriptionId(IUrn urn) : base(urn, "topicSubscription") { }
 
-        public TopicSubscriptionId(string id, string tenant) : base(id, "topicSubscription", tenant) { }
+        public TopicSubscriptionId(SubscriberId subscriberId, Topic topic, string tenant) : base($"{subscriberId.Id}@@{topic}", "topicSubscription", tenant)
+        {
+            Topic = topic;
+        }
+
+        [DataMember(Order = 3)]
+        public Topic Topic { get; private set; }
     }
 }
