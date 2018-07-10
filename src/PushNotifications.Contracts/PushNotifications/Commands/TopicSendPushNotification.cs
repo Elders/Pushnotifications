@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PushNotifications.Contracts.PushNotifications.Commands
 {
-    [DataContract(Name = "5e1e1ae0-d1d6-4243-92fc-b0b6652ecb5b")]
+    [DataContract(Name = "61f3b13a-0973-4bf9-8c29-d42381629eef")]
     public class TopicSendPushNotification : ICommand
     {
         public TopicSendPushNotification(TopicPushNotificationId id, Topic topic, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, Timestamp expiresAt, bool contentAvailable)
@@ -52,7 +52,7 @@ namespace PushNotifications.Contracts.PushNotifications.Commands
 
         public override string ToString()
         {
-            return $"Send Push notification with Id '{Id.Urn.Value}' to topic '{Topic.Value}'. NotificationPayload: {NotificationPayload}";
+            return $"Send Push notification with Id '{Id.Urn.Value}' to topic '{Topic}'. NotificationPayload: {NotificationPayload}";
         }
     }
 }

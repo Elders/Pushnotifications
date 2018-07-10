@@ -54,7 +54,7 @@ namespace PushNotifications.Contracts.PushNotifications.Events
 
         public override string ToString()
         {
-            return $"Push notification with Id '{Id.Urn.Value}' was sent to topic '{Topic.Value}' with NotificationPayload: '{NotificationPayload}'";
+            return $"Push notification with Id '{Id.Urn.Value}' was sent to topic '{Topic}' with NotificationPayload: '{NotificationPayload}'";
         }
     }
 }
