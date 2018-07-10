@@ -47,7 +47,7 @@ namespace PushNotifications.Delivery.FireBase
 
             const string resource = "/iid/v1:batchAdd";
 
-            log.Debug(() => $"[FireBase] subscribing '{token.Token}' to topic: `{topic.Value}'");
+            log.Debug(() => $"[FireBase] subscribing '{token.Token}' to topic: `{topic}'");
             var model = new FireBaseSubscriptionModel(token.Token, topic);
             var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
 
@@ -56,11 +56,11 @@ namespace PushNotifications.Delivery.FireBase
             if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Failure == true)
             {
                 var error = string.Join(",", result.Data.Results.Select(x => x.Error));
-                log.Error(() => $"[FireBase] failure: status code '{result.StatusCode}' and error '{error}'. subscription token: '{token.Token}' to topic: {topic.Value}'");
+                log.Error(() => $"[FireBase] failure: status code '{result.StatusCode}' and error '{error}'. subscription token: '{token.Token}' to topic: {topic}'");
                 return false;
             }
 
-            log.Info($"[FireBase] success: subscribed `{token.Token}`  to topic: `{topic.Value}`");
+            log.Info($"[FireBase] success: subscribed `{token.Token}`  to topic: `{topic}`");
             return true;
         }
 
@@ -71,7 +71,7 @@ namespace PushNotifications.Delivery.FireBase
 
             const string resource = "/iid/v1:batchRemove";
 
-            log.Debug(() => $"[FireBase] unsubscribing '{token.Token}' from topic: `{topic.Value}'");
+            log.Debug(() => $"[FireBase] unsubscribing '{token.Token}' from topic: `{topic}'");
             var model = new FireBaseSubscriptionModel(token.Token, topic);
             var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
 
@@ -80,11 +80,11 @@ namespace PushNotifications.Delivery.FireBase
             if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Failure == true)
             {
                 var error = string.Join(",", result.Data.Results.Select(x => x.Error));
-                log.Error(() => $"[FireBase] failure: status code '{result.StatusCode}' and error '{error}'. subscription token: '{token.Token}' to topic: {topic.Value}'");
+                log.Error(() => $"[FireBase] failure: status code '{result.StatusCode}' and error '{error}'. subscription token: '{token.Token}' from topic: {topic}'");
                 return false;
             }
 
-            log.Info($"[FireBase] success: unsubscribed `{token.Token}`  from topic: `{topic.Value}`");
+            log.Info($"[FireBase] success: unsubscribed `{token.Token}`  from topic: `{topic}`");
             return true;
         }
     }
