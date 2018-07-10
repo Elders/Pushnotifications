@@ -86,7 +86,7 @@ namespace PushNotifications.Delivery.FireBase
 
             const string resource = "fcm/send";
 
-            log.Debug(() => $"[FireBase] sending PN to topic: {topic.Value} for notification '{notification.Id}' with body '{notification.NotificationPayload.Body}'");
+            log.Debug(() => $"[FireBase] sending PN to topic: {topic} for notification '{notification.Id}' with body '{notification.NotificationPayload.Body}'");
             var payload = notification.NotificationPayload;
             var data = notification.NotificationData;
             string badge = payload.Badge > 0 ? payload.Badge.ToString() : "1";
@@ -104,7 +104,7 @@ namespace PushNotifications.Delivery.FireBase
                 return false;
             }
 
-            log.Info($"[FireBase] success: PN with body {notification.NotificationPayload?.Body} was sent to {topic.Value} topic");
+            log.Info($"[FireBase] success: PN with body {notification.NotificationPayload?.Body} was sent to {topic} topic");
             return true;
         }
 

@@ -13,7 +13,7 @@ namespace PushNotifications.Delivery.Pushy.Models
             if (ReferenceEquals(null, topic)) throw new ArgumentException(nameof(topic));
 
             Token = token;
-            Topics = new List<string>() { topic.Value };
+            Topics = new List<string>() { topic };
         }
 
         public PushyTopicSubscriptionModel(string token, IEnumerable<Topic> topics)
@@ -25,7 +25,7 @@ namespace PushNotifications.Delivery.Pushy.Models
             Topics = new List<string>();
             foreach (Topic topic in topics)
             {
-                Topics.Add(topic.Value);
+                Topics.Add(topic);
             }
         }
 

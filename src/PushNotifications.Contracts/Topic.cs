@@ -17,6 +17,16 @@ namespace PushNotifications.Contracts
         }
 
         [DataMember(Order = 1)]
-        public string Value { get; private set; }
+        private string Value { get; set; }
+
+        public override string ToString()
+        {
+            return Value;
+        }
+
+        public static implicit operator string(Topic current)
+        {
+            return current.Value;
+        }
     }
 }

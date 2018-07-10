@@ -13,7 +13,7 @@ namespace PushNotifications.Delivery.FireBase.Models
             if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
 
             RegistrationTokens = registrationTokens;
-            Topic = "/topics/" + topic.Value;
+            Topic = "/topics/" + topic;
         }
 
         public FireBaseSubscriptionModel(string registrationToken, Topic topic)
@@ -22,7 +22,7 @@ namespace PushNotifications.Delivery.FireBase.Models
             if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
 
             RegistrationTokens = new List<string>() { registrationToken };
-            Topic = "/topics/" + topic.Value;
+            Topic = "/topics/" + topic;
         }
 
         [JsonProperty(PropertyName = "registration_tokens")]

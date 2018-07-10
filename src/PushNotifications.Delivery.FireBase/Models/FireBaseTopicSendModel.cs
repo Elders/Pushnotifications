@@ -16,7 +16,7 @@ namespace PushNotifications.Delivery.FireBase.Models
             if (ReferenceEquals(null, expiresAt)) throw new ArgumentNullException(nameof(expiresAt));
             if (ReferenceEquals(null, notificationData)) throw new ArgumentNullException(nameof(notificationData));
 
-            To = "/topics/" + topic.Value; //The /topics/ is needed to distinguish between id's and topics
+            To = "/topics/" + topic; //The /topics/ is needed to distinguish between id's and topics
             Notification = notificationPayload;
             TTL = ExpirationTimeToSeconds(expiresAt);
             Data = notificationData;
