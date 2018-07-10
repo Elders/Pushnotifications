@@ -11,6 +11,9 @@ using PushNotifications.Delivery.Pushy;
 
 namespace Multitenancy.Delivery
 {
+    /// <summary>
+    /// da
+    /// </summary>
     public class PandoraMultiTenantDeliveryProvisioner : IDeliveryProvisioner, ITopicSubscriptionProvisioner
     {
         readonly ISet<MultiTenantStoreItem> _store;
@@ -82,7 +85,7 @@ namespace Multitenancy.Delivery
 
             foreach (var fb in firebaseSettings)
             {
-                RegisterFireBaseSubscriptionManager(firebaseUrl, fb);
+                RegisterFireBaseSubscriptionManager(firebaseSubscriptionsUrl, fb);
             }
 
             foreach (var pushy in pushySettings)
