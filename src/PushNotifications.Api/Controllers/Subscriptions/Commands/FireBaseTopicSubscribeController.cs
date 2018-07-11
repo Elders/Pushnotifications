@@ -14,7 +14,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         public IPublisher<ICommand> Publisher { get; set; }
 
         /// <summary>
-        /// Subscribes for push notifications with FireBase token
+        /// Subscribes for push notifications for a specific topic with a FireBase token
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>

@@ -21,7 +21,7 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
         /// Topic which the push notification should be sent
         /// </summary>
         [Required]
-        public string Topic { get; set; }
+        public Topic Topic { get; set; }
 
         /// <summary>
         /// The tenant to which the push notification must be delivered
@@ -71,10 +71,9 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
 
         public TopicSendPushNotification AsCommand()
         {
-            var topic = new Topic(Topic);
-            var id = new TopicPushNotificationId(Guid.NewGuid().ToString(), Tenant);
+            var id = new TopicPushNotificationId(Guid.NewGuid().ToString(), Topic, Tenant);
             var notificationPayload = new NotificationPayload(Title, Body, Sound, Icon, Badge);
-            return new TopicSendPushNotification(id, topic, notificationPayload, NotificationData, ExpiresAt, ContentAvailable);
+            return new TopicSendPushNotification(id, notificationPayload, NotificationData, ExpiresAt, ContentAvailable);
         }
     }
 }
