@@ -34,5 +34,10 @@ namespace PushNotifications.Tests
 
             return ar;
         }
+
+        public static void ShouldHaveEventsCount<TExpectedEvent>(this IAggregateRoot ar, int count) where TExpectedEvent : IEvent
+        {
+            ar.UncommittedEvents.Count(@event => @event is TExpectedEvent).ShouldEqual(count);
+        }
     }
 }
