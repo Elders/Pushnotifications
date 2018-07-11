@@ -14,8 +14,6 @@ namespace PushNotifications
 
         public Dictionary<string, object> NotificationData { get; private set; }
 
-        public Topic Topic { get; private set; }
-
         public Timestamp ExpiresAt { get; private set; }
 
         public bool ContentAvailable { get; private set; }
@@ -25,7 +23,6 @@ namespace PushNotifications
             Id = e.Id;
             NotificationPayload = e.NotificationPayload;
             NotificationData = e.NotificationData;
-            Topic = e.Topic;
             ExpiresAt = e.ExpiresAt;
             ContentAvailable = e.ContentAvailable;
         }

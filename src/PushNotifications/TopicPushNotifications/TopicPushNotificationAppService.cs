@@ -8,7 +8,7 @@ namespace PushNotifications
     {
         public void Handle(TopicSendPushNotification command)
         {
-            var notification = new TopicPushNotification(command.Id, command.Topic, command.NotificationPayload, command.NotificationData, command.ExpiresAt, command.ContentAvailable);
+            var notification = new TopicPushNotification(command.Id, command.NotificationPayload, command.NotificationData, command.ExpiresAt, command.ContentAvailable);
             Repository.Save(notification);
         }
     }
