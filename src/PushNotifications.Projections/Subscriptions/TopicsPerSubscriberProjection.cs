@@ -13,20 +13,20 @@ namespace PushNotifications.Projections.Subscriptions
     {
         public TopicsPerSubscriberProjection()
         {
-            Subscribe<SubscribedToTopic>(x => x.SubscriberId);
-            Subscribe<UnsubscribedFromTopic>(x => x.SubscriberId);
+            Subscribe<SubscribedToTopic>(x => x.Id.SubscriberId);
+            Subscribe<UnsubscribedFromTopic>(x => x.Id.SubscriberId);
         }
 
         public void Handle(SubscribedToTopic @event)
         {
-            State.SubscriberId = @event.SubscriberId;
-            State.Topics.Add(@event.Topic);
+            State.SubscriberId = @event.Id.SubscriberId;
+            State.Topics.Add(@event.Id.Topic);
         }
 
         public void Handle(UnsubscribedFromTopic @event)
         {
-            State.SubscriberId = @event.SubscriberId;
-            State.Topics.Remove(@event.Topic);
+            State.SubscriberId = @event.Id.SubscriberId;
+            State.Topics.Remove(@event.Id.Topic);
         }
     }
 }
