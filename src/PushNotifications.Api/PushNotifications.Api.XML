@@ -184,14 +184,14 @@
         </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.FireBaseTopicSubscribeController.SubscribeToTopicFireBase(PushNotifications.Api.Controllers.Subscriptions.Commands.FirebaseTopicSubscriptionModel)">
             <summary>
-            Subscribes for push notifications with FireBase token
+            Subscribes for push notifications for a specific topic with a FireBase token
             </summary>
             <param name="model"></param>
             <returns></returns>
         </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.FireBaseTopicUnsubscribeController.SubscribeToTopicFireBase(PushNotifications.Api.Controllers.Subscriptions.Commands.FirebaseTopicSubscriptionModel)">
             <summary>
-            Subscribes for push notifications with FireBase token
+            Unsubscribes for push notifications from a topic with a FireBase token
             </summary>
             <param name="model"></param>
             <returns></returns>

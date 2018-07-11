@@ -9,7 +9,7 @@ using PushNotifications.Contracts;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
-    [Scope(AvailableScopes.Admin)]
+    //[Scope(AvailableScopes.Admin)]
     [RoutePrefix("PushNotifications")]
     public class PushNotificationsTopicsController : ApiController
     {
@@ -21,7 +21,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [ScopeAndOrRoleAuthorize(Roles = AvailableRoles.Admin, Scope = AvailableScopes.Admin)]
+       // [ScopeAndOrRoleAuthorize(Roles = AvailableRoles.Admin, Scope = AvailableScopes.Admin)]
         [HttpPost, Route("SendToTopic"), Discoverable("PushNotificationsTopicsSendToTopic", "v1")]
         public IHttpActionResult SendToTopic(SendPushNotificationToTopicModel model)
         {
@@ -43,6 +43,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         public IEnumerable<IRExample> GetRExamples()
         {
             var tenant = "elders";
+            var topic = new Topic("topic");
             yield return new RExample(new SendPushNotificationToTopicModel
             {
                 Badge = 0,
@@ -52,7 +53,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
                 Icon = string.Empty,
                 Sound = "default",
                 Tenant = tenant,
-                Topic = "topic",
+                Topic = topic,
                 Title = "The title",
                 NotificationData = new Dictionary<string, object>()
             });
