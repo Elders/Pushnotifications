@@ -1,6 +1,6 @@
 ﻿using Elders.Cronus;
-using System.Runtime.Serialization;
 using System;
+using System.Runtime.Serialization;
 
 namespace PushNotifications.Contracts.Subscriptions.Events
 {
@@ -9,34 +9,24 @@ namespace PushNotifications.Contracts.Subscriptions.Events
     {
         UnsubscribedFromTopic() { }
 
-        public UnsubscribedFromTopic(TopicSubscriptionId id, SubscriberId subscriberId, Topic topic, SubscriptionType subscriptionType)
+        public UnsubscribedFromTopic(TopicSubscriptionId topicSubscriptionId, SubscriptionType subscriptionType)
         {
-            if (StringTenantId.IsValid(subscriberId) == false) throw new ArgumentException(nameof(subscriberId));
-            if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
+            if (topicSubscriptionId.IsValid() == false) throw new ArgumentException(nameof(topicSubscriptionId));
             if (ReferenceEquals(null, subscriptionType)) throw new ArgumentException(nameof(subscriptionType));
-            if (ReferenceEquals(null, topic)) throw new ArgumentException(nameof(topic));
 
-            Id = id;
-            SubscriberId = subscriberId;
+            Id = topicSubscriptionId;
             SubscriptionType = subscriptionType;
-            Topic = topic;
         }
 
         [DataMember(Order = 1)]
-        public SubscriberId SubscriberId { get; private set; }
+        public TopicSubscriptionId Id { get; private set; }
 
         [DataMember(Order = 2)]
-        public Topic Topic { get; private set; }
-
-        [DataMember(Order = 3)]
         public SubscriptionType SubscriptionType { get; private set; }
-
-        [DataMember(Order = 4)]
-        public TopicSubscriptionId Id { get; private set; }
 
         public override string ToString()
         {
-            return $"Subscriber '{SubscriberId.Urn.Value}' has unsubscribed from topic: {Topic}";
+            return $"Subscriber '{Id.SubscriberId.Urn.Value}' has unsubscribed from topic: {Id.Topic}";
         }
     }
 }

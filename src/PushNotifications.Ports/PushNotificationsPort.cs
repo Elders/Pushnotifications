@@ -46,7 +46,7 @@ namespace PushNotifications.Ports
             if (ReferenceEquals(null, Projections)) throw new ArgumentNullException(nameof(Projections));
             if (ReferenceEquals(null, DeliveryProvisioner)) throw new ArgumentNullException(nameof(DeliveryProvisioner));
 
-            var topic = @event.Topic;
+            var topic = @event.Id.Topic;
 
             var notification = new NotificationForDelivery(@event.Id, @event.NotificationPayload, @event.NotificationData, @event.ExpiresAt, @event.ContentAvailable);
 

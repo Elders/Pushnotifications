@@ -10,16 +10,14 @@ namespace PushNotifications.Contracts.PushNotifications.Events
     {
         TopicPushNotificationSent() { }
 
-        public TopicPushNotificationSent(TopicPushNotificationId id, Topic topic, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, Timestamp expiresAt, bool contentAvailable)
+        public TopicPushNotificationSent(TopicPushNotificationId id, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, Timestamp expiresAt, bool contentAvailable)
         {
-            if (StringTenantId.IsValid(id) == false) throw new ArgumentException(nameof(id));
-            if (ReferenceEquals(null, topic) == true) throw new ArgumentNullException(nameof(topic));
+            if (id.IsValid() == false) throw new ArgumentException(nameof(id));
             if (ReferenceEquals(null, notificationPayload) == true) throw new ArgumentNullException(nameof(notificationPayload));
             if (ReferenceEquals(null, notificationData) == true) throw new ArgumentNullException(nameof(notificationData));
             if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
 
             Id = id;
-            Topic = topic;
             NotificationPayload = notificationPayload;
             NotificationData = notificationData;
             ExpiresAt = expiresAt;
@@ -30,12 +28,9 @@ namespace PushNotifications.Contracts.PushNotifications.Events
         public TopicPushNotificationId Id { get; private set; }
 
         [DataMember(Order = 2)]
-        public Topic Topic { get; private set; }
-
-        [DataMember(Order = 3)]
         public NotificationPayload NotificationPayload { get; private set; }
 
-        [DataMember(Order = 4)]
+        [DataMember(Order = 3)]
         public Timestamp ExpiresAt { get; private set; }
 
         /// <summary>
@@ -46,15 +41,15 @@ namespace PushNotifications.Contracts.PushNotifications.Events
         /// force quitting the app, etc. On Android, data messages wake the app by default.
         /// On Chrome, currently not supported.
         /// </summary>
-        [DataMember(Order = 5)]
+        [DataMember(Order = 4)]
         public bool ContentAvailable { get; private set; }
 
-        [DataMember(Order = 6)]
+        [DataMember(Order = 5)]
         public Dictionary<string, object> NotificationData { get; private set; }
 
         public override string ToString()
         {
-            return $"Push notification with Id '{Id.Urn.Value}' was sent to topic '{Topic}' with NotificationPayload: '{NotificationPayload}'";
+            return $"Push notification with Id '{Id.Urn.Value}' was sent to topic '{Id.Topic}' with NotificationPayload: '{NotificationPayload}'";
         }
     }
 }

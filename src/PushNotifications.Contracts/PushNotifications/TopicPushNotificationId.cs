@@ -1,4 +1,5 @@
 ﻿using Elders.Cronus;
+using System;
 using System.Runtime.Serialization;
 
 namespace PushNotifications.Contracts.PushNotifications
@@ -8,8 +9,22 @@ namespace PushNotifications.Contracts.PushNotifications
     {
         TopicPushNotificationId() { }
 
-        public TopicPushNotificationId(IUrn urn) : base(urn, "topicpushnotification") { }
+        public TopicPushNotificationId(string id, Topic topic, string tenant) : base($"{id}@@{topic}", "topicpushnotification", tenant)
+        {
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
+            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
 
-        public TopicPushNotificationId(string id, string tenant) : base(id, "topicpushnotification", tenant) { }
+            Topic = topic;
+        }
+
+        [DataMember(Order = 3)]
+        public Topic Topic { get; private set; }
+
+        public bool IsValid()
+        {
+            if (ReferenceEquals(null, Topic)) return false;
+
+            return true;
+        }
     }
 }

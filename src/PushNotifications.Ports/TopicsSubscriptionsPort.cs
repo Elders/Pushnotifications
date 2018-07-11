@@ -73,17 +73,17 @@ namespace PushNotifications.Ports
             if (ReferenceEquals(null, Projections)) throw new ArgumentNullException(nameof(Projections));
             if (ReferenceEquals(null, DeliveryProvisioner)) throw new ArgumentNullException(nameof(DeliveryProvisioner));
 
-            var projectionReponse = Projections.Get<SubscriberTokensProjection>(@event.SubscriberId);
+            var projectionReponse = Projections.Get<SubscriberTokensProjection>(@event.Id.SubscriberId);
             if (projectionReponse.Success == false)
             {
-                log.Info(() => $"No tokens were found for subscriber {@event.SubscriberId}");
+                log.Info(() => $"No tokens were found for subscriber {@event.Id.SubscriberId}");
                 return;
             }
 
             foreach (var token in projectionReponse.Projection.State.Tokens)
             {
-                var subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(token.SubscriptionType, @event.SubscriberId.Tenant);
-                subscriptionManager.SubscribeToTopic(token, @event.Topic);
+                var subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(token.SubscriptionType, @event.Id.SubscriberId.Tenant);
+                subscriptionManager.SubscribeToTopic(token, @event.Id.Topic);
             }
         }
 
@@ -92,17 +92,17 @@ namespace PushNotifications.Ports
             if (ReferenceEquals(null, Projections)) throw new ArgumentNullException(nameof(Projections));
             if (ReferenceEquals(null, DeliveryProvisioner)) throw new ArgumentNullException(nameof(DeliveryProvisioner));
 
-            var projectionReponse = Projections.Get<SubscriberTokensProjection>(@event.SubscriberId);
+            var projectionReponse = Projections.Get<SubscriberTokensProjection>(@event.Id.SubscriberId);
             if (projectionReponse.Success == false)
             {
-                log.Info(() => $"No tokens were found for subscriber {@event.SubscriberId}");
+                log.Info(() => $"No tokens were found for subscriber {@event.Id.SubscriberId}");
                 return;
             }
 
             foreach (var token in projectionReponse.Projection.State.Tokens)
             {
-                var subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(@event.SubscriptionType, @event.SubscriberId.Tenant);
-                subscriptionManager.UnsubscribeFromTopic(token, @event.Topic);
+                var subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(@event.SubscriptionType, @event.Id.SubscriberId.Tenant);
+                subscriptionManager.UnsubscribeFromTopic(token, @event.Id.Topic);
             }
         }
     }
