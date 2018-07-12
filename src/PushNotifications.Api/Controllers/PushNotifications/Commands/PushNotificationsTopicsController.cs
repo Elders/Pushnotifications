@@ -9,7 +9,7 @@ using PushNotifications.Contracts;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
-    //[Scope(AvailableScopes.Admin)]
+    [Scope(AvailableScopes.Admin)]
     [RoutePrefix("PushNotifications")]
     public class PushNotificationsTopicsController : ApiController
     {
@@ -21,7 +21,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-       // [ScopeAndOrRoleAuthorize(Roles = AvailableRoles.Admin, Scope = AvailableScopes.Admin)]
+        [ScopeAndOrRoleAuthorize(Roles = AvailableRoles.Admin, Scope = AvailableScopes.Admin)]
         [HttpPost, Route("SendToTopic"), Discoverable("PushNotificationsTopicsSendToTopic", "v1")]
         public IHttpActionResult SendToTopic(SendPushNotificationToTopicModel model)
         {
