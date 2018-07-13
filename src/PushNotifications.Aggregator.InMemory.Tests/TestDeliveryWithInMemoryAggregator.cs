@@ -20,18 +20,23 @@ namespace PushNotifications.Aggregator.InMemory.Tests
             this.store = new ConcurrentBag<KeyValuePair<SubscriptionToken, NotificationForDelivery>>();
         }
 
-        public bool Send(SubscriptionToken token, NotificationForDelivery notification)
+        public SendTokensResult Send(SubscriptionToken token, NotificationForDelivery notification)
         {
             return aggregator.Queue(token, notification);
         }
 
-        public bool Send(IList<SubscriptionToken> tokens, NotificationForDelivery notification)
+        public SendTokensResult Send(IList<SubscriptionToken> tokens, NotificationForDelivery notification)
         {
             foreach (var token in tokens)
             {
                 store.Add(new KeyValuePair<SubscriptionToken, NotificationForDelivery>(token, notification));
             }
-            return true;
+            return new SendTokensResult(new List<SubscriptionToken>());
+        }
+
+        public bool SendToTopic(Topic topic, NotificationForDelivery notification)
+        {
+            throw new NotImplementedException();
         }
 
         public ReadOnlyCollection<KeyValuePair<SubscriptionToken, NotificationForDelivery>> Store

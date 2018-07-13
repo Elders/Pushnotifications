@@ -5,6 +5,6 @@ namespace PushNotifications.Contracts
 {
     public interface IPushNotificationAggregator : IDisposable
     {
-        bool Queue(SubscriptionToken token, NotificationForDelivery notification);
+        SendTokensResult Queue(SubscriptionToken token, NotificationForDelivery notification);
     }
 }

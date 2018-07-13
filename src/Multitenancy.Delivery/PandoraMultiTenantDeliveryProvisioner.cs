@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Elders.Cronus;
 using Elders.Pandora;
 using Multitenancy.Delivery.Serialization;
 using PushNotifications.Aggregator.InMemory;
@@ -81,10 +82,6 @@ namespace Multitenancy.Delivery
             foreach (var fb in firebaseSettings)
             {
                 RegisterFireBaseDelivery(firebaseUrl, fb);
-            }
-
-            foreach (var fb in firebaseSettings)
-            {
                 RegisterFireBaseSubscriptionManager(firebaseSubscriptionsUrl, fb);
             }
 
