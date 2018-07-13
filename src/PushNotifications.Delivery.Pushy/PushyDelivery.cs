@@ -39,7 +39,7 @@ namespace PushNotifications.Delivery.Pushy
             this.pushNotificationAggregator = pushNotificationAggregator;
         }
 
-        public bool Send(SubscriptionToken token, NotificationForDelivery notification)
+        public SendTokensResult Send(SubscriptionToken token, NotificationForDelivery notification)
         {
             if (ReferenceEquals(null, token) == true) throw new ArgumentNullException(nameof(token));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
@@ -50,7 +50,7 @@ namespace PushNotifications.Delivery.Pushy
             return Send(new List<SubscriptionToken> { token }, notification);
         }
 
-        public bool Send(IList<SubscriptionToken> tokens, NotificationForDelivery notification)
+        public SendTokensResult Send(IList<SubscriptionToken> tokens, NotificationForDelivery notification)
         {
             if (ReferenceEquals(null, tokens) == true) throw new ArgumentNullException(nameof(tokens));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
@@ -59,6 +59,8 @@ namespace PushNotifications.Delivery.Pushy
             string resource = "push?api_key=" + serverKey;
 
             log.Debug(() => $"[PushyBase] sending '{tokens.Count}' PN for notification '{notification.Id}' with body '{notification.NotificationPayload.Body}'");
+            var sendPushNotificationTokensResult = new SendTokensResult(new List<SubscriptionToken>());
+
             var tokensAsStrings = tokens.Select(x => x.ToString()).ToList();
             var payload = notification.NotificationPayload;
             var pushySendNotificationModel = new PushySendNotificationModel(payload.Title, payload.Body, payload.Sound, payload.Badge);
@@ -69,12 +71,13 @@ namespace PushNotifications.Delivery.Pushy
             if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Success == false)
             {
                 log.Error(() => $"[PushyBase] failure: status code '{result.StatusCode}' and error '{result.Data.Error}'. PN body '{notification.NotificationPayload.Body}'");
-                return false;
+                return sendPushNotificationTokensResult;
             }
 
             log.Info($"[Pushy] success: pn with body {notification.NotificationPayload?.Body} was sent to {tokens.Count} tokens");
-            return true;
+            return sendPushNotificationTokensResult;
         }
+
         public bool SendToTopic(Topic topic, NotificationForDelivery notification)
         {
             if (ReferenceEquals(null, topic) == true) throw new ArgumentNullException(nameof(topic));

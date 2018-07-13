@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Elders.Cronus;
 using PushNotifications.Contracts;
+using PushNotifications.Contracts.PushNotifications;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Delivery.FireBase.Logging;
 using PushNotifications.Delivery.FireBase.Models;
@@ -39,7 +41,7 @@ namespace PushNotifications.Delivery.FireBase
             this.pushNotificationAggregator = pushNotificationAggregator;
         }
 
-        public bool Send(SubscriptionToken token, NotificationForDelivery notification)
+        public SendTokensResult Send(SubscriptionToken token, NotificationForDelivery notification)
         {
             if (ReferenceEquals(null, token) == true) throw new ArgumentNullException(nameof(token));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
@@ -50,7 +52,7 @@ namespace PushNotifications.Delivery.FireBase
             return Send(new List<SubscriptionToken> { token }, notification);
         }
 
-        public bool Send(IList<SubscriptionToken> tokens, NotificationForDelivery notification)
+        public SendTokensResult Send(IList<SubscriptionToken> tokens, NotificationForDelivery notification)
         {
             if (ReferenceEquals(null, tokens) == true) throw new ArgumentNullException(nameof(tokens));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
@@ -59,24 +61,49 @@ namespace PushNotifications.Delivery.FireBase
             const string resource = "fcm/send";
 
             log.Debug(() => $"[FireBase] sending '{tokens.Count}' PN for notification '{notification.Id}' with body '{notification.NotificationPayload.Body}'");
-            var tokensAsStrings = tokens.Select(x => x.ToString()).ToList();
-            var payload = notification.NotificationPayload;
-            var data = notification.NotificationData;
+
+            List<string> tokensAsStrings = tokens.Select(x => x.ToString()).ToList();
+            NotificationPayload payload = notification.NotificationPayload;
+            Dictionary<string, object> data = notification.NotificationData;
             string badge = payload.Badge > 0 ? payload.Badge.ToString() : "1";
             var fireBaseSendNotificationModel = new FireBaseSendNotificationModel(payload.Title, payload.Body, payload.Sound, badge);
             var model = new FireBaseSendModel(tokensAsStrings, fireBaseSendNotificationModel, data, notification.ExpiresAt);
-            var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
-            var result = restClient.Execute<FireBaseResponseModel>(request);
+            IRestRequest request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
+            IRestResponse<FireBaseResponseModel> result = restClient.Execute<FireBaseResponseModel>(request);
 
-            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Failure == true)
+            if (result.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var sendPushNotificationResult = GetNotRegisteredTokens(tokens, result);
+                log.Info($"[FireBase] success: PN with body {notification.NotificationPayload?.Body} was sent to {tokens.Count} tokens");
+                return sendPushNotificationResult;
+            }
+            else
             {
                 var error = string.Join(",", result.Data.Results.Select(x => x.Error));
                 log.Error(() => $"[FireBase] failure: status code '{result.StatusCode}' and error '{error}'. PN body '{notification.NotificationPayload.Body}'");
-                return false;
-            }
 
-            log.Info($"[FireBase] success: PN with body {notification.NotificationPayload?.Body} was sent to {tokens.Count} tokens");
-            return true;
+                return SendTokensResult.Success;
+            }
+        }
+
+        private static SendTokensResult GetNotRegisteredTokens(IList<SubscriptionToken> tokens, IRestResponse<FireBaseResponseModel> result)
+        {
+            var sendPushNotificationResult = new List<SubscriptionToken>();
+
+            if (result.Data.Failure == true)
+            {
+                for (int i = 0; i < result.Data.Results.Count; i++)
+                {
+                    var token = tokens[i];
+                    if (string.Equals(result.Data.Results[i].Error, "NotRegistered", StringComparison.OrdinalIgnoreCase))
+                    {
+                        log.Info($"[FireBase] the token: '{token}' is not registered and will be removed from the subscriber");
+                        sendPushNotificationResult.Add(token);
+                    }
+                }
+                return new SendTokensResult(sendPushNotificationResult);
+            }
+            return SendTokensResult.Success;
         }
 
         public bool SendToTopic(Topic topic, NotificationForDelivery notification)

@@ -6,6 +6,9 @@ using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts.PushNotifications.Events;
 using PushNotifications.Ports.Logging;
 using PushNotifications.Projections.Subscriptions;
+using PushNotifications.Contracts.Subscriptions.Commands;
+using PushNotifications.Contracts.Subscriptions;
+using PushNotifications.Contracts;
 
 namespace PushNotifications.Ports
 {
@@ -37,7 +40,15 @@ namespace PushNotifications.Ports
             {
                 var notification = new NotificationForDelivery(@event.Id, @event.NotificationPayload, @event.NotificationData, @event.ExpiresAt, @event.ContentAvailable);
                 var delivery = DeliveryProvisioner.ResolveDelivery(token.SubscriptionType, notification);
-                delivery.Send(token, notification);
+                SendTokensResult sendResult = delivery.Send(token, notification);
+
+                if (sendResult.HasFailedTokens)
+                {
+                    foreach (var failedToken in sendResult.FailedTokens)
+                    {
+                        CommandPublisher.Publish(new UnSubscribe(new SubscriptionId(failedToken.Token, @event.Id.Tenant), @event.SubscriberId, failedToken));
+                    }
+                }
             }
         }
 
