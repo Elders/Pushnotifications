@@ -69,18 +69,18 @@ namespace PushNotifications.Delivery.FireBase
             var fireBaseSendNotificationModel = new FireBaseSendNotificationModel(payload.Title, payload.Body, payload.Sound, badge);
             var model = new FireBaseSendModel(tokensAsStrings, fireBaseSendNotificationModel, data, notification.ExpiresAt);
             IRestRequest request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
-            IRestResponse<FireBaseResponseModel> result = restClient.Execute<FireBaseResponseModel>(request);
+            IRestResponse<FireBaseResponseModel> response = restClient.Execute<FireBaseResponseModel>(request);
 
-            if (result.StatusCode == System.Net.HttpStatusCode.OK)
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var sendPushNotificationResult = GetNotRegisteredTokens(tokens, result);
+                var sendPushNotificationResult = GetNotRegisteredTokens(tokens, response);
                 log.Info($"[FireBase] success: PN with body {notification.NotificationPayload?.Body} was sent to {tokens.Count} tokens");
                 return sendPushNotificationResult;
             }
             else
             {
-                var error = string.Join(",", result.Data.Results.Select(x => x.Error));
-                log.Error(() => $"[FireBase] failure: status code '{result.StatusCode}' and error '{error}'. PN body '{notification.NotificationPayload.Body}'");
+                var error = string.Join(",", response.Data.Results.Select(x => x.Error));
+                log.Error(() => $"[FireBase] failure: status code '{response.StatusCode}' and error '{error}'. PN body '{notification.NotificationPayload.Body}'");
 
                 return SendTokensResult.Success;
             }
@@ -144,6 +144,5 @@ namespace PushNotifications.Delivery.FireBase
 
             return request;
         }
-
     }
 }
