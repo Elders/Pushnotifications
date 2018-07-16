@@ -47,7 +47,7 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="When_doing_something.cs" />
+    <Compile Include="When_extracting_expired_tokens_from_firebase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
