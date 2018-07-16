@@ -2,6 +2,9 @@
 using Elders.Cronus;
 using Elders.Cronus.Projections;
 using Multitenancy.Delivery;
+using PushNotifications.Contracts;
+using PushNotifications.Contracts.PushNotifications.Delivery;
+using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Contracts.Subscriptions.Events;
 using PushNotifications.Ports.Logging;
 using PushNotifications.Projections.Subscriptions;
@@ -26,10 +29,10 @@ namespace PushNotifications.Ports
 
         public void Handle(Subscribed @event)
         {
-            var currentUser = @event.SubscriberId;
-            var tenant = @event.SubscriberId.Tenant;
-            var device = @event.SubscriptionToken.Token;
-            var subscriptionType = @event.SubscriptionToken.SubscriptionType;
+            SubscriberId currentUser = @event.SubscriberId;
+            string tenant = @event.SubscriberId.Tenant;
+            string device = @event.SubscriptionToken.Token;
+            SubscriptionType subscriptionType = @event.SubscriptionToken.SubscriptionType;
 
             var projectionReponse = Projections.Get<TopicsPerSubscriberProjection>(@event.SubscriberId);
 
@@ -39,19 +42,19 @@ namespace PushNotifications.Ports
                 return;
             }
 
-            foreach (var topic in projectionReponse.Projection.State.Topics)
+            foreach (Topic topic in projectionReponse.Projection.State.Topics)
             {
-                var subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(subscriptionType, tenant);
+                ITopicSubscriptionManager subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(subscriptionType, tenant);
                 subscriptionManager.SubscribeToTopic(@event.SubscriptionToken, topic);
             }
         }
 
         public void Handle(UnSubscribed @event)
         {
-            var currentUser = @event.SubscriberId;
-            var tenant = @event.SubscriberId.Tenant;
-            var device = @event.SubscriptionToken.Token;
-            var subscriptionType = @event.SubscriptionToken.SubscriptionType;
+            SubscriberId currentUser = @event.SubscriberId;
+            string tenant = @event.SubscriberId.Tenant;
+            string device = @event.SubscriptionToken.Token;
+            SubscriptionType subscriptionType = @event.SubscriptionToken.SubscriptionType;
 
             var projectionReponse = Projections.Get<TopicsPerSubscriberProjection>(@event.SubscriberId);
 
@@ -61,9 +64,9 @@ namespace PushNotifications.Ports
                 return;
             }
 
-            foreach (var topic in projectionReponse.Projection.State.Topics)
+            foreach (Topic topic in projectionReponse.Projection.State.Topics)
             {
-                var subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(subscriptionType, tenant);
+                ITopicSubscriptionManager subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(subscriptionType, tenant);
                 subscriptionManager.UnsubscribeFromTopic(@event.SubscriptionToken, topic);
             }
         }
@@ -80,9 +83,9 @@ namespace PushNotifications.Ports
                 return;
             }
 
-            foreach (var token in projectionReponse.Projection.State.Tokens)
+            foreach (SubscriptionToken token in projectionReponse.Projection.State.Tokens)
             {
-                var subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(token.SubscriptionType, @event.Id.SubscriberId.Tenant);
+                ITopicSubscriptionManager subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(token.SubscriptionType, @event.Id.SubscriberId.Tenant);
                 subscriptionManager.SubscribeToTopic(token, @event.Id.Topic);
             }
         }
@@ -99,9 +102,9 @@ namespace PushNotifications.Ports
                 return;
             }
 
-            foreach (var token in projectionReponse.Projection.State.Tokens)
+            foreach (SubscriptionToken token in projectionReponse.Projection.State.Tokens)
             {
-                var subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(@event.SubscriptionType, @event.Id.SubscriberId.Tenant);
+                ITopicSubscriptionManager subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(@event.SubscriptionType, @event.Id.SubscriberId.Tenant);
                 subscriptionManager.UnsubscribeFromTopic(token, @event.Id.Topic);
             }
         }
