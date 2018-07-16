@@ -6,6 +6,7 @@ using Discovery.Contracts;
 using PushNotifications.Api.Controllers.PushNotifications.Models;
 using System.Collections.Generic;
 using PushNotifications.Contracts;
+using PushNotifications.Contracts.PushNotifications.Events;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
@@ -13,7 +14,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
     [RoutePrefix("PushNotifications")]
     public class PushNotificationsTopicsController : ApiController
     {
-        public IPublisher<ICommand> Publisher { get; set; }
+        public IPublisher<IEvent> Publisher { get; set; }
 
         /// <summary>
         /// Sends push notification with notification payload. This endpoint is accessable only with admin scope.
@@ -27,8 +28,9 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         {
             var result = new ResponseResult(Constants.InvalidCommand);
 
-            var command = model.AsCommand();
-            result = Publisher.Publish(command)
+            TopicPushNotificationSent @event = model.AsEvent();
+
+            result = Publisher.Publish(@event)
                    ? new ResponseResult<ResponseResult>(new ResponseResult())
                    : new ResponseResult(Constants.CommandPublishFailed);
 

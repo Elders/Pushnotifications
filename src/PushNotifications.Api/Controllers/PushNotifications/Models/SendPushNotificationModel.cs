@@ -5,6 +5,7 @@ using PushNotifications.Contracts.PushNotifications.Commands;
 using PushNotifications.Contracts.PushNotifications;
 using System;
 using System.Collections.Generic;
+using PushNotifications.Contracts.PushNotifications.Events;
 
 namespace PushNotifications.Api.Controllers.PushNotifications.Models
 {
@@ -62,12 +63,12 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
         /// </summary>
         public Dictionary<string, object> NotificationData { get; set; }
 
-        public SendPushNotification AsCommand()
+        public PushNotificationSent AsEvent()
         {
             var id = new PushNotificationId(Guid.NewGuid().ToString(), SubscriberUrn.Tenant);
             var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
             var notificationPayload = new NotificationPayload(Title, Body, Sound, Icon, Badge);
-            return new SendPushNotification(id, subscriberId, notificationPayload, NotificationData, ExpiresAt, ContentAvailable);
+            return new PushNotificationSent(id, subscriberId, notificationPayload, NotificationData, ExpiresAt, ContentAvailable);
         }
     }
 }
