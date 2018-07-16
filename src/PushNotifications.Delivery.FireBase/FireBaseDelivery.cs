@@ -12,7 +12,7 @@ using RestSharp.Serializers;
 
 namespace PushNotifications.Delivery.FireBase
 {
-    public class FireBaseDelivery : IPushNotificationDelivery
+    public partial class FireBaseDelivery : IPushNotificationDelivery
     {
         static ILog log = LogProvider.GetLogger(typeof(FireBaseDelivery));
 
@@ -73,9 +73,15 @@ namespace PushNotifications.Delivery.FireBase
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                var sendPushNotificationResult = GetNotRegisteredTokens(tokens, response);
+                FireBaseResponseModel responseData = response.Data;
+                if ((responseData is null) == false && responseData.Failure)
+                {
+                    List<FireBaseResponseModel.FireBaseResponseResultModel> firebaseResponseModel = responseData.Results;
+                    var sendPushNotificationResult = ExpiredTokensDetector.GetNotRegisteredTokens(tokens, firebaseResponseModel);
+                }
+
                 log.Info($"[FireBase] success: PN with body {notification.NotificationPayload?.Body} was sent to {tokens.Count} tokens");
-                return sendPushNotificationResult;
+                return SendTokensResult.Success;
             }
             else
             {
@@ -84,26 +90,6 @@ namespace PushNotifications.Delivery.FireBase
 
                 return SendTokensResult.Success;
             }
-        }
-
-        private static SendTokensResult GetNotRegisteredTokens(IList<SubscriptionToken> tokens, IRestResponse<FireBaseResponseModel> result)
-        {
-            var sendPushNotificationResult = new List<SubscriptionToken>();
-
-            if (result.Data.Failure == true)
-            {
-                for (int i = 0; i < result.Data.Results.Count; i++)
-                {
-                    var token = tokens[i];
-                    if (string.Equals(result.Data.Results[i].Error, "NotRegistered", StringComparison.OrdinalIgnoreCase))
-                    {
-                        log.Info($"[FireBase] the token: '{token}' is not registered and will be removed from the subscriber");
-                        sendPushNotificationResult.Add(token);
-                    }
-                }
-                return new SendTokensResult(sendPushNotificationResult);
-            }
-            return SendTokensResult.Success;
         }
 
         public bool SendToTopic(Topic topic, NotificationForDelivery notification)
