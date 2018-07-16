@@ -42,9 +42,10 @@ namespace PushNotifications.Ports
                 return;
             }
 
+            ITopicSubscriptionManager subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(subscriptionType, tenant);
+
             foreach (Topic topic in projectionReponse.Projection.State.Topics)
             {
-                ITopicSubscriptionManager subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(subscriptionType, tenant);
                 subscriptionManager.SubscribeToTopic(@event.SubscriptionToken, topic);
             }
         }
@@ -64,9 +65,10 @@ namespace PushNotifications.Ports
                 return;
             }
 
+            ITopicSubscriptionManager subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(subscriptionType, tenant);
+
             foreach (Topic topic in projectionReponse.Projection.State.Topics)
             {
-                ITopicSubscriptionManager subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(subscriptionType, tenant);
                 subscriptionManager.UnsubscribeFromTopic(@event.SubscriptionToken, topic);
             }
         }
@@ -104,7 +106,7 @@ namespace PushNotifications.Ports
 
             foreach (SubscriptionToken token in projectionReponse.Projection.State.Tokens)
             {
-                ITopicSubscriptionManager subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(@event.SubscriptionType, @event.Id.SubscriberId.Tenant);
+                ITopicSubscriptionManager subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(token.SubscriptionType, @event.Id.SubscriberId.Tenant);
                 subscriptionManager.UnsubscribeFromTopic(token, @event.Id.Topic);
             }
         }
