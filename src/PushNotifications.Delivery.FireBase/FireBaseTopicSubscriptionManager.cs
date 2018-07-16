@@ -42,8 +42,8 @@ namespace PushNotifications.Delivery.FireBase
 
         public bool SubscribeToTopic(SubscriptionToken token, Topic topic)
         {
-            if (ReferenceEquals(null, token) == true) throw new ArgumentNullException(nameof(token));
-            if (ReferenceEquals(null, topic) == true) throw new ArgumentNullException(nameof(topic));
+            if (topic is null) throw new ArgumentNullException(nameof(topic));
+            if (token is null) throw new ArgumentNullException(nameof(token));
 
             const string resource = "/iid/v1:batchAdd";
 
@@ -51,7 +51,7 @@ namespace PushNotifications.Delivery.FireBase
             var model = new FireBaseSubscriptionModel(token.Token, topic);
             var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
 
-            var result = restClient.Execute<Models.FireBaseResponseModel>(request);
+            var result = restClient.Execute<FireBaseResponseModel>(request);
 
             if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Failure == true)
             {
@@ -60,14 +60,14 @@ namespace PushNotifications.Delivery.FireBase
                 return false;
             }
 
-            log.Info($"[FireBase] success: subscribed `{token.Token}`  to topic: `{topic}`");
+            log.Info($"[FireBase] success: subscribed `{token.Token}` to topic: `{topic}`");
             return true;
         }
 
         public bool UnsubscribeFromTopic(SubscriptionToken token, Topic topic)
         {
-            if (ReferenceEquals(null, token) == true) throw new ArgumentNullException(nameof(token));
-            if (ReferenceEquals(null, topic) == true) throw new ArgumentNullException(nameof(topic));
+            if (token is null) throw new ArgumentNullException(nameof(token));
+            if (topic is null) throw new ArgumentNullException(nameof(topic));
 
             const string resource = "/iid/v1:batchRemove";
 
@@ -75,7 +75,7 @@ namespace PushNotifications.Delivery.FireBase
             var model = new FireBaseSubscriptionModel(token.Token, topic);
             var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
 
-            var result = restClient.Execute<Models.FireBaseResponseModel>(request);
+            var result = restClient.Execute<FireBaseResponseModel>(request);
 
             if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Failure == true)
             {
@@ -84,7 +84,7 @@ namespace PushNotifications.Delivery.FireBase
                 return false;
             }
 
-            log.Info($"[FireBase] success: unsubscribed `{token.Token}`  from topic: `{topic}`");
+            log.Info($"[FireBase] success: unsubscribed `{token.Token}` from topic: `{topic}`");
             return true;
         }
     }
