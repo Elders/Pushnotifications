@@ -184,14 +184,14 @@
         </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.FireBaseTopicSubscribeController.SubscribeToTopicFireBase(PushNotifications.Api.Controllers.Subscriptions.Commands.FirebaseTopicSubscriptionModel)">
             <summary>
-            Subscribes for push notifications for a specific topic with a FireBase token
+            Subscribes a Subscriber for push notifications for a specific topic [Firebase]
             </summary>
             <param name="model"></param>
             <returns></returns>
         </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.FireBaseTopicUnsubscribeController.SubscribeToTopicFireBase(PushNotifications.Api.Controllers.Subscriptions.Commands.FirebaseTopicSubscriptionModel)">
             <summary>
-            Unsubscribes for push notifications from a topic with a FireBase token
+            Unsubscribes a SubscriberId for push notifications from a topic [Firebase]
             </summary>
             <param name="model"></param>
             <returns></returns>
@@ -205,14 +205,14 @@
         </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.PushyTopicSubscribeController.SubscribeToTopicPushy(PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeToTopicModel)">
             <summary>
-            Subscribes to a topic with a Pushy token
+            Subscribes a Subscriber to a topic [Pushy]
             </summary>
             <param name="model"></param>
             <returns></returns>
         </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.PushyTopicUnsubscribeController.UnsubscribeFromTopicPushy(PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeToTopicModel)">
             <summary>
-            Unsubscribes from a topic with a Pushy token
+            Unsubscribes a Subscriber from a topic [Pushy]
             </summary>
             <param name="model"></param>
             <returns></returns>

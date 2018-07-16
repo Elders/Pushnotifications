@@ -14,7 +14,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         public IPublisher<ICommand> Publisher { get; set; }
 
         /// <summary>
-        /// Subscribes to a topic with a Pushy token
+        /// Subscribes a Subscriber to a topic [Pushy]
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
