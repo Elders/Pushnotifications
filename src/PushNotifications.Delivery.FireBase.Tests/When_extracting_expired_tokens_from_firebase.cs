@@ -8,7 +8,7 @@ using static PushNotifications.Delivery.FireBase.FireBaseDelivery;
 namespace PushNotifications.Delivery.FireBase.Tests
 {
     [Subject(nameof(FireBaseDelivery))]
-    public class When_doing_something
+    public class When_extracting_expired_tokens_from_firebase
     {
         Establish context = () =>
         {
