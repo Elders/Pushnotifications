@@ -18,6 +18,7 @@ namespace PushNotifications.Subscriptions
 
         public void When(UnsubscribedFromTopic e)
         {
+            Id = e.Id;
             IsSubscriptionActive = false;
         }
     }

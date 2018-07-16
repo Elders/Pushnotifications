@@ -38,14 +38,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PushNotifications\PushNotification.cs" />
     <Compile Include="PushNotificationsAssembly.cs" />
-    <Compile Include="PushNotifications\PushNotificationAppService.cs">
-      <DependentUpon>PushNotification.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PushNotifications\PushNotificationState.cs">
-      <DependentUpon>PushNotification.cs</DependentUpon>
-    </Compile>
     <Compile Include="Subscriptions\Subscription.cs" />
     <Compile Include="Subscriptions\SubscriptionAppService.cs">
       <DependentUpon>Subscription.cs</DependentUpon>
@@ -59,13 +52,6 @@
     </Compile>
     <Compile Include="Subscriptions\TopicSubscriptionState.cs">
       <DependentUpon>TopicSubscription.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TopicPushNotifications\TopicPushNotification.cs" />
-    <Compile Include="TopicPushNotifications\TopicPushNotificationAppService.cs">
-      <DependentUpon>TopicPushNotification.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TopicPushNotifications\TopicPushNotificationState.cs">
-      <DependentUpon>TopicPushNotification.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

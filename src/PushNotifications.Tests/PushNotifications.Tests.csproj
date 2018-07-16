@@ -71,9 +71,6 @@
   <ItemGroup>
     <Compile Include="AggregateRootExtensions.cs" />
     <Compile Include="MachineExtentions.cs" />
-    <Compile Include="PushNotifications\When_adding_new_features_to_the_push_notification_aggregate.cs" />
-    <Compile Include="PushNotifications\When_expired_push_notification_is_send.cs" />
-    <Compile Include="PushNotifications\When_push_notification_is_sent.cs" />
     <Compile Include="Subscriptions\Subscription\When_adding_new_features_to_the_subscription_aggregate.cs" />
     <Compile Include="Subscriptions\TopicSubscription\When_creating_a_new_topic_subscription.cs" />
     <Compile Include="Subscriptions\TopicSubscription\When_subscriber_subscribes_to_topic_twice.cs" />
