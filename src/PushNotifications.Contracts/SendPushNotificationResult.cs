@@ -5,11 +5,11 @@ namespace PushNotifications.Contracts
 {
     public class SendTokensResult
     {
-        List<SubscriptionToken> failedTokens;
+        private List<SubscriptionToken> failedTokens;
 
         public SendTokensResult(IEnumerable<SubscriptionToken> failedTokens)
         {
-            failedTokens = new List<SubscriptionToken>(failedTokens);
+            this.failedTokens = new List<SubscriptionToken>(failedTokens);
         }
 
         public IReadOnlyCollection<SubscriptionToken> FailedTokens { get { return failedTokens.AsReadOnly(); } }
