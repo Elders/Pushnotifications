@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using Elders.Web.Api;
 using PushNotifications.Api.Attributes;
+using PushNotifications.Contracts.PushNotifications.Events;
 
 namespace PushNotifications.Api.Controllers.PushNotifications.Models
 {
@@ -69,11 +70,11 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
         /// </summary>
         public Dictionary<string, object> NotificationData { get; set; }
 
-        public TopicSendPushNotification AsCommand()
+        public TopicPushNotificationSent AsEvent()
         {
             var id = new TopicPushNotificationId(Guid.NewGuid().ToString(), Topic, Tenant);
             var notificationPayload = new NotificationPayload(Title, Body, Sound, Icon, Badge);
-            return new TopicSendPushNotification(id, notificationPayload, NotificationData, ExpiresAt, ContentAvailable);
+            return new TopicPushNotificationSent(id, notificationPayload, NotificationData, ExpiresAt, ContentAvailable);
         }
     }
 }
