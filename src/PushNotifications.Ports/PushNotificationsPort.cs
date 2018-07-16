@@ -28,6 +28,7 @@ namespace PushNotifications.Ports
         {
             if (ReferenceEquals(null, Projections)) throw new ArgumentNullException(nameof(Projections));
             if (ReferenceEquals(null, DeliveryProvisioner)) throw new ArgumentNullException(nameof(DeliveryProvisioner));
+            if (ReferenceEquals(null, CommandPublisher)) throw new ArgumentNullException(nameof(CommandPublisher));
 
             var projectionReponse = Projections.Get<SubscriberTokensProjection>(@event.SubscriberId);
             if (projectionReponse.Success == false)
@@ -46,7 +47,9 @@ namespace PushNotifications.Ports
                 {
                     foreach (var failedToken in sendResult.FailedTokens)
                     {
-                        CommandPublisher.Publish(new UnSubscribe(new SubscriptionId(failedToken.Token, @event.Id.Tenant), @event.SubscriberId, failedToken));
+                        var subscribtionId = new SubscriptionId(failedToken.Token, @event.Id.Tenant);
+                        var unsubscribe = new UnSubscribe(subscribtionId, @event.SubscriberId, failedToken);
+                        CommandPublisher.Publish(unsubscribe);
                     }
                 }
             }
