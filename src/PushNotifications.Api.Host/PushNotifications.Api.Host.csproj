@@ -56,7 +56,7 @@
       <HintPath>..\packages\Discovery.Consul.0.2.1\lib\net461\Discovery.Consul.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.5.0.0-beta0020\lib\net462\Elders.Cronus.dll</HintPath>
+      <HintPath>..\packages\Cronus.5.0.0-beta0032\lib\net462\Elders.Cronus.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.AtomicAction.Redis, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Cronus.AtomicAction.Redis.1.0.2\lib\net45\Elders.Cronus.AtomicAction.Redis.dll</HintPath>
@@ -65,13 +65,13 @@
       <HintPath>..\packages\Cronus.DomainModeling.4.0.7\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.Projections.Cassandra, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.Projections.Cassandra.5.0.0-beta0006\lib\net462\Elders.Cronus.Projections.Cassandra.dll</HintPath>
+      <HintPath>..\packages\Cronus.Projections.Cassandra.5.0.0-beta0011\lib\net462\Elders.Cronus.Projections.Cassandra.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.Serialization.NewtonsoftJson, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Cronus.Serialization.NewtonsoftJson.2.1.0\lib\net45\Elders.Cronus.Serialization.NewtonsoftJson.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.Transport.RabbitMQ, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.Transport.RabbitMQ.5.0.0-beta0001\lib\net451\Elders.Cronus.Transport.RabbitMQ.dll</HintPath>
+      <HintPath>..\packages\Cronus.Transport.RabbitMQ.5.0.0-beta0003\lib\net451\Elders.Cronus.Transport.RabbitMQ.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Multithreading.Scheduler, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Multithreading.Scheduler.2.0.1\lib\net45\Elders.Multithreading.Scheduler.dll</HintPath>
