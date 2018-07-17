@@ -33,7 +33,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             var subscriberId = new SubscriberId(model.SubscriberUrn.Id, model.SubscriberUrn.Tenant);
 
             PushNotificationSent @event = model.AsEvent();
-            result = Publisher.Publish(@event)
+            result = Publisher.Publish(@event, new Dictionary<string, string>() { { "ar_id", Convert.ToBase64String(@event.Id.RawId) }, { "ar_revision", "1" }, { "event_position", "0" } })
                    ? new ResponseResult<ResponseResult>(new ResponseResult())
                    : new ResponseResult(Constants.CommandPublishFailed);
 

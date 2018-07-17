@@ -7,10 +7,11 @@ using PushNotifications.Api.Controllers.PushNotifications.Models;
 using System.Collections.Generic;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications.Events;
+using System;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
-    [Scope(AvailableScopes.Admin)]
+    //[Scope(AvailableScopes.Admin)]
     [RoutePrefix("PushNotifications")]
     public class PushNotificationsTopicsController : ApiController
     {
@@ -22,7 +23,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [ScopeAndOrRoleAuthorize(Roles = AvailableRoles.Admin, Scope = AvailableScopes.Admin)]
+        //[ScopeAndOrRoleAuthorize(Roles = AvailableRoles.Admin, Scope = AvailableScopes.Admin)]
         [HttpPost, Route("SendToTopic"), Discoverable("PushNotificationsTopicsSendToTopic", "v1")]
         public IHttpActionResult SendToTopic(SendPushNotificationToTopicModel model)
         {
@@ -30,7 +31,8 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
             TopicPushNotificationSent @event = model.AsEvent();
 
-            result = Publisher.Publish(@event)
+            //It's a hack
+            result = Publisher.Publish(@event, new Dictionary<string, string>() { { "ar_id", Convert.ToBase64String(@event.Id.RawId) }, { "ar_revision", "1" }, { "event_position", "0" } })
                    ? new ResponseResult<ResponseResult>(new ResponseResult())
                    : new ResponseResult(Constants.CommandPublishFailed);
 
