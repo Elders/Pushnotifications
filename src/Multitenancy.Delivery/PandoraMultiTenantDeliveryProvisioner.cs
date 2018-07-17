@@ -74,7 +74,7 @@ namespace Multitenancy.Delivery
         {
             var firebaseSettings = pandora.Get<List<FireBaseSettings>>("delivery_firebase_settings");
             var firebaseUrl = pandora.Get("delivery_firebase_baseurl");
-            var firebaseSubscriptionsUrl = pandora.Get("subscriptions_firebase_baseurl");
+            var firebaseSubscriptionsUrl = "https://iid.googleapis.com/"; //This is hardcoded because of reasons
 
             var pushyUrl = pandora.Get("delivery_pushy_baseurl");
             var pushySettings = pandora.Get<List<PushySettings>>("delivery_pushy_settings");
