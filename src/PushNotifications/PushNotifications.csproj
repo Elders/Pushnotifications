@@ -31,27 +31,27 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.4.0.6\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
+      <HintPath>..\packages\Cronus.DomainModeling.4.0.7\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PushNotifications\PushNotification.cs" />
     <Compile Include="PushNotificationsAssembly.cs" />
-    <Compile Include="PushNotifications\PushNotificationAppService.cs">
-      <DependentUpon>PushNotification.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PushNotifications\PushNotificationState.cs">
-      <DependentUpon>PushNotification.cs</DependentUpon>
-    </Compile>
     <Compile Include="Subscriptions\Subscription.cs" />
     <Compile Include="Subscriptions\SubscriptionAppService.cs">
       <DependentUpon>Subscription.cs</DependentUpon>
     </Compile>
     <Compile Include="Subscriptions\SubscriptionState.cs">
       <DependentUpon>Subscription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Subscriptions\TopicSubscription.cs" />
+    <Compile Include="Subscriptions\TopicSubscriptionAppService.cs">
+      <DependentUpon>TopicSubscription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Subscriptions\TopicSubscriptionState.cs">
+      <DependentUpon>TopicSubscription.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

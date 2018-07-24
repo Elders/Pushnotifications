@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.4.0.6\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
+      <HintPath>..\packages\Cronus.DomainModeling.4.0.7\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,6 +43,8 @@
     <Compile Include="Subscriptions\SubscriberTokensProjection.cs" />
     <Compile Include="PushNotificationsProjectionsAssembly.cs" />
     <Compile Include="Subscriptions\SubscriberTokens.cs" />
+    <Compile Include="Subscriptions\SubscriberTopics.cs" />
+    <Compile Include="Subscriptions\TopicsPerSubscriberProjection.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">

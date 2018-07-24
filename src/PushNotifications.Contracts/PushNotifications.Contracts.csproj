@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.4.0.6\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
+      <HintPath>..\packages\Cronus.DomainModeling.4.0.7\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -42,22 +42,35 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IInMemoryPushNotificationAggregator.cs" />
+    <Compile Include="ITopicSubscriptionTracker.cs" />
+    <Compile Include="ITopicSubscriptionTrackerFactory.cs" />
+    <Compile Include="PushNotifications\Commands\TopicSendPushNotification.cs" />
     <Compile Include="PushNotifications\Delivery\IPushNotificationDelivery.cs" />
     <Compile Include="PushNotifications\Commands\SendPushNotification.cs" />
     <Compile Include="PushNotifications\Delivery\NotificationForDelivery.cs" />
     <Compile Include="PushNotifications\Events\PushNotificationSent.cs" />
+    <Compile Include="PushNotifications\Events\TopicPushNotificationSent.cs" />
     <Compile Include="PushNotifications\NotificationPayload.cs" />
     <Compile Include="PushNotifications\PushNotificationId.cs" />
+    <Compile Include="PushNotifications\TopicPushNotificationId.cs" />
+    <Compile Include="SendPushNotificationResult.cs" />
+    <Compile Include="StatCounter.cs" />
     <Compile Include="SubscriberId.cs" />
     <Compile Include="Subscriptions\Commands\Subscribe.cs" />
+    <Compile Include="Subscriptions\Commands\SubscribeToTopic.cs" />
     <Compile Include="Subscriptions\Commands\UnSubscribe.cs" />
+    <Compile Include="Subscriptions\Commands\UnsubscribeFromTopic.cs" />
     <Compile Include="Subscriptions\Events\Subscribed.cs" />
+    <Compile Include="Subscriptions\Events\SubscribedToTopic.cs" />
     <Compile Include="Subscriptions\Events\UnSubscribed.cs" />
+    <Compile Include="Subscriptions\Events\UnsubscribedFromTopic.cs" />
     <Compile Include="Subscriptions\SubscriptionId.cs" />
     <Compile Include="Subscriptions\SubscriptionType.cs" />
+    <Compile Include="Subscriptions\TopicSubscriptionId.cs" />
     <Compile Include="SubscriptionToken.cs" />
     <Compile Include="PushNotificationsContractsAssembly.cs" />
     <Compile Include="Timestamp.cs" />
+    <Compile Include="Topic.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

@@ -21,6 +21,13 @@ namespace PushNotifications.WS
         {
             var instance = FastActivator.CreateInstance(objectType);
             var props = objectType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();
+
+            var globalDependencies = props.Where(x => container.IsRegistered(x.PropertyType));
+            foreach (var item in globalDependencies)
+            {
+                item.SetValue(instance, container.Resolve(item.PropertyType));
+            }
+
             var dependencies = props.Where(x => container.IsRegistered(x.PropertyType, namedInstance));
             foreach (var item in dependencies)
             {
