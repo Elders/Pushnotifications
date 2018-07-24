@@ -12,9 +12,6 @@ using PushNotifications.Delivery.Pushy;
 
 namespace Multitenancy.Delivery
 {
-    /// <summary>
-    /// da
-    /// </summary>
     public class PandoraMultiTenantDeliveryProvisioner : IDeliveryProvisioner, ITopicSubscriptionProvisioner
     {
         readonly ISet<MultiTenantStoreItem> _store;

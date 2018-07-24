@@ -24,6 +24,7 @@ using Elders.Cronus.Projections.Snapshotting;
 using Elders.Cronus.Projections.Versioning;
 using Elders.Pandora;
 using Multitenancy.Delivery;
+using Multitenancy.Tracker;
 using PushNotifications.Contracts;
 using PushNotifications.Ports;
 using PushNotifications.Projections;
@@ -166,6 +167,7 @@ namespace PushNotifications.WS
         {
             var pnProjHandlerFactory = new ServiceLocator(cronusSettings.Container, Name);
             var ports = typeof(PushNotificationsPortsAssembly).Assembly.GetTypes().Where(x => typeof(IPort).IsAssignableFrom(x));
+            cronusSettings.Container.RegisterSingleton<ITopicSubscriptionTrackerFactory>(() => new TopicSubscriptionTrackerFactory(pandora));
 
             cronusSettings
                .UsePortConsumer(x => x

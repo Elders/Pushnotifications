@@ -239,6 +239,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Multitenancy.Tracker\Multitenancy.Tracker.csproj">
+      <Project>{0ED759C4-97C1-4D58-B7E1-DE7D5BED714C}</Project>
+      <Name>Multitenancy.Tracker</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Api\PushNotifications.Api.csproj">
       <Project>{9F3F8DB4-F738-4F20-B95C-91483E94B266}</Project>
       <Name>PushNotifications.Api</Name>
