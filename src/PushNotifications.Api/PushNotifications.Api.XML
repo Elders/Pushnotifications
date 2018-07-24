@@ -363,6 +363,14 @@
             The payload data
             </summary>
         </member>
+        <member name="M:PushNotifications.Api.Controllers.SubscriptionsTracker.GetTopicCounterController.GetTopicCounter(PushNotifications.Api.Controllers.SubscriptionsTracker.GetTopicCounterController.TopicCounter)">
+            <summary>
+            This endpoint is here in order to be able to track if the subscriptions to topics are correct.
+            Furthermore we can easily track how many and what topics have been generated
+            </summary>
+            <param name="model">Contains a mandatory tenant and name which identifies the topic</param>
+            <returns></returns>
+        </member>
         <member name="M:Vapt.Api.Discovery.DiscoveryController.Discovery">
             <summary>
             Discovery endpoint

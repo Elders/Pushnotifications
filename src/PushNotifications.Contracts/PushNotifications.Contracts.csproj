@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IInMemoryPushNotificationAggregator.cs" />
+    <Compile Include="ITopicSubscriptionTracker.cs" />
+    <Compile Include="ITopicSubscriptionTrackerFactory.cs" />
     <Compile Include="PushNotifications\Commands\TopicSendPushNotification.cs" />
     <Compile Include="PushNotifications\Delivery\IPushNotificationDelivery.cs" />
     <Compile Include="PushNotifications\Commands\SendPushNotification.cs" />

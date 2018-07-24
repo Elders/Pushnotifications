@@ -27,6 +27,7 @@ using Elders.Cronus.Projections.Snapshotting;
 using Elders.Cronus.Projections.Versioning;
 using Elders.Cronus.Projections;
 using System.Linq;
+using Multitenancy.Tracker;
 
 namespace PushNotifications.Api.Host.App_Start
 {
@@ -86,6 +87,7 @@ namespace PushNotifications.Api.Host.App_Start
                 container.RegisterSingleton<IPublisher<IEvent>>(() => container.Resolve<ITransport>().GetPublisher<IEvent>(serializer()));
 
                 container.RegisterSingleton<IProjectionLoader>(() => new ProjectionRepository(container.Resolve<IProjectionStore>(), container.Resolve<ISnapshotStore>(), container.Resolve<ISnapshotStrategy>(), container.Resolve<InMemoryProjectionVersionStore>()));
+                container.RegisterSingleton<ITopicSubscriptionTrackerFactory>(() => new TopicSubscriptionTrackerFactory(pandora));
 
                 container.RegisterSingleton<ConsulClient>(() => new ConsulClient(x => x.Address = ConsulHelper.DefaultConsulUri));
                 container.RegisterSingleton<IDiscoveryReader>(() => new ConsulDiscoveryReader(container.Resolve<ConsulClient>()));

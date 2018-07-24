@@ -43,6 +43,7 @@
     <Compile Include="PushNotificationsPort.cs" />
     <Compile Include="PushNotificationsPortsAssembly.cs" />
     <Compile Include="TopicsSubscriptionsPort.cs" />
+    <Compile Include="TopicSubscriptionPortTracker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Multitenancy.Delivery\Multitenancy.Delivery.csproj">

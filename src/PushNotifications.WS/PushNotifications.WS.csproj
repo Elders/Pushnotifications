@@ -652,6 +652,10 @@
       <Project>{FC795C4C-F0F4-49C3-B0CC-4227390E4F07}</Project>
       <Name>Multitenancy.Delivery</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Multitenancy.Tracker\Multitenancy.Tracker.csproj">
+      <Project>{0ED759C4-97C1-4D58-B7E1-DE7D5BED714C}</Project>
+      <Name>Multitenancy.Tracker</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
       <Project>{53ab2dd6-f42f-44bb-bb6d-a7497c720e68}</Project>
       <Name>PushNotifications.Contracts</Name>
