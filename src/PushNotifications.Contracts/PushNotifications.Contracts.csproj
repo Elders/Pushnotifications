@@ -54,6 +54,7 @@
     <Compile Include="PushNotifications\PushNotificationId.cs" />
     <Compile Include="PushNotifications\TopicPushNotificationId.cs" />
     <Compile Include="SendPushNotificationResult.cs" />
+    <Compile Include="StatCounter.cs" />
     <Compile Include="SubscriberId.cs" />
     <Compile Include="Subscriptions\Commands\Subscribe.cs" />
     <Compile Include="Subscriptions\Commands\SubscribeToTopic.cs" />
