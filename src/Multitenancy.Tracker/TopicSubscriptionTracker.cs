@@ -1,5 +1,6 @@
 ﻿using Cassandra;
 using PushNotifications.Contracts;
+using System;
 using System.Collections.Generic;
 
 namespace Multitenancy.Tracker
@@ -29,24 +30,32 @@ namespace Multitenancy.Tracker
 
         public void Increment(string name)
         {
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+
             var stat = new TopicSubscriptionStat(name);
             IncrementTrack(stat);
         }
 
         public void Decrement(string name)
         {
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+
             var stat = new TopicSubscriptionStat(name);
             DecrementTrack(stat);
         }
 
         private void IncrementTrack(TopicSubscriptionStat stat)
         {
+            if (ReferenceEquals(null, stat)) throw new ArgumentNullException(nameof(stat));
+
             PreparedStatement query = incrementTemplate;
             _session.Execute(query.Bind(stat.Name));
         }
 
         private void DecrementTrack(TopicSubscriptionStat stat)
         {
+            if (ReferenceEquals(null, stat)) throw new ArgumentNullException(nameof(stat));
+
             PreparedStatement query = decrementTemplate;
             _session.Execute(query.Bind(stat.Name));
         }
