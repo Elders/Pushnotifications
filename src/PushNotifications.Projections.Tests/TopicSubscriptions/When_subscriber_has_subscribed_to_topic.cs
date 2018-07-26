@@ -19,7 +19,7 @@ namespace PushNotifications.Tests.PushNotifications
             var id = new TopicSubscriptionId(subscriberId, topic, "elders");
 
             projection = new TopicsPerSubscriberProjection();
-            @event = new SubscribedToTopic(id, SubscriptionType.FireBase);
+            @event = new SubscribedToTopic(id);
         };
 
         Because of = () => projection.Handle(@event);

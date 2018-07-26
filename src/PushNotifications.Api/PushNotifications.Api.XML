@@ -182,14 +182,14 @@
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.FireBaseTopicSubscribeController.SubscribeToTopicFireBase(PushNotifications.Api.Controllers.Subscriptions.Commands.FirebaseTopicSubscriptionModel)">
+        <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.TopicSubscribeController.SubscribeToTopic(PushNotifications.Api.Controllers.Subscriptions.Commands.TopicSubscriptionModel)">
             <summary>
-            Subscribes a Subscriber for push notifications for a specific topic [Firebase]
+            Subscribes a Subscriber for push notifications for a topic 
             </summary>
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.FireBaseTopicUnsubscribeController.SubscribeToTopicFireBase(PushNotifications.Api.Controllers.Subscriptions.Commands.FirebaseTopicSubscriptionModel)">
+        <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.TopicUnsubscribeController.UnsubscribeFromTopic(PushNotifications.Api.Controllers.Subscriptions.Commands.TopicSubscriptionModel)">
             <summary>
             Unsubscribes a SubscriberId for push notifications from a topic [Firebase]
             </summary>
@@ -199,27 +199,6 @@
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.FireBaseUnSubscribeController.UnSubscribeFromFireBase(PushNotifications.Api.Controllers.Subscriptions.Commands.FireBaseSubscribeModel)">
             <summary>
             UnSubscribes from push notifications with FireBase token
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
-        <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.PushyTopicSubscribeController.SubscribeToTopicPushy(PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeToTopicModel)">
-            <summary>
-            Subscribes a Subscriber to a topic [Pushy]
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
-        <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.PushyTopicUnsubscribeController.UnsubscribeFromTopicPushy(PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeToTopicModel)">
-            <summary>
-            Unsubscribes a Subscriber from a topic [Pushy]
-            </summary>
-            <param name="model"></param>
-            <returns></returns>
-        </member>
-        <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.PushyUnSubscriptionController.UnSubscribeFromPushy(PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeModel)">
-            <summary>
-            UnSubscribes from push notifications with Pushy token
             </summary>
             <param name="model"></param>
             <returns></returns>
@@ -241,7 +220,7 @@
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.FirebaseTopicSubscriptionModel.SubscriberId">
+        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.TopicSubscriptionModel.SubscriberId">
             <summary>
             URN of the subscriber. This must be string tenant urn
             </summary>
@@ -254,11 +233,6 @@
         <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeModel.Token">
             <summary>
             Registration token
-            </summary>
-        </member>
-        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeToTopicModel.SubscriberId">
-            <summary>
-            URN of the subscriber. This must be string tenant urn
             </summary>
         </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Queries.GetSubscriberTokensController.GetSubscriberTokens(PushNotifications.Api.Controllers.Subscriptions.Queries.GetSubscriberTokensController.SubscriberTokensModel)">

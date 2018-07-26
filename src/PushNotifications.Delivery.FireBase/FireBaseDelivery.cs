@@ -74,7 +74,7 @@ namespace PushNotifications.Delivery.FireBase
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 FireBaseResponseModel responseData = response.Data;
-                if ((responseData is null) == false && responseData.Failure)
+                if (ReferenceEquals(null, responseData) == false && responseData.Failure)
                 {
                     List<FireBaseResponseModel.FireBaseResponseResultModel> firebaseResponseModel = responseData.Results;
                     var sendPushNotificationResult = ExpiredTokensDetector.GetNotRegisteredTokens(tokens, firebaseResponseModel);

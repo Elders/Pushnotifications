@@ -8,18 +8,18 @@ using System;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
-    [RoutePrefix("Subscriptions/FireBaseSubscription")]
-    public class FireBaseTopicSubscribeController : ApiController
+    [RoutePrefix("Subscriptions")]
+    public class TopicSubscribeController : ApiController
     {
         public IPublisher<ICommand> Publisher { get; set; }
 
         /// <summary>
-        /// Subscribes a Subscriber for push notifications for a specific topic [Firebase]
+        /// Subscribes a Subscriber for push notifications for a topic 
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpPost, Route("SubscribeToTopic"), Discoverable("FireBaseSubscriptionSubscribeToTopic", "v1")]
-        public IHttpActionResult SubscribeToTopicFireBase(FirebaseTopicSubscriptionModel model)
+        [HttpPost, Route("SubscribeToTopic"), Discoverable("TopicSubscriptionSubscribeToTopic", "v1")]
+        public IHttpActionResult SubscribeToTopic(TopicSubscriptionModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
 
@@ -33,14 +33,14 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
                 : this.NotAcceptable(result);
         }
 
-        public class Examples : IProvideRExamplesFor<FireBaseTopicSubscribeController>
+        public class Examples : IProvideRExamplesFor<TopicSubscribeController>
         {
             public IEnumerable<IRExample> GetRExamples()
             {
                 var tenant = "elders";
                 var subscriberId = new SubscriberId(Guid.NewGuid().ToString(), tenant);
 
-                yield return new RExample(new FirebaseTopicSubscriptionModel()
+                yield return new RExample(new TopicSubscriptionModel()
                 {
                     SubscriberId = subscriberId,
                     Topic = new Topic("topic")

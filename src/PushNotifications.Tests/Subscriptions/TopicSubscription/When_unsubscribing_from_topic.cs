@@ -14,11 +14,10 @@ namespace PushNotifications.Tests.PushNotifications
             topic = new Topic("topic");
             subscriberId = new SubscriberId("id", tenant);
             topicSubscriptionId = new TopicSubscriptionId(subscriberId, topic, tenant);
-            subscriptionType = SubscriptionType.FireBase;
-            aggregate = new TopicSubscription(topicSubscriptionId, subscriptionType);
+            aggregate = new TopicSubscription(topicSubscriptionId);
         };
 
-        Because of = () => aggregate.UnsubscribeFromTopic(topicSubscriptionId, subscriptionType);
+        Because of = () => aggregate.UnsubscribeFromTopic(topicSubscriptionId);
 
         It should = () => aggregate.RootState().IsSubscriptionActive.ShouldBeFalse();
 
@@ -31,7 +30,6 @@ namespace PushNotifications.Tests.PushNotifications
         static TopicSubscription aggregate;
         static TopicSubscriptionId topicSubscriptionId;
         static SubscriberId subscriberId;
-        static SubscriptionType subscriptionType;
         static Topic topic;
     }
 }

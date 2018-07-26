@@ -13,14 +13,13 @@ namespace PushNotifications.Tests.PushNotifications
         {
             topic = new Topic("topic");
             subscriberId = new SubscriberId("kv", "elders");
-            var subscriptionType = SubscriptionType.FireBase;
             var id = new TopicSubscriptionId(subscriberId, topic, "elders");
 
             projection = new TopicsPerSubscriberProjection();
-            @event = new SubscribedToTopic(id, subscriptionType);
+            @event = new SubscribedToTopic(id);
             projection.Handle(@event);
 
-            unsubscribeEvent = new UnsubscribedFromTopic(id, subscriptionType);
+            unsubscribeEvent = new UnsubscribedFromTopic(id);
             projection.Handle(unsubscribeEvent);
         };
 

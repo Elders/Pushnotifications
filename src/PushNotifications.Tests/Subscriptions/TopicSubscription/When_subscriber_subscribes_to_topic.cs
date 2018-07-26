@@ -16,7 +16,7 @@ namespace PushNotifications.Tests.PushNotifications
             topic = new Topic("topic");
             id = new TopicSubscriptionId(subscriberId, topic, "elders");
         };
-        Because of = () => ar = new TopicSubscription(id, SubscriptionType.FireBase);
+        Because of = () => ar = new TopicSubscription(id);
 
         It should_create_subscription = () => ar.ShouldHaveEvent<SubscribedToTopic>(e =>
         {

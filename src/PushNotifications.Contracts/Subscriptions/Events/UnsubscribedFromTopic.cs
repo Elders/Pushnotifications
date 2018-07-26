@@ -9,20 +9,15 @@ namespace PushNotifications.Contracts.Subscriptions.Events
     {
         UnsubscribedFromTopic() { }
 
-        public UnsubscribedFromTopic(TopicSubscriptionId topicSubscriptionId, SubscriptionType subscriptionType)
+        public UnsubscribedFromTopic(TopicSubscriptionId topicSubscriptionId)
         {
             if (topicSubscriptionId.IsValid() == false) throw new ArgumentException(nameof(topicSubscriptionId));
-            if (ReferenceEquals(null, subscriptionType)) throw new ArgumentException(nameof(subscriptionType));
 
             Id = topicSubscriptionId;
-            SubscriptionType = subscriptionType;
         }
 
         [DataMember(Order = 1)]
         public TopicSubscriptionId Id { get; private set; }
-
-        [DataMember(Order = 2)]
-        public SubscriptionType SubscriptionType { get; private set; }
 
         public override string ToString()
         {

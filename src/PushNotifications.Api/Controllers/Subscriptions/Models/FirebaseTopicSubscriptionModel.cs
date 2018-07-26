@@ -9,7 +9,7 @@ using PushNotifications.Contracts.Subscriptions.Commands;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
-    public class FirebaseTopicSubscriptionModel
+    public class TopicSubscriptionModel
     {
         /// <summary>
         /// URN of the subscriber. This must be string tenant urn
@@ -24,14 +24,14 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         {
             var topic = new Topic(Topic);
             var topicSubscriptionId = new TopicSubscriptionId(SubscriberId, topic, SubscriberId.Tenant);
-            return new SubscribeToTopic(topicSubscriptionId, SubscriberId, topic, SubscriptionType.FireBase);
+            return new SubscribeToTopic(topicSubscriptionId, SubscriberId, topic);
         }
 
         public UnsubscribeFromTopic AsUnSubscribeFromTopicCommand()
         {
             var topic = new Topic(Topic);
             var topicSubscriptionId = new TopicSubscriptionId(SubscriberId, topic, SubscriberId.Tenant);
-            return new UnsubscribeFromTopic(topicSubscriptionId, SubscriberId, topic, SubscriptionType.FireBase);
+            return new UnsubscribeFromTopic(topicSubscriptionId, SubscriberId, topic);
         }
     }
 }

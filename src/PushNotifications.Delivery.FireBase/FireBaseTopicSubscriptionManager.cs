@@ -42,8 +42,8 @@ namespace PushNotifications.Delivery.FireBase
 
         public bool SubscribeToTopic(SubscriptionToken token, Topic topic)
         {
-            if (topic is null) throw new ArgumentNullException(nameof(topic));
-            if (token is null) throw new ArgumentNullException(nameof(token));
+            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
+            if (ReferenceEquals(null, token)) throw new ArgumentNullException(nameof(token));
 
             const string resource = "/iid/v1:batchAdd";
 
@@ -66,8 +66,8 @@ namespace PushNotifications.Delivery.FireBase
 
         public bool UnsubscribeFromTopic(SubscriptionToken token, Topic topic)
         {
-            if (token is null) throw new ArgumentNullException(nameof(token));
-            if (topic is null) throw new ArgumentNullException(nameof(topic));
+            if (ReferenceEquals(null, token)) throw new ArgumentNullException(nameof(token));
+            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
 
             const string resource = "/iid/v1:batchRemove";
 

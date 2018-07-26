@@ -12,11 +12,11 @@ namespace PushNotifications.Subscriptions
             TopicSubscription topicSubscription;
             if (Repository.TryLoad(command.Id, out topicSubscription))
             {
-                Update(command.Id, x => x.SubscribeToTopic(command.Id, command.SubscriptionType));
+                Update(command.Id, x => x.SubscribeToTopic(command.Id));
             }
             else
             {
-                topicSubscription = new TopicSubscription(command.Id, command.SubscriptionType);
+                topicSubscription = new TopicSubscription(command.Id);
                 Repository.Save<TopicSubscription>(topicSubscription);
             }
         }
@@ -26,7 +26,7 @@ namespace PushNotifications.Subscriptions
             TopicSubscription topicSubscription;
             if (Repository.TryLoad(command.Id, out topicSubscription))
             {
-                Update(command.Id, x => x.UnsubscribeFromTopic(command.Id, command.SubscriptionType));
+                Update(command.Id, x => x.UnsubscribeFromTopic(command.Id));
             }
         }
     }

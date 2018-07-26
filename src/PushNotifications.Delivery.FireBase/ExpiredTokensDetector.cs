@@ -15,7 +15,7 @@ namespace PushNotifications.Delivery.FireBase
         {
             internal static SendTokensResult GetNotRegisteredTokens(IList<SubscriptionToken> tokens, IList<FireBaseResponseModel.FireBaseResponseResultModel> result)
             {
-                if (result is null) return SendTokensResult.Success;
+                if (ReferenceEquals(null, result)) return SendTokensResult.Success;
 
                 var sendPushNotificationResult = new List<SubscriptionToken>();
 

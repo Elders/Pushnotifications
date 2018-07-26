@@ -11,13 +11,12 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            subscriptionType = SubscriptionType.FireBase;
             subscriberId = new SubscriberId("kv", "elders");
             topic = new Topic("topic");
             id = new TopicSubscriptionId(subscriberId, topic, "elders");
-            ar = new TopicSubscription(id, subscriptionType);
+            ar = new TopicSubscription(id);
         };
-        Because of = () => ar.SubscribeToTopic(id, subscriptionType);
+        Because of = () => ar.SubscribeToTopic(id);
 
         It should_not_raise_an_event = () => ar.ShouldHaveEventsCount<SubscribedToTopic>(1);
 
@@ -25,6 +24,5 @@ namespace PushNotifications.Tests.PushNotifications
         static Topic topic;
         static TopicSubscriptionId id;
         static SubscriberId subscriberId;
-        static SubscriptionType subscriptionType;
     }
 }

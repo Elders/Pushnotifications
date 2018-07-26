@@ -1,49 +1,49 @@
 ﻿using Elders.Cronus;
 using Elders.Web.Api;
 using System.Web.Http;
+using PushNotifications.Contracts;
 using Discovery.Contracts;
 using System.Collections.Generic;
-using PushNotifications.Contracts;
 using System;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
-    [RoutePrefix("Subscriptions/PushySubscription")]
-    public class PushyTopicUnsubscribeController : ApiController
+    [RoutePrefix("Subscriptions")]
+    public class TopicUnsubscribeController : ApiController
     {
         public IPublisher<ICommand> Publisher { get; set; }
 
         /// <summary>
-        /// Unsubscribes a Subscriber from a topic [Pushy]
+        /// Unsubscribes a SubscriberId for push notifications from a topic [Firebase]
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpPost, Route("UnsubscribeFromTopic"), Discoverable("PushySubscriptionUnsubscribeFromTopic", "v1")]
-        public IHttpActionResult UnsubscribeFromTopicPushy(PushySubscribeToTopicModel model)
+        [HttpPost, Route("UnsubscribeFromTopic"), Discoverable("TopicSubscriptionUnsubscribeFromTopic", "v1")]
+        public IHttpActionResult UnsubscribeFromTopic(TopicSubscriptionModel model)
         {
             var result = new ResponseResult(Constants.InvalidCommand);
 
-            var command = model.AsSubscribeToTopicCommand();
+            var command = model.AsUnSubscribeFromTopicCommand();
             result = Publisher.Publish(command)
-                    ? new ResponseResult<ResponseResult>(new ResponseResult())
-                    : new ResponseResult(Constants.CommandPublishFailed);
+                   ? new ResponseResult()
+                   : new ResponseResult(Constants.CommandPublishFailed);
 
             return result.IsSuccess
                 ? this.Accepted(result)
                 : this.NotAcceptable(result);
         }
 
-        public class Examples : IProvideRExamplesFor<PushyTopicUnsubscribeController>
+        public class Examples : IProvideRExamplesFor<TopicUnsubscribeController>
         {
             public IEnumerable<IRExample> GetRExamples()
             {
-                var topic = new Topic("test");
-                var subscriberId = new SubscriberId(Guid.NewGuid().ToString(), "elders");
+                var tenant = "elders";
+                var subscriberId = new SubscriberId(Guid.NewGuid().ToString(), tenant);
 
-                yield return new RExample(new PushySubscribeToTopicModel()
+                yield return new RExample(new TopicSubscriptionModel()
                 {
                     SubscriberId = subscriberId,
-                    Topic = topic
+                    Topic = new Topic("topic")
                 });
 
                 yield return new Elders.Web.Api.RExamples.StatusRExample(System.Net.HttpStatusCode.NotAcceptable, new ResponseResult(Constants.CommandPublishFailed));
