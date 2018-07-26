@@ -10,7 +10,7 @@ using System.Web.Http.ModelBinding;
 
 namespace PushNotifications.Api.Controllers.SubscriptionsTracker
 {
-    [RoutePrefix("TopicCounter")]
+    [RoutePrefix("TopicSubscriptionCount")]
     public class GetTopicCounterController : ApiController
     {
         public ITopicSubscriptionTrackerFactory TopicSubscriptionTracker { get; set; }
@@ -22,8 +22,8 @@ namespace PushNotifications.Api.Controllers.SubscriptionsTracker
         /// <param name="model">Contains a mandatory tenant and name which identifies the topic</param>
         /// <returns></returns>
         [ScopeAndOrRoleAuthorize(Roles = AvailableRoles.Admin, Scope = AvailableScopes.Admin)]
-        [HttpGet, Route("GetTopicCounter"), Discoverable("TopicCounter", "v1")]
-        public IHttpActionResult GetTopicCounter(TopicCounter model)
+        [HttpGet, Route("GetTopicSubscribedCount"), Discoverable("TopicSubscriptionCount", "v1")]
+        public IHttpActionResult GetTopicSubscribedCount(TopicCounter model)
         {
             IEnumerable<StatCounter> result = TopicSubscriptionTracker.GetService(model.Tenant).Show(model.Name);
 
