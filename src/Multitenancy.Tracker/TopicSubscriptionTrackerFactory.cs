@@ -1,4 +1,6 @@
 ﻿using Cassandra;
+using Elders.Cronus.AtomicAction;
+using Elders.Cronus.AtomicAction.InMemory;
 using Elders.Pandora;
 using PushNotifications.Contracts;
 using System;
@@ -42,8 +44,23 @@ namespace Multitenancy.Tracker
             {
                 ISession session = SessionCreator.Create(connectionString);
 
-                ITopicSubscriptionTracker service = new TopicSubscriptionTracker(session);
-                _store.AddOrUpdate(tenant, service, (key, oldValue) => service);
+                bool useRedis;
+                if (_pandora.TryGet("use_redis_lock", out useRedis))
+                {
+                    var connectionStrings = _pandora.Get("redis_connection_string");
+                    var redlockManager = new RedLock.RedisLockManager(connectionString);
+                    ILock @lock = new RedisLock(redlockManager);
+
+                    var service = new TopicSubscriptionTracker(session, @lock);
+                    _store.AddOrUpdate(tenant, service, (key, oldValue) => service);
+                }
+                else
+                {
+                    ILock @lock = new InMemoryLock();
+
+                    var service = new TopicSubscriptionTracker(session, @lock);
+                    _store.AddOrUpdate(tenant, service, (key, oldValue) => service);
+                }
             }
         }
 

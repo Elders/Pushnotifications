@@ -1,4 +1,5 @@
 ﻿using Cassandra;
+using Elders.Cronus.AtomicAction;
 using PushNotifications.Contracts;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ namespace Multitenancy.Tracker
 {
     public partial class TopicSubscriptionTracker : ITopicSubscriptionTracker
     {
+        const string CreateTableTemplateLockKey = "PushNotifications_CreateTableTemplateLockKey";
         const string CreateTableTemplate = @"CREATE TABLE IF NOT EXISTS ""pushnot_subscriptions"" (cv counter, name varchar, PRIMARY KEY (name));";
         const string IncrementTemplate = @"UPDATE ""pushnot_subscriptions"" SET cv = cv + 1 WHERE name=?;";
         const string DecrementTemplate = @"UPDATE ""pushnot_subscriptions"" SET cv = cv - 1 WHERE name=?;";
@@ -17,15 +19,38 @@ namespace Multitenancy.Tracker
         private readonly PreparedStatement decrementTemplate;
         private readonly PreparedStatement getTemplate;
 
-        public TopicSubscriptionTracker(ISession session)
+        public TopicSubscriptionTracker(ISession session, ILock @lock)
         {
-            _session = session;
+            if (ReferenceEquals(null, session)) throw new ArgumentNullException(nameof(session));
+            if (ReferenceEquals(null, @lock)) throw new ArgumentNullException(nameof(@lock));
 
-            _session.Execute(CreateTableTemplate);
+            _session = session;
+            var ttl = TimeSpan.FromSeconds(2);
+
+            CreateTableWithLock(_session, @lock, ttl);
 
             incrementTemplate = session.Prepare(IncrementTemplate);
             decrementTemplate = session.Prepare(DecrementTemplate);
             getTemplate = session.Prepare(GetTemplate);
+        }
+
+        private void CreateTableWithLock(ISession session, ILock @lock, TimeSpan ttl)
+        {
+            if (@lock.Lock(CreateTableTemplateLockKey, ttl))
+            {
+                try
+                {
+                    session.Execute(CreateTableTemplate);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    @lock.Unlock(CreateTableTemplateLockKey);
+                }
+            }
         }
 
         public void Increment(string name)

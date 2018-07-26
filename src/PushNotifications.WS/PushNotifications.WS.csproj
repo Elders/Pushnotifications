@@ -43,7 +43,7 @@
       <HintPath>..\packages\Consul.0.7.2.4\lib\net45\Consul.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.5.0.0-beta0032\lib\net462\Elders.Cronus.dll</HintPath>
+      <HintPath>..\packages\Cronus.5.0.0-beta0034\lib\net462\Elders.Cronus.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.Api, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Cronus.Api.5.0.0-beta0005\lib\net45-full\Elders.Cronus.Api.dll</HintPath>

@@ -56,7 +56,7 @@
       <HintPath>..\packages\Discovery.Consul.0.2.1\lib\net461\Discovery.Consul.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.5.0.0-beta0032\lib\net462\Elders.Cronus.dll</HintPath>
+      <HintPath>..\packages\Cronus.5.0.0-beta0034\lib\net462\Elders.Cronus.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.AtomicAction.Redis, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Cronus.AtomicAction.Redis.1.0.2\lib\net45\Elders.Cronus.AtomicAction.Redis.dll</HintPath>

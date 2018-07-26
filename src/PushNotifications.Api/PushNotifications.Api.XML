@@ -337,7 +337,7 @@
             The payload data
             </summary>
         </member>
-        <member name="M:PushNotifications.Api.Controllers.SubscriptionsTracker.GetTopicCounterController.GetTopicCounter(PushNotifications.Api.Controllers.SubscriptionsTracker.GetTopicCounterController.TopicCounter)">
+        <member name="M:PushNotifications.Api.Controllers.SubscriptionsTracker.GetTopicCounterController.GetTopicSubscribedCount(PushNotifications.Api.Controllers.SubscriptionsTracker.GetTopicCounterController.TopicCounter)">
             <summary>
             This endpoint is here in order to be able to track if the subscriptions to topics are correct.
             Furthermore we can easily track how many and what topics have been generated
