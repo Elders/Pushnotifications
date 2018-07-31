@@ -65,7 +65,7 @@
       <HintPath>..\packages\Cronus.DomainModeling.4.0.7\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.Projections.Cassandra, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.Projections.Cassandra.5.0.0-beta0011\lib\net462\Elders.Cronus.Projections.Cassandra.dll</HintPath>
+      <HintPath>..\packages\Cronus.Projections.Cassandra.5.0.0-beta0015\lib\net462\Elders.Cronus.Projections.Cassandra.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.Serialization.NewtonsoftJson, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Cronus.Serialization.NewtonsoftJson.2.1.0\lib\net45\Elders.Cronus.Serialization.NewtonsoftJson.dll</HintPath>
