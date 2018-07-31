@@ -1,4 +1,5 @@
-﻿using Elders.Cronus;
+﻿using System;
+using Elders.Cronus;
 using PushNotifications.Contracts;
 using PushNotifications.Contracts.Subscriptions.Events;
 
@@ -8,7 +9,12 @@ namespace PushNotifications.Ports
       IEventHandler<SubscribedToTopic>,
       IEventHandler<UnsubscribedFromTopic>
     {
-        public IPublisher<ICommand> CommandPublisher { get; set; } //bright idea to make it mandatory
+        /// <summary>
+        /// alex: bright idea to make it mandatory
+        /// mynkow: It gets brighter when you use IGateway
+        /// </summary>
+        [Obsolete("Be brighter", true)]
+        public IPublisher<ICommand> CommandPublisher { get; set; }
 
         public ITopicSubscriptionTrackerFactory StatsTrackerFactory { get; set; }
 
