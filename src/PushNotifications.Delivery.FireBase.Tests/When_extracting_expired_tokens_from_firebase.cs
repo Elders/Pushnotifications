@@ -32,7 +32,7 @@ namespace PushNotifications.Delivery.FireBase.Tests
             };
         };
 
-        Because of = () => result = ExpiredTokensDetector.GetNotRegisteredTokens(subscriptionTokens, responseFromFirebase);
+        Because of = () => result = FireBaseResponseModel.ExpiredTokensDetector.GetNotRegisteredTokens(subscriptionTokens, responseFromFirebase);
 
         It should_have_failed_tokens = () => result.HasFailedTokens.ShouldBeTrue();
 

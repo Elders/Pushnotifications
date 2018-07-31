@@ -8,10 +8,11 @@ using PushNotifications.Delivery.FireBase.Logging;
 using PushNotifications.Delivery.FireBase.Models;
 using RestSharp;
 using RestSharp.Serializers;
+using static PushNotifications.Delivery.FireBase.Models.FireBaseResponseModel;
 
 namespace PushNotifications.Delivery.FireBase
 {
-    public partial class FireBaseDelivery : IPushNotificationDelivery
+    public sealed class FireBaseDelivery : IPushNotificationDelivery
     {
         static ILog log = LogProvider.GetLogger(typeof(FireBaseDelivery));
 
@@ -76,7 +77,7 @@ namespace PushNotifications.Delivery.FireBase
                 if (ReferenceEquals(null, responseData) == false && responseData.Failure)
                 {
                     List<FireBaseResponseModel.FireBaseResponseResultModel> firebaseResponseModel = responseData.Results;
-                    var sendPushNotificationResult = ExpiredTokensDetector.GetNotRegisteredTokens(tokens, firebaseResponseModel);
+                    return ExpiredTokensDetector.GetNotRegisteredTokens(tokens, firebaseResponseModel);
                 }
 
                 log.Info($"[FireBase] success: PN with body {notification.NotificationPayload?.Body} was sent to {tokens.Count} tokens");
@@ -87,7 +88,7 @@ namespace PushNotifications.Delivery.FireBase
                 var error = string.Join(",", response.Data.Results.Select(x => x.Error));
                 log.Error(() => $"[FireBase] failure: status code '{response.StatusCode}' and error '{error}'. PN body '{notification.NotificationPayload.Body}'");
 
-                return SendTokensResult.Success;
+                return SendTokensResult.Failed;
             }
         }
 

@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
-    <Compile Include="ExpiredTokensDetector.cs" />
+    <Compile Include="InternalsVisibleToTests.cs" />
     <Compile Include="FireBaseDelivery.cs" />
     <Compile Include="FireBaseTopicSubscriptionManager.cs" />
     <Compile Include="Models\FireBaseResponseModel.cs" />
