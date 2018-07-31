@@ -47,6 +47,11 @@ namespace PushNotifications.Api.Host.App_Start
 
                 var serviceLocator = new ServiceLocator(container);
 
+                var contracts = new List<Type>();
+                contracts.AddRange(typeof(PushNotificationsContractsAssembly).Assembly.GetExportedTypes());
+                contracts.AddRange(typeof(PushNotificationsApiAssembly).Assembly.GetExportedTypes());
+                contracts.AddRange(typeof(PushNotificationsProjectionsAssembly).Assembly.GetExportedTypes());
+
                 var cfg = new CronusSettings(container)
                     .UseCluster(cluster =>
                          cluster.UseAggregateRootAtomicAction(atomic =>
@@ -59,12 +64,7 @@ namespace PushNotifications.Api.Host.App_Start
                                  atomic.WithInMemory();
                          })
                      )
-                 .UseContractsFromAssemblies(new[]
-                 {
-                     Assembly.GetAssembly(typeof(PushNotificationsContractsAssembly)),
-                     Assembly.GetAssembly(typeof(PushNotificationsApiAssembly)),
-                     Assembly.GetAssembly(typeof(PushNotificationsProjectionsAssembly))
-                 })
+                 .UseContractsFromAssemblies(contracts)
                  .UseRabbitMqTransport(x =>
                  {
                      x.Server = pandora.Get("rabbitmq_server");
