@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using PushNotifications.Contracts;
-using PushNotifications.Contracts.PushNotifications.Commands;
 using PushNotifications.Contracts.PushNotifications;
 using System;
 using System.Collections.Generic;

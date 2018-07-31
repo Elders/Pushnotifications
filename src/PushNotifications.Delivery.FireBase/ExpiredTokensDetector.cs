@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using PushNotifications.Contracts;
 using PushNotifications.Delivery.FireBase.Logging;
 using PushNotifications.Delivery.FireBase.Models;
-using RestSharp;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("PushNotifications.Delivery.FireBase.Tests")]
 

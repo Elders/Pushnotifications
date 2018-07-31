@@ -20,7 +20,6 @@ using Elders.Cronus.Pipeline.Hosts;
 using Elders.Cronus.Pipeline.Transport.RabbitMQ.Config;
 using Elders.Cronus.Projections;
 using Elders.Cronus.Projections.Cassandra.Config;
-using Elders.Cronus.Projections.Snapshotting;
 using Elders.Cronus.Projections.Versioning;
 using Elders.Pandora;
 using Multitenancy.Delivery;

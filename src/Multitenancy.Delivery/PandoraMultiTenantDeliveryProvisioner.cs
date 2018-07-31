@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Elders.Cronus;
 using Elders.Pandora;
 using Multitenancy.Delivery.Serialization;
 using PushNotifications.Aggregator.InMemory;

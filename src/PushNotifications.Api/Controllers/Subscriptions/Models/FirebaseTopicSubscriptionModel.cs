@@ -1,5 +1,4 @@
-﻿using Elders.Cronus;
-using Elders.Web.Api;
+﻿using Elders.Web.Api;
 using System.ComponentModel.DataAnnotations;
 using PushNotifications.Contracts;
 using PushNotifications.Api.Attributes;

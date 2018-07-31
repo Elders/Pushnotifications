@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using Newtonsoft.Json;
 using PushNotifications.Contracts;
 
 namespace PushNotifications.Api.Converters
