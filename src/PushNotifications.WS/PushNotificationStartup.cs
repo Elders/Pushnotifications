@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Cassandra;
+using Cassandra.Lock;
 using Elders.Cronus;
 using Elders.Cronus.Api.Config;
 using Elders.Cronus.AtomicAction.Config;
@@ -28,6 +29,7 @@ using PushNotifications.Contracts;
 using PushNotifications.Ports;
 using PushNotifications.Projections;
 using PushNotifications.WS.Logging;
+using RedLock;
 
 namespace PushNotifications.WS
 {
@@ -76,6 +78,9 @@ namespace PushNotifications.WS
                                 );
                             else
                                 atomic.WithInMemory();
+
+                            cluster.ClusterName = pandora.ApplicationContext.Cluster;
+                            cluster.CurrentNodeName = pandora.ApplicationContext.Machine;
                         }))
                     .UsePushNotifications(pandora)
                     .UsePushNotificationProjections(pandora)
@@ -219,6 +224,7 @@ namespace PushNotifications.WS
                       .UseProjections(h => h
                          .RegisterHandlerTypes(cassandraProjetions, pnProjHandlerFactory.Resolve)
                          .UseCassandraProjections(p => p
+                             .UseLocking(pandora)
                              .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
                              .SetProjectionTypes(cassandraProjetions)
                              .SetProjectionsReplicationStrategy(projectionsReplicationStrategy)
@@ -280,7 +286,6 @@ namespace PushNotifications.WS
                 }
                 eventStoreReplicationStrategy = new Elders.Cronus.Persistence.Cassandra.ReplicationStrategies.NetworkTopologyReplicationStrategy(settings);
             }
-
             var systemSaga_serviceLocator = new ServiceLocator(cronusSettings.Container, "SystemSaga");
             cronusSettings.UseSagaConsumer("SystemSaga", consumer => consumer
                 .SetNumberOfConsumerThreads(5)
@@ -294,14 +299,14 @@ namespace PushNotifications.WS
                     x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
                 })
                 .ConfigureCassandraProjectionsStore(proj => proj
+                    .UseLocking(pandora)
                     .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
                     .SetProjectionsReplicationStrategy(projectionsReplicationStrategy)
                     .SetProjectionsWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_write_consistency_level"))
                     .SetProjectionsReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_read_consistency_level"))
                     .SetProjectionTypes(typeof(ProjectionBuilder).Assembly)
                     .SetProjectionsRetryPolicy(new DefaultRetryPolicy())
-                    .SetProjectionsReconnectionPolicy(new ExponentialReconnectionPolicy(100, 100000))
-                    .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections")))
+                    .SetProjectionsReconnectionPolicy(new ExponentialReconnectionPolicy(100, 100000)))
                 .UseCassandraEventStore(eventStore =>
                     CassandraEventStoreExtensions.SetConnectionString(eventStore, pandora.Get("pn_cassandra_event_store_conn_str"))
                     .SetReplicationStrategy(eventStoreReplicationStrategy)

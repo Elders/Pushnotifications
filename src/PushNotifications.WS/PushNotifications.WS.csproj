@@ -49,7 +49,7 @@
       <HintPath>..\packages\Cronus.Api.5.0.0-beta0005\lib\net45-full\Elders.Cronus.Api.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.AtomicAction.Redis, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.AtomicAction.Redis.1.0.2\lib\net45\Elders.Cronus.AtomicAction.Redis.dll</HintPath>
+      <HintPath>..\packages\Cronus.AtomicAction.Redis.2.0.0\lib\net45\Elders.Cronus.AtomicAction.Redis.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Cronus.DomainModeling.4.0.7\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
@@ -152,7 +152,7 @@
       <HintPath>..\packages\RabbitMQ.Client.5.0.1\lib\net451\RabbitMQ.Client.dll</HintPath>
     </Reference>
     <Reference Include="RedLock, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RedLock.2.0.1\lib\net45\RedLock.dll</HintPath>
+      <HintPath>..\packages\RedLock.3.0.0\lib\net45\RedLock.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=106.0.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.0.1\lib\net452\RestSharp.dll</HintPath>
@@ -648,6 +648,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cassandra.Lock\Cassandra.Lock.csproj">
+      <Project>{8c5d8b99-8f48-47a5-a4a2-d70081348371}</Project>
+      <Name>Cassandra.Lock</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Multitenancy.Delivery\Multitenancy.Delivery.csproj">
       <Project>{FC795C4C-F0F4-49C3-B0CC-4227390E4F07}</Project>
       <Name>Multitenancy.Delivery</Name>

@@ -52,6 +52,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushNotifications.Delivery.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multitenancy.Tracker", "Multitenancy.Tracker\Multitenancy.Tracker.csproj", "{0ED759C4-97C1-4D58-B7E1-DE7D5BED714C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cassandra.Lock", "Cassandra.Lock\Cassandra.Lock.csproj", "{8C5D8B99-8F48-47A5-A4A2-D70081348371}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +128,10 @@ Global
 		{0ED759C4-97C1-4D58-B7E1-DE7D5BED714C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0ED759C4-97C1-4D58-B7E1-DE7D5BED714C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0ED759C4-97C1-4D58-B7E1-DE7D5BED714C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C5D8B99-8F48-47A5-A4A2-D70081348371}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C5D8B99-8F48-47A5-A4A2-D70081348371}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C5D8B99-8F48-47A5-A4A2-D70081348371}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C5D8B99-8F48-47A5-A4A2-D70081348371}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

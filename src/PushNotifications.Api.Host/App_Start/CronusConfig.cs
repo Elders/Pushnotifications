@@ -25,6 +25,8 @@ using Elders.Cronus.Projections.Versioning;
 using Elders.Cronus.Projections;
 using System.Linq;
 using Multitenancy.Tracker;
+using RedLock;
+using Cassandra.Lock;
 
 namespace PushNotifications.Api.Host.App_Start
 {
@@ -48,6 +50,7 @@ namespace PushNotifications.Api.Host.App_Start
                 contracts.AddRange(typeof(PushNotificationsContractsAssembly).Assembly.GetExportedTypes());
                 contracts.AddRange(typeof(PushNotificationsApiAssembly).Assembly.GetExportedTypes());
                 contracts.AddRange(typeof(PushNotificationsProjectionsAssembly).Assembly.GetExportedTypes());
+                contracts.AddRange(typeof(CronusAssembly).Assembly.GetExportedTypes());
 
                 var cfg = new CronusSettings(container)
                     .UseCluster(cluster =>
@@ -72,6 +75,7 @@ namespace PushNotifications.Api.Host.App_Start
                  })
                 .UseCronusSystemProjections(pandora)
                 .ConfigureCassandraProjectionsStore(x => x
+                    .UseLocking(pandora)
                     .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
                     .SetProjectionsReplicationStrategy(GetProjectionsReplicationStrategy(pandora))
                     .SetProjectionsWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_write_consistency_level"))

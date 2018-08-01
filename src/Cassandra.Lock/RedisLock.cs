@@ -2,7 +2,7 @@
 using RedLock;
 using System;
 
-namespace Multitenancy.Tracker
+namespace Cassandra.Lock
 {
     public class RedisLock : ILock
     {
@@ -37,4 +37,3 @@ namespace Multitenancy.Tracker
         }
     }
 }
-

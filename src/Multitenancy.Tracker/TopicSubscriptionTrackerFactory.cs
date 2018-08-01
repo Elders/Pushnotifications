@@ -1,4 +1,5 @@
 ﻿using Cassandra;
+using Cassandra.Lock;
 using Elders.Cronus.AtomicAction;
 using Elders.Cronus.AtomicAction.InMemory;
 using Elders.Pandora;
@@ -48,8 +49,7 @@ namespace Multitenancy.Tracker
                 if (_pandora.TryGet("use_redis_lock", out useRedis))
                 {
                     var connectionStrings = _pandora.Get("redis_connection_string");
-                    var redlockManager = new RedLock.RedisLockManager(connectionString);
-                    ILock @lock = new RedisLock(redlockManager);
+                    ILock @lock = RedisLockFactory.CreateInstance(connectionString);
 
                     var service = new TopicSubscriptionTracker(session, @lock);
                     _store.AddOrUpdate(tenant, service, (key, oldValue) => service);
