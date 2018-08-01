@@ -3,7 +3,6 @@ using PushNotifications.Contracts;
 using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Delivery.FireBase.Models;
 using System.Collections.Generic;
-using static PushNotifications.Delivery.FireBase.FireBaseDelivery;
 
 namespace PushNotifications.Delivery.FireBase.Tests
 {
