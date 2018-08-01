@@ -73,10 +73,9 @@ namespace PushNotifications.Delivery.FireBase
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                FireBaseResponseModel responseData = response.Data;
-                if (ReferenceEquals(null, responseData) == false && responseData.Failure)
+                if (response.HasDataFailure())
                 {
-                    List<FireBaseResponseModel.FireBaseResponseResultModel> firebaseResponseModel = responseData.Results;
+                    List<FireBaseResponseResultModel> firebaseResponseModel = response.Data.Results;
                     return ExpiredTokensDetector.GetNotRegisteredTokens(tokens, firebaseResponseModel);
                 }
 
@@ -85,9 +84,7 @@ namespace PushNotifications.Delivery.FireBase
             }
             else
             {
-                var error = string.Join(",", response.Data.Results.Select(x => x.Error));
-                log.Error(() => $"[FireBase] failure: status code '{response.StatusCode}' and error '{error}'. PN body '{notification.NotificationPayload.Body}'");
-
+                response.LogFireBaseError(() => $"[FireBase] failure: status code '{response.StatusCode}'. PN body '{notification.NotificationPayload.Body}'");
                 return SendTokensResult.Failed;
             }
         }
@@ -110,10 +107,9 @@ namespace PushNotifications.Delivery.FireBase
             var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
             var result = restClient.Execute<FireBaseResponseModel>(request);
 
-            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Failure == true)
+            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.HasDataFailure())
             {
-                var error = string.Join(",", result.Data.Results.Select(x => x.Error));
-                log.Error(() => $"[FireBase] failure: status code '{result.StatusCode}' and error '{error}'. PN body '{notification.NotificationPayload.Body}'");
+                result.LogFireBaseError(() => $"[FireBase] failure: status code '{result.StatusCode}'. PN body '{notification.NotificationPayload.Body}'");
                 return false;
             }
 

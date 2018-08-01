@@ -40,11 +40,11 @@ namespace PushNotifications.Delivery.Pushy
 
             var model = new PushyTopicSubscriptionModel(token, topic);
             IRestRequest request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
-            var result = restClient.Execute<PushyResponseModel>(request);
+            var response = restClient.Execute<PushyResponseModel>(request);
 
-            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Success == false)
+            if (response.StatusCode != System.Net.HttpStatusCode.OK || response.HasDataFailure())
             {
-                log.Error(() => $"[PushyBase] failure: status code '{result.StatusCode}' and error '{result.Data.Error}'. token '{token.Token}' and topic '{topic}'");
+                response.LogPushyError(() => $"[PushyBase] failure: status code '{response.StatusCode}'. Subscription token: '{token.Token}' from topic: {topic}'");
                 return false;
             }
 
@@ -63,11 +63,11 @@ namespace PushNotifications.Delivery.Pushy
 
             var model = new PushyTopicSubscriptionModel(token, topic);
             IRestRequest request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
-            var result = restClient.Execute<PushyResponseModel>(request);
+            var response = restClient.Execute<PushyResponseModel>(request);
 
-            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Success == false)
+            if (response.StatusCode != System.Net.HttpStatusCode.OK || response.HasDataFailure())
             {
-                log.Error(() => $"[PushyBase] failure: status code '{result.StatusCode}' and error '{result.Data.Error}'. token '{token.Token}' and topic '{topic}'");
+                response.LogPushyError(() => $"[PushyBase] failure: status code '{response.StatusCode}'. Subscription token: '{token.Token}' from topic: {topic}'");
                 return false;
             }
 

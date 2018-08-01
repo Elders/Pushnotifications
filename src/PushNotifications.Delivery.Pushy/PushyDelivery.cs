@@ -66,11 +66,11 @@ namespace PushNotifications.Delivery.Pushy
             var pushySendNotificationModel = new PushySendNotificationModel(payload.Title, payload.Body, payload.Sound, payload.Badge);
             var model = new PushySendModel(tokensAsStrings, pushySendNotificationModel, notification.NotificationData, notification.ExpiresAt, notification.ContentAvailable);
             var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
-            var result = restClient.Execute<PushyResponseModel>(request);
+            var response = restClient.Execute<PushyResponseModel>(request);
 
-            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Success == false)
+            if (response.StatusCode != System.Net.HttpStatusCode.OK || response.HasDataFailure())
             {
-                log.Error(() => $"[PushyBase] failure: status code '{result.StatusCode}' and error '{result.Data.Error}'. PN body '{notification.NotificationPayload.Body}'");
+                response.LogPushyError(() => $"[PushyBase] failure: status code '{response.StatusCode}'. PN body '{notification.NotificationPayload.Body}'");
                 return SendTokensResult.Failed;
             }
 
@@ -90,11 +90,11 @@ namespace PushNotifications.Delivery.Pushy
             var pushySendNotificationModel = new PushySendNotificationModel(payload.Title, payload.Body, payload.Sound, payload.Badge);
             var model = new PushySendModel(topic, pushySendNotificationModel, notification.NotificationData, notification.ExpiresAt, notification.ContentAvailable);
             IRestRequest request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
-            var result = restClient.Execute<PushyResponseModel>(request);
+            var response = restClient.Execute<PushyResponseModel>(request);
 
-            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Success == false)
+            if (response.StatusCode != System.Net.HttpStatusCode.OK || response.HasDataFailure())
             {
-                log.Error(() => $"[PushyBase] failure: status code '{result.StatusCode}' and error '{result.Data.Error}'. PN body '{notification.NotificationPayload.Body}'");
+                response.LogPushyError(() => $"[PushyBase] failure: status code '{response.StatusCode}'. PN body '{notification.NotificationPayload.Body}'");
                 return false;
             }
 

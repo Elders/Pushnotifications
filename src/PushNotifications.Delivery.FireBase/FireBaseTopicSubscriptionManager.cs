@@ -53,10 +53,9 @@ namespace PushNotifications.Delivery.FireBase
 
             var result = restClient.Execute<FireBaseResponseModel>(request);
 
-            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Failure == true)
+            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.HasDataFailure())
             {
-                var error = string.Join(",", result.Data.Results.Select(x => x.Error));
-                log.Error(() => $"[FireBase] failure: status code '{result.StatusCode}' and error '{error}'. subscription token: '{token.Token}' to topic: {topic}'");
+                result.LogFireBaseError(() => $"[FireBase] failure: status code '{result.StatusCode}'. subscription token: '{token.Token}' from topic: {topic}'");
                 return false;
             }
 
@@ -77,15 +76,53 @@ namespace PushNotifications.Delivery.FireBase
 
             var result = restClient.Execute<FireBaseResponseModel>(request);
 
-            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.Data.Failure == true)
+            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.HasDataFailure())
             {
-                var error = string.Join(",", result.Data.Results.Select(x => x.Error));
-                log.Error(() => $"[FireBase] failure: status code '{result.StatusCode}' and error '{error}'. subscription token: '{token.Token}' from topic: {topic}'");
+                result.LogFireBaseError(() => $"[FireBase] failure: status code '{result.StatusCode}'. subscription token: '{token.Token}' from topic: {topic}'");
                 return false;
             }
 
             log.Info($"[FireBase] success: unsubscribed `{token.Token}` from topic: `{topic}`");
             return true;
+        }
+    }
+
+    public static class FireBaseExtensions
+    {
+        static ILog log = LogProvider.GetLogger(typeof(FireBaseTopicSubscriptionManager));
+
+        public static bool HasDataFailure(this IRestResponse<FireBaseResponseModel> response)
+        {
+            return (response.Data is null == false) && response.Data.Failure == true;
+        }
+
+        public static string GetDataErrors(this IRestResponse<FireBaseResponseModel> response)
+        {
+            if (response.HasDataFailure())
+            {
+                string dataErrors = $"DataErrors:{Environment.NewLine}" + string.Join(",", response.Data.Results.Select(x => x.Error));
+                return dataErrors;
+            }
+
+            return string.Empty;
+        }
+
+        public static void LogFireBaseError(this IRestResponse<FireBaseResponseModel> response, Func<string> contextualMessage)
+        {
+            if (response.ErrorException is null)
+            {
+                log.Error(() =>
+                {
+                    string dataErrors = response.GetDataErrors();
+                    return $"{contextualMessage()}{Environment.NewLine}{dataErrors}{Environment.NewLine}{response.ErrorMessage}";
+                });
+            }
+            else
+            {
+                string dataErrors = response.GetDataErrors();
+                string errorMessage = $"{contextualMessage()}{Environment.NewLine}{dataErrors}{Environment.NewLine}{response.ErrorMessage}";
+                log.ErrorException(errorMessage, response.ErrorException);
+            }
         }
     }
 }

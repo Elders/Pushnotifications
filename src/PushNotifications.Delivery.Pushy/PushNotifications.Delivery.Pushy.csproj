@@ -53,6 +53,7 @@
     <Compile Include="PushyDelivery.cs" />
     <Compile Include="Models\PushySendNotificationModel.cs" />
     <Compile Include="Models\PushySendModel.cs" />
+    <Compile Include="PushyExtensions.cs" />
     <Compile Include="PushyTopicSubscriptionManager.cs" />
   </ItemGroup>
   <ItemGroup>
