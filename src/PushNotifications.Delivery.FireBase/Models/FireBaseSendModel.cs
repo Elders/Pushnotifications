@@ -9,14 +9,14 @@ namespace PushNotifications.Delivery.FireBase.Models
     {
         const long MAX_TTL_SECONDS = 432000; // 5 days
 
-        public FireBaseSendModel(IList<string> tokens, FireBaseSendNotificationModel notificationPayload, Dictionary<string, object> notificationData, Timestamp expiresAt)
+        public FireBaseSendModel(List<string> tokens, FireBaseSendNotificationModel notificationPayload, Dictionary<string, object> notificationData, Timestamp expiresAt)
         {
-            if (ReferenceEquals(null, tokens) || tokens.Count < 0 || tokens.Count > 1000) throw new ArgumentException(nameof(tokens));
+            if (ReferenceEquals(null, tokens) || tokens.Count == 0 || tokens.Count > 1000) throw new ArgumentException(nameof(tokens));
             if (ReferenceEquals(null, notificationPayload)) throw new ArgumentNullException(nameof(notificationPayload));
             if (ReferenceEquals(null, expiresAt)) throw new ArgumentNullException(nameof(expiresAt));
             if (ReferenceEquals(null, notificationData)) throw new ArgumentNullException(nameof(notificationData));
 
-            RegistrationIds = new List<string>(tokens);
+            RegistrationIds = tokens;
             Notification = notificationPayload;
             TTL = ExpirationTimeToSeconds(expiresAt);
             Data = notificationData;

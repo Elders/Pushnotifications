@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.4.0.6\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
+      <HintPath>..\packages\Cronus.DomainModeling.4.0.7\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -48,10 +48,13 @@
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
     <Compile Include="Models\PushyResponseModel.cs" />
+    <Compile Include="Models\PushyTopicSubscriptionModel.cs" />
     <Compile Include="PushNotificationsDeliveryPushyAssembly.cs" />
     <Compile Include="PushyDelivery.cs" />
     <Compile Include="Models\PushySendNotificationModel.cs" />
     <Compile Include="Models\PushySendModel.cs" />
+    <Compile Include="Extensions\PushyExtensions.cs" />
+    <Compile Include="PushyTopicSubscriptionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">

@@ -37,7 +37,7 @@
       <HintPath>..\packages\Discovery.0.2.1\lib\net461\Discovery.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.4.0.6\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
+      <HintPath>..\packages\Cronus.DomainModeling.4.0.7\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Web.Api, Version=0.2.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Elders.Web.Api.0.2.4\lib\net45-full\Elders.Web.Api.dll</HintPath>
@@ -78,12 +78,17 @@
     <Compile Include="Controllers\Discovery\HealthCheckController.cs" />
     <Compile Include="Controllers\Discovery\NormalizedDiscoveryController.cs" />
     <Compile Include="Controllers\PushNotifications\Commands\PushNotificationsController.cs" />
+    <Compile Include="Controllers\PushNotifications\Commands\PushNotificationsTopicsController.cs" />
     <Compile Include="Controllers\PushNotifications\Models\SendPushNotificationModel.cs" />
+    <Compile Include="Controllers\PushNotifications\Models\SendPushNotificationToTopicModel.cs" />
+    <Compile Include="Controllers\SubscriptionsTracker\GetTopicCounterController.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\FireBaseSubscribeController.cs" />
+    <Compile Include="Controllers\Subscriptions\Commands\TopicSubscribeController .cs" />
+    <Compile Include="Controllers\Subscriptions\Commands\TopicUnsubscribeController.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\FireBaseUnSubscribeController.cs" />
-    <Compile Include="Controllers\Subscriptions\Commands\PushyUnSubscriptionController.cs" />
     <Compile Include="Controllers\Subscriptions\Models\FireBaseSubscribeModel.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\PushySubscriptionCommandController.cs" />
+    <Compile Include="Controllers\Subscriptions\Models\FirebaseTopicSubscriptionModel.cs" />
     <Compile Include="Controllers\Subscriptions\Models\PushySubscribeModel.cs" />
     <Compile Include="Controllers\Subscriptions\Queries\SubscriptionQueryController.cs" />
     <Compile Include="Converters\ClaimFillConverter.cs" />
@@ -91,6 +96,7 @@
     <Compile Include="Converters\StringTenantIdConverter.cs" />
     <Compile Include="Converters\SubscriptionTypeConverter.cs" />
     <Compile Include="Converters\TenantAwareStringTenantIdConverter.cs" />
+    <Compile Include="Converters\TopicConverter.cs" />
     <Compile Include="Converters\UrlBinder.cs" />
     <Compile Include="Extensions\HttpActionResultExtensions.cs" />
     <Compile Include="PushNotificationsApiAssembly.cs" />

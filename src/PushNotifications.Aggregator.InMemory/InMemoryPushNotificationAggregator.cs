@@ -10,7 +10,7 @@ namespace PushNotifications.Aggregator.InMemory
 {
     public class InMemoryPushNotificationAggregator : IDisposable, IPushNotificationAggregator
     {
-        Func<List<SubscriptionToken>, NotificationForDelivery, bool> send;
+        Func<List<SubscriptionToken>, NotificationForDelivery, SendTokensResult> send;
 
         readonly TimeSpan timeSpanBeforeFlush;
 
@@ -31,7 +31,7 @@ namespace PushNotifications.Aggregator.InMemory
         /// </summary>
         /// <param name="timeSpanBeforeFlush">Time span on which flushing is happening</param>
         /// <param name="recipientsCountBeforeFlush">Number of recipients before flushing</param>
-        public InMemoryPushNotificationAggregator(Func<List<SubscriptionToken>, NotificationForDelivery, bool> send, TimeSpan timeSpanBeforeFlush, int recipientsCountBeforeFlush)
+        public InMemoryPushNotificationAggregator(Func<List<SubscriptionToken>, NotificationForDelivery, SendTokensResult> send, TimeSpan timeSpanBeforeFlush, int recipientsCountBeforeFlush)
         {
             if (ReferenceEquals(null, send) == true) throw new ArgumentNullException(nameof(send));
             if (ReferenceEquals(null, timeSpanBeforeFlush) == true) throw new ArgumentNullException(nameof(timeSpanBeforeFlush));
@@ -44,12 +44,16 @@ namespace PushNotifications.Aggregator.InMemory
             timer = new Timer(x => Flush(), this, TimeSpan.FromSeconds(0), timeSpanBeforeFlush);
         }
 
-        public bool Queue(SubscriptionToken token, NotificationForDelivery notification)
+        public SendTokensResult Queue(SubscriptionToken token, NotificationForDelivery notification)
         {
             if (ReferenceEquals(null, token) == true) throw new ArgumentNullException(nameof(token));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
+
             if (canSend == false)
-                return false;
+            {
+                log.Error($"The InMemoryPushNotificationAggregator cannot send. Token {token} and notification {notification.NotificationPayload}");
+                return SendTokensResult.Success;
+            }
 
             if (timeSpanBeforeFlush == TimeSpan.Zero || recipientsCountBeforeFlush == 1)
                 return send(new List<SubscriptionToken> { token }, notification);
@@ -60,21 +64,20 @@ namespace PushNotifications.Aggregator.InMemory
             if (buffer.TryGetValue(notification, out tokens) && tokens.Count >= recipientsCountBeforeFlush)
                 return Flush();
 
-            return true;
+            return SendTokensResult.Success;
         }
 
-        bool Flush()
+        SendTokensResult Flush()
         {
             foreach (var key in buffer.Keys)
             {
                 List<SubscriptionToken> tokens;
                 if (buffer.TryRemove(key, out tokens))
                 {
-                    log.Debug($"Sending pn with body {key.NotificationPayload?.Body} to {tokens.Count} tokens");
                     return send(tokens, key);
                 }
             }
-            return true;
+            return SendTokensResult.Success;
         }
 
         public void Dispose()

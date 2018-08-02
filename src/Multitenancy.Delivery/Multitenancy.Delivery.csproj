@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.4.0.6\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
+      <HintPath>..\packages\Cronus.DomainModeling.4.0.7\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
     </Reference>
     <Reference Include="Elders.Pandora, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Pandora.0.9.0\lib\net45-full\Elders.Pandora.dll</HintPath>
@@ -55,7 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IDeliveryProvisioner.cs" />
+    <Compile Include="ITopicSubscriptionProvisioner.cs" />
     <Compile Include="MultiTenantStoreItem.cs" />
+    <Compile Include="MultiTenantStoreSubscriptionItem.cs" />
     <Compile Include="PandoraMultiTenantDeliveryProvisioner.cs" />
     <Compile Include="Serialization\IJsonSerializer.cs" />
     <Compile Include="Serialization\NewtonsoftJsonSerializer.cs" />

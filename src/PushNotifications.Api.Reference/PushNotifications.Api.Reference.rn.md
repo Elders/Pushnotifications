@@ -1,3 +1,9 @@
+#### 4.1.0 - 02.08.2018
+* Adds support for subscription to topics
+* Updates Cronus to latest version
+* Removes Aggregates for push notifications
+* Various improvements and optimisations
+
 #### 4.0.2 - 11.05.2018
 * Updated Cronus, Newtonsoft.Json and RabbitMQ transport
 

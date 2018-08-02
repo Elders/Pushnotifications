@@ -11,20 +11,29 @@ namespace PushNotifications.Api.Host
     public class ServiceLocator
     {
         IContainer container;
+        private readonly string namedInstance;
 
-        public ServiceLocator(IContainer container)
+        public ServiceLocator(IContainer container, string namedInstance = null)
         {
             this.container = container;
+            this.namedInstance = namedInstance;
         }
 
         public object Resolve(Type objectType)
         {
             var instance = FastActivator.CreateInstance(objectType);
             var props = objectType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();
-            var dependencies = props.Where(x => container.IsRegistered(x.PropertyType));
-            foreach (var item in dependencies)
+
+            var globalDependencies = props.Where(x => container.IsRegistered(x.PropertyType));
+            foreach (var item in globalDependencies)
             {
                 item.SetValue(instance, container.Resolve(item.PropertyType));
+            }
+
+            var dependencies = props.Where(x => container.IsRegistered(x.PropertyType, namedInstance));
+            foreach (var item in dependencies)
+            {
+                item.SetValue(instance, container.Resolve(item.PropertyType, namedInstance));
             }
             return instance;
         }

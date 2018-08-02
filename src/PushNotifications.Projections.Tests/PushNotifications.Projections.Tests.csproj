@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.4.0.6\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
+      <HintPath>..\packages\Cronus.DomainModeling.4.0.7\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
     </Reference>
     <Reference Include="Machine.Specifications, Version=0.12.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Machine.Specifications.0.12.0\lib\net45\Machine.Specifications.dll</HintPath>
@@ -50,10 +50,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Subscriptions\When_subscriber_has_subscribed.cs" />
+    <Compile Include="TopicSubscriptions\When_subscriber_has_subscribed_to_topic.cs" />
+    <Compile Include="TopicSubscriptions\When_subscriber_has_subscribed_to_topic_twice.cs" />
     <Compile Include="Subscriptions\When_subscriber_has_subscribed_twice_with_different_token.cs" />
     <Compile Include="Subscriptions\When_subscriber_has_subscribed_twice_with_same_token.cs" />
     <Compile Include="Subscriptions\When_subscriber_has_unsubscribed.cs" />
+    <Compile Include="TopicSubscriptions\When_subscriber_has_unsubscribed_from_topic.cs" />
     <Compile Include="Subscriptions\When_subscriber_has_unsubscribed_to_one_subscription_after_having_two_subscriptions.cs" />
+    <Compile Include="TopicSubscriptions\When_subscriber_has_unsubscribed_from_topic_twice.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

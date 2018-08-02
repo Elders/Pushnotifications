@@ -6,11 +6,15 @@ using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Contracts.PushNotifications.Events;
 using PushNotifications.Ports.Logging;
 using PushNotifications.Projections.Subscriptions;
+using PushNotifications.Contracts.Subscriptions.Commands;
+using PushNotifications.Contracts.Subscriptions;
+using PushNotifications.Contracts;
 
 namespace PushNotifications.Ports
 {
     public class PushNotificationsPort : IPort,
-        IEventHandler<PushNotificationSent>
+        IEventHandler<PushNotificationSent>,
+        IEventHandler<TopicPushNotificationSent>
     {
         static ILog log = LogProvider.GetLogger(typeof(PushNotificationsPort));
 
@@ -24,6 +28,7 @@ namespace PushNotifications.Ports
         {
             if (ReferenceEquals(null, Projections)) throw new ArgumentNullException(nameof(Projections));
             if (ReferenceEquals(null, DeliveryProvisioner)) throw new ArgumentNullException(nameof(DeliveryProvisioner));
+            if (ReferenceEquals(null, CommandPublisher)) throw new ArgumentNullException(nameof(CommandPublisher));
 
             var projectionReponse = Projections.Get<SubscriberTokensProjection>(@event.SubscriberId);
             if (projectionReponse.Success == false)
@@ -36,7 +41,34 @@ namespace PushNotifications.Ports
             {
                 var notification = new NotificationForDelivery(@event.Id, @event.NotificationPayload, @event.NotificationData, @event.ExpiresAt, @event.ContentAvailable);
                 var delivery = DeliveryProvisioner.ResolveDelivery(token.SubscriptionType, notification);
-                delivery.Send(token, notification);
+                SendTokensResult sendResult = delivery.Send(token, notification);
+
+                if (sendResult.HasFailedTokens)
+                {
+                    foreach (var failedToken in sendResult.FailedTokens)
+                    {
+                        var subscribtionId = new SubscriptionId(failedToken.Token, @event.Id.Tenant);
+                        var unsubscribe = new UnSubscribe(subscribtionId, @event.SubscriberId, failedToken);
+                        CommandPublisher.Publish(unsubscribe);
+                    }
+                }
+            }
+        }
+
+        public void Handle(TopicPushNotificationSent @event)
+        {
+            if (ReferenceEquals(null, Projections)) throw new ArgumentNullException(nameof(Projections));
+            if (ReferenceEquals(null, DeliveryProvisioner)) throw new ArgumentNullException(nameof(DeliveryProvisioner));
+
+            var topic = @event.Id.Topic;
+
+            var notification = new NotificationForDelivery(@event.Id, @event.NotificationPayload, @event.NotificationData, @event.ExpiresAt, @event.ContentAvailable);
+
+            var provisioners = DeliveryProvisioner.GetDeliveryProviders(@event.Id.Tenant);
+
+            foreach (var provisioner in provisioners)
+            {
+                provisioner.SendToTopic(topic, notification);
             }
         }
     }
