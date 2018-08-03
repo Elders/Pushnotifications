@@ -1,3 +1,8 @@
+#### 5.0.0 - 03.08.2018
+* Removes PushNotifications Aggregate
+* Fixes Projections
+* Synchronises with the client version
+
 #### 4.1.0 - 02.08.2018
 * Adds support for subscription to topics
 * Updates Cronus to latest version
