@@ -29,7 +29,6 @@ using PushNotifications.Contracts;
 using PushNotifications.Ports;
 using PushNotifications.Projections;
 using PushNotifications.WS.Logging;
-using RedLock;
 
 namespace PushNotifications.WS
 {
@@ -61,7 +60,6 @@ namespace PushNotifications.WS
 
                 containerWhichYouShouldNotUse = new Container();
                 new CronusSettings(containerWhichYouShouldNotUse)
-
                     .UseContractsFromAssemblies(new[]
                     {
                          Assembly.GetAssembly(typeof(PushNotificationsContractsAssembly)),
@@ -85,6 +83,7 @@ namespace PushNotifications.WS
                     .UsePushNotifications(pandora)
                     .UsePushNotificationProjections(pandora)
                     .UseCronusSystemProjections(pandora)
+                    .UseCronusProjectionVersionHandler(pandora)
                     .UsePorts(pandora)
                     .UseCronusSystemServices(pandora)
                     .UseMultiTenantDelivery(pandora)
@@ -235,12 +234,12 @@ namespace PushNotifications.WS
             return cronusSettings;
         }
 
-        public static ICronusSettings UseCronusSystemProjections(this ICronusSettings cronusSettings, Pandora pandora)
+        public static ICronusSettings UseCronusProjectionVersionHandler(this ICronusSettings cronusSettings, Pandora pandora)
         {
             var clusterSettings = cronusSettings.Container.Resolve<IClusterSettings>();
             var consumerName = $"{pandora.ApplicationContext.ApplicationName}.{clusterSettings.CurrentNodeName}@{clusterSettings.ClusterName}";
-            var systemProjection_serviceLocator = new ServiceLocator(cronusSettings.Container);
-            var systemProjections = typeof(ProjectionVersionsHandler).Assembly.GetTypes().Where(x => typeof(IProjectionDefinition).IsAssignableFrom(x));
+            var systemProjection_serviceLocator = new ServiceLocator(cronusSettings.Container, consumerName);
+
             cronusSettings
                 .UseProjectionConsumer(consumerName, consumer => consumer
                      .UseRabbitMqTransport(x =>
@@ -253,7 +252,52 @@ namespace PushNotifications.WS
                      })
                      .WithDefaultPublishers()
                      .UseSystemProjections(x => x
-                         .RegisterHandlerTypes(systemProjections, systemProjection_serviceLocator.Resolve))
+                         .RegisterHandlerTypes(new List<Type>() { typeof(InMemoryProjectionVersionHandler) }, systemProjection_serviceLocator.Resolve))
+            );
+
+            return cronusSettings;
+        }
+
+        public static ICronusSettings UseCronusSystemProjections(this ICronusSettings cronusSettings, Pandora pandora)
+        {
+            // Cassandra persistent projections
+            var projectionsReplicationFactor = pandora.Get<int>("pn_cassandra_projections_replication_factor");
+            Elders.Cronus.Projections.Cassandra.ReplicationStrategies.ICassandraReplicationStrategy projectionsReplicationStrategy = new Elders.Cronus.Projections.Cassandra.ReplicationStrategies.SimpleReplicationStrategy(projectionsReplicationFactor);
+            if (pandora.Get("pn_cassandra_projections_replication_strategy") == "network_topology")
+            {
+                var settings = new List<Elders.Cronus.Projections.Cassandra.ReplicationStrategies.NetworkTopologyReplicationStrategy.DataCenterSettings>();
+                foreach (var datacenter in pandora.Get<List<string>>("pn_cassandra_projections_data_centers"))
+                {
+                    var setting = new Elders.Cronus.Projections.Cassandra.ReplicationStrategies.NetworkTopologyReplicationStrategy.DataCenterSettings(datacenter, projectionsReplicationFactor);
+                    settings.Add(setting);
+                }
+                projectionsReplicationStrategy = new Elders.Cronus.Projections.Cassandra.ReplicationStrategies.NetworkTopologyReplicationStrategy(settings);
+            }
+
+            //
+            string SystemProjections = "SystemProjections";
+            var systemProjection_serviceLocator = new ServiceLocator(cronusSettings.Container);
+            var systemProjections = typeof(ProjectionVersionsHandler).Assembly.GetTypes().Where(x => typeof(IProjectionDefinition).IsAssignableFrom(x));
+            cronusSettings
+                .UseProjectionConsumer(SystemProjections, consumer => consumer
+                     .UseRabbitMqTransport(x =>
+                     {
+                         x.Server = pandora.Get("rabbitmq_server");
+                         x.Port = pandora.Get<int>("rabbitmq_port");
+                         x.Username = pandora.Get("rabbitmq_username");
+                         x.Password = pandora.Get("rabbitmq_password");
+                         x.VirtualHost = pandora.Get("rabbitmq_virtualhost");
+                     })
+                     .WithDefaultPublishers()
+                     .UseSystemProjections(x => x
+                         .RegisterHandlerTypes(systemProjections, systemProjection_serviceLocator.Resolve)
+                         .UseCassandraProjections(p => p
+                             .UseLocking(pandora)
+                             .SetProjectionsConnectionString(pandora.Get("pn_cassandra_projections"))
+                             .SetProjectionTypes(systemProjections)
+                             .SetProjectionsReplicationStrategy(projectionsReplicationStrategy)
+                             .SetProjectionsWriteConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_write_consistency_level"))
+                             .SetProjectionsReadConsistencyLevel(pandora.Get<ConsistencyLevel>("pn_cassandra_projections_read_consistency_level"))))
             );
 
             return cronusSettings;
