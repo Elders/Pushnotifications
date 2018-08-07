@@ -15,9 +15,37 @@ namespace Multitenancy.Tracker
         const string GetTemplate = @"SELECT * FROM pushnot_subscriptions WHERE name=?;";
 
         private readonly ISession _session;
-        private readonly PreparedStatement incrementTemplate;
-        private readonly PreparedStatement decrementTemplate;
-        private readonly PreparedStatement getTemplate;
+        private PreparedStatement _incrementTemplate;
+        private PreparedStatement _decrementTemplate;
+        private PreparedStatement _getTemplate;
+
+        private PreparedStatement IncrementTemplateStatement
+        {
+            get
+            {
+                if (ReferenceEquals(null, _incrementTemplate))
+                    _incrementTemplate = _session.Prepare(IncrementTemplate);
+                return _incrementTemplate;
+            }
+        }
+        private PreparedStatement DecrementTemplateStatement
+        {
+            get
+            {
+                if (ReferenceEquals(null, _decrementTemplate))
+                    _decrementTemplate = _session.Prepare(DecrementTemplate);
+                return _decrementTemplate;
+            }
+        }
+        private PreparedStatement GetTemplateStatement
+        {
+            get
+            {
+                if (ReferenceEquals(null, _getTemplate))
+                    _getTemplate = _session.Prepare(GetTemplate);
+                return _getTemplate;
+            }
+        }
 
         public TopicSubscriptionTracker(ISession session, ILock @lock)
         {
@@ -28,10 +56,6 @@ namespace Multitenancy.Tracker
             var ttl = TimeSpan.FromSeconds(2);
 
             CreateTableWithLock(_session, @lock, ttl);
-
-            incrementTemplate = session.Prepare(IncrementTemplate);
-            decrementTemplate = session.Prepare(DecrementTemplate);
-            getTemplate = session.Prepare(GetTemplate);
         }
 
         private void CreateTableWithLock(ISession session, ILock @lock, TimeSpan ttl)
@@ -73,7 +97,7 @@ namespace Multitenancy.Tracker
         {
             if (ReferenceEquals(null, stat)) throw new ArgumentNullException(nameof(stat));
 
-            PreparedStatement query = incrementTemplate;
+            PreparedStatement query = IncrementTemplateStatement;
             _session.Execute(query.Bind(stat.Name));
         }
 
@@ -81,7 +105,7 @@ namespace Multitenancy.Tracker
         {
             if (ReferenceEquals(null, stat)) throw new ArgumentNullException(nameof(stat));
 
-            PreparedStatement query = decrementTemplate;
+            PreparedStatement query = DecrementTemplateStatement;
             _session.Execute(query.Bind(stat.Name));
         }
 
@@ -95,7 +119,7 @@ namespace Multitenancy.Tracker
 
         private IEnumerable<StatCounter> GetStatsTable(string name)
         {
-            PreparedStatement query = getTemplate;
+            PreparedStatement query = GetTemplateStatement;
 
             BoundStatement boundedStatement = query.Bind(name);
             RowSet result = _session.Execute(boundedStatement);
