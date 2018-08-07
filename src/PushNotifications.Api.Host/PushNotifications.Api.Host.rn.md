@@ -1,3 +1,6 @@
+#### 5.0.1 - 07.08.2018
+* Fixes TopiSubscriptionTracker redis lock connectionstring 
+
 #### 5.0.0 - 03.08.2018
 * Removes PushNotifications Aggregate
 * Fixes Projections
