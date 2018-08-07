@@ -46,10 +46,12 @@ namespace Multitenancy.Tracker
                 ISession session = SessionCreator.Create(connectionString);
 
                 bool useRedis;
-                if (_pandora.TryGet("use_redis_lock", out useRedis))
+                _pandora.TryGet("use_redis_lock", out useRedis);
+
+                if (useRedis)
                 {
-                    var connectionStrings = _pandora.Get("redis_connection_string");
-                    ILock @lock = RedisLockFactory.CreateInstance(connectionString);
+                    var redisConnectionString = _pandora.Get("redis_connection_string");
+                    ILock @lock = RedisLockFactory.CreateInstance(redisConnectionString);
 
                     var service = new TopicSubscriptionTracker(session, @lock);
                     _store.AddOrUpdate(tenant, service, (key, oldValue) => service);
