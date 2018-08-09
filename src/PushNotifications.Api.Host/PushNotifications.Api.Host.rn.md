@@ -1,3 +1,6 @@
+#### 5.0.2 - 09.08.2018
+* Recovers Pushy Unsubscribe controller
+
 #### 5.0.1 - 07.08.2018
 * Fixes TopiSubscriptionTracker redis lock connectionstring 
 
