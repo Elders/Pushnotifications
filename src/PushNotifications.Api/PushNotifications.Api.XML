@@ -182,6 +182,13 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.PushyUnSubscriptionController.UnSubscribeFromPushy(PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeModel)">
+            <summary>
+            UnSubscribes from push notifications with Pushy token
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Commands.TopicSubscribeController.SubscribeToTopic(PushNotifications.Api.Controllers.Subscriptions.Commands.TopicSubscriptionModel)">
             <summary>
             Subscribes a Subscriber for push notifications for a topic 

@@ -83,6 +83,7 @@
     <Compile Include="Controllers\PushNotifications\Models\SendPushNotificationToTopicModel.cs" />
     <Compile Include="Controllers\SubscriptionsTracker\GetTopicCounterController.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\FireBaseSubscribeController.cs" />
+    <Compile Include="Controllers\Subscriptions\Commands\PushyUnSubscriptionController.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\TopicSubscribeController .cs" />
     <Compile Include="Controllers\Subscriptions\Commands\TopicUnsubscribeController.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\FireBaseUnSubscribeController.cs" />
