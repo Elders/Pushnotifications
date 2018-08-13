@@ -49,7 +49,10 @@ namespace PushNotifications.Ports
                     {
                         var subscribtionId = new SubscriptionId(failedToken.Token, @event.Id.Tenant);
                         var unsubscribe = new UnSubscribe(subscribtionId, @event.SubscriberId, failedToken);
-                        CommandPublisher.Publish(unsubscribe);
+                        if (CommandPublisher.Publish(unsubscribe) == false)
+                        {
+                            log.Error("Unable to publish command" + Environment.NewLine + unsubscribe.ToString());
+                        }
                     }
                 }
             }
