@@ -6,6 +6,6 @@ namespace PushNotifications.Contracts
     {
         void Decrement(string name);
         void Increment(string name);
-        IEnumerable<StatCounter> Show(string name);
+        StatCounter Show(string name);
     }
 }
