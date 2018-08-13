@@ -22,6 +22,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         public SubscribeToTopic AsSubscribeToTopicCommand()
         {
             var topic = new Topic(Topic);
+            var sub = new SubscriberId(SubscriberId.Id, SubscriberId.Tenant);
             var topicSubscriptionId = new TopicSubscriptionId(SubscriberId, topic, SubscriberId.Tenant);
             return new SubscribeToTopic(topicSubscriptionId, SubscriberId, topic);
         }
