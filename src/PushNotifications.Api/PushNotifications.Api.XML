@@ -227,11 +227,6 @@
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.TopicSubscriptionModel.SubscriberId">
-            <summary>
-            URN of the subscriber. This must be string tenant urn
-            </summary>
-        </member>
         <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeModel.SubscriberUrn">
             <summary>
             URN of the subscriber. This must be string tenant urn
@@ -240,6 +235,11 @@
         <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.PushySubscribeModel.Token">
             <summary>
             Registration token
+            </summary>
+        </member>
+        <member name="P:PushNotifications.Api.Controllers.Subscriptions.Commands.TopicSubscriptionModel.SubscriberId">
+            <summary>
+            URN of the subscriber. This must be string tenant urn
             </summary>
         </member>
         <member name="M:PushNotifications.Api.Controllers.Subscriptions.Queries.GetSubscriberTokensController.GetSubscriberTokens(PushNotifications.Api.Controllers.Subscriptions.Queries.GetSubscriberTokensController.SubscriberTokensModel)">
