@@ -57,6 +57,8 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
         /// </summary>
         public bool ContentAvailable { get; set; }
 
+        public PushNotificationId MessageId { get; set; }
+
         /// <summary>
         /// The payload data
         /// </summary>
@@ -64,10 +66,26 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
 
         public PushNotificationSent AsEvent()
         {
-            var id = new PushNotificationId(Guid.NewGuid().ToString(), SubscriberUrn.Tenant);
+            if (ReferenceEquals(null, MessageId))
+            {
+                string messageIdFromData = NotificationData["messageid"].ToString();
+                string messageIdUrnRaw = messageIdFromData;
+                if (messageIdFromData.CanUrlTokenDecode())
+                {
+                    messageIdUrnRaw = messageIdFromData.UrlDecode();
+                }
+                else
+                {
+                    messageIdUrnRaw = messageIdUrnRaw.Replace("%3A", ":");
+                }
+
+                var urn = StringTenantUrn.Parse(messageIdUrnRaw);
+                MessageId = new PushNotificationId(urn.Id, urn.Tenant);
+            }
+
             var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
             var notificationPayload = new NotificationPayload(Title, Body, Sound, Icon, Badge);
-            return new PushNotificationSent(id, subscriberId, notificationPayload, NotificationData, ExpiresAt, ContentAvailable);
+            return new PushNotificationSent(MessageId, subscriberId, notificationPayload, NotificationData, ExpiresAt, ContentAvailable);
         }
     }
 }
