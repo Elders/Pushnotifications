@@ -13,7 +13,7 @@ namespace PushNotifications.Aggregator.InMemory
     {
         static ILog log = LogProvider.GetLogger(typeof(InMemoryPushNotificationAggregator));
 
-        private static readonly object _lockBuffer = new object();
+        private readonly object _lockBuffer = new object();
 
         Func<List<SubscriptionToken>, NotificationForDelivery, SendTokensResult> send;
 
@@ -91,12 +91,12 @@ namespace PushNotifications.Aggregator.InMemory
                 {
                     if (buffer.Remove(notification))
                         return send(tokens, notification);
+                    else
+                        log.Error($"Failed to remove notification from the {nameof(InMemoryPushNotificationAggregator)} buffer. Most likely the access to the {nameof(buffer)} is not properly synchronized. I suggest you to delete this class and rewrite it.");
                 }
             }
 
-            log.Error($"Failed to remove notification from the {nameof(InMemoryPushNotificationAggregator)} buffer. Most likely the access to the {nameof(buffer)} is not properly synchronized. I suggest you to delete this class and rewrite it.");
-
-            return SendTokensResult.Failed;
+            return SendTokensResult.Success;
         }
 
         void FlushAll()
