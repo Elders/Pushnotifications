@@ -131,7 +131,7 @@ namespace Multitenancy.Tracker
                 return stat;
             }
 
-            return null;
+            return StatCounter.Empty(name);
         }
     }
 }

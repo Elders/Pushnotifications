@@ -19,5 +19,7 @@ namespace PushNotifications.Contracts
 
         [DataMember(Order = 2)]
         public long Count { get; private set; }
+
+        public static StatCounter Empty(string name) => new StatCounter(name, 0);
     }
 }

@@ -3,7 +3,6 @@ using Elders.Web.Api;
 using PushNotifications.Api.Attributes;
 using PushNotifications.Api.Converters;
 using PushNotifications.Contracts;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
