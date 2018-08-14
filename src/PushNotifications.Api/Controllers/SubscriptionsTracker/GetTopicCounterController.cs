@@ -3,7 +3,6 @@ using Elders.Web.Api;
 using PushNotifications.Api.Attributes;
 using PushNotifications.Api.Converters;
 using PushNotifications.Contracts;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
@@ -25,9 +24,9 @@ namespace PushNotifications.Api.Controllers.SubscriptionsTracker
         [HttpGet, Route("GetTopicSubscribedCount"), Discoverable("TopicSubscriptionCount", "v1")]
         public IHttpActionResult GetTopicSubscribedCount(TopicCounter model)
         {
-            IEnumerable<StatCounter> result = TopicSubscriptionTracker.GetService(model.Tenant).Show(model.Name);
+            StatCounter result = TopicSubscriptionTracker.GetService(model.Tenant).Show(model.Name);
 
-            return Ok(new ResponseResult<IEnumerable<StatCounter>>(result));
+            return Ok(new ResponseResult<StatCounter>(result));
         }
 
         [ModelBinder(typeof(UrlBinder))]

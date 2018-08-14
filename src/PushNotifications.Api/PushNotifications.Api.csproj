@@ -89,8 +89,8 @@
     <Compile Include="Controllers\Subscriptions\Commands\FireBaseUnSubscribeController.cs" />
     <Compile Include="Controllers\Subscriptions\Models\FireBaseSubscribeModel.cs" />
     <Compile Include="Controllers\Subscriptions\Commands\PushySubscriptionCommandController.cs" />
-    <Compile Include="Controllers\Subscriptions\Models\FirebaseTopicSubscriptionModel.cs" />
     <Compile Include="Controllers\Subscriptions\Models\PushySubscribeModel.cs" />
+    <Compile Include="Controllers\Subscriptions\Models\TopicSubscriptionModel.cs" />
     <Compile Include="Controllers\Subscriptions\Queries\SubscriptionQueryController.cs" />
     <Compile Include="Converters\ClaimFillConverter.cs" />
     <Compile Include="Converters\GenericJsonConverter.cs" />

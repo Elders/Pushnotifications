@@ -1,3 +1,6 @@
+#### 5.0.2 - 14.08.2018
+* Fixes the TopicSubsciptionTracker endpoint
+
 #### 5.0.1 - 09.08.2018
 * Recovers Pushy Unsubscribe controller
 

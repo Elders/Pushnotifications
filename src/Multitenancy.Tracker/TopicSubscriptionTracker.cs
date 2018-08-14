@@ -2,7 +2,6 @@
 using Elders.Cronus.AtomicAction;
 using PushNotifications.Contracts;
 using System;
-using System.Collections.Generic;
 
 namespace Multitenancy.Tracker
 {
@@ -109,15 +108,16 @@ namespace Multitenancy.Tracker
             _session.Execute(query.Bind(stat.Name));
         }
 
-        public IEnumerable<StatCounter> Show(string name)
+        public StatCounter Show(string name)
         {
-            foreach (StatCounter statCounter in GetStatsTable(name))
-            {
-                yield return statCounter;
-            }
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+
+            var statCounter = GetStatsTable(name);
+
+            return statCounter;
         }
 
-        private IEnumerable<StatCounter> GetStatsTable(string name)
+        private StatCounter GetStatsTable(string name)
         {
             PreparedStatement query = GetTemplateStatement;
 
@@ -128,8 +128,10 @@ namespace Multitenancy.Tracker
             {
                 long count = row.GetValue<long>("cv");
                 var stat = new StatCounter(name, count);
-                yield return stat;
+                return stat;
             }
+
+            return StatCounter.Empty(name);
         }
     }
 }
