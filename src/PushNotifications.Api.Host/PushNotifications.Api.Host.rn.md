@@ -1,3 +1,6 @@
+#### 5.0.5 - 15.08.2018
+* Configures log levels for log4net in a way that only pushnotification logs are DEBUG and everything else is ERROR
+
 #### 5.0.4 - 14.08.2018
 * Builds MessageId from the request when sending a push notificaiton
 
