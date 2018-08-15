@@ -1,7 +1,9 @@
-#### 5.0.3 - 14.08.2018
-* Fixes the TopicSubsciptionTracker endpoint
+#### 5.0.4 - 15.08.2018
 * Builds MessageId from the request when sending a push notificaiton
 * Configures log levels for log4net in a way that only pushnotification logs are DEBUG and everything else is ERROR
+
+#### 5.0.3 - 14.08.2018
+* Fixes the TopicSubsciptionTracker endpoint
 
 #### 5.0.2 - 09.08.2018
 * Recovers Pushy Unsubscribe controller
