@@ -1,3 +1,6 @@
+#### 5.0.4 - 15.08.2018
+* Configures log levels for log4net in a way that only pushnotification logs are DEBUG and everything else is ERROR
+
 #### 5.0.3 - 14.08.2018
 * Logs an error when unsubscribe command fails to be published
 * Reworks the InMemoryPushNotificationAggregator. The access to the internal buffer is synchronized and sends all notifications when the entire buffer is flushed
