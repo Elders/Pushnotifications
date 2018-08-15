@@ -20,7 +20,7 @@ namespace PushNotifications.Api.Controllers.SubscriptionsTracker
         /// </summary>
         /// <param name="model">Contains a mandatory tenant and name which identifies the topic</param>
         /// <returns></returns>
-        [ScopeAndOrRoleAuthorize(Roles = AvailableRoles.Admin, Scope = AvailableScopes.Admin)]
+        [Authorize]
         [HttpGet, Route("GetTopicSubscribedCount"), Discoverable("TopicSubscriptionCount", "v1")]
         public IHttpActionResult GetTopicSubscribedCount(TopicCounter model)
         {
