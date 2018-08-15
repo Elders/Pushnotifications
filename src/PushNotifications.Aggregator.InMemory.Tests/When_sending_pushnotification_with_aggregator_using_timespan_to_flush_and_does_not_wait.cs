@@ -24,10 +24,7 @@ namespace PushNotifications.Aggregator.InMemory.Tests
             notification = new NotificationForDelivery(new PushNotificationId(Guid.NewGuid().ToString(), "elders"), new NotificationPayload("title", "body"), notificationData, expirationDateOfNotification, true);
         };
 
-        Because of = () =>
-        {
-            Helper.Send(concreateDelivery, countOfRecipients, notification);
-        };
+        Because of = () => Helper.Send(concreateDelivery, countOfRecipients, notification);
 
         It should_have_sent_zero_notifications = () => concreateDelivery.Store.Count().ShouldEqual(0);
 

@@ -32,11 +32,10 @@ namespace PushNotifications.Aggregator.InMemory.Tests
         {
             concreateDelivery.Send(t1, n1);
             concreateDelivery.Send(t2, n1);
-            Thread.Sleep((int)timeSpanBeforeFlush.TotalMilliseconds * 2);
+            Thread.Sleep((int)timeSpanBeforeFlush.TotalMilliseconds * 3);
         };
 
         It should_send_correct_number_of_notifications = () => concreateDelivery.Store.Count().ShouldEqual(2);
-
 
         It should_send_to_correct_first_token = () => concreateDelivery.Store.Where(x => x.Key.Equals(t1)).Count().ShouldEqual(1);
 

@@ -1,3 +1,6 @@
+#### 5.0.4 - 14.08.2018
+* Builds MessageId from the request when sending a push notificaiton
+
 #### 5.0.3 - 14.08.2018
 * Fixes the TopicSubsciptionTracker endpoint
 
