@@ -1,3 +1,6 @@
+#### 5.0.5 - 15.08.2018
+* Changes the authorization attribute for the GetTopicCounterController
+
 #### 5.0.4 - 15.08.2018
 * Builds MessageId from the request when sending a push notificaiton
 * Configures log levels for log4net in a way that only pushnotification logs are DEBUG and everything else is ERROR
