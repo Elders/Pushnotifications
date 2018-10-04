@@ -24,11 +24,16 @@ namespace PushNotifications.Ports
 
         public IDeliveryProvisioner DeliveryProvisioner { get; set; }
 
+        public IBadgeCountTrackerFactory BadgeCountTrackerFactory { get; set; }
+
         public void Handle(PushNotificationSent @event)
         {
             if (ReferenceEquals(null, Projections)) throw new ArgumentNullException(nameof(Projections));
             if (ReferenceEquals(null, DeliveryProvisioner)) throw new ArgumentNullException(nameof(DeliveryProvisioner));
             if (ReferenceEquals(null, CommandPublisher)) throw new ArgumentNullException(nameof(CommandPublisher));
+
+            string tenant = @event.Id.Tenant;
+            string subscriberId = @event.SubscriberId.Id;
 
             var projectionReponse = Projections.Get<SubscriberTokensProjection>(@event.SubscriberId);
             if (projectionReponse.Success == false)
@@ -47,7 +52,7 @@ namespace PushNotifications.Ports
                 {
                     foreach (var failedToken in sendResult.FailedTokens)
                     {
-                        var subscribtionId = new SubscriptionId(failedToken.Token, @event.Id.Tenant);
+                        var subscribtionId = new SubscriptionId(failedToken.Token, tenant);
                         var unsubscribe = new UnSubscribe(subscribtionId, @event.SubscriberId, failedToken);
                         if (CommandPublisher.Publish(unsubscribe) == false)
                         {
@@ -55,6 +60,15 @@ namespace PushNotifications.Ports
                         }
                     }
                 }
+            }
+
+            try
+            {
+                BadgeCountTrackerFactory.GetService(tenant).Increment(subscriberId);
+            }
+            catch (Exception ex)
+            {
+                log.WarnException($"Could not Increment the badge counter for `{subscriberId}`", ex);
             }
         }
 

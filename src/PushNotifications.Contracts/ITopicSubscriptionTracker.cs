@@ -8,4 +8,10 @@ namespace PushNotifications.Contracts
         void Increment(string name);
         StatCounter Show(string name);
     }
+
+    public interface IBadgeCountTracker
+    {
+        void SetCount(string subscriberId, int badgeCount);
+        void Increment(string subscriberId);
+    }
 }

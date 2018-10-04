@@ -4,4 +4,9 @@
     {
         ITopicSubscriptionTracker GetService(string tenant);
     }
+
+    public interface IBadgeCountTrackerFactory
+    {
+        IBadgeCountTracker GetService(string tenant);
+    }
 }
