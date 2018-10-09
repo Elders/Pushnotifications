@@ -389,6 +389,7 @@ namespace PushNotifications.WS
         {
             cronusSettings.Container.RegisterSingleton<IDeliveryProvisioner>(() => new PandoraMultiTenantDeliveryProvisioner(pandora), Name);
             cronusSettings.Container.RegisterSingleton<ITopicSubscriptionProvisioner>(() => new PandoraMultiTenantDeliveryProvisioner(pandora), Name);
+            cronusSettings.Container.RegisterSingleton<IBadgeCountTrackerFactory>(() => new BadgeCountTrackerFactory(pandora));
             return cronusSettings;
         }
     }
