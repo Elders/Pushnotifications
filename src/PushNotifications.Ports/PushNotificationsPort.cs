@@ -9,6 +9,7 @@ using PushNotifications.Projections.Subscriptions;
 using PushNotifications.Contracts.Subscriptions.Commands;
 using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Contracts;
+using PushNotifications.Contracts.PushNotifications;
 
 namespace PushNotifications.Ports
 {
@@ -33,7 +34,7 @@ namespace PushNotifications.Ports
             if (ReferenceEquals(null, CommandPublisher)) throw new ArgumentNullException(nameof(CommandPublisher));
 
             string tenant = @event.Id.Tenant;
-            string subscriberId = @event.SubscriberId.Id;
+            string subscriberId = @event.SubscriberId.Urn.Value;
 
             var projectionReponse = Projections.Get<SubscriberTokensProjection>(@event.SubscriberId);
             if (projectionReponse.Success == false)
@@ -42,9 +43,11 @@ namespace PushNotifications.Ports
                 return;
             }
 
+            NotificationPayload notificationPayload = SetNotificationPayloadBadgeCount(@event.NotificationPayload, tenant, subscriberId);
+
             foreach (var token in projectionReponse.Projection.State.Tokens)
             {
-                var notification = new NotificationForDelivery(@event.Id, @event.NotificationPayload, @event.NotificationData, @event.ExpiresAt, @event.ContentAvailable);
+                var notification = new NotificationForDelivery(@event.Id, notificationPayload, @event.NotificationData, @event.ExpiresAt, @event.ContentAvailable);
                 var delivery = DeliveryProvisioner.ResolveDelivery(token.SubscriptionType, notification);
                 SendTokensResult sendResult = delivery.Send(token, notification);
 
@@ -64,11 +67,25 @@ namespace PushNotifications.Ports
 
             try
             {
-                BadgeCountTrackerFactory.GetService(tenant).Increment(subscriberId);
+                BadgeCountTrackerFactory.GetService(tenant).Increment(subscriberId);  // We could issue a new command, but decided to remove added latency and execute via shortest route to DB
             }
             catch (Exception ex)
             {
                 log.WarnException($"Could not Increment the badge counter for `{subscriberId}`", ex);
+            }
+        }
+
+        private NotificationPayload SetNotificationPayloadBadgeCount(NotificationPayload payload, string tenant, string subscriberId)
+        {
+            try
+            {
+                StatCounter stat = BadgeCountTrackerFactory.GetService(tenant).Show(subscriberId);
+                return new NotificationPayload(payload.Title, payload.Body, payload.Sound, payload.Icon, (int)stat.Count);
+            }
+            catch (Exception ex)
+            {
+                log.ErrorException("Unable to get badge counter", ex);
+                return payload;
             }
         }
 

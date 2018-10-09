@@ -10,11 +10,13 @@ namespace Multitenancy.Tracker
         const string CreateTableTemplateLockKey = "PushNotifications_CreateBadgeCountTableTemplateLockKey";
         const string CreateTableTemplate = @"CREATE TABLE IF NOT EXISTS ""pushnot_badges"" (cv counter, subscriberId varchar, PRIMARY KEY (subscriberId));";
         const string IncrementTemplate = @"UPDATE ""pushnot_badges"" SET cv = cv + 1 WHERE subscriberId=?;";
-        const string SetCountTemplate = @"UPDATE ""pushnot_badges"" SET cv = ? WHERE subscriberId=?;";
+        const string SetCountTemplate = @"UPDATE ""pushnot_badges"" SET cv = cv - ? WHERE subscriberId=?;";
+        const string GetTemplate = @"SELECT * FROM pushnot_badges WHERE subscriberId=?;";
 
         private readonly ISession _session;
         private PreparedStatement _incrementTemplate;
         private PreparedStatement _setCountTemplate;
+        private PreparedStatement _getTemplate;
 
         private PreparedStatement IncrementTemplateStatement
         {
@@ -32,6 +34,15 @@ namespace Multitenancy.Tracker
                 if (_setCountTemplate is null)
                     _setCountTemplate = _session.Prepare(SetCountTemplate);
                 return _setCountTemplate;
+            }
+        }
+        private PreparedStatement GetTemplateStatement
+        {
+            get
+            {
+                if (_getTemplate is null)
+                    _getTemplate = _session.Prepare(GetTemplate);
+                return _getTemplate;
             }
         }
 
@@ -54,14 +65,6 @@ namespace Multitenancy.Tracker
             IncrementTrack(stat);
         }
 
-        private void IncrementTrack(BadgeStatTracker stat)
-        {
-            if (stat is null) throw new ArgumentNullException(nameof(stat));
-
-            PreparedStatement query = IncrementTemplateStatement;
-            _session.Execute(query.Bind(stat.SubscriberId));
-        }
-
         public void SetCount(string subscriberId, int badgeCount)
         {
             if (string.IsNullOrEmpty(subscriberId)) throw new ArgumentNullException(nameof(subscriberId));
@@ -70,13 +73,54 @@ namespace Multitenancy.Tracker
             SetCountTrack(stat);
         }
 
-        private void SetCountTrack(StatCounter stat)
+        private void IncrementTrack(BadgeStatTracker stat)
         {
             if (stat is null) throw new ArgumentNullException(nameof(stat));
 
-            PreparedStatement query = SetCountTemplateStatement;
-            _session.Execute(query.Bind(stat.Count, stat.Name));
+            PreparedStatement query = IncrementTemplateStatement;
+            _session.Execute(query.Bind(stat.SubscriberId));
+        }
 
+        private void SetCountTrack(StatCounter targetStat)
+        {
+            if (targetStat is null) throw new ArgumentNullException(nameof(targetStat));
+
+            string subscriberId = targetStat.Name;
+            StatCounter databaseStat = Show(subscriberId);
+
+            PreparedStatement query = SetCountTemplateStatement;
+            _session.Execute(query.Bind(CalculateCounter(databaseStat.Count, targetStat.Count), subscriberId));
+        }
+
+        public StatCounter Show(string name)
+        {
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+
+            var statCounter = GetStatsTable(name);
+
+            return statCounter;
+        }
+
+        private StatCounter GetStatsTable(string name)
+        {
+            PreparedStatement query = GetTemplateStatement;
+
+            BoundStatement boundedStatement = query.Bind(name);
+            RowSet result = _session.Execute(boundedStatement);
+
+            foreach (Row row in result.GetRows())
+            {
+                long count = row.GetValue<long>("cv");
+                var stat = new StatCounter(name, count);
+                return stat;
+            }
+
+            return StatCounter.Empty(name);
+        }
+
+        private long CalculateCounter(long databaseCounter, long setTarget)
+        {
+            return (databaseCounter - setTarget);
         }
 
         private void CreateTableWithLock(ISession session, ILock @lock, TimeSpan ttl)

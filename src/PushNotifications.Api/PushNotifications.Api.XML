@@ -352,6 +352,13 @@
             <param name="model">Contains a mandatory tenant and name which identifies the topic</param>
             <returns></returns>
         </member>
+        <member name="M:PushNotifications.Api.Controllers.Badge.SetBadgeCounterController.SetBadgeCount(PushNotifications.Api.Controllers.Badge.SetBadgeCounterController.BadgeCounterModel)">
+            <summary>
+            Sets the BadgeCount for a subscriber.
+            </summary>
+            <param name="model">Contains a mandatory tenant and subscriberId </param>
+            <returns></returns>
+        </member>
         <member name="M:Vapt.Api.Discovery.DiscoveryController.Discovery">
             <summary>
             Discovery endpoint

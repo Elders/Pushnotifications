@@ -41,6 +41,8 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IBadgeCountTracker.cs" />
+    <Compile Include="IBadgeCountTrackerFactory.cs" />
     <Compile Include="IInMemoryPushNotificationAggregator.cs" />
     <Compile Include="ITopicSubscriptionTracker.cs" />
     <Compile Include="ITopicSubscriptionTrackerFactory.cs" />

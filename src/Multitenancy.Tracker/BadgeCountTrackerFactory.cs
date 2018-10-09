@@ -41,7 +41,7 @@ namespace Multitenancy.Tracker
         {
             string connectionString;
 
-            if (_pandora.TryGet($"{tenant}_pn_cassandra_tracker_connection_string", out connectionString))
+            if (_pandora.TryGet($"{tenant}_cassandra_badge_counter_connection_string", out connectionString))
             {
                 ISession session = SessionCreator.Create(connectionString);
 
