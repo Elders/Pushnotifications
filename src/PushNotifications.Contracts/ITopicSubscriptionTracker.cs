@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PushNotifications.Contracts
+﻿namespace PushNotifications.Contracts
 {
     public interface ITopicSubscriptionTracker
     {

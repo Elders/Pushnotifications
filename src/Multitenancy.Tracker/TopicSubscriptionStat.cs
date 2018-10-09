@@ -20,4 +20,18 @@ namespace Multitenancy.Tracker
             public string Name { get; private set; }
         }
     }
+
+    [DataContract(Name = "25e78259-9a07-4c5f-9d48-fbd4389bd21e")]
+    public class BadgeStatTracker : ValueObject<BadgeStatTracker>
+    {
+        public BadgeStatTracker(string subscriberId)
+        {
+            if (string.IsNullOrEmpty(subscriberId)) throw new ArgumentNullException(nameof(subscriberId));
+
+            SubscriberId = subscriberId;
+        }
+
+        [DataMember(Order = 1)]
+        public string SubscriberId { get; private set; }
+    }
 }

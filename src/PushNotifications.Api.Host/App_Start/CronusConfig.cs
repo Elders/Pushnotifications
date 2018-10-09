@@ -89,6 +89,7 @@ namespace PushNotifications.Api.Host.App_Start
 
                 container.RegisterSingleton<IProjectionLoader>(() => new ProjectionRepository(container.Resolve<IProjectionStore>(), container.Resolve<ISnapshotStore>(), container.Resolve<ISnapshotStrategy>(), container.Resolve<InMemoryProjectionVersionStore>()));
                 container.RegisterSingleton<ITopicSubscriptionTrackerFactory>(() => new TopicSubscriptionTrackerFactory(pandora));
+                container.RegisterSingleton<IBadgeCountTrackerFactory>(() => new BadgeCountTrackerFactory(pandora));
 
                 container.RegisterSingleton<ConsulClient>(() => new ConsulClient(x => x.Address = ConsulHelper.DefaultConsulUri));
                 container.RegisterSingleton<IDiscoveryReader>(() => new ConsulDiscoveryReader(container.Resolve<ConsulClient>()));

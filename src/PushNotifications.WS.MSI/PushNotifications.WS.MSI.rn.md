@@ -1,3 +1,6 @@
+#### 5.0.3 - 09.10.2018
+* Adds the BadgeCounter Feature 
+
 #### 5.0.2 - 15.08.2018
 * Fixes the TopicSubsciptionTracker endpoint
 * * Logs an error when unsubscribe command fails to be published

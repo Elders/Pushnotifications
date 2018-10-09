@@ -97,6 +97,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
+    <Compile Include="BadgeCountTracker.cs" />
+    <Compile Include="BadgeCountTrackerFactory.cs" />
     <Compile Include="TopicSubscriptionStat.cs" />
     <Compile Include="TopicSubscriptionTrackerFactory.cs" />
     <Compile Include="TopicSubscriptionTracker.cs" />
