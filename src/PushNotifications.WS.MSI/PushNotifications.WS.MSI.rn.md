@@ -1,3 +1,6 @@
+#### 5.0.3 - 11.10.2018
+* Adds content_mutable flag for IOS with default to true
+
 #### 5.0.2 - 15.08.2018
 * Fixes the TopicSubsciptionTracker endpoint
 * * Logs an error when unsubscribe command fails to be published
