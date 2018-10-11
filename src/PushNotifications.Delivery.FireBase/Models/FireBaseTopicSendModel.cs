@@ -21,6 +21,7 @@ namespace PushNotifications.Delivery.FireBase.Models
             TTL = ExpirationTimeToSeconds(expiresAt);
             Data = notificationData;
             Priority = "high";
+            MutableContent = true;
         }
 
         /// <summary>
@@ -57,6 +58,14 @@ namespace PushNotifications.Delivery.FireBase.Models
         /// </summary>
         [JsonProperty(PropertyName = "time_to_live")]
         public long TTL { get; private set; }
+
+        /// <summary>
+        /// Currently for iOS 10+ devices only. On iOS, use this field to represent mutable-content in the APNs payload.
+        /// When a notification is sent and this is set to true, the content of the notification can be modified before it is displayed, using a Notification Service app extension.
+        /// This parameter will be ignored for Android and web.
+        /// </summary>
+        [JsonProperty(PropertyName = "mutable_content")]
+        public bool MutableContent { get; private set; }
 
         long ExpirationTimeToSeconds(Timestamp t)
         {
