@@ -1,3 +1,6 @@
+#### 5.0.6 - 16.10.2018
+* Updates Discovery package
+
 #### 5.0.5 - 15.08.2018
 * Changes the authorization attribute for the GetTopicCounterController
 
