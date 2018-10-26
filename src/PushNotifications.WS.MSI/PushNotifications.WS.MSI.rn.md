@@ -1,3 +1,6 @@
+#### 5.0.4 - 26.10.2018
+* Triggers the MSI Build
+
 #### 5.0.3 - 11.10.2018
 * Adds content_mutable flag for IOS with default to true
 
