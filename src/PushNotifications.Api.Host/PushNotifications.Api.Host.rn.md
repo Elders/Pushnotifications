@@ -1,3 +1,6 @@
+#### 5.0.7 - 26.10.2018
+* Trigger For Build
+
 #### 5.0.6 - 16.10.2018
 * Updates Discovery package
 
