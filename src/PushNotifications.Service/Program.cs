@@ -37,6 +37,9 @@ namespace PushNotifications.Service
                     services.AddHttpClient<FireBaseClient>(client =>
                     {
                         client.BaseAddress = new Uri("https://fcm.googleapis.com/");
+
+                        string authorizationKey = hostContext.Configuration["FireBase:AuthorizationKey"];
+                        client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", $"key={authorizationKey}");
                     });
 
                     services.AddSingleton<PushyApiKeyInjectHandler>();
