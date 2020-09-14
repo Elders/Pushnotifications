@@ -1,7 +1,7 @@
-﻿using System;
+﻿using PushNotifications.Subscriptions;
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using PushNotifications.Contracts;
+using System.Text.Json.Serialization;
 
 namespace PushNotifications.Delivery.Pushy.Models
 {
@@ -9,14 +9,14 @@ namespace PushNotifications.Delivery.Pushy.Models
     {
         const long MAX_TTL_SECONDS = 31536000; // 1 year
 
-        public PushySendModel(IList<string> tokens, PushySendNotificationModel notification, Dictionary<string, object> data, Timestamp expiresAt, bool contentAvailable)
+        public PushySendModel(IList<string> tokens, PushySendNotificationModel notification, Dictionary<string, object> data, DateTimeOffset expiresAt, bool contentAvailable)
         {
             if (ReferenceEquals(null, tokens) == true || tokens.Count == 0) throw new ArgumentException(nameof(tokens));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
             if (ReferenceEquals(null, data) == true) throw new ArgumentNullException(nameof(data));
             if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
 
-            RegistrationIds = new List<string>(tokens);
+            Tokens = new List<string>(tokens);
             Notification = notification;
             Data = new Dictionary<string, object>();
             TTL = ExpirationTimeToSeconds(expiresAt);
@@ -37,7 +37,42 @@ namespace PushNotifications.Delivery.Pushy.Models
             }
         }
 
-        public PushySendModel(Topic topic, PushySendNotificationModel notification, Dictionary<string, object> data, Timestamp expiresAt, bool contentAvailable)
+        [JsonPropertyName("to")]
+        public List<string> Tokens { get; private set; }
+
+        [JsonPropertyName("Content_available")]
+        public bool ContentAvailable { get; private set; }
+
+        [JsonPropertyName("notification")]
+        public PushySendNotificationModel Notification { get; private set; }
+
+        [JsonPropertyName("data")]
+        public Dictionary<string, object> Data { get; private set; }
+
+        /// <summary>
+        /// Specifies how long (in seconds) the push notification should be kept if the device is offline.
+        /// The default value is 1 month.The maximum value is 1 year.
+        /// </summary>
+        [JsonPropertyName("Time_to_live")]
+        public long TTL { get; private set; }
+
+        long ExpirationTimeToSeconds(DateTimeOffset t)
+        {
+            var utcNow = DateTime.UtcNow;
+            var difference = t.UtcDateTime - utcNow;
+
+            if (difference.TotalSeconds > MAX_TTL_SECONDS)
+                return MAX_TTL_SECONDS;
+
+            return (long)difference.TotalSeconds;
+        }
+    }
+
+    public class PushySendToTopicModel
+    {
+        const long MAX_TTL_SECONDS = 31536000; // 1 year
+
+        public PushySendToTopicModel(Topic topic, PushySendNotificationModel notification, Dictionary<string, object> data, DateTimeOffset expiresAt, bool contentAvailable)
         {
             if (ReferenceEquals(null, topic)) throw new ArgumentException(nameof(topic));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
@@ -65,13 +100,10 @@ namespace PushNotifications.Delivery.Pushy.Models
             }
         }
 
-        [JsonProperty(PropertyName = "Registration_ids")]
-        public List<string> RegistrationIds { get; private set; }
-
-        [JsonProperty(PropertyName = "to")]
+        [JsonPropertyName("to")]
         public string Topic { get; private set; }
 
-        [JsonProperty(PropertyName = "Content_available")]
+        [JsonPropertyName("Content_available")]
         public bool ContentAvailable { get; private set; }
 
         public PushySendNotificationModel Notification { get; private set; }
@@ -82,13 +114,13 @@ namespace PushNotifications.Delivery.Pushy.Models
         /// Specifies how long (in seconds) the push notification should be kept if the device is offline.
         /// The default value is 1 month.The maximum value is 1 year.
         /// </summary>
-        [JsonProperty(PropertyName = "Time_to_live")]
+        [JsonPropertyName("Time_to_live")]
         public long TTL { get; private set; }
 
-        long ExpirationTimeToSeconds(Timestamp t)
+        long ExpirationTimeToSeconds(DateTimeOffset t)
         {
             var utcNow = DateTime.UtcNow;
-            var difference = t.DateTime - utcNow;
+            var difference = t.UtcDateTime - utcNow;
 
             if (difference.TotalSeconds > MAX_TTL_SECONDS)
                 return MAX_TTL_SECONDS;

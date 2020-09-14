@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using PushNotifications.Contracts.PushNotifications.Delivery;
-using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications;
 using System.Collections.Generic;
 
@@ -17,11 +16,11 @@ namespace PushNotifications.Aggregator.InMemory.Tests
             countOfRecipientsBeforeFlush = int.MaxValue;
             concreateDelivery = new TestDeliveryWithInMemoryAggregator(timeSpanBeforeFlush, countOfRecipientsBeforeFlush);
 
-            expirationDateOfNotification = Timestamp.JudgementDay();
+            expirationDateOfNotification = DateTimeOffset.MaxValue;
             countOfRecipients = 10;
             var notificationData = new Dictionary<string, object>();
             notificationData.Add("test", "test");
-            notification = new NotificationForDelivery(new PushNotificationId(Guid.NewGuid().ToString(), "elders"), new NotificationPayload("title", "body"), notificationData, expirationDateOfNotification, true);
+            notification = new NotificationForDelivery(PushNotificationId.New("elders"), new NotificationPayload("title", "body"), notificationData, expirationDateOfNotification, true);
         };
 
         Because of = () => Helper.Send(concreateDelivery, countOfRecipients, notification);
@@ -31,7 +30,7 @@ namespace PushNotifications.Aggregator.InMemory.Tests
         static TestDeliveryWithInMemoryAggregator concreateDelivery;
         static TimeSpan timeSpanBeforeFlush;
         static int countOfRecipientsBeforeFlush;
-        static Timestamp expirationDateOfNotification;
+        static DateTimeOffset expirationDateOfNotification;
         static int countOfRecipients;
         static NotificationForDelivery notification;
     }

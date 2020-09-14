@@ -1,32 +1,39 @@
 ﻿using Elders.Cronus;
-using PushNotifications.Contracts.Subscriptions.Commands;
+using PushNotifications.Subscriptions.Commands;
 
 namespace PushNotifications.Subscriptions
 {
-    public class TopicSubscriptionAppService : AggregateRootApplicationService<TopicSubscription>,
+    public class TopicSubscriptionAppService : ApplicationService<TopicSubscription>,
         ICommandHandler<SubscribeToTopic>,
         ICommandHandler<UnsubscribeFromTopic>
     {
+        public TopicSubscriptionAppService(IAggregateRepository repository) : base(repository) { }
+
         public void Handle(SubscribeToTopic command)
         {
-            TopicSubscription topicSubscription;
-            if (Repository.TryLoad(command.Id, out topicSubscription))
+            ReadResult<TopicSubscription> result = repository.Load<TopicSubscription>(command.Id);
+
+            if (result.IsSuccess)
             {
-                Update(command.Id, x => x.SubscribeToTopic(command.Id));
+                TopicSubscription topicSubscription = result.Data;
+                topicSubscription.SubscribeToTopic(command.Id);
+                repository.Save(topicSubscription);
             }
-            else
+            else if (result.NotFound)
             {
-                topicSubscription = new TopicSubscription(command.Id);
-                Repository.Save<TopicSubscription>(topicSubscription);
+                TopicSubscription topicSubscription = new TopicSubscription(command.Id);
+                repository.Save(topicSubscription);
             }
         }
 
         public void Handle(UnsubscribeFromTopic command)
         {
-            TopicSubscription topicSubscription;
-            if (Repository.TryLoad(command.Id, out topicSubscription))
+            ReadResult<TopicSubscription> result = repository.Load<TopicSubscription>(command.Id);
+            if (result.IsSuccess)
             {
-                Update(command.Id, x => x.UnsubscribeFromTopic(command.Id));
+                TopicSubscription topicSubscription = result.Data;
+                topicSubscription.UnsubscribeFromTopic(command.Id);
+                repository.Save(topicSubscription);
             }
         }
     }

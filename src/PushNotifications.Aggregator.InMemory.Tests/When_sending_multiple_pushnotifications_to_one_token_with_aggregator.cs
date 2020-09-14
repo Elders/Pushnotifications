@@ -2,11 +2,10 @@
 using System;
 using System.Linq;
 using PushNotifications.Contracts.PushNotifications.Delivery;
-using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications;
 using System.Threading;
-using PushNotifications.Contracts.Subscriptions;
 using System.Collections.Generic;
+using PushNotifications.Subscriptions;
 
 namespace PushNotifications.Aggregator.InMemory.Tests
 {
@@ -19,19 +18,19 @@ namespace PushNotifications.Aggregator.InMemory.Tests
             countOfRecipientsBeforeFlush = int.MaxValue;
             concreateDelivery = new TestDeliveryWithInMemoryAggregator(timeSpanBeforeFlush, countOfRecipientsBeforeFlush);
 
-            expirationDateOfNotification = Timestamp.JudgementDay();
+            expirationDateOfNotification = DateTimeOffset.MaxValue;
             var notificationData = new Dictionary<string, object>();
             notificationData.Add("test", "test");
 
             t1 = new SubscriptionToken("t1", SubscriptionType.FireBase);
-            n1 = new NotificationForDelivery(new PushNotificationId("n1", "elders"), new NotificationPayload("title-1", "body"), notificationData, expirationDateOfNotification, true);
-            n2 = new NotificationForDelivery(new PushNotificationId("n2", "elders"), new NotificationPayload("title-2", "body"), notificationData, expirationDateOfNotification, true);
+            n1 = new NotificationForDelivery(PushNotificationId.New("elders", "n1"), new NotificationPayload("title-1", "body"), notificationData, expirationDateOfNotification, true);
+            n2 = new NotificationForDelivery(PushNotificationId.New("elders", "n2"), new NotificationPayload("title-2", "body"), notificationData, expirationDateOfNotification, true);
         };
 
         Because of = () =>
         {
-            concreateDelivery.Send(t1, n1);
-            concreateDelivery.Send(t1, n2);
+            concreateDelivery.SendAsync(new List<SubscriptionToken>() { t1 }, n1);
+            concreateDelivery.SendAsync(new List<SubscriptionToken>() { t1 }, n2);
             Thread.Sleep((int)timeSpanBeforeFlush.TotalMilliseconds * 3);
         };
 
@@ -46,7 +45,7 @@ namespace PushNotifications.Aggregator.InMemory.Tests
         static TestDeliveryWithInMemoryAggregator concreateDelivery;
         static TimeSpan timeSpanBeforeFlush;
         static int countOfRecipientsBeforeFlush;
-        static Timestamp expirationDateOfNotification;
+        static DateTimeOffset expirationDateOfNotification;
 
         static SubscriptionToken t1;
         static NotificationForDelivery n1;

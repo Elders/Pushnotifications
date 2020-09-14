@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
 using Elders.Cronus;
 using Elders.Cronus.Projections;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions.Events;
+using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Projections.Subscriptions
 {

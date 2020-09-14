@@ -1,6 +1,4 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Subscriptions;
 
 namespace PushNotifications.Tests.PushNotifications

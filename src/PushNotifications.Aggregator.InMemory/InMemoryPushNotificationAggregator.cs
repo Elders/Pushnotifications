@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using PushNotifications.Aggregator.InMemory.Logging;
-using PushNotifications.Contracts;
+using System.Threading.Tasks;
 using PushNotifications.Contracts.PushNotifications.Delivery;
+using PushNotifications.PushNotifications;
+using PushNotifications.Subscriptions;
 
 namespace PushNotifications.Aggregator.InMemory
 {
     public class InMemoryPushNotificationAggregator : IDisposable, IPushNotificationAggregator
     {
-        static ILog log = LogProvider.GetLogger(typeof(InMemoryPushNotificationAggregator));
-
         private readonly object _lockBuffer = new object();
 
-        Func<List<SubscriptionToken>, NotificationForDelivery, SendTokensResult> send;
+        Func<IEnumerable<SubscriptionToken>, NotificationForDelivery, Task<SendTokensResult>> send;
 
         readonly TimeSpan timeSpanBeforeFlush;
 
@@ -34,7 +32,7 @@ namespace PushNotifications.Aggregator.InMemory
         /// </summary>
         /// <param name="timeSpanBeforeFlush">Time span on which flushing is happening</param>
         /// <param name="recipientsCountBeforeFlush">Number of recipients before flushing</param>
-        public InMemoryPushNotificationAggregator(Func<List<SubscriptionToken>, NotificationForDelivery, SendTokensResult> send, TimeSpan timeSpanBeforeFlush, int recipientsCountBeforeFlush)
+        public InMemoryPushNotificationAggregator(Func<IEnumerable<SubscriptionToken>, NotificationForDelivery, Task<SendTokensResult>> send, TimeSpan timeSpanBeforeFlush, int recipientsCountBeforeFlush)
         {
             if (ReferenceEquals(null, send) == true) throw new ArgumentNullException(nameof(send));
             if (ReferenceEquals(null, timeSpanBeforeFlush) == true) throw new ArgumentNullException(nameof(timeSpanBeforeFlush));
@@ -47,7 +45,7 @@ namespace PushNotifications.Aggregator.InMemory
             timer = new Timer(x => FlushAll(), 1, TimeSpan.FromSeconds(0), timeSpanBeforeFlush);
         }
 
-        public SendTokensResult Queue(SubscriptionToken token, NotificationForDelivery notification)
+        public Task<SendTokensResult> Queue(SubscriptionToken token, NotificationForDelivery notification)
         {
             if (ReferenceEquals(null, token) == true) throw new ArgumentNullException(nameof(token));
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
@@ -57,8 +55,8 @@ namespace PushNotifications.Aggregator.InMemory
 
             if (canSend == false)
             {
-                log.Error($"The InMemoryPushNotificationAggregator cannot send. Token {token} and notification {notification.NotificationPayload}");
-                return SendTokensResult.Failed;
+                //log.Error($"The InMemoryPushNotificationAggregator cannot send. Token {token} and notification {notification.NotificationPayload}");
+                return Task.FromResult(SendTokensResult.Failed);
             }
 
             lock (_lockBuffer)
@@ -79,10 +77,10 @@ namespace PushNotifications.Aggregator.InMemory
                 }
             }
 
-            return SendTokensResult.Success;
+            return Task.FromResult(SendTokensResult.Success);
         }
 
-        SendTokensResult Flush(NotificationForDelivery notification)
+        Task<SendTokensResult> Flush(NotificationForDelivery notification)
         {
             lock (_lockBuffer)
             {
@@ -91,17 +89,17 @@ namespace PushNotifications.Aggregator.InMemory
                 {
                     if (buffer.Remove(notification))
                         return send(tokens, notification);
-                    else
-                        log.Error($"Failed to remove notification from the {nameof(InMemoryPushNotificationAggregator)} buffer. Most likely the access to the {nameof(buffer)} is not properly synchronized. I suggest you to delete this class and rewrite it.");
+                    //else
+                    //    log.Error($"Failed to remove notification from the {nameof(InMemoryPushNotificationAggregator)} buffer. Most likely the access to the {nameof(buffer)} is not properly synchronized. I suggest you to delete this class and rewrite it.");
                 }
             }
 
-            return SendTokensResult.Success;
+            return Task.FromResult(SendTokensResult.Success);
         }
 
         void FlushAll()
         {
-            log.Debug($"Flushing the aggregator, currently has {buffer.Keys.Count} pending notifications");
+            //log.Debug($"Flushing the aggregator, currently has {buffer.Keys.Count} pending notifications");
 
             foreach (var notification in buffer.Keys.ToList())
             {
@@ -111,7 +109,7 @@ namespace PushNotifications.Aggregator.InMemory
 
         public void Dispose()
         {
-            log.Debug("Disposing the aggregator");
+            //log.Debug("Disposing the aggregator");
 
             canSend = false;
             FlushAll();

@@ -1,10 +1,11 @@
 ﻿using Elders.Cronus;
 using System.ComponentModel.DataAnnotations;
-using PushNotifications.Contracts;
 using PushNotifications.Contracts.PushNotifications;
 using System;
 using System.Collections.Generic;
-using PushNotifications.Contracts.PushNotifications.Events;
+using PushNotifications.Subscriptions;
+using PushNotifications.Contracts.PushNotifications.Delivery;
+using System.Linq;
 
 namespace PushNotifications.Api.Controllers.PushNotifications.Models
 {
@@ -13,14 +14,14 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
         public SendPushNotificationModel()
         {
             ExpiresAt = Timestamp.JudgementDay();
-            NotificationData = new Dictionary<string, object>();
+            NotificationData = new Dictionary<string, string>();
         }
 
         /// <summary>
         /// URN of who should PN be send to. This must be string tenant urn
         /// </summary>
         [Required]
-        public StringTenantUrn SubscriberUrn { get; set; }
+        public string SubscriberUrn { get; set; }
 
         /// <summary>
         /// The notification's title.
@@ -62,30 +63,42 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
         /// <summary>
         /// The payload data
         /// </summary>
-        public Dictionary<string, object> NotificationData { get; set; }
+        public Dictionary<string, string> NotificationData { get; set; }
 
-        public PushNotificationSent AsEvent()
+        public NotificationMessageSignal AsSignal()
         {
-            if (ReferenceEquals(null, MessageId))
-            {
-                string messageIdFromData = NotificationData["messageid"].ToString();
-                string messageIdUrnRaw = messageIdFromData;
-                if (messageIdFromData.CanUrlTokenDecode())
-                {
-                    messageIdUrnRaw = messageIdFromData.UrlDecode();
-                }
-                else
-                {
-                    messageIdUrnRaw = messageIdUrnRaw.Replace("%3A", ":");
-                }
+            var subscriber = AggregateUrn.Parse(SubscriberUrn, Urn.Uber);
 
-                var urn = StringTenantUrn.Parse(messageIdUrnRaw);
-                MessageId = new PushNotificationId(urn.Id, urn.Tenant);
-            }
-
-            var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
+            var subscriberId = new SubscriberId(subscriber.Id, subscriber.Tenant);
             var notificationPayload = new NotificationPayload(Title, Body, Sound, Icon, Badge);
-            return new PushNotificationSent(MessageId, subscriberId, notificationPayload, NotificationData, ExpiresAt, ContentAvailable);
+            return new NotificationMessageSignal(subscriberId, notificationPayload, NotificationData.ToDictionary(x => x.Key, y => y.Value as object), DateTimeOffset.FromFileTime(ExpiresAt.FileTimeUtc), ContentAvailable, subscriberId.Tenant);
+        }
+    }
+
+    public class Timestamp
+    {
+        private Timestamp() { }
+
+        public Timestamp(DateTime dateTime)
+        {
+            if (ReferenceEquals(null, dateTime) == true) throw new ArgumentNullException(nameof(dateTime));
+            if (dateTime.Kind != DateTimeKind.Utc) throw new ArgumentException("All timestamps should be utc!");
+
+            FileTimeUtc = dateTime.ToFileTimeUtc();
+        }
+
+        public long FileTimeUtc { get; set; }
+
+        public DateTime DateTime { get { return DateTime.FromFileTimeUtc(FileTimeUtc); } }
+
+        public static Timestamp UtcNow()
+        {
+            return new Timestamp(DateTime.UtcNow);
+        }
+
+        public static Timestamp JudgementDay()
+        {
+            return new Timestamp(DateTime.UtcNow.AddYears(100));
         }
     }
 }

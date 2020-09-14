@@ -1,5 +1,4 @@
 ﻿using Cassandra;
-using Cassandra.Lock;
 using Elders.Cronus.AtomicAction;
 using Elders.Cronus.AtomicAction.InMemory;
 using Elders.Pandora;

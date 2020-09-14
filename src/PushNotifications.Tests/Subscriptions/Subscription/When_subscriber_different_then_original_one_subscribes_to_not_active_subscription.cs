@@ -1,6 +1,4 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Subscriptions;
 
 namespace PushNotifications.Tests.PushNotifications
@@ -10,7 +8,7 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            id = new SubscriptionId("id", "elders");
+            id = SubscriptionId.New("elders", "id");
             subscriberId = new SubscriberId("kv", "elders");
             newSubscriberId = new SubscriberId("kv2", "elders");
             subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);

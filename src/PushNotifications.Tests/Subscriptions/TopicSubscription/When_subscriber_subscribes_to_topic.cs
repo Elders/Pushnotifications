@@ -1,9 +1,7 @@
 ﻿using Elders.Cronus;
 using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Events;
 using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Tests.PushNotifications
 {

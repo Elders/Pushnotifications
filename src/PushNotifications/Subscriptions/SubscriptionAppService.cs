@@ -1,32 +1,38 @@
 ﻿using Elders.Cronus;
-using PushNotifications.Contracts.Subscriptions.Commands;
+using PushNotifications.Subscriptions.Commands;
 
 namespace PushNotifications.Subscriptions
 {
-    public class SubscriptionAppService : AggregateRootApplicationService<Subscription>,
+    public class SubscriptionAppService : ApplicationService<Subscription>,
         ICommandHandler<Subscribe>,
         ICommandHandler<UnSubscribe>
     {
+        public SubscriptionAppService(IAggregateRepository repository) : base(repository) { }
+
         public void Handle(Subscribe command)
         {
-            Subscription sub;
-            if (Repository.TryLoad(command.Id, out sub))
+            ReadResult<Subscription> result = repository.Load<Subscription>(command.Id);
+            if (result.IsSuccess)
             {
-                Update(command.Id, x => x.Subscribe(command.SubscriberId));
+                Subscription sub = result.Data;
+                sub.Subscribe(command.SubscriberId);
+                repository.Save(sub);
             }
-            else
+            else if (result.NotFound)
             {
-                sub = new Subscription(command.Id, command.SubscriberId, command.SubscriptionToken);
-                Repository.Save<Subscription>(sub);
+                Subscription sub = new Subscription(command.Id, command.SubscriberId, command.SubscriptionToken);
+                repository.Save(sub);
             }
         }
 
         public void Handle(UnSubscribe command)
         {
-            Subscription sub;
-            if (Repository.TryLoad(command.Id, out sub))
+            ReadResult<Subscription> result = repository.Load<Subscription>(command.Id);
+            if (result.IsSuccess)
             {
-                Update(command.Id, x => x.UnSubscribe(command.SubscriberId));
+                Subscription sub = result.Data;
+                sub.UnSubscribe(command.SubscriberId);
+                repository.Save(sub);
             }
         }
     }

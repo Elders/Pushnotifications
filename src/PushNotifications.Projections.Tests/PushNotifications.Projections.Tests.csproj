@@ -1,89 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0BF637F0-0C46-4176-8C4E-A1BA452187D8}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PushNotifications.Projections.Tests</RootNamespace>
-    <AssemblyName>PushNotifications.Projections.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.4.0.7\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
-    </Reference>
-    <Reference Include="Machine.Specifications, Version=0.12.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Machine.Specifications.0.12.0\lib\net45\Machine.Specifications.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Machine.Specifications.Should, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Machine.Specifications.Should.0.11.0\lib\net45\Machine.Specifications.Should.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml.Serialization" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.1" />
+    <PackageReference Include="Machine.Specifications.Should" Version="1.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Subscriptions\When_subscriber_has_subscribed.cs" />
-    <Compile Include="TopicSubscriptions\When_subscriber_has_subscribed_to_topic.cs" />
-    <Compile Include="TopicSubscriptions\When_subscriber_has_subscribed_to_topic_twice.cs" />
-    <Compile Include="Subscriptions\When_subscriber_has_subscribed_twice_with_different_token.cs" />
-    <Compile Include="Subscriptions\When_subscriber_has_subscribed_twice_with_same_token.cs" />
-    <Compile Include="Subscriptions\When_subscriber_has_unsubscribed.cs" />
-    <Compile Include="TopicSubscriptions\When_subscriber_has_unsubscribed_from_topic.cs" />
-    <Compile Include="Subscriptions\When_subscriber_has_unsubscribed_to_one_subscription_after_having_two_subscriptions.cs" />
-    <Compile Include="TopicSubscriptions\When_subscriber_has_unsubscribed_from_topic_twice.cs" />
+    <ProjectReference Include="..\PushNotifications.Delivery.FireBase\PushNotifications.Delivery.FireBase.csproj" />
+    <ProjectReference Include="..\PushNotifications.Projections\PushNotifications.Projections.csproj" />
+    <ProjectReference Include="..\PushNotifications\PushNotifications.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
-      <Project>{53AB2DD6-F42F-44BB-BB6D-A7497C720E68}</Project>
-      <Name>PushNotifications.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PushNotifications.Projections\PushNotifications.Projections.csproj">
-      <Project>{03CF41C9-3167-4431-BDF0-C44497C057E8}</Project>
-      <Name>PushNotifications.Projections</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

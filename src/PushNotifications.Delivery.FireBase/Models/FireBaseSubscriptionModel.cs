@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using PushNotifications.Contracts;
+using System.Text.Json.Serialization;
+using PushNotifications.Subscriptions;
 
 namespace PushNotifications.Delivery.FireBase.Models
 {
@@ -25,10 +25,10 @@ namespace PushNotifications.Delivery.FireBase.Models
             Topic = "/topics/" + topic;
         }
 
-        [JsonProperty(PropertyName = "registration_tokens")]
+        [JsonPropertyName("registration_tokens")]
         public List<string> RegistrationTokens { get; private set; }
 
-        [JsonProperty(PropertyName = "to")]
+        [JsonPropertyName("to")]
         public string Topic { get; private set; }
     }
 }

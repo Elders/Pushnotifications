@@ -1,24 +1,17 @@
-﻿using Elders.Cronus;
-using Elders.Web.Api;
-using System.ComponentModel.DataAnnotations;
-using PushNotifications.Contracts;
-using PushNotifications.Api.Attributes;
-using System.Security.Claims;
-using PushNotifications.Contracts.Subscriptions.Commands;
-using PushNotifications.Contracts.Subscriptions;
+﻿using System.ComponentModel.DataAnnotations;
+using Elders.Cronus;
+using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Commands;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
     public class PushySubscribeModel
     {
-        [AuthorizeClaim(AuthorizeClaimType.Tenant, AuthorizeClaimType.TenantClient)]
-        public string Tenant { get; set; }
-
         /// <summary>
         /// URN of the subscriber. This must be string tenant urn
         /// </summary>
-        [ClaimsIdentity(AuthorizeClaimType.Subject, ClaimTypes.NameIdentifier)]
-        public StringTenantUrn SubscriberUrn { get; set; }
+        [IsUrn]
+        public string Subscriber { get; set; }
 
         /// <summary>
         /// Registration token
@@ -28,17 +21,21 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
         public Subscribe AsSubscribeCommand()
         {
+            var urn = AggregateUrn.Parse(Subscriber, Urn.Uber);
+
             var subscriptionToken = new SubscriptionToken(Token, SubscriptionType.Pushy);
-            var subscriptionId = new SubscriptionId(subscriptionToken, Tenant);
-            var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
+            var subscriptionId = SubscriptionId.New(urn.Tenant, subscriptionToken);
+            var subscriberId = new SubscriberId(urn.Id, urn.Tenant);
             return new Subscribe(subscriptionId, subscriberId, subscriptionToken);
         }
 
         public UnSubscribe AsUnSubscribeCommand()
         {
+            var urn = AggregateUrn.Parse(Subscriber, Urn.Uber);
+
             var subscriptionToken = new SubscriptionToken(Token, SubscriptionType.Pushy);
-            var subscriptionId = new SubscriptionId(subscriptionToken, Tenant);
-            var subscriberId = new SubscriberId(SubscriberUrn.Id, SubscriberUrn.Tenant);
+            var subscriptionId = SubscriptionId.New(urn.Tenant, subscriptionToken);
+            var subscriberId = new SubscriberId(urn.Id, urn.Tenant);
             return new UnSubscribe(subscriptionId, subscriberId, subscriptionToken);
         }
     }
