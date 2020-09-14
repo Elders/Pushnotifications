@@ -1,8 +1,6 @@
 using System;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using Elders.Cronus;
+using Elders.Pandora;
 using Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,6 +25,7 @@ namespace PushNotifications.Service
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(cfg => cfg.Add(new PandoraConsulConfigurationSource(Environment.GetEnvironmentVariable("CONSUL_ADDRESS", EnvironmentVariableTarget.Process))))
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddOptions();
@@ -52,17 +51,5 @@ namespace PushNotifications.Service
                     services.AddSingleton<MultiPlatformDelivery, MultiPlatformDelivery>();
                 })
                 .UseSerilog(SerilogConfiguration.Configure);
-    }
-
-    public class PushyApiKeyInjectHandler : DelegatingHandler
-    {
-        private const string ApiKeyName = "api_key";
-
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-
-
-            return await base.SendAsync(request, cancellationToken);
-        }
     }
 }

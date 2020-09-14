@@ -1,4 +1,5 @@
 using System;
+using Elders.Pandora;
 using Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,7 @@ namespace PushNotifications.Api
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(cfg => cfg.Add(new PandoraConsulConfigurationSource(Environment.GetEnvironmentVariable("CONSUL_ADDRESS", EnvironmentVariableTarget.Process))))
                 .ConfigureAppConfiguration((context, configApp) =>
                 {
                     configApp.AddEnvironmentVariables();

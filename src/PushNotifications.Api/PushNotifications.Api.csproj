@@ -16,6 +16,7 @@
     <PackageReference Include="Discovery.Consul" Version="1.0.0-beta0005" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.14.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
+    <PackageReference Include="Pandora.Consul" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
