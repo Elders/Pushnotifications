@@ -7,11 +7,11 @@ COPY ./src ./
 # restore solution
 RUN dotnet restore PushNotifications.sln
 
-WORKDIR /src/PushNotifications.Service
+WORKDIR /src/PushNotifications.Api
 
 # build and publish project   
-RUN dotnet build PushNotifications.Service.csproj -c Release -o /app                                         
-RUN dotnet publish PushNotifications.Service.csproj -c Release -o /app/published
+RUN dotnet build PushNotifications.Api.csproj -c Release -o /app                                         
+RUN dotnet publish PushNotifications.Api.csproj -c Release -o /app/published
 
 # create the runtime instance 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine3.11 AS runtime 
@@ -25,4 +25,4 @@ WORKDIR /app
                                                             
 COPY --from=build /app/published .
                             
-ENTRYPOINT ["dotnet", "PushNotifications.Service.dll"]
+ENTRYPOINT ["dotnet", "PushNotifications.Api.dll"]
