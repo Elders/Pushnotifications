@@ -53,6 +53,7 @@ namespace Logging
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message, ex);
                 Serilog.Log.Fatal(ex, $"{applicationName} host terminated unexpectedly!");
             }
             finally
