@@ -17,7 +17,7 @@ namespace PushNotifications.Service
         {
             Microsoft.ApplicationInsights.Extensibility.Implementation.TelemetryDebugWriter.IsTracingDisabled = true;
 
-            Environment.SetEnvironmentVariable("pandora_application", App.Name, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("pandora_application", "push-notifications.ws", EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable("log_name", App.LogName, EnvironmentVariableTarget.Process);
 
             Start.WithStartupDiagnostics(App.Name, () => CreateHostBuilder(args).Build().Run());
