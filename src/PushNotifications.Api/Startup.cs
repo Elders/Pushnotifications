@@ -161,7 +161,9 @@ namespace PushNotifications.Api
             string boundedContext = configuration["Cronus:BoundedContext"];
             string baseUrl = configuration["ApiAddress"];
 
-            container.AddSingleton(provider => new ConsulClient(x => x.Address = ConsulHelper.DefaultConsulUri));
+            var consulAddress = Environment.GetEnvironmentVariable("CONSUL_ADDRESS", EnvironmentVariableTarget.Process) ?? "http://consul.local.com:8500";
+
+            container.AddSingleton(provider => new ConsulClient(x => x.Address = new Uri(consulAddress)));
             container.AddSingleton<IEndpointDiscovery, AspNetCoreEndpointDiscovery>(provider =>
                 new AspNetCoreEndpointDiscovery(provider.GetRequiredService<IApiDescriptionGroupCollectionProvider>(), typeof(Startup).Assembly, boundedContext, new Uri(baseUrl)));
 
