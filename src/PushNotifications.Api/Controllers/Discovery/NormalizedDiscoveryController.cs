@@ -13,7 +13,7 @@ namespace PushNotifications.Api.Controllers.Discovery
         private readonly ApiResponse response;
         private readonly IDiscoveryReader discoveryReader;
         private readonly BoundedContext boundedContext;
-
+        private static int counter = 0;
         public NormalizedDiscoveryController(ApiResponse response, IDiscoveryReader discoveryReader, IOptionsMonitor<BoundedContext> optionsMonitor)
         {
             this.response = response;
@@ -30,7 +30,7 @@ namespace PushNotifications.Api.Controllers.Discovery
         public async Task<IActionResult> DiscoveryAsync()
         {
             DiscoveryResponse model = await discoveryReader.GetAsync(boundedContext.Name);
-            return response.Success(model).SetLastModifiedHeader(DateTimeOffset.FromFileTime(model.UpdatedAt));
+            return new OkObjectResult(new { Counter = counter++, Response = response.Success(model).SetLastModifiedHeader(DateTimeOffset.FromFileTime(model.UpdatedAt)) });
         }
     }
 }
