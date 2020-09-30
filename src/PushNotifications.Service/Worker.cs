@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using Elders.Cronus;
 using Elders.Cronus.Api;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PushNotifications.Contracts.PushNotifications.Delivery;
 
 namespace PushNotifications.Service
 {
@@ -17,11 +19,11 @@ namespace PushNotifications.Service
         private readonly CronusApplicationInsightsProvider observer;
         IDisposable subscription;
 
-        public Worker(ILogger<Worker> log, IServiceProvider provider, ICronusHost cronusHost)
+        public Worker(ILogger<Worker> log, IServiceProvider provider, ICronusHost cronusHost, CronusApplicationInsightsProvider observer)
         {
             this.log = log;
             this.cronusHost = cronusHost;
-            //this.observer = observer;
+            this.observer = observer;
             CronusBooter.BootstrapCronus(provider);
         }
 
@@ -29,12 +31,12 @@ namespace PushNotifications.Service
         {
             log.LogInformation("Starting service...");
 
-            //Activity.DefaultIdFormat = ActivityIdFormat.W3C;
-            //subscription = DiagnosticListener.AllListeners.Subscribe(observer);
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+            subscription = DiagnosticListener.AllListeners.Subscribe(observer);
 
             cronusHost.Start();
             cronusDashboard = CronusApi.GetHost();
-            //await cronusDashboard.StartAsync();
+            await cronusDashboard.StartAsync();
 
             log.LogInformation("Service started!");
             //return Task.CompletedTask;

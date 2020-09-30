@@ -26,7 +26,7 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
             {
                 var delivery = deliveries[platformTokens.Key];
                 IEnumerable<SubscriptionToken> theTokens = platformTokens.AsEnumerable();
-                result = result + await delivery.SendAsync(theTokens, notification); // Do not use += ni**a
+                result = result + await delivery.SendAsync(theTokens, notification).ConfigureAwait(false); // Do not use += ni**a
             }
 
             return result;

@@ -1,9 +1,11 @@
-﻿{
+{
   "profiles": {
     "PushNotifications.Service": {
       "commandName": "Project",
       "environmentVariables": {
-        "DOTNET_ENVIRONMENT": "Development"
+        "pandora_cluster": "docker-local",
+        "DOTNET_ENVIRONMENT": "Development",
+        "CONSUL_ADDRESS": "http://consul.local.com:8500"
       }
     }
   }

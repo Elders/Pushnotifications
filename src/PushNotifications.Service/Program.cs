@@ -4,6 +4,7 @@ using Elders.Pandora;
 using Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OptionsExtensions;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Delivery.FireBase;
 using PushNotifications.Delivery.Pushy;
@@ -31,8 +32,9 @@ namespace PushNotifications.Service
                     services.AddOptions();
                     services.AddLogging();
                     services.AddHostedService<Worker>();
-                    //services.AddApplicationInsightsTelemetryWorkerService();
-                    //services.AddApplicationInsightsTelemetryCronus();
+                    services.AddOption<PushyOptions, PushyOptionsProvider>();
+                    services.AddApplicationInsightsTelemetryWorkerService();
+                    services.AddApplicationInsightsTelemetryCronus();
                     services.AddCronus(hostContext.Configuration);
                     services.AddHttpClient<FireBaseClient>(client =>
                     {

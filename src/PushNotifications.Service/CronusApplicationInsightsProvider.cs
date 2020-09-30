@@ -1,11 +1,10 @@
-﻿using Microsoft.ApplicationInsights;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 
 namespace PushNotifications.Service
 {
@@ -106,4 +105,5 @@ namespace PushNotifications.Service
             return telemetry;
         }
     }
+
 }

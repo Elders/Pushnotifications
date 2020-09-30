@@ -10,7 +10,7 @@ namespace PushNotifications.Delivery.Pushy
         public string ApiKey { get; set; }
     }
 
-    internal class PushyOptionsProvider : OptionsProviderBase<PushyOptions>
+    public class PushyOptionsProvider : OptionsProviderBase<PushyOptions>
     {
         public const string SettingKey = "pushy";
 

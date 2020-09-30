@@ -4,6 +4,8 @@ using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Projections.Subscriptions;
 using PushNotifications.Subscriptions;
 using PushNotifications.Subscriptions.Commands;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PushNotifications.Ports
 {
@@ -23,21 +25,35 @@ namespace PushNotifications.Ports
 
         public void Handle(NotificationMessageSignal signal)
         {
-            var subscriberId = new SubscriberId(AggregateUrn.Parse(signal.Recipient));
-            var projectionResult = projections.Get<SubscriberTokensProjection>(subscriberId);
-            if (projectionResult.IsSuccess)
+            List<SubscriptionToken> tokens = new List<SubscriptionToken>();
+
+            foreach (var recipient in signal.Recipients)
             {
-                var pushResult = delivery.SendAsync(projectionResult.Data.State.Tokens, signal.ToDelivery()).GetAwaiter().GetResult();
-                if (pushResult.HasFailedTokens)
+                var subscriberId = new SubscriberId(AggregateUrn.Parse(recipient));
+                var projectionResult = projections.Get<SubscriberTokensProjection>(subscriberId);
+
+                if (projectionResult.IsSuccess)
                 {
-                    foreach (var failedToken in pushResult.FailedTokens)
-                    {
-                        var subscribtionId = SubscriptionId.New(signal.Tenant, failedToken.Token);
-                        var unsubscribe = new UnSubscribe(subscribtionId, subscriberId, failedToken);
-                        publisher.Publish(unsubscribe);
-                    }
+                    tokens.AddRange(projectionResult.Data.State.Tokens);
+
                 }
             }
+
+            if (tokens.Any() == false)
+                return;
+
+            NotificationForDelivery notificationForDelivery = signal.ToDelivery();
+            var pushResult = delivery.SendAsync(tokens, notificationForDelivery).GetAwaiter().GetResult();
+            //if (pushResult.HasFailedTokens)
+            //{
+            //    foreach (var failedToken in pushResult.FailedTokens)
+            //    {
+            //        var subscribtionId = SubscriptionId.New(signal.Tenant, failedToken.Token);
+            //        var unsubscribe = new UnSubscribe(subscribtionId, subscriberId, failedToken);
+            //        publisher.Publish(unsubscribe);
+            //    }
+            //}
+
         }
 
         //public void Send(NotificationMessage notification, )

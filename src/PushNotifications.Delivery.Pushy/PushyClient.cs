@@ -25,7 +25,7 @@ namespace PushNotifications.Delivery.Pushy
             const string resource = "push";
 
             if (log.IsEnabled(LogLevel.Debug))
-                log.LogDebug($"Sending '{tokens.Count()}' notification(s) '{notification.Id}' with body '{notification.NotificationPayload.Body}'");
+                log.LogDebug($"Sending '{tokens.Count()}' notification(s) with body '{notification.NotificationPayload.Body}'");
 
             List<string> tokensAsStrings = tokens.Select(x => x.ToString()).ToList();
             NotificationPayload payload = notification.NotificationPayload;
@@ -63,7 +63,7 @@ namespace PushNotifications.Delivery.Pushy
             const string resource = "push";
 
             if (log.IsEnabled(LogLevel.Debug))
-                log.LogDebug($"Sending notification to topic: {topic} for notification '{notification.Id}' with body '{notification.NotificationPayload.Body}'");
+                log.LogDebug($"Sending notification to topic: {topic} for notification with body '{notification.NotificationPayload.Body}'");
 
             var payload = notification.NotificationPayload;
             int badge = payload.Badge > 0 ? payload.Badge : 1;

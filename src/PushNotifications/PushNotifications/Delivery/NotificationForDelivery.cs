@@ -7,21 +7,19 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
 {
     public class NotificationForDelivery : ValueObject<NotificationForDelivery>
     {
-        public NotificationForDelivery(string id, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt, bool contentAvailable)
+        public NotificationForDelivery(NotificationPayload notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt, bool contentAvailable)
         {
-            if (ReferenceEquals(null, id) == true) throw new ArgumentNullException(nameof(id));
+           // if (ReferenceEquals(null, id) == true) throw new ArgumentNullException(nameof(id));
             if (ReferenceEquals(null, notificationPayload) == true) throw new ArgumentNullException(nameof(notificationPayload));
             if (ReferenceEquals(null, notificationData) == true) throw new ArgumentNullException(nameof(notificationData));
             if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
 
-            Id = id;
+            //Id = id;
             NotificationPayload = notificationPayload;
             NotificationData = notificationData;
             ExpiresAt = expiresAt;
             ContentAvailable = contentAvailable;
         }
-
-        public string Id { get; private set; }
 
         public NotificationPayload NotificationPayload { get; private set; }
 
@@ -35,11 +33,20 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
     [DataContract(Namespace = "pushnotifications", Name = "0b5bc529-e630-4b7a-a683-1377e270a417")]
     public class NotificationMessageSignal : ISignal
     {
-        NotificationMessageSignal() { }
+        NotificationMessageSignal()
+        {
+            Recipients = new List<string>();
+        }
 
         public NotificationMessageSignal(string recipient, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt, bool contentAvailable, string tenant)
+            : this(new List<string>() { recipient }, notificationPayload, notificationData, expiresAt, contentAvailable, tenant)
         {
-            Recipient = recipient;
+
+        }
+
+        public NotificationMessageSignal(List<string> recipients, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt, bool contentAvailable, string tenant)
+        {
+            Recipients = recipients;
             NotificationPayload = notificationPayload;
             NotificationData = notificationData;
             ExpiresAt = expiresAt;
@@ -48,7 +55,7 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
         }
 
         [DataMember(Order = 1)]
-        public string Recipient { get; private set; }
+        public List<string> Recipients { get; private set; }
 
         [DataMember(Order = 2)]
         public NotificationPayload NotificationPayload { get; private set; }
@@ -67,7 +74,7 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
 
         public NotificationForDelivery ToDelivery()
         {
-            return new NotificationForDelivery(Recipient, NotificationPayload, NotificationData, ExpiresAt, ContentAvailable);
+            return new NotificationForDelivery(NotificationPayload, NotificationData, ExpiresAt, ContentAvailable);
         }
     }
 }

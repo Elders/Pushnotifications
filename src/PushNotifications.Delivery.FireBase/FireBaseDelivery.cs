@@ -10,7 +10,6 @@ namespace PushNotifications.Delivery.FireBase
     public sealed class FireBaseDelivery : IPushNotificationDelivery
     {
         private readonly FireBaseClient fireBase;
-        IPushNotificationAggregator aggregator;
 
         public FireBaseDelivery(FireBaseClient fireBase)
         {

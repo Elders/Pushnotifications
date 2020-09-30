@@ -31,7 +31,7 @@ namespace PushNotifications.Delivery.FireBase
             const string resource = "fcm/send";
 
             if (log.IsEnabled(LogLevel.Debug))
-                log.LogDebug($"Sending '{tokens.Count()}' PN for notification '{notification.Id}' with body '{notification.NotificationPayload.Body}'");
+                log.LogDebug($"Sending '{tokens.Count()}' PN for notification with body '{notification.NotificationPayload.Body}'");
 
             List<string> tokensAsStrings = tokens.Select(x => x.ToString()).ToList();
             NotificationPayload payload = notification.NotificationPayload;
@@ -73,7 +73,7 @@ namespace PushNotifications.Delivery.FireBase
             const string resource = "fcm/send";
 
             if (log.IsEnabled(LogLevel.Debug))
-                log.LogDebug($"[FireBase] sending PN to topic: {topic} for notification '{notification.Id}' with body '{notification.NotificationPayload.Body}'");
+                log.LogDebug($"[FireBase] sending PN to topic: {topic} for notification with body '{notification.NotificationPayload.Body}'");
 
             var payload = notification.NotificationPayload;
             var data = notification.NotificationData;
