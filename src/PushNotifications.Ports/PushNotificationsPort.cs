@@ -1,5 +1,6 @@
 ﻿using Elders.Cronus;
 using Elders.Cronus.Projections;
+using Microsoft.Extensions.Logging;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Projections.Subscriptions;
 using PushNotifications.Subscriptions;
@@ -15,12 +16,14 @@ namespace PushNotifications.Ports
         private readonly IProjectionReader projections;
         private readonly IPublisher<ICommand> publisher;
         private readonly MultiPlatformDelivery delivery;
+        private readonly ILogger<PushNotificationTrigger> logger;
 
-        public PushNotificationTrigger(IProjectionReader projections, IPublisher<ICommand> publisher, MultiPlatformDelivery delivery)
+        public PushNotificationTrigger(IProjectionReader projections, IPublisher<ICommand> publisher, MultiPlatformDelivery delivery, ILogger<PushNotificationTrigger> logger)
         {
             this.projections = projections;
             this.publisher = publisher;
             this.delivery = delivery;
+            this.logger = logger;
         }
 
         public void Handle(NotificationMessageSignal signal)
@@ -40,10 +43,14 @@ namespace PushNotifications.Ports
             }
 
             if (tokens.Any() == false)
+            {
+                logger.LogInformation("No tokens were found.");
                 return;
+            }
 
             NotificationForDelivery notificationForDelivery = signal.ToDelivery();
             var pushResult = delivery.SendAsync(tokens, notificationForDelivery).GetAwaiter().GetResult();
+
             //if (pushResult.HasFailedTokens)
             //{
             //    foreach (var failedToken in pushResult.FailedTokens)
