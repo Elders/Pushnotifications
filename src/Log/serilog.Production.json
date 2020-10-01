@@ -17,7 +17,7 @@
                 "Args": {
                     "nodeUris": "%log_server%",
                     "autoRegisterTemplate": true,
-                    "autoRegisterTemplateVersion": "ESv7",
+                    "autoRegisterTemplateVersion": "ESv6",
                     "indexFormat": "prd-log-%log_name%-{0:yyyyMMdd}"
                 }
             }
