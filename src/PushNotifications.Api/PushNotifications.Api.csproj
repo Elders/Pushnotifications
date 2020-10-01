@@ -9,7 +9,7 @@
     <PackageReference Include="Ben.Demystifier" Version="0.1.6" />
     <PackageReference Include="Cronus" Version="6.2.0" />
     <PackageReference Include="Cronus.AspNetCore" Version="6.1.0" />
-    <PackageReference Include="Cronus.Persistence.Cassandra" Version="6.1.1" />
+    <PackageReference Include="Cronus.Persistence.Cassandra" Version="6.2.0" />
     <PackageReference Include="Cronus.Projections.Cassandra" Version="6.1.1" />
     <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="6.1.0" />
     <PackageReference Include="Cronus.Transport.RabbitMQ" Version="6.2.0" />
