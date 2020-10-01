@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Cronus.Api" Version="6.1.1" />
-    <PackageReference Include="Cronus.Cluster.Consul" Version="6.1.0" />
+    <PackageReference Include="Cronus.Cluster.Consul" Version="6.2.0" />
     <PackageReference Include="Cronus.Persistence.Cassandra" Version="6.2.0" />
     <PackageReference Include="Cronus.Projections.Cassandra" Version="6.2.0" />
     <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="6.1.0" />
