@@ -1,4 +1,5 @@
-﻿using PushNotifications.PushNotifications;
+﻿using Microsoft.Extensions.Logging;
+using PushNotifications.PushNotifications;
 using PushNotifications.Subscriptions;
 using System;
 using System.Collections.Generic;
@@ -9,15 +10,19 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
 {
     public sealed class MultiPlatformDelivery
     {
+        private readonly ILogger<MultiPlatformDelivery> logger;
         Dictionary<string, IPushNotificationDelivery> deliveries;
 
-        public MultiPlatformDelivery(IEnumerable<IPushNotificationDelivery> deliveries)
+        public MultiPlatformDelivery(IEnumerable<IPushNotificationDelivery> deliveries, ILogger<MultiPlatformDelivery> logger)
         {
             this.deliveries = deliveries.ToDictionary(key => key.Platform.ToString());
+            this.logger = logger;
         }
 
         public async Task<SendTokensResult> SendAsync(IEnumerable<SubscriptionToken> tokens, NotificationForDelivery notification)
         {
+            logger.LogInformation("Start sending push notifications...");
+
             SendTokensResult result = new SendTokensResult(Enumerable.Empty<SubscriptionToken>());
 
             var tokensGroupedByPlatform = tokens.GroupBy(key => key.SubscriptionType);
