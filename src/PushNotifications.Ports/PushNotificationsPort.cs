@@ -38,7 +38,10 @@ namespace PushNotifications.Ports
                 if (projectionResult.IsSuccess)
                 {
                     tokens.AddRange(projectionResult.Data.State.Tokens);
-
+                }
+                else if (projectionResult.HasError)
+                {
+                    logger.LogError(projectionResult.Error);
                 }
             }
 
