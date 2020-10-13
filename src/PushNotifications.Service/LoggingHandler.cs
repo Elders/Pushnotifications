@@ -19,19 +19,19 @@ namespace PushNotifications.Service
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             StringBuilder requestTrace = new StringBuilder();
-            if (logger.IsEnabled(LogLevel.Information))
+            if (logger.IsEnabled(LogLevel.Debug))
             {
                 await AddRequestLogAsync(request, requestTrace).ConfigureAwait(false);
             }
 
             HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
 
-            if (logger.IsEnabled(LogLevel.Information))
+            if (logger.IsEnabled(LogLevel.Debug))
             {
                 await AddResponseLogAsync(response, requestTrace);
             }
 
-            logger.Info(() => requestTrace.ToString());
+            logger.Debug(() => requestTrace.ToString());
 
             return response;
         }
