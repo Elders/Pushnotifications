@@ -11,8 +11,7 @@ namespace PushNotifications.Service
     {
         private readonly ILogger<LoggingHandler> logger;
 
-        public LoggingHandler(HttpMessageHandler innerHandler, ILogger<LoggingHandler> logger)
-            : base(innerHandler)
+        public LoggingHandler(ILogger<LoggingHandler> logger)
         {
             this.logger = logger;
         }
@@ -20,19 +19,19 @@ namespace PushNotifications.Service
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             StringBuilder requestTrace = new StringBuilder();
-            if (logger.IsEnabled(LogLevel.Debug))
+            if (logger.IsEnabled(LogLevel.Information))
             {
                 await AddRequestLogAsync(request, requestTrace).ConfigureAwait(false);
             }
 
             HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
 
-            if (logger.IsEnabled(LogLevel.Debug))
+            if (logger.IsEnabled(LogLevel.Information))
             {
                 await AddResponseLogAsync(response, requestTrace);
             }
 
-            logger.Debug(() => requestTrace.ToString());
+            logger.Info(() => requestTrace.ToString());
 
             return response;
         }
