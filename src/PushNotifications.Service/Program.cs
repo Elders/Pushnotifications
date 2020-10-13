@@ -36,13 +36,15 @@ namespace PushNotifications.Service
                     services.AddApplicationInsightsTelemetryWorkerService();
                     services.AddApplicationInsightsTelemetryCronus();
                     services.AddCronus(hostContext.Configuration);
+
+                    services.AddSingleton<LoggingHandler>();
                     services.AddHttpClient<FireBaseClient>(client =>
                     {
                         client.BaseAddress = new Uri("https://fcm.googleapis.com/");
 
                         string authorizationKey = hostContext.Configuration["FireBase:AuthorizationKey"];
                         client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", $"key={authorizationKey}");
-                    });
+                    }).AddHttpMessageHandler<LoggingHandler>(); ;
 
                     services.AddSingleton<PushyApiKeyInjectHandler>();
                     services.AddHttpClient<PushyClient>(client =>

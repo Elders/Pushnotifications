@@ -17,7 +17,7 @@ namespace PushNotifications.Delivery.FireBase
     {
         private readonly ILogger<FireBaseClient> log;
 
-        public FireBaseClient(HttpClient client, ILogger<FireBaseClient> log) : base(client)
+        public FireBaseClient(HttpClient client, ILogger<FireBaseClient> log) : base(client, log)
         {
             this.log = log;
         }

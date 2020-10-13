@@ -1,5 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -9,11 +9,13 @@ namespace PushNotifications.Delivery.FireBase
     public abstract class HttpClientBase
     {
         private readonly HttpClient client;
+        private readonly ILogger logger;
         private readonly JsonSerializerOptions serializerOptions;
 
-        public HttpClientBase(HttpClient client)
+        public HttpClientBase(HttpClient client, ILogger logger)
         {
             this.client = client;
+            this.logger = logger;
             this.serializerOptions = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -37,8 +39,8 @@ namespace PushNotifications.Delivery.FireBase
                 }
                 else
                 {
-                    //string errorResponseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    //log.Error(errorResponseString)
+                    string errorResponseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    logger.LogError(errorResponseString);
 
                     return (response, default);
                 }
