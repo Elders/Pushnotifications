@@ -5,6 +5,7 @@ using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Projections.Subscriptions;
 using PushNotifications.Subscriptions;
 using PushNotifications.Subscriptions.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -47,7 +48,7 @@ namespace PushNotifications.Ports
 
             if (tokens.Any() == false)
             {
-                logger.LogInformation("No tokens were found.");
+                logger.LogInformation($"No tokens were found for the following recipients:{Environment.NewLine}{String.Join(' ', signal.Recipients)}");
                 return;
             }
 
