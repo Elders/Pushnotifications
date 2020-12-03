@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Options.Extensions\Options.Extensions.csproj" />
     <ProjectReference Include="..\PushNotifications\PushNotifications.csproj" />
   </ItemGroup>
 

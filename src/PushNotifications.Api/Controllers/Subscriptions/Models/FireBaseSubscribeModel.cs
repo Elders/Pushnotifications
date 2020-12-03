@@ -19,15 +19,13 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         [Required]
         public string Token { get; set; }
 
-        public string Application { get; set; }
-
         public Subscribe AsSubscribeCommand(ApiContext context)
         {
             var urn = context.CurrentUser.UserId ?? AggregateUrn.Parse(Subscriber, Urn.Uber);
 
             var subscriptionToken = new SubscriptionToken(Token, SubscriptionType.FireBase);
             var subscriptionId = SubscriptionId.New(urn.Tenant, subscriptionToken);
-            var subscriberId = new SubscriberId(urn.Id, urn.Tenant, Application);
+            var subscriberId = new SubscriberId(urn.Id, urn.Tenant, context.Application);
             return new Subscribe(subscriptionId, subscriberId, subscriptionToken);
         }
 
@@ -37,7 +35,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
             var subscriptionToken = new SubscriptionToken(Token, SubscriptionType.FireBase);
             var subscriptionId = SubscriptionId.New(urn.Tenant, subscriptionToken);
-            var subscriberId = new SubscriberId(urn.Id, urn.Tenant, Application);
+            var subscriberId = new SubscriberId(urn.Id, urn.Tenant, context.Application);
             return new UnSubscribe(subscriptionId, subscriberId, subscriptionToken);
         }
     }

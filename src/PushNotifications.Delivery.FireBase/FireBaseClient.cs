@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using PushNotifications.Contracts.PushNotifications;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Delivery.FireBase.Models;
@@ -15,12 +16,7 @@ namespace PushNotifications.Delivery.FireBase
 {
     public sealed class FireBaseClient : HttpClientBase
     {
-        private readonly ILogger<FireBaseClient> log;
-
-        public FireBaseClient(HttpClient client, ILogger<FireBaseClient> log) : base(client, log)
-        {
-            this.log = log;
-        }
+        public FireBaseClient(HttpClient client, IOptionsMonitor<FireBaseOptions> monitor, ILogger<FireBaseClient> log) : base(client, monitor, log) { }
 
         public async Task<SendTokensResult> SendAsync(IEnumerable<SubscriptionToken> tokens, NotificationForDelivery notification)
         {
@@ -40,7 +36,7 @@ namespace PushNotifications.Delivery.FireBase
             var fireBaseSendNotificationModel = new FireBaseSendNotificationModel(payload.Title, payload.Body, payload.Sound, badge);
             var model = new FireBaseSendModel(tokensAsStrings, fireBaseSendNotificationModel, data, notification.ExpiresAt);
 
-            HttpRequestMessage requestMessage = CreateJsonPostRequest(model, resource);
+            HttpRequestMessage requestMessage = CreateJsonPostRequest(model, resource, notification.Target);
             var result = await ExecuteRequestAsync<FireBaseResponseModel>(requestMessage).ConfigureAwait(false);
 
             if (result.Response.IsSuccessStatusCode)
@@ -82,7 +78,7 @@ namespace PushNotifications.Delivery.FireBase
             var fireBaseSendNotificationModel = new FireBaseSendNotificationModel(payload.Title, payload.Body, payload.Sound, badge);
             var model = new FireBaseTopicSendModel(topic, fireBaseSendNotificationModel, data, notification.ExpiresAt);
 
-            HttpRequestMessage requestMessage = CreateJsonPostRequest(model, resource);
+            HttpRequestMessage requestMessage = CreateJsonPostRequest(model, resource, notification.Target);
             var result = await ExecuteRequestAsync<FireBaseResponseModel>(requestMessage).ConfigureAwait(false);
 
             if (result.Response.IsSuccessStatusCode == false || result.Data.HasDataFailure())
@@ -102,7 +98,7 @@ namespace PushNotifications.Delivery.FireBase
             return true;
         }
 
-        public async Task<bool> SubscribeToTopic(SubscriptionToken token, Topic topic)
+        public async Task<bool> SubscribeToTopic(SubscriptionToken token, Topic topic, NotificationTarget target)
         {
             if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
             if (ReferenceEquals(null, token)) throw new ArgumentNullException(nameof(token));
@@ -114,7 +110,7 @@ namespace PushNotifications.Delivery.FireBase
 
             var model = new FireBaseSubscriptionModel(token.Token, topic);
 
-            HttpRequestMessage requestMessage = CreateJsonPostRequest(model, resource);
+            HttpRequestMessage requestMessage = CreateJsonPostRequest(model, resource, target);
             var result = await ExecuteRequestAsync<FireBaseResponseModel>(requestMessage).ConfigureAwait(false);
 
             if (result.Response.IsSuccessStatusCode == false || result.Data.HasDataFailure())
@@ -134,7 +130,7 @@ namespace PushNotifications.Delivery.FireBase
             return true;
         }
 
-        public async Task<bool> UnsubscribeFromTopic(SubscriptionToken token, Topic topic)
+        public async Task<bool> UnsubscribeFromTopic(SubscriptionToken token, Topic topic, NotificationTarget target)
         {
             if (ReferenceEquals(null, token)) throw new ArgumentNullException(nameof(token));
             if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
@@ -146,7 +142,7 @@ namespace PushNotifications.Delivery.FireBase
 
             var model = new FireBaseSubscriptionModel(token.Token, topic);
 
-            HttpRequestMessage requestMessage = CreateJsonPostRequest(model, resource);
+            HttpRequestMessage requestMessage = CreateJsonPostRequest(model, resource, target);
             var result = await ExecuteRequestAsync<FireBaseResponseModel>(requestMessage).ConfigureAwait(false);
 
             if (result.Response.IsSuccessStatusCode == false || result.Data.HasDataFailure())

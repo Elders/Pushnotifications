@@ -23,15 +23,24 @@ namespace PushNotifications.Api
         public CurrentUser CurrentUser => new CurrentUser(this);
 
         public string Tenant => cronusContext.Tenant;
+
+        public string Application => GetApplication();
+
+        private string GetApplication()
+        {
+            return HttpContextAccessor.HttpContext.User.Claims
+                .Where(c => c.Type.Equals(AuthorizeClaimType.Application, StringComparison.OrdinalIgnoreCase))
+                .SingleOrDefault()?.Value;
+        }
     }
 
     public class CurrentUser
     {
-        private readonly ApiContext vaptContext;
+        private readonly ApiContext apiContext;
 
         public CurrentUser(ApiContext apiContext)
         {
-            this.vaptContext = apiContext;
+            this.apiContext = apiContext;
         }
 
         public SubscriberId UserId => GetUserIdFromHttpContext();
@@ -40,19 +49,12 @@ namespace PushNotifications.Api
         {
             if (string.IsNullOrEmpty(role)) throw new ArgumentNullException(nameof(role));
 
-            return vaptContext.HttpContextAccessor.HttpContext.User.IsInRole(role);
-        }
-
-        private string GetApplication()
-        {
-            return vaptContext.HttpContextAccessor.HttpContext.User.Claims
-                .Where(c => c.Type.Equals(AuthorizeClaimType.Application, StringComparison.OrdinalIgnoreCase))
-                .SingleOrDefault()?.Value;
+            return apiContext.HttpContextAccessor.HttpContext.User.IsInRole(role);
         }
 
         private SubscriberId GetUserIdFromHttpContext()
         {
-            var claim = vaptContext.HttpContextAccessor.HttpContext.User.Claims
+            var claim = apiContext.HttpContextAccessor.HttpContext.User.Claims
                 .Where(c => c.Type.Equals(AuthorizeClaimType.Subject, StringComparison.OrdinalIgnoreCase) || c.Type.Equals(ClaimTypes.NameIdentifier, StringComparison.OrdinalIgnoreCase))
                 .SingleOrDefault();
 
@@ -63,11 +65,11 @@ namespace PushNotifications.Api
 
             if (Urn.IsUrn(claim.Value))
             {
-                return new SubscriberId(AggregateUrn.Parse(claim.Value).Id, vaptContext.Tenant, GetApplication());
+                return new SubscriberId(AggregateUrn.Parse(claim.Value).Id, apiContext.Tenant, apiContext.Application);
             }
             else
             {
-                return new SubscriberId(claim.Value, vaptContext.Tenant, GetApplication());
+                return new SubscriberId(claim.Value, apiContext.Tenant, apiContext.Application);
             }
         }
     }
@@ -76,7 +78,7 @@ namespace PushNotifications.Api
     {
         public const string Subject = "sub";
         public const string Tenant = "tenant";
-        public const string Application = "dmo";
+        public const string Application = "application";
         public const string TenantClient = "client_tenant";
         public const string Organizations = "organizations";
     }
