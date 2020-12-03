@@ -60,6 +60,8 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
 
         public PushNotificationId MessageId { get; set; }
 
+        public string Application { get; set; }
+
         /// <summary>
         /// The payload data
         /// </summary>
@@ -69,9 +71,9 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
         {
             var subscriber = AggregateUrn.Parse(SubscriberUrn, Urn.Uber);
 
-            var subscriberId = new SubscriberId(subscriber.Id, subscriber.Tenant);
+            var subscriberId = new SubscriberId(subscriber.Id, subscriber.Tenant, Application);
             var notificationPayload = new NotificationPayload(Title, Body, Sound, Icon, Badge);
-            return new NotificationMessageSignal(subscriberId, notificationPayload, NotificationData.ToDictionary(x => x.Key, y => y.Value as object), DateTimeOffset.FromFileTime(ExpiresAt.FileTimeUtc), ContentAvailable, subscriberId.Tenant);
+            return new NotificationMessageSignal(subscriberId, notificationPayload, NotificationData.ToDictionary(x => x.Key, y => y.Value as object), DateTimeOffset.FromFileTime(ExpiresAt.FileTimeUtc), ContentAvailable, subscriberId.Tenant, Application);
         }
     }
 

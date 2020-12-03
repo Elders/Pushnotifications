@@ -43,6 +43,13 @@ namespace PushNotifications.Api
             return vaptContext.HttpContextAccessor.HttpContext.User.IsInRole(role);
         }
 
+        private string GetApplication()
+        {
+            return vaptContext.HttpContextAccessor.HttpContext.User.Claims
+                .Where(c => c.Type.Equals(AuthorizeClaimType.Application, StringComparison.OrdinalIgnoreCase))
+                .SingleOrDefault()?.Value;
+        }
+
         private SubscriberId GetUserIdFromHttpContext()
         {
             var claim = vaptContext.HttpContextAccessor.HttpContext.User.Claims
@@ -54,14 +61,13 @@ namespace PushNotifications.Api
                 return SubscriberId.NoUser;
             }
 
-
             if (Urn.IsUrn(claim.Value))
             {
-                return new SubscriberId(AggregateUrn.Parse(claim.Value).Id, vaptContext.Tenant);
+                return new SubscriberId(AggregateUrn.Parse(claim.Value).Id, vaptContext.Tenant, GetApplication());
             }
             else
             {
-                return new SubscriberId(claim.Value, vaptContext.Tenant);
+                return new SubscriberId(claim.Value, vaptContext.Tenant, GetApplication());
             }
         }
     }
@@ -70,6 +76,7 @@ namespace PushNotifications.Api
     {
         public const string Subject = "sub";
         public const string Tenant = "tenant";
+        public const string Application = "dmo";
         public const string TenantClient = "client_tenant";
         public const string Organizations = "organizations";
     }

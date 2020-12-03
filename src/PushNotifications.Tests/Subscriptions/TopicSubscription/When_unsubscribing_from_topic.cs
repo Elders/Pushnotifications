@@ -10,7 +10,7 @@ namespace PushNotifications.Tests.PushNotifications
         {
             var tenant = "elders";
             topic = new Topic("topic");
-            subscriberId = new SubscriberId("id", tenant);
+            subscriberId = new SubscriberId("id", tenant, "app");
             topicSubscriptionId = new TopicSubscriptionId(subscriberId, topic, tenant);
             aggregate = new TopicSubscription(topicSubscriptionId);
         };

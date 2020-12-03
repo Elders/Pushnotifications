@@ -15,7 +15,7 @@ namespace PushNotifications.Tests.PushNotifications
             var id = SubscriptionId.New("elders", "id");
             projection = new SubscriberTokensProjection();
             var subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
-            subscriberId = new SubscriberId("kv", "elders");
+            subscriberId = new SubscriberId("kv", "elders", "app");
             subscribedEvent = new Subscribed(id, subscriberId, subscriptionToken);
             unSubscribedEvent = new UnSubscribed(id, subscriberId, subscriptionToken);
             projection.Handle(subscribedEvent);

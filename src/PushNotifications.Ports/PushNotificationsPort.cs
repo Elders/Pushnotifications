@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.Projections.Subscriptions;
 using PushNotifications.Subscriptions;
-using PushNotifications.Subscriptions.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +32,8 @@ namespace PushNotifications.Ports
 
             foreach (var recipient in signal.Recipients)
             {
-                var subscriberId = new SubscriberId(AggregateUrn.Parse(recipient));
+                AggregateUrn urn = AggregateUrn.Parse(recipient, Urn.Uber);
+                var subscriberId = new SubscriberId(urn.Id, urn.Tenant, signal.Application);
                 var projectionResult = projections.Get<SubscriberTokensProjection>(subscriberId);
 
                 if (projectionResult.IsSuccess)

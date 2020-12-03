@@ -13,7 +13,7 @@ namespace PushNotifications.Tests.PushNotifications
             var id = SubscriptionId.New("elders", "id");
             projection = new SubscriberTokensProjection();
             var subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
-            var subscriberId = new SubscriberId("kv", "elders");
+            var subscriberId = new SubscriberId("kv", "elders", "app");
             @event = new Subscribed(id, subscriberId, subscriptionToken);
             projection.Handle(@event);
         };

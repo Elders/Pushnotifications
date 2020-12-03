@@ -16,7 +16,7 @@ namespace PushNotifications.Tests.PushNotifications
             var firstSubscriptionToken = new SubscriptionToken("token1", SubscriptionType.FireBase);
             secondSubscriptionToken = new SubscriptionToken("token2", SubscriptionType.FireBase);
 
-            subscriberId = new SubscriberId("kv", "elders");
+            subscriberId = new SubscriberId("kv", "elders", "app");
             var firstSubscribedEvent = new Subscribed(id, subscriberId, firstSubscriptionToken);
             var secondSubscribedEvent = new Subscribed(id, subscriberId, secondSubscriptionToken);
             unSubscribedEvent = new UnSubscribed(id, subscriberId, firstSubscriptionToken);

@@ -9,7 +9,7 @@ namespace PushNotifications.Tests.PushNotifications
         Establish context = () =>
         {
             id = SubscriptionId.New("elders", "id");
-            subscriberId = new SubscriberId("kv", "elders");
+            subscriberId = new SubscriberId("kv", "elders", "app");
             subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
             ar = new Subscription(id, subscriberId, subscriptionToken);
             ar.UnSubscribe(subscriberId);
