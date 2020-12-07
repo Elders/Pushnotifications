@@ -7,7 +7,7 @@ using PushNotifications.Subscriptions.Events;
 namespace PushNotifications.Projections.Subscriptions
 {
     [DataContract(Name = "d42d1bc2-6e83-471b-8c73-6ce2bace4f15")]
-    public class SubscriberTokensProjection : ProjectionDefinition<SubscriberTokens, SubscriberId>, IProjection,
+    public class SubscriberTokensProjection : ProjectionDefinition<SubscriberTokens, DeviceSubscriberId>, IProjection,
         IEventHandler<Subscribed>,
         IEventHandler<UnSubscribed>
     {

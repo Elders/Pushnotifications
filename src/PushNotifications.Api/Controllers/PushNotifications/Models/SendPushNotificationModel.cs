@@ -70,7 +70,7 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
         public NotificationMessageSignal AsSignal()
         {
             var subscriber = AggregateUrn.Parse(SubscriberUrn, Urn.Uber);
-            var subscriberId = new SubscriberId(subscriber.Id, subscriber.Tenant, Application);
+            var subscriberId = new DeviceSubscriberId(subscriber.Id, subscriber.Tenant, Application);
             var notificationPayload = new NotificationPayload(Title, Body, Sound, Icon, Badge);
             var target = new NotificationTarget(subscriber.Tenant, Application);
 

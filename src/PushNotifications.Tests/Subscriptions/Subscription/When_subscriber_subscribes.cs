@@ -5,17 +5,17 @@ using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Tests.PushNotifications
 {
-    [Subject(nameof(Subscription))]
+    [Subject(nameof(DeviceSubscription))]
     public class When_subscriber_subscribes
     {
         Establish context = () =>
         {
-            id = SubscriptionId.New("elders", "id");
-            subscriberId = new SubscriberId("kv", "elders", "app");
+            id = DeviceSubscriptionId.New("elders", "id");
+            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
             subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
         };
 
-        Because of = () => ar = new Subscription(id, subscriberId, subscriptionToken);
+        Because of = () => ar = new DeviceSubscription(id, subscriberId, subscriptionToken);
 
         It should_create_subscription = () => ar.ShouldHaveEvent<Subscribed>(e =>
         {
@@ -25,8 +25,8 @@ namespace PushNotifications.Tests.PushNotifications
         });
 
         static IAggregateRoot ar;
-        static SubscriptionId id;
-        static SubscriberId subscriberId;
+        static DeviceSubscriptionId id;
+        static DeviceSubscriberId subscriberId;
         static SubscriptionToken subscriptionToken;
     }
 }

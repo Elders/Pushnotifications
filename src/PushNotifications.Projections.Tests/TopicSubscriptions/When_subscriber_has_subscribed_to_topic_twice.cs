@@ -11,7 +11,7 @@ namespace PushNotifications.Tests.PushNotifications
         Establish context = () =>
         {
             var topic = new Topic("topic");
-            var subscriberId = new SubscriberId("kv", "elders", "app");
+            var subscriberId = new DeviceSubscriberId("kv", "elders", "app");
             var id = new TopicSubscriptionId(subscriberId, topic, "elders");
 
             projection = new TopicsPerSubscriberProjection();

@@ -79,7 +79,7 @@ namespace PushNotifications.Delivery.FireBase
         private void OptionsChanged(FireBaseOptions newOptions)
         {
             options = newOptions;
-            client.BaseAddress = new Uri(options.BaseAddress);
+            //client.BaseAddress = new Uri(options.BaseAddress);
         }
     }
 

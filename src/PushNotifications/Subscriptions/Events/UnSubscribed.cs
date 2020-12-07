@@ -9,7 +9,7 @@ namespace PushNotifications.Subscriptions.Events
     {
         UnSubscribed() { }
 
-        public UnSubscribed(SubscriptionId id, SubscriberId subscriberId, SubscriptionToken subscriptionToken)
+        public UnSubscribed(DeviceSubscriptionId id, DeviceSubscriberId subscriberId, SubscriptionToken subscriptionToken)
         {
             if (id is null) throw new ArgumentException(nameof(id));
             if (subscriberId is null) throw new ArgumentException(nameof(subscriberId));
@@ -21,10 +21,10 @@ namespace PushNotifications.Subscriptions.Events
         }
 
         [DataMember(Order = 1)]
-        public SubscriptionId Id { get; private set; }
+        public DeviceSubscriptionId Id { get; private set; }
 
         [DataMember(Order = 2)]
-        public SubscriberId SubscriberId { get; private set; }
+        public DeviceSubscriberId SubscriberId { get; private set; }
 
         [DataMember(Order = 3)]
         public SubscriptionToken SubscriptionToken { get; private set; }

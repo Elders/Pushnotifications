@@ -11,7 +11,7 @@ namespace PushNotifications.Tests.PushNotifications
         Establish context = () =>
         {
             topic = new Topic("topic");
-            subscriberId = new SubscriberId("kv", "elders", "app");
+            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
             var id = new TopicSubscriptionId(subscriberId, topic, "elders");
 
             projection = new TopicsPerSubscriberProjection();
@@ -28,7 +28,7 @@ namespace PushNotifications.Tests.PushNotifications
         It should_not_have_any_topics_registered = () => projection.State.Topics.ShouldBeEmpty();
 
         static TopicsPerSubscriberProjection projection;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
         static Topic topic;
         static SubscribedToTopic @event;
         static UnsubscribedFromTopic unsubscribeEvent;

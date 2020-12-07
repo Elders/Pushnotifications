@@ -1,35 +1,36 @@
 ﻿using System;
+using System.Linq;
 using Elders.Cronus;
 using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Subscriptions
 {
-    public class Subscription : AggregateRoot<SubscriptionState>
+    public class DeviceSubscription : AggregateRoot<DeviceSubscriptionState>
     {
-        Subscription() { }
+        DeviceSubscription() { }
 
-        public Subscription(SubscriptionId id, SubscriberId subscriberId, SubscriptionToken subscriptionToken)
+        public DeviceSubscription(DeviceSubscriptionId id, DeviceSubscriberId subscriberId, SubscriptionToken subscriptionToken)
         {
             if (id is null) throw new ArgumentException(nameof(id));
             if (subscriberId is null) throw new ArgumentException(nameof(subscriberId));
             if (SubscriptionToken.IsValid(subscriptionToken) == false) throw new ArgumentException(nameof(subscriptionToken));
 
-            state = new SubscriptionState();
+            state = new DeviceSubscriptionState();
 
             IEvent evnt = new Subscribed(id, subscriberId, subscriptionToken);
             Apply(evnt);
         }
 
-        public void Subscribe(SubscriberId subscriberId)
+        public void Subscribe(DeviceSubscriberId subscriberId)
         {
-            if (state.IsSubscriptionActive == false || state.SubscriberId != subscriberId)
+            if (state.IsSubscriptionActive == false || state.Subscribers.Where(s=>s.Equals(subscriberId)).Any() == false)
             {
                 IEvent evnt = new Subscribed(state.Id, subscriberId, state.SubscriptionToken);
                 Apply(evnt);
             }
         }
 
-        public void UnSubscribe(SubscriberId subscriberId)
+        public void UnSubscribe(DeviceSubscriberId subscriberId)
         {
             if (state.IsSubscriptionActive == true)
             {

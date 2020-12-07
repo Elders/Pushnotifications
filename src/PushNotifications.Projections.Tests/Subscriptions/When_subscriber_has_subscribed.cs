@@ -13,10 +13,10 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            var id = SubscriptionId.New("elders", "id");
+            var id = DeviceSubscriptionId.New("elders", "id");
             projection = new SubscriberTokensProjection();
             subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
-            subscriberId = new SubscriberId("kv", "elders", "app");
+            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
             @event = new Subscribed(id, subscriberId, subscriptionToken);
         };
 
@@ -30,7 +30,7 @@ namespace PushNotifications.Tests.PushNotifications
         It should_have_correct_subscription_token = () => projection.State.Tokens.Single().ShouldEqual(subscriptionToken);
 
         static SubscriberTokensProjection projection;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
         static SubscriptionToken subscriptionToken;
         static Subscribed @event;
     }

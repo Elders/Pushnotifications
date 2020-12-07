@@ -9,7 +9,7 @@ namespace PushNotifications.Subscriptions.Commands
     {
         SubscribeToTopic() { }
 
-        public SubscribeToTopic(TopicSubscriptionId id, SubscriberId subscriberId, Topic topic)
+        public SubscribeToTopic(TopicSubscriptionId id, DeviceSubscriberId subscriberId, Topic topic)
         {
             if (id is null) throw new ArgumentException(nameof(id));
             if (id is null) throw new ArgumentException(nameof(subscriberId));
@@ -24,7 +24,7 @@ namespace PushNotifications.Subscriptions.Commands
         public TopicSubscriptionId Id { get; private set; }
 
         [DataMember(Order = 2)]
-        public SubscriberId SubscriberId { get; private set; }
+        public DeviceSubscriberId SubscriberId { get; private set; }
 
         [DataMember(Order = 3)]
         public Topic Topic { get; private set; }

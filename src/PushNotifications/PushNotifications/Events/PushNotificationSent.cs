@@ -11,7 +11,7 @@ namespace PushNotifications.Contracts.PushNotifications.Events
     {
         PushNotificationSent() { }
 
-        public PushNotificationSent(PushNotificationId id, SubscriberId subscriberId, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt, bool contentAvailable)
+        public PushNotificationSent(PushNotificationId id, DeviceSubscriberId subscriberId, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt, bool contentAvailable)
         {
             if (ReferenceEquals(null, id) == true) throw new ArgumentNullException(nameof(id));
             if (ReferenceEquals(null, subscriberId) == true) throw new ArgumentNullException(nameof(subscriberId));
@@ -31,7 +31,7 @@ namespace PushNotifications.Contracts.PushNotifications.Events
         public PushNotificationId Id { get; private set; }
 
         [DataMember(Order = 2)]
-        public SubscriberId SubscriberId { get; private set; }
+        public DeviceSubscriberId SubscriberId { get; private set; }
 
         [DataMember(Order = 3)]
         public NotificationPayload NotificationPayload { get; private set; }

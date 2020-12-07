@@ -4,18 +4,18 @@ using System.Runtime.Serialization;
 namespace PushNotifications.Subscriptions
 {
     [DataContract(Name = "ece0a261-027e-479b-9ce3-530d1acd8dfe")]
-    public class SubscriberId : AggregateRootId
+    public class DeviceSubscriberId : AggregateRootId
     {
-        SubscriberId() { }
+        DeviceSubscriberId() { }
 
         //public SubscriberId(AggregateUrn urn) : base("subscriber", urn) { }
 
-        public SubscriberId(string id, string tenant, string application) : base(id, GetAggregateRootName(application), tenant)
+        public DeviceSubscriberId(string id, string tenant, string application) : base(id, GetAggregateRootName(application), tenant)
         {
             Application = application;
         }
 
-        public static SubscriberId NoUser => new SubscriberId("nouser", "notenant", "noapplication");
+        public static DeviceSubscriberId NoUser => new DeviceSubscriberId("nouser", "notenant", "noapplication");
 
         [DataMember(Order = 1)]
         public string Application { get; private set; }

@@ -9,7 +9,7 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            subscriberId = new SubscriberId("kv", "elders", "app");
+            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
             topic = new Topic("topic");
             id = new TopicSubscriptionId(subscriberId, topic, "elders");
             ar = new TopicSubscription(id);
@@ -21,6 +21,6 @@ namespace PushNotifications.Tests.PushNotifications
         static TopicSubscription ar;
         static Topic topic;
         static TopicSubscriptionId id;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
     }
 }

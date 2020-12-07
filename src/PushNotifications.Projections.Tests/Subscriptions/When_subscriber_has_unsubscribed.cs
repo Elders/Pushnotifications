@@ -12,10 +12,10 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            var id = SubscriptionId.New("elders", "id");
+            var id = DeviceSubscriptionId.New("elders", "id");
             projection = new SubscriberTokensProjection();
             var subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
-            subscriberId = new SubscriberId("kv", "elders", "app");
+            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
             subscribedEvent = new Subscribed(id, subscriberId, subscriptionToken);
             unSubscribedEvent = new UnSubscribed(id, subscriberId, subscriptionToken);
             projection.Handle(subscribedEvent);
@@ -30,7 +30,7 @@ namespace PushNotifications.Tests.PushNotifications
         It should_have_correct_zero_subscriptions = () => projection.State.Tokens.Count.ShouldEqual(0);
 
         static SubscriberTokensProjection projection;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
 
         static Subscribed subscribedEvent;
         static UnSubscribed unSubscribedEvent;

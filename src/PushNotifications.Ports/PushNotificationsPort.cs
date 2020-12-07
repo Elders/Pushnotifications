@@ -33,7 +33,7 @@ namespace PushNotifications.Ports
             foreach (var recipient in signal.Recipients)
             {
                 AggregateUrn urn = AggregateUrn.Parse(recipient, Urn.Uber);
-                var subscriberId = new SubscriberId(urn.Id, urn.Tenant, signal.Application);
+                var subscriberId = new DeviceSubscriberId(urn.Id, urn.Tenant, signal.Application);
                 var projectionResult = projections.Get<SubscriberTokensProjection>(subscriberId);
 
                 if (projectionResult.IsSuccess)

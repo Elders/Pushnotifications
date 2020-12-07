@@ -11,7 +11,7 @@ namespace PushNotifications.Tests.PushNotifications
         {
             var tenant = "elders";
             topic = new Topic("topic");
-            subscriberId = new SubscriberId("id", tenant, "app");
+            subscriberId = new DeviceSubscriberId("id", tenant, "app");
             topicSubscriptionId = new TopicSubscriptionId(subscriberId, topic, tenant);
             aggregate = new TopicSubscription(topicSubscriptionId);
             aggregate.UnsubscribeFromTopic(topicSubscriptionId);
@@ -31,7 +31,7 @@ namespace PushNotifications.Tests.PushNotifications
 
         static TopicSubscription aggregate;
         static TopicSubscriptionId topicSubscriptionId;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
         static Topic topic;
     }
 }

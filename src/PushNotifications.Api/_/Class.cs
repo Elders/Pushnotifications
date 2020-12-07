@@ -43,7 +43,7 @@ namespace PushNotifications.Api
             this.apiContext = apiContext;
         }
 
-        public SubscriberId UserId => GetUserIdFromHttpContext();
+        public DeviceSubscriberId UserId => GetUserIdFromHttpContext();
 
         public bool HasRole(string role)
         {
@@ -52,7 +52,7 @@ namespace PushNotifications.Api
             return apiContext.HttpContextAccessor.HttpContext.User.IsInRole(role);
         }
 
-        private SubscriberId GetUserIdFromHttpContext()
+        private DeviceSubscriberId GetUserIdFromHttpContext()
         {
             var claim = apiContext.HttpContextAccessor.HttpContext.User.Claims
                 .Where(c => c.Type.Equals(AuthorizeClaimType.Subject, StringComparison.OrdinalIgnoreCase) || c.Type.Equals(ClaimTypes.NameIdentifier, StringComparison.OrdinalIgnoreCase))
@@ -60,16 +60,16 @@ namespace PushNotifications.Api
 
             if (claim is null)
             {
-                return SubscriberId.NoUser;
+                return DeviceSubscriberId.NoUser;
             }
 
             if (Urn.IsUrn(claim.Value))
             {
-                return new SubscriberId(AggregateUrn.Parse(claim.Value).Id, apiContext.Tenant, apiContext.Application);
+                return new DeviceSubscriberId(AggregateUrn.Parse(claim.Value).Id, apiContext.Tenant, apiContext.Application);
             }
             else
             {
-                return new SubscriberId(claim.Value, apiContext.Tenant, apiContext.Application);
+                return new DeviceSubscriberId(claim.Value, apiContext.Tenant, apiContext.Application);
             }
         }
     }

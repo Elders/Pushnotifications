@@ -11,12 +11,12 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            var id = SubscriptionId.New("elders", "id");
+            var id = DeviceSubscriptionId.New("elders", "id");
             projection = new SubscriberTokensProjection();
             var firstSubscriptionToken = new SubscriptionToken("token1", SubscriptionType.FireBase);
             secondSubscriptionToken = new SubscriptionToken("token2", SubscriptionType.FireBase);
 
-            subscriberId = new SubscriberId("kv", "elders", "app");
+            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
             var firstSubscribedEvent = new Subscribed(id, subscriberId, firstSubscriptionToken);
             var secondSubscribedEvent = new Subscribed(id, subscriberId, secondSubscriptionToken);
             unSubscribedEvent = new UnSubscribed(id, subscriberId, firstSubscriptionToken);
@@ -31,7 +31,7 @@ namespace PushNotifications.Tests.PushNotifications
         It should_have_correct_subscription = () => projection.State.Tokens.Single().ShouldEqual(secondSubscriptionToken);
 
         static SubscriberTokensProjection projection;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
         static UnSubscribed unSubscribedEvent;
         static SubscriptionToken secondSubscriptionToken;
     }

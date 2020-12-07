@@ -10,10 +10,10 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            var id = SubscriptionId.New("elders", "id");
+            var id = DeviceSubscriptionId.New("elders", "id");
             projection = new SubscriberTokensProjection();
             var subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
-            var subscriberId = new SubscriberId("kv", "elders", "app");
+            var subscriberId = new DeviceSubscriberId("kv", "elders", "app");
             @event = new Subscribed(id, subscriberId, subscriptionToken);
             projection.Handle(@event);
         };
