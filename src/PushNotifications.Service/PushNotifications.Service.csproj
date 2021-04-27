@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -6,12 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cronus.Api" Version="6.1.1" />
-    <PackageReference Include="Cronus.Cluster.Consul" Version="6.2.0" />
-    <PackageReference Include="Cronus.Persistence.Cassandra" Version="6.2.0" />
-    <PackageReference Include="Cronus.Projections.Cassandra" Version="6.2.0" />
+    <PackageReference Include="Cronus.Api" Version="6.2.0-beta0006" />
+    <PackageReference Include="Cronus.Cluster.Consul" Version="6.2.2" />
+    <PackageReference Include="Cronus.Persistence.Cassandra" Version="6.3.0-beta0003" />
+    <PackageReference Include="Cronus.Projections.Cassandra" Version="6.3.0-next.4" />
     <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="6.1.0" />
-    <PackageReference Include="Cronus.Transport.RabbitMQ" Version="6.2.0" />
+    <PackageReference Include="Cronus.Transport.RabbitMQ" Version="6.4.0-beta0006" />
     <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.15.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.8" />
     <PackageReference Include="Pandora.Consul" Version="2.0.0" />
