@@ -49,7 +49,11 @@ namespace PushNotifications.Api
             var problemDetails = new ValidationProblemDetails(context.HttpContext, message, errors);
 
             var response = new ApiErrorResult(problemDetails);
-            var responseAsString = JsonSerializer.Serialize(response);
+            var serializeOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
+            var responseAsString = JsonSerializer.Serialize(response, serializeOptions);
 
             if (response.Error.Status.HasValue)
                 context.HttpContext.Response.StatusCode = response.Error.Status.Value;
