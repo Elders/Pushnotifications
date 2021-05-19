@@ -14,14 +14,12 @@ namespace PushNotifications.Ports
         ISignalHandle<NotificationMessageSignal>
     {
         private readonly IProjectionReader projections;
-        private readonly IPublisher<ICommand> publisher;
         private readonly MultiPlatformDelivery delivery;
         private readonly ILogger<PushNotificationTrigger> logger;
 
-        public PushNotificationTrigger(IProjectionReader projections, IPublisher<ICommand> publisher, MultiPlatformDelivery delivery, ILogger<PushNotificationTrigger> logger)
+        public PushNotificationTrigger(IProjectionReader projections, MultiPlatformDelivery delivery, ILogger<PushNotificationTrigger> logger)
         {
             this.projections = projections;
-            this.publisher = publisher;
             this.delivery = delivery;
             this.logger = logger;
         }
@@ -34,15 +32,18 @@ namespace PushNotifications.Ports
             {
                 AggregateUrn urn = AggregateUrn.Parse(recipient, Urn.Uber);
                 var subscriberId = new DeviceSubscriberId(urn.Id, urn.Tenant, signal.Application);
-                var projectionResult = projections.Get<SubscriberTokensProjection>(subscriberId);
+                using (logger.BeginScope(s => s.AddScope("pn_subscriber", subscriberId)))
+                {
+                    var projectionResult = projections.Get<SubscriberTokensProjection>(subscriberId);
 
-                if (projectionResult.IsSuccess)
-                {
-                    tokens.AddRange(projectionResult.Data.State.Tokens);
-                }
-                else if (projectionResult.HasError)
-                {
-                    logger.LogError(projectionResult.Error);
+                    if (projectionResult.IsSuccess)
+                    {
+                        tokens.AddRange(projectionResult.Data.State.Tokens);
+                    }
+                    else if (projectionResult.HasError)
+                    {
+                        logger.LogError(projectionResult.Error);
+                    }
                 }
             }
 
@@ -64,6 +65,7 @@ namespace PushNotifications.Ports
             //        publisher.Publish(unsubscribe);
             //    }
             //}
+
 
         }
 
