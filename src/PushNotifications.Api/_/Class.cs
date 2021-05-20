@@ -28,9 +28,14 @@ namespace PushNotifications.Api
 
         private string GetApplication()
         {
-            return HttpContextAccessor.HttpContext.User.Claims
+            string application = HttpContextAccessor.HttpContext.User.Claims
                 .Where(c => c.Type.Equals(AuthorizeClaimType.Application, StringComparison.OrdinalIgnoreCase))
                 .SingleOrDefault()?.Value;
+
+            if (string.IsNullOrEmpty(application))
+                throw new Exception("Koceto da mu misli v IAA. Add the app claim.");
+
+            return application;
         }
     }
 
@@ -60,7 +65,7 @@ namespace PushNotifications.Api
 
             if (claim is null)
             {
-                return DeviceSubscriberId.NoUser;
+                return default;
             }
 
             if (Urn.IsUrn(claim.Value))

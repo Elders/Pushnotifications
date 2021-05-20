@@ -23,8 +23,10 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         [HttpPost, Route("Subscribe"), Discoverable("PushySubscriptionSubscribe", "v1")]
         public IActionResult SubscribeToPushy(PushySubscribeModel model)
         {
-            model.Subscriber = model.Subscriber ?? context.CurrentUser.UserId;
-            var command = model.AsSubscribeCommand();
+            if (context.CurrentUser.UserId is null && string.IsNullOrEmpty(model.Subscriber))
+                return response.ValidationProblem("Please use RO or provide the subscriber property.");
+
+            var command = model.AsSubscribeCommand(context);
 
             return response.FromPublishCommand(command);
         }

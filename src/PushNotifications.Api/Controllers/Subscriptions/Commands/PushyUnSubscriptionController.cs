@@ -7,10 +7,12 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
     public class PushyUnSubscriptionController : ApiControllerBase
     {
         private readonly ApiCqrsResponse response;
+        private readonly ApiContext context;
 
-        public PushyUnSubscriptionController(ApiCqrsResponse response)
+        public PushyUnSubscriptionController(ApiCqrsResponse response, ApiContext context)
         {
             this.response = response;
+            this.context = context;
         }
 
         /// <summary>
@@ -21,7 +23,10 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         [HttpPost, Route("UnSubscribe"), Discoverable("PushySubscriptionUnSubscribe", "v1")]
         public IActionResult UnSubscribeFromPushy(PushySubscribeModel model)
         {
-            var command = model.AsUnSubscribeCommand();
+            if (context.CurrentUser.UserId is null && string.IsNullOrEmpty(model.Subscriber))
+                return response.ValidationProblem("Please use RO or provide the subscriber property.");
+
+            var command = model.AsUnSubscribeCommand(context);
 
             return response.FromPublishCommand(command);
         }

@@ -23,6 +23,9 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         [HttpPost, Route("UnSubscribe"), Discoverable("FireBaseSubscriptionUnSubscribe", "v1")]
         public IActionResult UnSubscribeFromFireBase(FireBaseSubscribeModel model)
         {
+            if (context.CurrentUser.UserId is null && string.IsNullOrEmpty(model.Subscriber))
+                return response.ValidationProblem("Please use RO or provide the subscriber property.");
+
             var command = model.AsUnSubscribeCommand(context);
 
             return response.FromPublishCommand(command);
