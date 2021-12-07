@@ -40,8 +40,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PushNotifications.Projectio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PushNotifications.Delivery.FireBase.Tests", "PushNotifications.Delivery.FireBase.Tests\PushNotifications.Delivery.FireBase.Tests.csproj", "{89677C65-CA11-4808-983C-D823E3E6F2F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multitenancy.Tracker", "Multitenancy.Tracker\Multitenancy.Tracker.csproj", "{0ED759C4-97C1-4D58-B7E1-DE7D5BED714C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PushNotifications.Service", "PushNotifications.Service\PushNotifications.Service.csproj", "{DD8E4409-D726-4345-9995-D87A8C37076C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log", "Log\Log.csproj", "{20068263-BB43-4730-A691-053962968025}"
@@ -100,10 +98,6 @@ Global
 		{89677C65-CA11-4808-983C-D823E3E6F2F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89677C65-CA11-4808-983C-D823E3E6F2F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89677C65-CA11-4808-983C-D823E3E6F2F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0ED759C4-97C1-4D58-B7E1-DE7D5BED714C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0ED759C4-97C1-4D58-B7E1-DE7D5BED714C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0ED759C4-97C1-4D58-B7E1-DE7D5BED714C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0ED759C4-97C1-4D58-B7E1-DE7D5BED714C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DD8E4409-D726-4345-9995-D87A8C37076C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DD8E4409-D726-4345-9995-D87A8C37076C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD8E4409-D726-4345-9995-D87A8C37076C}.Release|Any CPU.ActiveCfg = Release|Any CPU
