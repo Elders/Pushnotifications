@@ -9,6 +9,7 @@
     <PackageReference Include="CassandraCSharpDriver" Version="3.17.1" />
     <PackageReference Include="Pandora" Version="3.0.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.2.88" />
+    <ProjectReference Include="..\Cassandra.Lock\Cassandra.Lock.csproj" />
     <ProjectReference Include="..\Log\Log.csproj" />
     <ProjectReference Include="..\Options.Extensions\Options.Extensions.csproj" />
     <ProjectReference Include="..\PushNotifications.Aggregator.InMemory.Tests\PushNotifications.Aggregator.InMemory.Tests.csproj" />
