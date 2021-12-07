@@ -13,6 +13,7 @@
     <ProjectReference Include="..\Options.Extensions\Options.Extensions.csproj" />
     <ProjectReference Include="..\PushNotifications.Aggregator.InMemory.Tests\PushNotifications.Aggregator.InMemory.Tests.csproj" />
     <ProjectReference Include="..\PushNotifications.Aggregator.InMemory\PushNotifications.Aggregator.InMemory.csproj" />
+    <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj" />
     <ProjectReference Include="..\PushNotifications.Delivery.FireBase.Tests\PushNotifications.Delivery.FireBase.Tests.csproj" />
     <ProjectReference Include="..\PushNotifications.Delivery.FireBase\PushNotifications.Delivery.FireBase.csproj" />
     <ProjectReference Include="..\PushNotifications.Delivery.Pushy\PushNotifications.Delivery.Pushy.csproj" />
