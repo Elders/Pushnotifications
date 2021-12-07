@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29911.84
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{B2518E67-E1CB-42BB-AA68-746CDD7C1E19}"
 	ProjectSection(SolutionItems) = preProject
@@ -40,7 +40,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PushNotifications.Projectio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PushNotifications.Delivery.FireBase.Tests", "PushNotifications.Delivery.FireBase.Tests\PushNotifications.Delivery.FireBase.Tests.csproj", "{89677C65-CA11-4808-983C-D823E3E6F2F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multitenancy.Tracker", "Multitenancy.Tracker\Multitenancy.Tracker.csproj", "{0ED759C4-97C1-4D58-B7E1-DE7D5BED714C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multitenancy.Tracker", "Multitenancy.Tracker\Multitenancy.Tracker.csproj", "{0ED759C4-97C1-4D58-B7E1-DE7D5BED714C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PushNotifications.Service", "PushNotifications.Service\PushNotifications.Service.csproj", "{DD8E4409-D726-4345-9995-D87A8C37076C}"
 EndProject

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>dotnet-PushNotifications.Service-E7D56A77-8456-4109-928B-9CA6D1E678BF</UserSecretsId>
   </PropertyGroup>
 
