@@ -6,12 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cronus.Api" Version="7.0.0-preview.2" />
-    <PackageReference Include="Cronus.Cluster.Consul" Version="7.0.0-preview.2" />
-    <PackageReference Include="Cronus.Persistence.Cassandra" Version="7.0.0-preview.3" />
-    <PackageReference Include="Cronus.Projections.Cassandra" Version="7.0.0-preview.2" />
+    <PackageReference Include="Cronus.Api" Version="7.0.0-preview.8" />
+    <PackageReference Include="Cronus.Cluster.Consul" Version="7.0.0-preview.3" />
+    <PackageReference Include="Cronus.Persistence.Cassandra" Version="7.0.0-preview.6" />
+    <PackageReference Include="Cronus.Projections.Cassandra" Version="7.0.0-preview.10" />
     <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="7.0.0-preview.2" />
-    <PackageReference Include="Cronus.Transport.RabbitMQ" Version="7.0.0-preview.5" />
+    <PackageReference Include="Cronus.Transport.RabbitMQ" Version="7.0.0-preview.27" />
     <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.20.0-beta1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
     <PackageReference Include="Pandora.Consul" Version="2.0.0" />

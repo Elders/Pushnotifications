@@ -22,7 +22,6 @@ namespace PushNotifications.Service
             this.log = log;
             this.cronusHost = cronusHost;
             this.observer = observer;
-            CronusBooter.BootstrapCronus(provider);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)

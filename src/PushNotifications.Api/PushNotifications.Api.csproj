@@ -7,12 +7,12 @@
 
   <ItemGroup>
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
-    <PackageReference Include="Cronus" Version="7.0.0-preview.4" />
-    <PackageReference Include="Cronus.AspNetCore" Version="7.0.0-preview.2" />
-    <PackageReference Include="Cronus.Persistence.Cassandra" Version="7.0.0-preview.3" />
-    <PackageReference Include="Cronus.Projections.Cassandra" Version="7.0.0-preview.2" />
+    <PackageReference Include="Cronus" Version="7.0.0-preview.36" />
+    <PackageReference Include="Cronus.AspNetCore" Version="7.0.0-preview.3" />
+    <PackageReference Include="Cronus.Persistence.Cassandra" Version="7.0.0-preview.6" />
+    <PackageReference Include="Cronus.Projections.Cassandra" Version="7.0.0-preview.10" />
     <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="7.0.0-preview.2" />
-    <PackageReference Include="Cronus.Transport.RabbitMQ" Version="7.0.0-preview.5" />
+    <PackageReference Include="Cronus.Transport.RabbitMQ" Version="7.0.0-preview.27" />
     <PackageReference Include="Discovery.Consul" Version="1.0.0-beta0005" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0-beta1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
