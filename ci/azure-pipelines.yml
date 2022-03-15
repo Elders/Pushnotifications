@@ -23,6 +23,7 @@ steps:
     env:
       STAGING_PATH: $(Build.ArtifactStagingDirectory)
       LOCAL_PATH: $(Build.Repository.LocalPath)
+      DOCKER_HUB_USER: $(DOCKER_HUB_USER)
       DOCKER_HUB_PASSWORD: $(DOCKER_HUB_PASSWORD)
     inputs:
       targetType: 'inline'
