@@ -17,6 +17,7 @@ module.exports={
            && docker build -f ci/Dockerfile.svc      -t $CR/elders/pushnotifications.svc:\${nextRelease.version}  $STAGING_PATH \
            && docker push $CR/elders/pushnotifications.api:\${nextRelease.version} \
            && docker push $CR/elders/pushnotifications.svc:\${nextRelease.version} \
+           && docker logout \
           `,
       }],
   
