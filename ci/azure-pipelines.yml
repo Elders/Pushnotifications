@@ -28,6 +28,5 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
-        #npm install    ### instead unpack readymade semantic-release archive (much faster)
         time curl -L https://github.com/Elders/blob/releases/download/SemRel-01/node_modules.tar.gz | tar mx -I pigz
         time npx semantic-release --no-ci
