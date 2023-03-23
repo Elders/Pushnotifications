@@ -1,3 +1,11 @@
+# [6.0.0-release-6.0.0.3](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.2...v6.0.0-release-6.0.0.3) (2023-03-23)
+
+
+### Features
+
+* update Pandora.Consul ([da6f7fb](https://github.com/Elders/Pushnotifications/commit/da6f7fb20e47baef807d9f0740a9e32fde8e2b99))
+* validating access tokens from multiple identity providers per tenant ([62c4ed7](https://github.com/Elders/Pushnotifications/commit/62c4ed7cf5ed8f58b54a44d22fcfa22317d7b0ff))
+
 # [6.0.0-release-6.0.0.2](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.1...v6.0.0-release-6.0.0.2) (2022-03-24)
 
 
