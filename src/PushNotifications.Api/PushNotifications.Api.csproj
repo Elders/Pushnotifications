@@ -1,135 +1,28 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9F3F8DB4-F738-4F20-B95C-91483E94B266}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>PushNotifications.Api</RootNamespace>
-    <AssemblyName>PushNotifications.Api</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>PushNotifications.Api.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Discovery, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Discovery.0.2.5\lib\net461\Discovery.dll</HintPath>
-    </Reference>
-    <Reference Include="Elders.Cronus.DomainModeling, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cronus.DomainModeling.4.0.7\lib\net462\Elders.Cronus.DomainModeling.dll</HintPath>
-    </Reference>
-    <Reference Include="Elders.Web.Api, Version=0.2.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Elders.Web.Api.0.2.4\lib\net45-full\Elders.Web.Api.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
-      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+    <PackageReference Include="Cronus" Version="7.0.0-preview.39" />
+    <PackageReference Include="Cronus.AspNetCore" Version="7.0.0-preview.3" />
+    <PackageReference Include="Cronus.Persistence.Cassandra" Version="7.0.0-preview.7" />
+    <PackageReference Include="Cronus.Projections.Cassandra" Version="7.0.0-preview.13" />
+    <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="7.0.0-preview.2" />
+    <PackageReference Include="Cronus.Transport.RabbitMQ" Version="7.0.0-preview.27" />
+    <PackageReference Include="Discovery.Consul" Version="1.0.0-beta0005" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0-beta1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
+    <PackageReference Include="Pandora.Consul" Version="3.3.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
-    <Compile Include="Attributes\ClaimsIdentityAttribute.cs" />
-    <Compile Include="Attributes\ScopeAndOrRoleAuthorizeAttribute.cs" />
-    <Compile Include="Attributes\ScopeAttribute.cs" />
-    <Compile Include="AvailableRoles.cs" />
-    <Compile Include="AvailableScopes.cs" />
-    <Compile Include="Controllers\Discovery\DiscoveryController.cs" />
-    <Compile Include="Controllers\Discovery\HealthCheckController.cs" />
-    <Compile Include="Controllers\Discovery\NormalizedDiscoveryController.cs" />
-    <Compile Include="Controllers\PushNotifications\Commands\PushNotificationsController.cs" />
-    <Compile Include="Controllers\PushNotifications\Commands\PushNotificationsTopicsController.cs" />
-    <Compile Include="Controllers\PushNotifications\Models\SendPushNotificationModel.cs" />
-    <Compile Include="Controllers\PushNotifications\Models\SendPushNotificationToTopicModel.cs" />
-    <Compile Include="Controllers\SubscriptionsTracker\GetTopicCounterController.cs" />
-    <Compile Include="Controllers\Subscriptions\Commands\FireBaseSubscribeController.cs" />
-    <Compile Include="Controllers\Subscriptions\Commands\PushyUnSubscriptionController.cs" />
-    <Compile Include="Controllers\Subscriptions\Commands\TopicSubscribeController .cs" />
-    <Compile Include="Controllers\Subscriptions\Commands\TopicUnsubscribeController.cs" />
-    <Compile Include="Controllers\Subscriptions\Commands\FireBaseUnSubscribeController.cs" />
-    <Compile Include="Controllers\Subscriptions\Models\FireBaseSubscribeModel.cs" />
-    <Compile Include="Controllers\Subscriptions\Commands\PushySubscriptionCommandController.cs" />
-    <Compile Include="Controllers\Subscriptions\Models\PushySubscribeModel.cs" />
-    <Compile Include="Controllers\Subscriptions\Models\TopicSubscriptionModel.cs" />
-    <Compile Include="Controllers\Subscriptions\Queries\SubscriptionQueryController.cs" />
-    <Compile Include="Converters\ClaimFillConverter.cs" />
-    <Compile Include="Converters\GenericJsonConverter.cs" />
-    <Compile Include="Converters\StringTenantIdConverter.cs" />
-    <Compile Include="Converters\SubscriptionTypeConverter.cs" />
-    <Compile Include="Converters\TenantAwareStringTenantIdConverter.cs" />
-    <Compile Include="Converters\TopicConverter.cs" />
-    <Compile Include="Converters\UrlBinder.cs" />
-    <Compile Include="Extensions\HttpActionResultExtensions.cs" />
-    <Compile Include="PushNotificationsApiAssembly.cs" />
+    <ProjectReference Include="..\Log\Log.csproj" />
+    <ProjectReference Include="..\PushNotifications\PushNotifications.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PushNotifications.Contracts\PushNotifications.Contracts.csproj">
-      <Project>{53ab2dd6-f42f-44bb-bb6d-a7497c720e68}</Project>
-      <Name>PushNotifications.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PushNotifications.Projections\PushNotifications.Projections.csproj">
-      <Project>{03CF41C9-3167-4431-BDF0-C44497C057E8}</Project>
-      <Name>PushNotifications.Projections</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="PushNotifications.Api.XML">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+
 </Project>

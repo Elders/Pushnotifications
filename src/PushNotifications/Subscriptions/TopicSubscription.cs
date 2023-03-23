@@ -1,7 +1,6 @@
 ﻿using System;
 using Elders.Cronus;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Events;
+using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Subscriptions
 {

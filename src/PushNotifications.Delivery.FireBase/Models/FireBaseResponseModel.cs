@@ -1,18 +1,15 @@
-﻿using System;
+﻿using PushNotifications.PushNotifications;
+using PushNotifications.Subscriptions;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using PushNotifications.Contracts;
-using PushNotifications.Delivery.FireBase.Logging;
 
 namespace PushNotifications.Delivery.FireBase.Models
 {
     public class FireBaseResponseModel
     {
-        static ILog log = LogProvider.GetLogger(typeof(FireBaseResponseModel));
+        public int Success { get; set; }
 
-        public bool Success { get; set; }
-
-        public bool Failure { get; set; }
+        public int Failure { get; set; }
 
         public List<FireBaseResponseResultModel> Results { get; set; }
 
@@ -40,25 +37,26 @@ namespace PushNotifications.Delivery.FireBase.Models
 
                 if (tokens.Count != responseModel.Count)
                 {
-                    log.Error(() =>
-                    {
-                        string tokensAsString = string.Join(",", tokens);
-                        string responseModelAsString = string.Join(",", responseModel);
-                        string errorMessage = "There is a difference in the number of tokens which we have sent to FireBase but the response contained different number of tokens. In this case we are not able to determine which token has a problem. This requires to be debuged.";
-                        return $"{errorMessage}{Environment.NewLine}Tokens:{tokensAsString}{Environment.NewLine}FireBaseResponses:{responseModelAsString}";
-                    });
+                    //log.Error(() =>
+                    //{
+                    //    string tokensAsString = string.Join(",", tokens);
+                    //    string responseModelAsString = string.Join(",", responseModel);
+                    //    string errorMessage = "There is a difference in the number of tokens which we have sent to FireBase but the response contained different number of tokens. In this case we are not able to determine which token has a problem. This requires to be debuged.";
+                    //    return $"{errorMessage}{Environment.NewLine}Tokens:{tokensAsString}{Environment.NewLine}FireBaseResponses:{responseModelAsString}";
+                    //});
 
                     return SendTokensResult.Success;
                 }
 
                 var sendPushNotificationResult = new List<SubscriptionToken>();
 
+
                 for (int i = 0; i < responseModel.Count; i++)
                 {
                     var token = tokens[i];
                     if (string.Equals(responseModel[i].Error, FireBaseResponseResultModel.UnregisteredDevice, StringComparison.OrdinalIgnoreCase))
                     {
-                        log.Info($"[FireBase] the token: '{token}' is not registered and will be removed from the subscriber");
+                        //log.Info($"[FireBase] the token: '{token}' is not registered and will be removed from the subscriber");
                         sendPushNotificationResult.Add(token);
                     }
                 }

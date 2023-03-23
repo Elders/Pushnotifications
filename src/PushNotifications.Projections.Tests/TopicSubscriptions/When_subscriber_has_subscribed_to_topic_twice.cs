@@ -1,8 +1,7 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Events;
 using PushNotifications.Projections.Subscriptions;
+using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -12,7 +11,7 @@ namespace PushNotifications.Tests.PushNotifications
         Establish context = () =>
         {
             var topic = new Topic("topic");
-            var subscriberId = new SubscriberId("kv", "elders");
+            var subscriberId = new DeviceSubscriberId("kv", "elders", "app");
             var id = new TopicSubscriptionId(subscriberId, topic, "elders");
 
             projection = new TopicsPerSubscriberProjection();

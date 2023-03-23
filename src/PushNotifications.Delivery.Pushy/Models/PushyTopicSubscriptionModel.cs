@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using PushNotifications.Contracts;
+using System.Text.Json.Serialization;
+using PushNotifications.Subscriptions;
 
 namespace PushNotifications.Delivery.Pushy.Models
 {
@@ -29,10 +29,10 @@ namespace PushNotifications.Delivery.Pushy.Models
             }
         }
 
-        [JsonProperty(PropertyName = "token")]
+        [JsonPropertyName("token")]
         public string Token { get; private set; }
 
-        [JsonProperty(PropertyName = "topics")]
+        [JsonPropertyName("topics")]
         public List<string> Topics { get; private set; }
     }
 }

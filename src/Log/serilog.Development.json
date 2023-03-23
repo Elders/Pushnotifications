@@ -1,0 +1,40 @@
+{
+    "Serilog": {
+        "MinimumLevel": {
+            // Verbose | Debug | Information | Warning | Error | Fatal
+            "Default": "Debug",
+            "Override": {
+                "Elders": "Information",
+                "Microsoft": "Information",
+                "Microsoft.AspNetCore": "Warning",
+                "System": "Information"
+            }
+        },
+        "WriteTo": [
+            { "Name": "Debug" },
+            {
+                "Name": "Console",
+                "Args": {
+                    "theme": "Log.EldersThemes::Epic, Log"
+                }
+            }
+            //,{
+            //    "Name": "File",
+            //    "Args": {
+            //        "path": "%PROGRAMDATA%\\.logs\\%pandora_application%\\log.txt",
+            //        "rollingInterval": "Day"
+            //    }
+            //},
+            //{
+            //    // https://github.com/serilog/serilog-sinks-elasticsearch#json-appsettingsjson-configuration
+            //    "Name": "Elasticsearch",
+            //    "Args": {
+            //        "nodeUris": "%log_server%",
+            //        "autoRegisterTemplate": true,
+            //        "autoRegisterTemplateVersion": "ESv7",
+            //        "indexFormat": "dev-log-%log_name%-{0:yyyy.MM.dd}"
+            //    }
+            //}
+        ]
+    }
+}

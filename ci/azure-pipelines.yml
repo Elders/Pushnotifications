@@ -1,0 +1,31 @@
+trigger:
+    branches:
+      include:
+      - '*'
+    paths:
+      exclude:
+      - CHANGELOG.md
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+  - checkout: self
+    clean: true
+    persistCredentials: true
+
+  - task: Bash@3
+    name: Release
+    env:
+      STAGING_PATH: $(Build.ArtifactStagingDirectory)
+      LOCAL_PATH: $(Build.Repository.LocalPath)
+      DOCKER_HUB_USER: $(DOCKER_HUB_USER)
+      DOCKER_HUB_PASSWORD: $(DOCKER_HUB_PASSWORD)
+    inputs:
+      targetType: 'inline'
+      script: |
+        time curl -L https://github.com/Elders/blob/releases/download/SemRel-01/node_modules.tar.gz | tar mx -I pigz
+        time npx semantic-release --no-ci

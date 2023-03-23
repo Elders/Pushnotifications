@@ -1,6 +1,4 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Subscriptions;
 
 namespace PushNotifications.Tests.PushNotifications
@@ -12,7 +10,7 @@ namespace PushNotifications.Tests.PushNotifications
         {
             var tenant = "elders";
             topic = new Topic("topic");
-            subscriberId = new SubscriberId("id", tenant);
+            subscriberId = new DeviceSubscriberId("id", tenant, "app");
             topicSubscriptionId = new TopicSubscriptionId(subscriberId, topic, tenant);
             aggregate = new TopicSubscription(topicSubscriptionId);
         };
@@ -29,7 +27,7 @@ namespace PushNotifications.Tests.PushNotifications
 
         static TopicSubscription aggregate;
         static TopicSubscriptionId topicSubscriptionId;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
         static Topic topic;
     }
 }

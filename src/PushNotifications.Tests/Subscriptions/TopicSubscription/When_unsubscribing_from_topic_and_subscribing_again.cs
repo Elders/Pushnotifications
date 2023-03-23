@@ -1,7 +1,6 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -12,7 +11,7 @@ namespace PushNotifications.Tests.PushNotifications
         {
             var tenant = "elders";
             topic = new Topic("topic");
-            subscriberId = new SubscriberId("id", tenant);
+            subscriberId = new DeviceSubscriberId("id", tenant, "app");
             topicSubscriptionId = new TopicSubscriptionId(subscriberId, topic, tenant);
             aggregate = new TopicSubscription(topicSubscriptionId);
             aggregate.UnsubscribeFromTopic(topicSubscriptionId);
@@ -28,11 +27,11 @@ namespace PushNotifications.Tests.PushNotifications
 
         It should_have_the_same_topic_subscription_id = () => aggregate.RootState().Id.ShouldEqual(topicSubscriptionId);
 
-        It should_have_two_topic_subscribed_events = () => aggregate.ShouldHaveEventsCount<Contracts.Subscriptions.Events.SubscribedToTopic>(2);
+        It should_have_two_topic_subscribed_events = () => aggregate.ShouldHaveEventsCount<SubscribedToTopic>(2);
 
         static TopicSubscription aggregate;
         static TopicSubscriptionId topicSubscriptionId;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
         static Topic topic;
     }
 }

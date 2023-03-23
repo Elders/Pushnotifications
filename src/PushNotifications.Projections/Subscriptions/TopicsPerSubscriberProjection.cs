@@ -1,13 +1,13 @@
 ﻿using System.Runtime.Serialization;
 using Elders.Cronus;
 using Elders.Cronus.Projections;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions.Events;
+using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Projections.Subscriptions
 {
     [DataContract(Name = "fc35e537-f06b-406b-b6c3-94725853a278")]
-    public class TopicsPerSubscriberProjection : ProjectionDefinition<SubscriberTopics, SubscriberId>, IProjection,
+    public class TopicsPerSubscriberProjection : ProjectionDefinition<SubscriberTopics, DeviceSubscriberId>, IProjection,
        IEventHandler<SubscribedToTopic>,
        IEventHandler<UnsubscribedFromTopic>
     {

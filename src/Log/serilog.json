@@ -1,0 +1,16 @@
+{
+    "Serilog": {
+        "MinimumLevel": {
+            // Verbose | Debug | Information | Warning | Error | Fatal
+            "Default": "Debug",
+            "Override": {
+                "Elders": "Information",
+                "Microsoft.AspNetCore": "Warning",
+                "System": "Information"
+            }
+        },
+        "WriteTo": [
+            // PITFALL. Jump
+        ]
+    }
+}
