@@ -14,7 +14,7 @@
     <PackageReference Include="Cronus.Transport.RabbitMQ" Version="7.0.0-preview.27" />
     <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.20.0-beta1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
-    <PackageReference Include="Pandora.Consul" Version="3.1.0" />
+    <PackageReference Include="Pandora.Consul" Version="3.3.0" />
   </ItemGroup>
 
   <ItemGroup>
