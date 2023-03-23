@@ -1,9 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Consul;
 using Elders.Cronus;
 using Elders.Cronus.AspNetCore;
 using Elders.Discovery;
 using Elders.Discovery.Consul;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,10 +16,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace PushNotifications.Api
 {
@@ -41,25 +40,7 @@ namespace PushNotifications.Api
             services.AddHttpContextAccessor();
             services.AddCustomProblemDetails();
 
-            services
-                .AddMvc(o =>
-                {
-                    o.Conventions.Add(new AddAuthorizeFiltersControllerConvention("global-scope"));
-                });
-
-            services.AddAuthentication(o =>
-            {
-                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(o =>
-            {
-                string authority = Configuration["idsrv_authority"];
-                o.Authority = authority;
-                o.Audience = authority + "/resources";
-                o.RequireHttpsMetadata = true;
-            });
-
+            services.AddSecurity(Configuration);
             services.AddDiscovery(Configuration);
 
             services.AddCronus(Configuration);
@@ -86,8 +67,8 @@ namespace PushNotifications.Api
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
