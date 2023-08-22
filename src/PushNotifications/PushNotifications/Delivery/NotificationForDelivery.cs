@@ -25,7 +25,7 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
             // if (ReferenceEquals(null, id) == true) throw new ArgumentNullException(nameof(id));
             if (ReferenceEquals(null, notificationPayload) == true) throw new ArgumentNullException(nameof(notificationPayload));
             if (ReferenceEquals(null, notificationData) == true) throw new ArgumentNullException(nameof(notificationData));
-            if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
+            // if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
 
             //Id = id;
             NotificationPayload = notificationPayload;

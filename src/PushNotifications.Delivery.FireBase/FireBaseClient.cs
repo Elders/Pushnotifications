@@ -16,6 +16,8 @@ namespace PushNotifications.Delivery.FireBase
 {
     public sealed class FireBaseClient : HttpClientBase
     {
+        private const string webResource = "fcm/send";
+
         public FireBaseClient(HttpClient client, IOptionsMonitor<FireBaseOptions> monitor, ILogger<FireBaseClient> log) : base(client, monitor, log) { }
 
         public async Task<SendTokensResult> SendAsync(IEnumerable<SubscriptionToken> tokens, NotificationForDelivery notification)
@@ -24,19 +26,38 @@ namespace PushNotifications.Delivery.FireBase
             if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
             if (tokens.Any() == false) throw new ArgumentException("Tokens are missing");
 
-            const string resource = "fcm/send";
-
             if (log.IsEnabled(LogLevel.Debug))
                 log.LogDebug($"Sending '{tokens.Count()}' PN for notification with body '{notification.NotificationPayload.Body}'");
 
-            List<string> tokensAsStrings = tokens.Select(x => x.ToString()).ToList();
             NotificationPayload payload = notification.NotificationPayload;
             Dictionary<string, object> data = notification.NotificationData;
             string badge = payload.Badge > 0 ? payload.Badge.ToString() : "1";
             var fireBaseSendNotificationModel = new FireBaseSendNotificationModel(payload.Title, payload.Body, payload.Sound, badge);
-            var model = new FireBaseSendModel(tokensAsStrings, fireBaseSendNotificationModel, data, notification.ExpiresAt);
 
-            HttpRequestMessage requestMessage = CreateJsonPostRequest(model, resource, notification.Target);
+            SendTokensResult finalResult = new SendTokensResult(new List<SubscriptionToken>());
+            int skip = 0;
+            int take = 1000;
+            while (true)
+            {
+                List<SubscriptionToken> tokenBatch = tokens.Skip(skip).Take(take).ToList();
+                if (tokenBatch.Count > 0)
+                {
+                    FireBaseSendModel model = new FireBaseSendModel(tokenBatch.Select(x => x.ToString()).ToList(), fireBaseSendNotificationModel, data, notification.ExpiresAt);
+                    SendTokensResult batchResult = await SendModelAsync(tokenBatch, model, notification.Target).ConfigureAwait(false);
+                    finalResult += batchResult;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return finalResult;
+        }
+
+        private async Task<SendTokensResult> SendModelAsync(List<SubscriptionToken> tokens, FireBaseSendModel model, NotificationTarget notificationTarget)
+        {
+            HttpRequestMessage requestMessage = CreateJsonPostRequest(model, webResource, notificationTarget);
             var result = await ExecuteRequestAsync<FireBaseResponseModel>(requestMessage).ConfigureAwait(false);
 
             if (result.Response.IsSuccessStatusCode)
@@ -44,7 +65,7 @@ namespace PushNotifications.Delivery.FireBase
                 if (result.Data.HasDataFailure())
                 {
                     List<FireBaseResponseResultModel> firebaseResponseModel = result.Data.Results;
-                    return ExpiredTokensDetector.GetNotRegisteredTokens(tokens.ToList(), firebaseResponseModel);
+                    return ExpiredTokensDetector.GetNotRegisteredTokens(tokens, firebaseResponseModel);
                 }
 
                 return SendTokensResult.Success;
@@ -54,7 +75,7 @@ namespace PushNotifications.Delivery.FireBase
                 if (log.IsEnabled(LogLevel.Error))
                 {
                     string dataErrors = result.Data.GetDataErrors();
-                    log.LogError($"[FireBase] failure: status code '{result.Response.StatusCode}'. PN body '{notification.NotificationPayload.Body}'{Environment.NewLine}{dataErrors}{Environment.NewLine}{result.Response.ReasonPhrase}");
+                    log.LogError($"[FireBase] failure: status code '{result.Response.StatusCode}'. PN body '{model.Notification.Body}'{Environment.NewLine}{dataErrors}{Environment.NewLine}{result.Response.ReasonPhrase}");
                 }
 
                 return SendTokensResult.Failed;
