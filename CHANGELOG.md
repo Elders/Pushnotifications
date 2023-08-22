@@ -1,3 +1,10 @@
+# [6.0.0-release-6.0.0.5](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.4...v6.0.0-release-6.0.0.5) (2023-08-22)
+
+
+### Bug Fixes
+
+* Fixes issue with paging ([6816f02](https://github.com/Elders/Pushnotifications/commit/6816f0251c51edd3fbb871ab42228c39d16cfb8b))
+
 # [6.0.0-release-6.0.0.4](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.3...v6.0.0-release-6.0.0.4) (2023-08-22)
 
 
