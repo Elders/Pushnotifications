@@ -1,9 +1,7 @@
 ﻿using Elders.Cronus;
 using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Events;
 using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -12,7 +10,7 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            subscriberId = new SubscriberId("kv", "elders");
+            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
             topic = new Topic("topic");
             id = new TopicSubscriptionId(subscriberId, topic, "elders");
         };
@@ -28,6 +26,6 @@ namespace PushNotifications.Tests.PushNotifications
         static IAggregateRoot ar;
         static Topic topic;
         static TopicSubscriptionId id;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
     }
 }

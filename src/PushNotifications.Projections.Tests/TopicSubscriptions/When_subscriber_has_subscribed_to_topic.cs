@@ -2,10 +2,9 @@
 using Elders.Cronus;
 using Elders.Cronus.Projections;
 using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Events;
 using PushNotifications.Projections.Subscriptions;
+using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -15,7 +14,7 @@ namespace PushNotifications.Tests.PushNotifications
         Establish context = () =>
         {
             topic = new Topic("topic");
-            subscriberId = new SubscriberId("kv", "elders");
+            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
             var id = new TopicSubscriptionId(subscriberId, topic, "elders");
 
             projection = new TopicsPerSubscriberProjection();
@@ -32,7 +31,7 @@ namespace PushNotifications.Tests.PushNotifications
         It should_have_correct_subscription_token = () => projection.State.Topics.Single().ShouldEqual(topic);
 
         static TopicsPerSubscriberProjection projection;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
         static Topic topic;
         static SubscribedToTopic @event;
     }

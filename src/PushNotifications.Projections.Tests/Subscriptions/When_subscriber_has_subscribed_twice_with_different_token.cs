@@ -1,8 +1,7 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Events;
 using PushNotifications.Projections.Subscriptions;
+using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -11,11 +10,11 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            var id = new SubscriptionId("id", "elders");
+            var id = DeviceSubscriptionId.New("elders", "id");
             projection = new SubscriberTokensProjection();
             firstSubscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
             secondSubscriptionToken = new SubscriptionToken("token2", SubscriptionType.FireBase);
-            var subscriberId = new SubscriberId("kv", "elders");
+            var subscriberId = new DeviceSubscriberId("kv", "elders", "app");
             var firstEvent = new Subscribed(id, subscriberId, firstSubscriptionToken);
             secondEvent = new Subscribed(id, subscriberId, secondSubscriptionToken);
             projection.Handle(firstEvent);

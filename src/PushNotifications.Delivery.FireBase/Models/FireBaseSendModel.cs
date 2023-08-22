@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using PushNotifications.Contracts;
+using System.Text.Json.Serialization;
 
 namespace PushNotifications.Delivery.FireBase.Models
 {
@@ -9,7 +8,7 @@ namespace PushNotifications.Delivery.FireBase.Models
     {
         const long MAX_TTL_SECONDS = 432000; // 5 days
 
-        public FireBaseSendModel(List<string> tokens, FireBaseSendNotificationModel notificationPayload, Dictionary<string, object> notificationData, Timestamp expiresAt)
+        public FireBaseSendModel(List<string> tokens, FireBaseSendNotificationModel notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt)
         {
             if (ReferenceEquals(null, tokens) || tokens.Count == 0 || tokens.Count > 1000) throw new ArgumentException(nameof(tokens));
             if (ReferenceEquals(null, notificationPayload)) throw new ArgumentNullException(nameof(notificationPayload));
@@ -29,7 +28,7 @@ namespace PushNotifications.Delivery.FireBase.Models
         /// The value should be an array of registration tokens to which to send the multicast message. The array must contain at least 1 and at most 1000 registration tokens.
         /// To send a message to a single device, use the to parameter.
         /// </summary>
-        [JsonProperty(PropertyName = "registration_ids")]
+        [JsonPropertyName("registration_ids")]
         public List<string> RegistrationIds { get; private set; }
 
         /// <summary>
@@ -37,10 +36,10 @@ namespace PushNotifications.Delivery.FireBase.Models
         /// For more information about notification message and data message options, see Message types. If a notification payload is provided, or the content_available
         /// option is set to true for a message to an iOS device, the message is sent through APNs, otherwise it is sent through the FCM connection server.
         /// </summary>
-        [JsonProperty(PropertyName = "notification")]
+        [JsonPropertyName("notification")]
         public FireBaseSendNotificationModel Notification { get; private set; }
 
-        [JsonProperty(PropertyName = "data")]
+        [JsonPropertyName("data")]
         public Dictionary<string, object> Data { get; private set; }
 
         /// <summary>
@@ -49,14 +48,14 @@ namespace PushNotifications.Delivery.FireBase.Models
         /// battery consumption and should be used unless immediate delivery is required. For messages with normal priority, the app may receive the message with unspecified delay.
         /// When a message is sent with high priority, it is sent immediately, and the app can display a notification.
         /// </summary>
-        [JsonProperty(PropertyName = "priority")]
+        [JsonPropertyName("priority")]
         public string Priority { get; set; }
 
         /// <summary>
         /// This parameter specifies how long (in seconds) the message should be kept in FCM storage if the device is offline.
         /// The maximum time to live supported is 4 weeks, and the default value is 4 weeks.
         /// </summary>
-        [JsonProperty(PropertyName = "time_to_live")]
+        [JsonPropertyName("time_to_live")]
         public long TTL { get; private set; }
 
 
@@ -65,13 +64,13 @@ namespace PushNotifications.Delivery.FireBase.Models
         /// When a notification is sent and this is set to true, the content of the notification can be modified before it is displayed, using a Notification Service app extension.
         /// This parameter will be ignored for Android and web.
         /// </summary>
-        [JsonProperty(PropertyName = "mutable_content")]
+        [JsonPropertyName("mutable_content")]
         public bool MutableContent { get; private set; }
 
-        long ExpirationTimeToSeconds(Timestamp t)
+        long ExpirationTimeToSeconds(DateTimeOffset t)
         {
-            var utcNow = DateTime.UtcNow;
-            var difference = t.DateTime - utcNow;
+            var utcNow = DateTimeOffset.UtcNow;
+            var difference = t - utcNow;
 
             if (difference.TotalSeconds > MAX_TTL_SECONDS)
                 return MAX_TTL_SECONDS;

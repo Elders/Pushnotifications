@@ -1,4 +1,6 @@
-﻿namespace PushNotifications.Delivery.Pushy.Models
+﻿using System.Text.Json.Serialization;
+
+namespace PushNotifications.Delivery.Pushy.Models
 {
     public class PushySendNotificationModel
     {
@@ -10,12 +12,16 @@
             Badge = badge;
         }
 
+        [JsonPropertyName("title")]
         public string Title { get; private set; }
 
+        [JsonPropertyName("body")]
         public string Body { get; private set; }
 
+        [JsonPropertyName("sound")]
         public string Sound { get; private set; }
 
+        [JsonPropertyName("badge")]
         public int Badge { get; private set; }
     }
 }

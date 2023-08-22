@@ -1,19 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Web.Http;
-using Discovery.Contracts;
-using Elders.Web.Api;
-using Elders.Web.Api.RExamples;
-using PushNotifications.Api;
+using System.Threading.Tasks;
+using Elders.Cronus;
+using Elders.Discovery;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
-namespace Vapt.Api.Discovery
+namespace PushNotifications.Api.Controllers.Discovery
 {
-    public class NormalizedDiscoveryController : ApiController
+    public class NormalizedDiscoveryController : ApiControllerBase
     {
-        public IDiscoveryReader DiscoveryReader { get; set; }
+        private readonly ApiResponse response;
+        private readonly IDiscoveryReader discoveryReader;
+        private readonly BoundedContext boundedContext;
 
-        const string currentBoundedContextName = "Pushnotifications";
+        public NormalizedDiscoveryController(ApiResponse response, IDiscoveryReader discoveryReader, IOptionsMonitor<BoundedContext> optionsMonitor)
+        {
+            this.response = response;
+            this.discoveryReader = discoveryReader;
+            this.boundedContext = optionsMonitor.CurrentValue;
+        }
 
         /// <summary>
         /// Normalized Discovery endpoint
@@ -21,27 +27,10 @@ namespace Vapt.Api.Discovery
         /// <returns></returns>
         [AllowAnonymous]
         [HttpHead, HttpGet, Route("Discovery/normalized")]
-        public IHttpActionResult Discovery()
+        public async Task<IActionResult> DiscoveryAsync()
         {
-            DiscoveryReaderResponseModel model = DiscoveryReader.Get(currentBoundedContextName);
-            return Ok(new ResponseResult<DiscoveryReaderResponseModel>(model))
-                .SetLastModifiedHeader(DateTime.FromFileTimeUtc(model.UpdatedAt));
-        }
-
-        public class Examples : IProvideRExamplesFor<NormalizedDiscoveryController>
-        {
-            public IEnumerable<IRExample> GetRExamples()
-            {
-                var endpoints = new List<DiscoverableEndpoint>
-            {
-                new DiscoverableEndpoint("watch", new Uri("http://www.test.com/v1/watch"), "singlemenBoundedContext", new DiscoveryVersion("v1")),
-                new DiscoverableEndpoint("watch", new Uri("http://www.test.com/v2/watch"), "singlemenBoundedContext", new DiscoveryVersion("v2")),
-                new DiscoverableEndpoint("happyfaptime", new Uri("http://www.test.com/v1/happyfaptime"), "singlemenBoundedContext", new DiscoveryVersion("v1")),
-                new DiscoverableEndpoint("nun101", new Uri("https://anunslife.org/how-to-become-a-nun"), "catholicBoundedContext", new DiscoveryVersion("v1"))
-            };
-                DiscoveryReaderResponseModel model = new DiscoveryReaderResponseModel(DateTime.UtcNow.ToFileTimeUtc(), endpoints);
-                yield return new StatusRExample(HttpStatusCode.OK, model);
-            }
+            DiscoveryResponse model = await discoveryReader.GetAsync(boundedContext.Name);
+            return response.Success(model).SetLastModifiedHeader(DateTimeOffset.FromFileTime(model.UpdatedAt));
         }
     }
 }

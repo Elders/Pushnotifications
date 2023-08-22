@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using PushNotifications.Contracts;
+using PushNotifications.Subscriptions;
 
 namespace PushNotifications.Projections.Subscriptions
 {
@@ -13,20 +13,20 @@ namespace PushNotifications.Projections.Subscriptions
             Topics = new HashSet<Topic>();
         }
 
-        public SubscriberTopics(SubscriberId subscriberId) : this()
+        public SubscriberTopics(DeviceSubscriberId subscriberId) : this()
         {
             if (ReferenceEquals(null, subscriberId) == true) throw new ArgumentNullException(nameof(subscriberId));
             SubscriberId = subscriberId;
         }
 
-        public SubscriberTopics(SubscriberId subscriberId, HashSet<Topic> topics) : this(subscriberId)
+        public SubscriberTopics(DeviceSubscriberId subscriberId, HashSet<Topic> topics) : this(subscriberId)
         {
             if (ReferenceEquals(null, topics) == true) throw new ArgumentNullException(nameof(topics));
             Topics = new HashSet<Topic>();
         }
 
         [DataMember(Order = 1)]
-        public SubscriberId SubscriberId { get; set; }
+        public DeviceSubscriberId SubscriberId { get; set; }
 
         [DataMember(Order = 2)]
         public HashSet<Topic> Topics { get; private set; }

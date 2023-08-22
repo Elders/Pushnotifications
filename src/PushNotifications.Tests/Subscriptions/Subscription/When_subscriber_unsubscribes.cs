@@ -1,20 +1,18 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Events;
 using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Tests.PushNotifications
 {
-    [Subject(nameof(Subscription))]
+    [Subject(nameof(DeviceSubscription))]
     public class When_subscriber_unsubscribes
     {
         Establish context = () =>
         {
-            id = new SubscriptionId("id", "elders");
-            subscriberId = new SubscriberId("kv", "elders");
+            id = DeviceSubscriptionId.New("elders", "id");
+            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
             subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
-            ar = new Subscription(id, subscriberId, subscriptionToken);
+            ar = new DeviceSubscription(id, subscriberId, subscriptionToken);
         };
 
         Because of = () => ar.UnSubscribe(subscriberId);
@@ -28,9 +26,9 @@ namespace PushNotifications.Tests.PushNotifications
 
         It should_have_not_active_subscription = () => ar.RootState().IsSubscriptionActive.ShouldBeFalse();
 
-        static Subscription ar;
-        static SubscriptionId id;
-        static SubscriberId subscriberId;
+        static DeviceSubscription ar;
+        static DeviceSubscriptionId id;
+        static DeviceSubscriberId subscriberId;
         static SubscriptionToken subscriptionToken;
     }
 }

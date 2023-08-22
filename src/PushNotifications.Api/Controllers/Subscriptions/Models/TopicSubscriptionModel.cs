@@ -1,10 +1,7 @@
-﻿using Elders.Web.Api;
+﻿using Elders.Cronus;
+using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Commands;
 using System.ComponentModel.DataAnnotations;
-using PushNotifications.Contracts;
-using PushNotifications.Api.Attributes;
-using System.Security.Claims;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Commands;
 
 namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 {
@@ -13,25 +10,33 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         /// <summary>
         /// URN of the subscriber. This must be string tenant urn
         /// </summary>
-        [ClaimsIdentity(AuthorizeClaimType.Subject, ClaimTypes.NameIdentifier)]
-        public SubscriberId SubscriberId { get; set; }
+        [Required, IsUrn]
+        public string SubscriberId { get; set; }
 
         [Required]
-        public Topic Topic { get; set; }
+        public string Topic { get; set; }
+
+        public string Application { get; set; }
 
         public SubscribeToTopic AsSubscribeToTopicCommand()
         {
+            var urn = AggregateUrn.Parse(SubscriberId, Urn.Uber);
+            var id = new DeviceSubscriberId(urn.Id, urn.Tenant, Application);
+
             var topic = new Topic(Topic);
-            var sub = new SubscriberId(SubscriberId.Id, SubscriberId.Tenant);
-            var topicSubscriptionId = new TopicSubscriptionId(SubscriberId, topic, SubscriberId.Tenant);
-            return new SubscribeToTopic(topicSubscriptionId, SubscriberId, topic);
+
+            var topicSubscriptionId = new TopicSubscriptionId(id, topic, urn.Tenant);
+            return new SubscribeToTopic(topicSubscriptionId, id, topic);
         }
 
         public UnsubscribeFromTopic AsUnSubscribeFromTopicCommand()
         {
+            var urn = AggregateUrn.Parse(SubscriberId, Urn.Uber);
+            var id = new DeviceSubscriberId(urn.Id, urn.Tenant, Application);
+
             var topic = new Topic(Topic);
-            var topicSubscriptionId = new TopicSubscriptionId(SubscriberId, topic, SubscriberId.Tenant);
-            return new UnsubscribeFromTopic(topicSubscriptionId, SubscriberId, topic);
+            var topicSubscriptionId = new TopicSubscriptionId(id, topic, urn.Tenant);
+            return new UnsubscribeFromTopic(topicSubscriptionId, id, topic);
         }
     }
 }
