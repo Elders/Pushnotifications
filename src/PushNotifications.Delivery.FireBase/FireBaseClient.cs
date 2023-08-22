@@ -44,6 +44,7 @@ namespace PushNotifications.Delivery.FireBase
                 {
                     FireBaseSendModel model = new FireBaseSendModel(tokenBatch.Select(x => x.ToString()).ToList(), fireBaseSendNotificationModel, data, notification.ExpiresAt);
                     SendTokensResult batchResult = await SendModelAsync(tokenBatch, model, notification.Target).ConfigureAwait(false);
+                    skip += take;
                     finalResult += batchResult;
                 }
                 else
