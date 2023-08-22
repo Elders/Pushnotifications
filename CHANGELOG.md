@@ -1,3 +1,10 @@
+# [6.0.0-release-6.0.0.4](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.3...v6.0.0-release-6.0.0.4) (2023-08-22)
+
+
+### Bug Fixes
+
+* Fixes issue while trying to send notifications to more than 1k tokens in one transaction ([9e71f23](https://github.com/Elders/Pushnotifications/commit/9e71f2396803c13fe30e9099aa26b5d8dede3a39))
+
 # [6.0.0-release-6.0.0.3](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.2...v6.0.0-release-6.0.0.3) (2023-03-23)
 
 
