@@ -11,18 +11,18 @@ namespace PushNotifications.Tests.PushNotifications
         Establish context = () =>
         {
             topic = new Topic("topic");
-            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
-            var id = new TopicSubscriptionId(subscriberId, topic, "elders");
+            subscriberId = new DeviceSubscriberId("elders", "kv", "app");
+            var id = new TopicSubscriptionId("elders", topic, subscriberId);
 
             projection = new TopicsPerSubscriberProjection();
             @event = new SubscribedToTopic(id);
-            projection.Handle(@event);
+            projection.HandleAsync(@event);
 
             unsubscribeEvent = new UnsubscribedFromTopic(id);
-            projection.Handle(unsubscribeEvent);
+            projection.HandleAsync(unsubscribeEvent);
         };
 
-        Because of = () => projection.Handle(unsubscribeEvent);
+        Because of = () => projection.HandleAsync(unsubscribeEvent);
 
         It should_have_correct_id = () => projection.State.SubscriberId.ShouldEqual(subscriberId);
         It should_not_have_any_topics_registered = () => projection.State.Topics.ShouldBeEmpty();

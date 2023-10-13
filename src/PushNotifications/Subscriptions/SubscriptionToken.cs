@@ -12,7 +12,7 @@ namespace PushNotifications.Subscriptions
         public SubscriptionToken(string token, SubscriptionType subscriptionType)
         {
             if (string.IsNullOrEmpty(token) == true) throw new ArgumentNullException(nameof(token));
-            if (ReferenceEquals(null, subscriptionType) == true) throw new ArgumentNullException(nameof(subscriptionType));
+            if (subscriptionType is null == true) throw new ArgumentNullException(nameof(subscriptionType));
 
             Token = token;
             SubscriptionType = subscriptionType;
@@ -36,7 +36,7 @@ namespace PushNotifications.Subscriptions
 
         public static bool IsValid(SubscriptionToken token)
         {
-            if (ReferenceEquals(null, token) == true)
+            if (token is null == true)
                 return false;
 
             return true;

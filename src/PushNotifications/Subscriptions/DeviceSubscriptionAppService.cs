@@ -1,5 +1,6 @@
 ﻿using Elders.Cronus;
 using PushNotifications.Subscriptions.Commands;
+using System.Threading.Tasks;
 
 namespace PushNotifications.Subscriptions
 {
@@ -9,30 +10,30 @@ namespace PushNotifications.Subscriptions
     {
         public DeviceSubscriptionAppService(IAggregateRepository repository) : base(repository) { }
 
-        public void Handle(Subscribe command)
+        public async Task HandleAsync(Subscribe command)
         {
-            ReadResult<DeviceSubscription> result = repository.Load<DeviceSubscription>(command.Id);
+            ReadResult<DeviceSubscription> result = await repository.LoadAsync<DeviceSubscription>(command.Id).ConfigureAwait(false);
             if (result.IsSuccess)
             {
                 DeviceSubscription sub = result.Data;
                 sub.Subscribe(command.SubscriberId);
-                repository.Save(sub);
+                await repository.SaveAsync(sub).ConfigureAwait(false);
             }
             else if (result.NotFound)
             {
                 DeviceSubscription sub = new DeviceSubscription(command.Id, command.SubscriberId, command.SubscriptionToken);
-                repository.Save(sub);
+                await repository.SaveAsync(sub).ConfigureAwait(false);
             }
         }
 
-        public void Handle(UnSubscribe command)
+        public async Task HandleAsync(UnSubscribe command)
         {
-            ReadResult<DeviceSubscription> result = repository.Load<DeviceSubscription>(command.Id);
+            ReadResult<DeviceSubscription> result = await repository.LoadAsync<DeviceSubscription>(command.Id).ConfigureAwait(false);
             if (result.IsSuccess)
             {
                 DeviceSubscription sub = result.Data;
                 sub.UnSubscribe(command.SubscriberId);
-                repository.Save(sub);
+                await repository.SaveAsync(sub).ConfigureAwait(false);
             }
         }
     }

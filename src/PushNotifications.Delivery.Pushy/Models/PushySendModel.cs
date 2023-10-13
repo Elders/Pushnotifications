@@ -11,10 +11,9 @@ namespace PushNotifications.Delivery.Pushy.Models
 
         public PushySendModel(IList<string> tokens, PushySendNotificationModel notification, Dictionary<string, object> data, DateTimeOffset expiresAt, bool contentAvailable)
         {
-            if (ReferenceEquals(null, tokens) == true || tokens.Count == 0) throw new ArgumentException(nameof(tokens));
-            if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
-            if (ReferenceEquals(null, data) == true) throw new ArgumentNullException(nameof(data));
-            if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
+            if (tokens is null == true || tokens.Count == 0) throw new ArgumentException(nameof(tokens));
+            if (notification is null == true) throw new ArgumentNullException(nameof(notification));
+            if (data is null == true) throw new ArgumentNullException(nameof(data));
 
             Tokens = new List<string>(tokens);
             Notification = notification;
@@ -74,10 +73,9 @@ namespace PushNotifications.Delivery.Pushy.Models
 
         public PushySendToTopicModel(Topic topic, PushySendNotificationModel notification, Dictionary<string, object> data, DateTimeOffset expiresAt, bool contentAvailable)
         {
-            if (ReferenceEquals(null, topic)) throw new ArgumentException(nameof(topic));
-            if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
-            if (ReferenceEquals(null, data) == true) throw new ArgumentNullException(nameof(data));
-            if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
+            if (topic is null) throw new ArgumentException(nameof(topic));
+            if (notification is null == true) throw new ArgumentNullException(nameof(notification));
+            if (data is null == true) throw new ArgumentNullException(nameof(data));
 
             Topic = "/topics/" + topic;
             Notification = notification;

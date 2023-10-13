@@ -24,34 +24,31 @@ namespace PushNotifications.Service
             this.observer = observer;
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             log.LogInformation("Starting service...");
 
             Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             subscription = DiagnosticListener.AllListeners.Subscribe(observer);
 
-            cronusHost.Start();
+            await cronusHost.StartAsync();
             cronusApi = CronusApi.GetHost(builder =>
             {
                 builder.AdditionalConfigurationSource = new Elders.Pandora.PandoraConsulConfigurationSource(Environment.GetEnvironmentVariable("CONSUL_ADDRESS", EnvironmentVariableTarget.Process));
             });
-            cronusApi.RunAsync(stoppingToken);
+            await cronusApi.RunAsync(stoppingToken);
 
             log.LogInformation("Service started!");
-
-            return Task.CompletedTask;
         }
 
-        public override Task StopAsync(CancellationToken cancellationToken)
+        public override async Task StopAsync(CancellationToken cancellationToken)
         {
             log.LogInformation("Stopping service...");
 
-            cronusHost.Stop();
-            cronusApi.StopAsync(TimeSpan.FromSeconds(1));
+            await cronusHost.StopAsync();
+            await cronusApi.StopAsync(TimeSpan.FromSeconds(1));
 
             log.LogInformation("Service stopped");
-            return Task.CompletedTask;
         }
 
         public override void Dispose()

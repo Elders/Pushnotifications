@@ -23,8 +23,8 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
         public NotificationForDelivery(NotificationPayload notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt, bool contentAvailable, NotificationTarget target)
         {
             // if (ReferenceEquals(null, id) == true) throw new ArgumentNullException(nameof(id));
-            if (ReferenceEquals(null, notificationPayload) == true) throw new ArgumentNullException(nameof(notificationPayload));
-            if (ReferenceEquals(null, notificationData) == true) throw new ArgumentNullException(nameof(notificationData));
+            if (notificationPayload is null == true) throw new ArgumentNullException(nameof(notificationPayload));
+            if (notificationData is null == true) throw new ArgumentNullException(nameof(notificationData));
             // if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
 
             //Id = id;

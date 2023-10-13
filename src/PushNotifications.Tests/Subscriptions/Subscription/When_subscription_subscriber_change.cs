@@ -10,8 +10,8 @@ namespace PushNotifications.Tests.PushNotifications
         Establish context = () =>
         {
             id = DeviceSubscriptionId.New("elders", "id");
-            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
-            newSubscriberId = new DeviceSubscriberId("kv2", "elders", "app");
+            subscriberId = new DeviceSubscriberId("elders", "kv", "app");
+            newSubscriberId = new DeviceSubscriberId("elders", "kv2", "app");
             subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
             ar = new DeviceSubscription(id, subscriberId, subscriptionToken);
         };

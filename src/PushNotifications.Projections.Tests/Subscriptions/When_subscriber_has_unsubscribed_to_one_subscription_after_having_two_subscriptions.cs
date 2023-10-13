@@ -16,15 +16,15 @@ namespace PushNotifications.Tests.PushNotifications
             var firstSubscriptionToken = new SubscriptionToken("token1", SubscriptionType.FireBase);
             secondSubscriptionToken = new SubscriptionToken("token2", SubscriptionType.FireBase);
 
-            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
+            subscriberId = new DeviceSubscriberId("elders", "kv", "app");
             var firstSubscribedEvent = new Subscribed(id, subscriberId, firstSubscriptionToken);
             var secondSubscribedEvent = new Subscribed(id, subscriberId, secondSubscriptionToken);
             unSubscribedEvent = new UnSubscribed(id, subscriberId, firstSubscriptionToken);
-            projection.Handle(firstSubscribedEvent);
-            projection.Handle(secondSubscribedEvent);
+            projection.HandleAsync(firstSubscribedEvent);
+            projection.HandleAsync(secondSubscribedEvent);
         };
 
-        Because of = () => projection.Handle(unSubscribedEvent);
+        Because of = () => projection.HandleAsync(unSubscribedEvent);
 
         It should_have_one_subscription = () => projection.State.Tokens.Count.ShouldEqual(1);
 

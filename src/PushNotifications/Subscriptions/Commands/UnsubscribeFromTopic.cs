@@ -13,7 +13,7 @@ namespace PushNotifications.Subscriptions.Commands
         {
             if (id is null) throw new ArgumentException(nameof(id));
             if (subscriberId is null) throw new ArgumentException(nameof(subscriberId));
-            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
+            if (topic is null) throw new ArgumentNullException(nameof(topic));
 
             Id = id;
             SubscriberId = subscriberId;

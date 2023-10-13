@@ -7,6 +7,7 @@ using PushNotifications.Subscriptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PushNotifications.Ports
 {
@@ -24,17 +25,17 @@ namespace PushNotifications.Ports
             this.logger = logger;
         }
 
-        public void Handle(NotificationMessageSignal signal)
+        public async Task HandleAsync(NotificationMessageSignal signal)
         {
             List<SubscriptionToken> tokens = new List<SubscriptionToken>();
 
             foreach (var recipient in signal.Recipients)
             {
-                AggregateUrn urn = AggregateUrn.Parse(recipient, Urn.Uber);
-                var subscriberId = new DeviceSubscriberId(urn.Id, urn.Tenant, signal.Application);
+                AggregateRootId urn = AggregateRootId.Parse(recipient);
+                var subscriberId = new DeviceSubscriberId(urn.Tenant, urn.Id, signal.Application);
                 using (logger.BeginScope(s => s.AddScope("pn_subscriber", subscriberId)))
                 {
-                    var projectionResult = projections.Get<SubscriberTokensProjection>(subscriberId);
+                    var projectionResult = await projections.GetAsync<SubscriberTokensProjection>(subscriberId).ConfigureAwait(false);
 
                     if (projectionResult.IsSuccess)
                     {

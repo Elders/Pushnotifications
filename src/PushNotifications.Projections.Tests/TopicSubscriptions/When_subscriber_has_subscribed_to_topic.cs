@@ -14,14 +14,14 @@ namespace PushNotifications.Tests.PushNotifications
         Establish context = () =>
         {
             topic = new Topic("topic");
-            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
-            var id = new TopicSubscriptionId(subscriberId, topic, "elders");
+            subscriberId = new DeviceSubscriberId("elders", "kv", "app");
+            var id = new TopicSubscriptionId("elders", topic, subscriberId);
 
             projection = new TopicsPerSubscriberProjection();
             @event = new SubscribedToTopic(id);
         };
 
-        Because of = () => projection.Handle(@event);
+        Because of = () => projection.HandleAsync(@event);
 
         It should_subscribe_for_the_event = () => ((IProjectionDefinition)projection).GetProjectionIds(@event).ShouldContain(subscriberId);
         It should_handle_the_event = () => typeof(IEventHandler<SubscribedToTopic>).IsAssignableFrom(projection.GetType()).ShouldBeTrue();

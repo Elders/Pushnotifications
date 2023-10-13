@@ -10,10 +10,10 @@ namespace PushNotifications.Contracts.PushNotifications
     {
         TopicPushNotificationId() { }
 
-        public TopicPushNotificationId(string id, Topic topic, string tenant) : base($"{id}@@{topic}", "topicpushnotification", tenant)
+        public TopicPushNotificationId(string tenant, Topic topic, string id) : base(tenant, "topicpushnotification", $"{id}@@{topic}")
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
-            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
+            if (topic is null) throw new ArgumentNullException(nameof(topic));
 
             Topic = topic;
         }
@@ -23,7 +23,7 @@ namespace PushNotifications.Contracts.PushNotifications
 
         public bool IsValid()
         {
-            if (ReferenceEquals(null, Topic)) return false;
+            if (Topic is null) return false;
 
             return true;
         }

@@ -12,10 +12,9 @@ namespace PushNotifications.Contracts.PushNotifications.Events
 
         public TopicPushNotificationSent(TopicPushNotificationId id, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt, bool contentAvailable)
         {
-            if (ReferenceEquals(null, id) == true) throw new ArgumentNullException(nameof(id));
-            if (ReferenceEquals(null, notificationPayload) == true) throw new ArgumentNullException(nameof(notificationPayload));
-            if (ReferenceEquals(null, notificationData) == true) throw new ArgumentNullException(nameof(notificationData));
-            if (ReferenceEquals(null, expiresAt) == true) throw new ArgumentNullException(nameof(expiresAt));
+            if (id is null == true) throw new ArgumentNullException(nameof(id));
+            if (notificationPayload is null == true) throw new ArgumentNullException(nameof(notificationPayload));
+            if (notificationData is null == true) throw new ArgumentNullException(nameof(notificationData));
 
             Id = id;
             NotificationPayload = notificationPayload;

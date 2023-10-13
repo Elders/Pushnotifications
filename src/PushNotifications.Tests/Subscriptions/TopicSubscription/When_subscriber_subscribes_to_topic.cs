@@ -10,9 +10,9 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
+            subscriberId = new DeviceSubscriberId("elders", "kv", "app");
             topic = new Topic("topic");
-            id = new TopicSubscriptionId(subscriberId, topic, "elders");
+            id = new TopicSubscriptionId("elders", topic, subscriberId);
         };
         Because of = () => ar = new TopicSubscription(id);
 

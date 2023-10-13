@@ -32,8 +32,8 @@ namespace PushNotifications.Delivery.FireBase.Models
         {
             internal static SendTokensResult GetNotRegisteredTokens(IList<SubscriptionToken> tokens, IList<FireBaseResponseResultModel> responseModel)
             {
-                if (ReferenceEquals(null, tokens)) throw new ArgumentNullException(nameof(tokens));
-                if (ReferenceEquals(null, responseModel)) throw new ArgumentNullException(nameof(responseModel));
+                if (tokens is null) throw new ArgumentNullException(nameof(tokens));
+                if (responseModel is null) throw new ArgumentNullException(nameof(responseModel));
 
                 if (tokens.Count != responseModel.Count)
                 {

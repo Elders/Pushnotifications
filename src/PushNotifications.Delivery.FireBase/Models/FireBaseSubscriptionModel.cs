@@ -9,8 +9,8 @@ namespace PushNotifications.Delivery.FireBase.Models
     {
         public FireBaseSubscriptionModel(List<string> registrationTokens, Topic topic)
         {
-            if (ReferenceEquals(null, registrationTokens)) throw new ArgumentNullException(nameof(registrationTokens));
-            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
+            if (registrationTokens is null) throw new ArgumentNullException(nameof(registrationTokens));
+            if (topic is null) throw new ArgumentNullException(nameof(topic));
 
             RegistrationTokens = registrationTokens;
             Topic = "/topics/" + topic;
@@ -19,7 +19,7 @@ namespace PushNotifications.Delivery.FireBase.Models
         public FireBaseSubscriptionModel(string registrationToken, Topic topic)
         {
             if (string.IsNullOrEmpty(registrationToken)) throw new ArgumentNullException(nameof(registrationToken));
-            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
+            if (topic is null) throw new ArgumentNullException(nameof(topic));
 
             RegistrationTokens = new List<string>() { registrationToken };
             Topic = "/topics/" + topic;

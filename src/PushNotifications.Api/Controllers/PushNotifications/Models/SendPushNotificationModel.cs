@@ -69,8 +69,8 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
 
         public NotificationMessageSignal AsSignal()
         {
-            var subscriber = AggregateUrn.Parse(SubscriberUrn, Urn.Uber);
-            var subscriberId = new DeviceSubscriberId(subscriber.Id, subscriber.Tenant, Application);
+            var subscriber = AggregateRootId.Parse(SubscriberUrn);
+            var subscriberId = new DeviceSubscriberId(subscriber.Tenant, subscriber.Id, Application);
             var notificationPayload = new NotificationPayload(Title, Body, Sound, Icon, Badge);
             var target = new NotificationTarget(subscriber.Tenant, Application);
 
@@ -84,7 +84,6 @@ namespace PushNotifications.Api.Controllers.PushNotifications.Models
 
         public Timestamp(DateTime dateTime)
         {
-            if (ReferenceEquals(null, dateTime) == true) throw new ArgumentNullException(nameof(dateTime));
             if (dateTime.Kind != DateTimeKind.Utc) throw new ArgumentException("All timestamps should be utc!");
 
             FileTimeUtc = dateTime.ToFileTimeUtc();

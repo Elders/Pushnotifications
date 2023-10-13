@@ -10,12 +10,12 @@ namespace PushNotifications.Subscriptions
 
         //public SubscriberId(AggregateUrn urn) : base("subscriber", urn) { }
 
-        public DeviceSubscriberId(string id, string tenant, string application) : base(id, GetAggregateRootName(application), tenant)
+        public DeviceSubscriberId(string tenant, string id, string application) : base(tenant, GetAggregateRootName(application), id)
         {
             Application = application;
         }
 
-        public static DeviceSubscriberId NoUser => new DeviceSubscriberId("nouser", "notenant", "noapplication");
+        public static DeviceSubscriberId NoUser => new DeviceSubscriberId("notenant", "nouser", "noapplication");
 
         [DataMember(Order = 1)]
         public string Application { get; private set; }

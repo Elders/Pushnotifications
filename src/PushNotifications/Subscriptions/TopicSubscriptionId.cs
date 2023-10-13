@@ -9,10 +9,10 @@ namespace PushNotifications.Subscriptions
     {
         TopicSubscriptionId() { }
 
-        public TopicSubscriptionId(DeviceSubscriberId subscriberId, Topic topic, string tenant) : base($"{subscriberId.Id}@@{topic}", "topicSubscription", tenant)
+        public TopicSubscriptionId(string tenant, Topic topic, DeviceSubscriberId subscriberId) : base(tenant, "topicSubscription", $"{subscriberId.Id}@@{topic}")
         {
-            if (ReferenceEquals(null, subscriberId)) throw new ArgumentNullException(nameof(subscriberId));
-            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
+            if (subscriberId is null) throw new ArgumentNullException(nameof(subscriberId));
+            if (topic is null) throw new ArgumentNullException(nameof(topic));
 
             Topic = topic;
             SubscriberId = subscriberId;
@@ -26,7 +26,7 @@ namespace PushNotifications.Subscriptions
 
         public bool IsValid()
         {
-            if (ReferenceEquals(null, Topic) || ReferenceEquals(null, SubscriberId)) return false;
+            if (Topic is null || SubscriberId is null) return false;
 
             return true;
         }

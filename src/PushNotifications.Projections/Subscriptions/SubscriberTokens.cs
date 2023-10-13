@@ -15,13 +15,13 @@ namespace PushNotifications.Projections.Subscriptions
 
         public SubscriberTokens(DeviceSubscriberId subscriberId) : this()
         {
-            if (ReferenceEquals(null, subscriberId) == true) throw new ArgumentNullException(nameof(subscriberId));
+            if (subscriberId is null == true) throw new ArgumentNullException(nameof(subscriberId));
             SubscriberId = subscriberId;
         }
 
         public SubscriberTokens(DeviceSubscriberId subscriberId, HashSet<SubscriptionToken> tokens) : this(subscriberId)
         {
-            if (ReferenceEquals(null, tokens) == true) throw new ArgumentNullException(nameof(tokens));
+            if (tokens is null == true) throw new ArgumentNullException(nameof(tokens));
             Tokens = new HashSet<SubscriptionToken>(tokens);
         }
 

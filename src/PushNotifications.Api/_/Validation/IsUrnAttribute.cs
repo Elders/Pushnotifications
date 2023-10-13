@@ -11,7 +11,7 @@ namespace PushNotifications.Api
         {
             if (value is null) return true;
 
-            return Urn.IsUrn(value as string, Urn.Uber);
+            return Urn.IsUrn(value as string);
         }
 
         public override string FormatErrorMessage(string name)

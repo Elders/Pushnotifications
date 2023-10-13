@@ -8,11 +8,11 @@ namespace PushNotifications.Subscriptions
     {
         DeviceSubscriptionId() { }
 
-        DeviceSubscriptionId(string id, string tenant) : base(id, "subscription", tenant) { }
+        DeviceSubscriptionId(string tenant, string id) : base(tenant, "subscription", id) { }
 
         protected override DeviceSubscriptionId Construct(string id, string tenant)
         {
-            return new DeviceSubscriptionId(id, tenant);
+            return new DeviceSubscriptionId(tenant, id);
         }
     }
 }
