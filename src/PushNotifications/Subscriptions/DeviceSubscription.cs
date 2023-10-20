@@ -15,15 +15,13 @@ namespace PushNotifications.Subscriptions
             if (subscriberId is null) throw new ArgumentException(nameof(subscriberId));
             if (SubscriptionToken.IsValid(subscriptionToken) == false) throw new ArgumentException(nameof(subscriptionToken));
 
-            state = new DeviceSubscriptionState();
-
             IEvent evnt = new Subscribed(id, subscriberId, subscriptionToken);
             Apply(evnt);
         }
 
         public void Subscribe(DeviceSubscriberId subscriberId)
         {
-            if (state.IsSubscriptionActive == false || state.Subscribers.Where(s=>s.Equals(subscriberId)).Any() == false)
+            if (state.IsSubscriptionActive == false || state.Subscribers.Where(s => s.Equals(subscriberId)).Any() == false)
             {
                 IEvent evnt = new Subscribed(state.Id, subscriberId, state.SubscriptionToken);
                 Apply(evnt);

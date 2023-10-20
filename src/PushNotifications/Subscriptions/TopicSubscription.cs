@@ -12,8 +12,6 @@ namespace PushNotifications.Subscriptions
         {
             if (id.IsValid() == false) throw new ArgumentException(nameof(id));
 
-            state = new TopicSubscriptionState();
-
             IEvent evnt = new SubscribedToTopic(id);
             Apply(evnt);
         }

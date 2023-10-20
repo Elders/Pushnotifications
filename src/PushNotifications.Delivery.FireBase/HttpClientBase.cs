@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using System;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static PushNotifications.Delivery.FireBase.FireBaseOptions;
@@ -58,7 +59,7 @@ namespace PushNotifications.Delivery.FireBase
 
         protected HttpRequestMessage CreateJsonPostRequest<T>(T model, string resource, NotificationTarget target)
         {
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, resource) { Content = new StringContent(JsonSerializer.Serialize(model), System.Text.Encoding.UTF8, ContentType.Json) };
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, resource) { Content = new StringContent(JsonSerializer.Serialize(model), System.Text.Encoding.UTF8, MediaTypeNames.Application.Json) };
 
             AuthorizationKey key = options.GetKey(target.Tenant, target.Application);
             if (key is null == false)
@@ -69,12 +70,6 @@ namespace PushNotifications.Delivery.FireBase
 
             throw new Exception($"FireBase authorization server key for tenant {target.Tenant} and application {target.Application} was not found.");
         }
-
-        internal static class ContentType
-        {
-            public static string Json = "application/json";
-        }
-
 
         private void OptionsChanged(FireBaseOptions newOptions)
         {
