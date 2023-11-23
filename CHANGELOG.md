@@ -1,3 +1,19 @@
+# [6.0.0-preview.1](https://github.com/Elders/Pushnotifications/compare/v5.0.0...v6.0.0-preview.1) (2023-11-23)
+
+
+### Bug Fixes
+
+* Fixes issue while trying to send notifications to more than 1k tokens in one transaction ([9e71f23](https://github.com/Elders/Pushnotifications/commit/9e71f2396803c13fe30e9099aa26b5d8dede3a39))
+* Fixes issue with paging ([6816f02](https://github.com/Elders/Pushnotifications/commit/6816f0251c51edd3fbb871ab42228c39d16cfb8b))
+* path issue in release.config.js ([31f1532](https://github.com/Elders/Pushnotifications/commit/31f1532ba3c6089a8b586c95db53cfb281750352))
+* Updates packages ([b7b3795](https://github.com/Elders/Pushnotifications/commit/b7b3795830c9e7125f6c03313359a330295ffab3))
+
+
+### Features
+
+* update Pandora.Consul ([da6f7fb](https://github.com/Elders/Pushnotifications/commit/da6f7fb20e47baef807d9f0740a9e32fde8e2b99))
+* validating access tokens from multiple identity providers per tenant ([62c4ed7](https://github.com/Elders/Pushnotifications/commit/62c4ed7cf5ed8f58b54a44d22fcfa22317d7b0ff))
+
 # [6.0.0-release-6.0.0.5](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.4...v6.0.0-release-6.0.0.5) (2023-08-22)
 
 
