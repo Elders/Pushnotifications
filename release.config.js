@@ -29,6 +29,7 @@ module.exports={
     branches: [
       'master',
       { name: 'release-*', prerelease: true },
+      { name: 'preview*', prerelease: true },
     ],
   }
   
