@@ -1,5 +1,6 @@
 using System;
 using Elders.Cronus;
+using Elders.Cronus.Persistence.Cassandra.Migrations;
 using Elders.Pandora;
 using Logging;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,6 +52,8 @@ namespace PushNotifications.Service
                     services.AddSingleton<IPushNotificationDelivery, FireBaseDelivery>();
                     services.AddSingleton<IPushNotificationDelivery, PushyDelivery>();
                     services.AddSingleton<MultiPlatformDelivery, MultiPlatformDelivery>();
+
+                    services.AddCronusMigratorFromV8toV9();
                 })
                 .UseSerilog(SerilogConfiguration.Configure);
     }

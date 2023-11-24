@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elders.Cronus;
 using Elders.Cronus.Api;
+using Elders.Cronus.Persistence.Cassandra.Migrations;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -12,6 +14,7 @@ namespace PushNotifications.Service
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> log;
+        private readonly IServiceProvider provider;
         private readonly ICronusHost cronusHost;
         private IHost cronusApi;
         private readonly CronusApplicationInsightsProvider observer;
@@ -20,6 +23,7 @@ namespace PushNotifications.Service
         public Worker(ILogger<Worker> log, IServiceProvider provider, ICronusHost cronusHost, CronusApplicationInsightsProvider observer)
         {
             this.log = log;
+            this.provider = provider;
             this.cronusHost = cronusHost;
             this.observer = observer;
         }
@@ -38,6 +42,8 @@ namespace PushNotifications.Service
             });
             await cronusApi.RunAsync(stoppingToken);
 
+            await provider.GetRequiredService<MigrateEventStore>().RunMigratorAsync("pruvit");
+
             log.LogInformation("Service started!");
         }
 
@@ -49,12 +55,6 @@ namespace PushNotifications.Service
             await cronusApi.StopAsync(TimeSpan.FromSeconds(1));
 
             log.LogInformation("Service stopped");
-        }
-
-        public override void Dispose()
-        {
-            StopAsync(CancellationToken.None).GetAwaiter().GetResult();
-            subscription?.Dispose();
         }
     }
 }
