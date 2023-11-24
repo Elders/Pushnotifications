@@ -42,9 +42,11 @@ namespace PushNotifications.Service
             });
             await cronusApi.RunAsync(stoppingToken);
 
-            await provider.GetRequiredService<MigrateEventStore>().RunMigratorAsync("pruvit");
-
             log.LogInformation("Service started!");
+
+            log.LogInformation("Migration started!");
+            await provider.GetRequiredService<MigrateEventStore>().RunMigratorAsync("pruvit");
+            log.LogInformation("Migration finished!");
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)

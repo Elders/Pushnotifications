@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Cronus.Api" Version="9.0.1" />
+    <PackageReference Include="Cronus.AtomicAction.Redis" Version="9.0.1" />
     <PackageReference Include="Cronus.Cluster.Consul" Version="9.0.0" />
     <PackageReference Include="Cronus.Persistence.Cassandra" Version="9.1.4" />
     <PackageReference Include="Cronus.Projections.Cassandra" Version="9.0.2" />
