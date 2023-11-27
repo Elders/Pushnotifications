@@ -1,3 +1,10 @@
+# [6.0.0-release-6.0.0.8](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.7...v6.0.0-release-6.0.0.8) (2023-11-27)
+
+
+### Bug Fixes
+
+* start using ICronusContextAccessor instead of CronusContext inside the ApiContext ([f0fbf78](https://github.com/Elders/Pushnotifications/commit/f0fbf78a7d1930cc60d7afcd262714f919e1faaf))
+
 # [6.0.0-release-6.0.0.7](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.6...v6.0.0-release-6.0.0.7) (2023-11-27)
 
 
