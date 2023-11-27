@@ -59,8 +59,6 @@ namespace PushNotifications.Api
 
             app.UseApiDiscovery();
 
-            app.UseCronusAspNetCore();
-
             app.UseHttpsRedirection();
 
             app.ConfigureCors();
@@ -70,6 +68,7 @@ namespace PushNotifications.Api
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseCronusAspNetCore();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
