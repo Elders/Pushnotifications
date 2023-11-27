@@ -1,3 +1,10 @@
+# [6.0.0-release-6.0.0.7](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.6...v6.0.0-release-6.0.0.7) (2023-11-27)
+
+
+### Bug Fixes
+
+* re-order middlewares ([0d2ca79](https://github.com/Elders/Pushnotifications/commit/0d2ca797f34ee96dbf7fbbfcd6951d13b6a5a3c7))
+
 # [6.0.0-release-6.0.0.6](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.5...v6.0.0-release-6.0.0.6) (2023-11-27)
 
 # [6.0.0-preview.1](https://github.com/Elders/Pushnotifications/compare/v5.0.0...v6.0.0-preview.1) (2023-11-23)
