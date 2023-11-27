@@ -1,5 +1,6 @@
 ﻿using Elders.Cronus;
 using PushNotifications.Subscriptions.Commands;
+using System.Threading.Tasks;
 
 namespace PushNotifications.Subscriptions
 {
@@ -9,31 +10,31 @@ namespace PushNotifications.Subscriptions
     {
         public TopicSubscriptionAppService(IAggregateRepository repository) : base(repository) { }
 
-        public void Handle(SubscribeToTopic command)
+        public async Task HandleAsync(SubscribeToTopic command)
         {
-            ReadResult<TopicSubscription> result = repository.Load<TopicSubscription>(command.Id);
+            ReadResult<TopicSubscription> result = await repository.LoadAsync<TopicSubscription>(command.Id).ConfigureAwait(false);
 
             if (result.IsSuccess)
             {
                 TopicSubscription topicSubscription = result.Data;
                 topicSubscription.SubscribeToTopic(command.Id);
-                repository.Save(topicSubscription);
+                await repository.SaveAsync(topicSubscription).ConfigureAwait(false);
             }
             else if (result.NotFound)
             {
                 TopicSubscription topicSubscription = new TopicSubscription(command.Id);
-                repository.Save(topicSubscription);
+                await repository.SaveAsync(topicSubscription).ConfigureAwait(false);
             }
         }
 
-        public void Handle(UnsubscribeFromTopic command)
+        public async Task HandleAsync(UnsubscribeFromTopic command)
         {
-            ReadResult<TopicSubscription> result = repository.Load<TopicSubscription>(command.Id);
+            ReadResult<TopicSubscription> result = await repository.LoadAsync<TopicSubscription>(command.Id).ConfigureAwait(false);
             if (result.IsSuccess)
             {
                 TopicSubscription topicSubscription = result.Data;
                 topicSubscription.UnsubscribeFromTopic(command.Id);
-                repository.Save(topicSubscription);
+                await repository.SaveAsync(topicSubscription).ConfigureAwait(false);
             }
         }
     }

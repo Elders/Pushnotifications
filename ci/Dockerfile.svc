@@ -24,5 +24,7 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 WORKDIR /app
                                                             
 COPY --from=build /app/published .
+
+STOPSIGNAL SIGINT
                             
 ENTRYPOINT ["dotnet", "PushNotifications.Service.dll"]

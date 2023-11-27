@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Threading.Tasks;
 using Elders.Cronus;
 using Elders.Cronus.Projections;
 using PushNotifications.Subscriptions;
@@ -17,16 +18,20 @@ namespace PushNotifications.Projections.Subscriptions
             Subscribe<UnsubscribedFromTopic>(x => x.Id.SubscriberId);
         }
 
-        public void Handle(SubscribedToTopic @event)
+        public Task HandleAsync(SubscribedToTopic @event)
         {
             State.SubscriberId = @event.Id.SubscriberId;
             State.Topics.Add(@event.Id.Topic);
+
+            return Task.CompletedTask;
         }
 
-        public void Handle(UnsubscribedFromTopic @event)
+        public Task HandleAsync(UnsubscribedFromTopic @event)
         {
             State.SubscriberId = @event.Id.SubscriberId;
             State.Topics.Remove(@event.Id.Topic);
+
+            return Task.CompletedTask;
         }
     }
 }

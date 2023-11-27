@@ -8,11 +8,11 @@ namespace PushNotifications.Contracts.PushNotifications
     {
         PushNotificationId() { }
 
-        PushNotificationId(string id, string tenant) : base(id, "pushnotification", tenant) { }
+        PushNotificationId(string tenant, string id) : base(tenant, "pushnotification", id) { }
 
         protected override PushNotificationId Construct(string id, string tenant)
         {
-            return new PushNotificationId(id, tenant);
+            return new PushNotificationId(tenant, id);
         }
     }
 }

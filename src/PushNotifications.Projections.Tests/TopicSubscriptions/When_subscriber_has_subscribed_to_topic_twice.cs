@@ -11,15 +11,15 @@ namespace PushNotifications.Tests.PushNotifications
         Establish context = () =>
         {
             var topic = new Topic("topic");
-            var subscriberId = new DeviceSubscriberId("kv", "elders", "app");
-            var id = new TopicSubscriptionId(subscriberId, topic, "elders");
+            var subscriberId = new DeviceSubscriberId("elders", "kv", "app");
+            var id = new TopicSubscriptionId("elders", topic, subscriberId);
 
             projection = new TopicsPerSubscriberProjection();
             @event = new SubscribedToTopic(id);
-            projection.Handle(@event);
+            projection.HandleAsync(@event);
         };
 
-        Because of = () => projection.Handle(@event);
+        Because of = () => projection.HandleAsync(@event);
 
         It should_have_exactly_one_topic_subscription = () => projection.State.Topics.Count.ShouldEqual(1);
 

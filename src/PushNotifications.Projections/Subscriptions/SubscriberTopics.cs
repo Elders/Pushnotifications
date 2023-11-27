@@ -15,13 +15,13 @@ namespace PushNotifications.Projections.Subscriptions
 
         public SubscriberTopics(DeviceSubscriberId subscriberId) : this()
         {
-            if (ReferenceEquals(null, subscriberId) == true) throw new ArgumentNullException(nameof(subscriberId));
+            if (subscriberId is null == true) throw new ArgumentNullException(nameof(subscriberId));
             SubscriberId = subscriberId;
         }
 
         public SubscriberTopics(DeviceSubscriberId subscriberId, HashSet<Topic> topics) : this(subscriberId)
         {
-            if (ReferenceEquals(null, topics) == true) throw new ArgumentNullException(nameof(topics));
+            if (topics is null == true) throw new ArgumentNullException(nameof(topics));
             Topics = new HashSet<Topic>();
         }
 

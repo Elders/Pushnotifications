@@ -22,21 +22,21 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
         public Subscribe AsSubscribeCommand(ApiContext context)
         {
-            var urn = context.CurrentUser.UserId ?? AggregateUrn.Parse(Subscriber, Urn.Uber);
+            var urn = context.CurrentUser.UserId ?? AggregateRootId.Parse(Subscriber);
 
             var subscriptionToken = new SubscriptionToken(Token, SubscriptionType.Pushy);
             var subscriptionId = DeviceSubscriptionId.New(urn.Tenant, subscriptionToken);
-            var subscriberId = new DeviceSubscriberId(urn.Id, urn.Tenant, context.Application);
+            var subscriberId = new DeviceSubscriberId(urn.Tenant, urn.Id, context.Application);
             return new Subscribe(subscriptionId, subscriberId, subscriptionToken);
         }
 
         public UnSubscribe AsUnSubscribeCommand(ApiContext context)
         {
-            var urn = context.CurrentUser.UserId ?? AggregateUrn.Parse(Subscriber, Urn.Uber);
+            var urn = context.CurrentUser.UserId ?? AggregateRootId.Parse(Subscriber);
 
             var subscriptionToken = new SubscriptionToken(Token, SubscriptionType.Pushy);
             var subscriptionId = DeviceSubscriptionId.New(urn.Tenant, subscriptionToken);
-            var subscriberId = new DeviceSubscriberId(urn.Id, urn.Tenant, context.Application);
+            var subscriberId = new DeviceSubscriberId(urn.Tenant, urn.Id, context.Application);
             return new UnSubscribe(subscriptionId, subscriberId, subscriptionToken);
         }
     }

@@ -70,11 +70,11 @@ namespace PushNotifications.Api
 
             if (Urn.IsUrn(claim.Value))
             {
-                return new DeviceSubscriberId(AggregateUrn.Parse(claim.Value).Id, apiContext.Tenant, apiContext.Application);
+                return new DeviceSubscriberId(apiContext.Tenant, AggregateRootId.Parse(claim.Value).Id, apiContext.Application);
             }
             else
             {
-                return new DeviceSubscriberId(claim.Value, apiContext.Tenant, apiContext.Application);
+                return new DeviceSubscriberId(apiContext.Tenant, claim.Value, apiContext.Application);
             }
         }
     }

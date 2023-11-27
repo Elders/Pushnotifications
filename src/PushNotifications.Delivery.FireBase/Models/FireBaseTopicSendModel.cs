@@ -11,10 +11,9 @@ namespace PushNotifications.Delivery.FireBase.Models
 
         public FireBaseTopicSendModel(Topic topic, FireBaseSendNotificationModel notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt)
         {
-            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
-            if (ReferenceEquals(null, notificationPayload)) throw new ArgumentNullException(nameof(notificationPayload));
-            if (ReferenceEquals(null, expiresAt)) throw new ArgumentNullException(nameof(expiresAt));
-            if (ReferenceEquals(null, notificationData)) throw new ArgumentNullException(nameof(notificationData));
+            if (topic is null) throw new ArgumentNullException(nameof(topic));
+            if (notificationPayload is null) throw new ArgumentNullException(nameof(notificationPayload));
+            if (notificationData is null) throw new ArgumentNullException(nameof(notificationData));
 
             To = "/topics/" + topic; //The /topics/ is needed to distinguish between id's and topics
             Notification = notificationPayload;

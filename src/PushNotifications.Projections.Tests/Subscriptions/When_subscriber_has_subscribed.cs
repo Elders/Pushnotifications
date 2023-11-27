@@ -16,11 +16,11 @@ namespace PushNotifications.Tests.PushNotifications
             var id = DeviceSubscriptionId.New("elders", "id");
             projection = new SubscriberTokensProjection();
             subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
-            subscriberId = new DeviceSubscriberId("kv", "elders", "app");
+            subscriberId = new DeviceSubscriberId("elders", "kv", "app");
             @event = new Subscribed(id, subscriberId, subscriptionToken);
         };
 
-        Because of = () => projection.Handle(@event);
+        Because of = () => projection.HandleAsync(@event);
 
         It should_subscribe_for_the_event = () => ((IProjectionDefinition)projection).GetProjectionIds(@event).ShouldContain(subscriberId);
         It should_handle_the_event = () => typeof(IEventHandler<Subscribed>).IsAssignableFrom(projection.GetType()).ShouldBeTrue();

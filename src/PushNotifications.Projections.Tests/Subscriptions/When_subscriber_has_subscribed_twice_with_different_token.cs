@@ -14,13 +14,13 @@ namespace PushNotifications.Tests.PushNotifications
             projection = new SubscriberTokensProjection();
             firstSubscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
             secondSubscriptionToken = new SubscriptionToken("token2", SubscriptionType.FireBase);
-            var subscriberId = new DeviceSubscriberId("kv", "elders", "app");
+            var subscriberId = new DeviceSubscriberId("elders", "kv", "app");
             var firstEvent = new Subscribed(id, subscriberId, firstSubscriptionToken);
             secondEvent = new Subscribed(id, subscriberId, secondSubscriptionToken);
-            projection.Handle(firstEvent);
+            projection.HandleAsync(firstEvent);
         };
 
-        Because of = () => projection.Handle(secondEvent);
+        Because of = () => projection.HandleAsync(secondEvent);
 
         It should_have_correct_number_of_subscriptions = () => projection.State.Tokens.Count.ShouldEqual(2);
 

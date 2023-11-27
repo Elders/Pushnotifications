@@ -10,8 +10,8 @@ namespace PushNotifications.Tests.PushNotifications
         {
             var tenant = "elders";
             topic = new Topic("topic");
-            subscriberId = new DeviceSubscriberId("id", tenant, "app");
-            topicSubscriptionId = new TopicSubscriptionId(subscriberId, topic, tenant);
+            subscriberId = new DeviceSubscriberId(tenant, "id", "app");
+            topicSubscriptionId = new TopicSubscriptionId(tenant, topic, subscriberId);
         };
 
         Because of = () => aggregate = new TopicSubscription(topicSubscriptionId);

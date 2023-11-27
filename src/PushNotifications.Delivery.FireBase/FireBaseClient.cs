@@ -22,8 +22,8 @@ namespace PushNotifications.Delivery.FireBase
 
         public async Task<SendTokensResult> SendAsync(IEnumerable<SubscriptionToken> tokens, NotificationForDelivery notification)
         {
-            if (ReferenceEquals(null, tokens) == true) throw new ArgumentNullException(nameof(tokens));
-            if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
+            if (tokens is null == true) throw new ArgumentNullException(nameof(tokens));
+            if (notification is null == true) throw new ArgumentNullException(nameof(notification));
             if (tokens.Any() == false) throw new ArgumentException("Tokens are missing");
 
             if (log.IsEnabled(LogLevel.Debug))
@@ -85,8 +85,8 @@ namespace PushNotifications.Delivery.FireBase
 
         public async Task<bool> SendToTopic(Topic topic, NotificationForDelivery notification)
         {
-            if (ReferenceEquals(null, topic) == true) throw new ArgumentNullException(nameof(topic));
-            if (ReferenceEquals(null, notification) == true) throw new ArgumentNullException(nameof(notification));
+            if (topic is null == true) throw new ArgumentNullException(nameof(topic));
+            if (notification is null == true) throw new ArgumentNullException(nameof(notification));
 
             const string resource = "fcm/send";
 
@@ -122,8 +122,8 @@ namespace PushNotifications.Delivery.FireBase
 
         public async Task<bool> SubscribeToTopic(SubscriptionToken token, Topic topic, NotificationTarget target)
         {
-            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
-            if (ReferenceEquals(null, token)) throw new ArgumentNullException(nameof(token));
+            if (topic is null) throw new ArgumentNullException(nameof(topic));
+            if (token is null) throw new ArgumentNullException(nameof(token));
 
             const string resource = "/iid/v1:batchAdd";
 
@@ -154,8 +154,8 @@ namespace PushNotifications.Delivery.FireBase
 
         public async Task<bool> UnsubscribeFromTopic(SubscriptionToken token, Topic topic, NotificationTarget target)
         {
-            if (ReferenceEquals(null, token)) throw new ArgumentNullException(nameof(token));
-            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
+            if (token is null) throw new ArgumentNullException(nameof(token));
+            if (topic is null) throw new ArgumentNullException(nameof(topic));
 
             const string resource = "/iid/v1:batchRemove";
 
