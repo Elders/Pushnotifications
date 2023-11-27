@@ -21,7 +21,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
         public Subscribe AsSubscribeCommand(ApiContext context)
         {
-            var urn = context.CurrentUser.UserId ?? AggregateRootId.Parse(Subscriber);
+            var urn = context.CurrentUser.UserId ?? AggregateRootId.Parse(Subscriber.UberDecode());
 
             var subscriptionToken = new SubscriptionToken(Token, SubscriptionType.FireBase);
             var subscriptionId = DeviceSubscriptionId.New(urn.Tenant, subscriptionToken);
@@ -31,7 +31,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
         public UnSubscribe AsUnSubscribeCommand(ApiContext context)
         {
-            var urn = context.CurrentUser.UserId ?? AggregateRootId.Parse(Subscriber);
+            var urn = context.CurrentUser.UserId ?? AggregateRootId.Parse(Subscriber.UberDecode());
 
             var subscriptionToken = new SubscriptionToken(Token, SubscriptionType.FireBase);
             var subscriptionId = DeviceSubscriptionId.New(urn.Tenant, subscriptionToken);

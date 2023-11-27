@@ -31,7 +31,7 @@ namespace PushNotifications.Ports
 
             foreach (var recipient in signal.Recipients)
             {
-                AggregateRootId urn = AggregateRootId.Parse(recipient);
+                AggregateRootId urn = AggregateRootId.Parse(recipient.UberDecode());
                 var subscriberId = new DeviceSubscriberId(urn.Tenant, urn.Id, signal.Application);
                 using (logger.BeginScope(s => s.AddScope("pn_subscriber", subscriberId)))
                 {

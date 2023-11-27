@@ -20,7 +20,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
         public SubscribeToTopic AsSubscribeToTopicCommand()
         {
-            var urn = AggregateRootId.Parse(SubscriberId);
+            var urn = AggregateRootId.Parse(SubscriberId.UberDecode());
             var id = new DeviceSubscriberId(urn.Tenant, urn.Id, Application);
 
             var topic = new Topic(Topic);
@@ -31,7 +31,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
 
         public UnsubscribeFromTopic AsUnSubscribeFromTopicCommand()
         {
-            var urn = AggregateRootId.Parse(SubscriberId);
+            var urn = AggregateRootId.Parse(SubscriberId.UberDecode());
             var id = new DeviceSubscriberId(urn.Tenant, urn.Id, Application);
 
             var topic = new Topic(Topic);
