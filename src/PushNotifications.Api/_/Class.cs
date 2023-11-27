@@ -10,19 +10,19 @@ namespace PushNotifications.Api
 {
     public class ApiContext
     {
-        private readonly CronusContext cronusContext;
+        private readonly ICronusContextAccessor cronusContextAccessor;
 
-        public ApiContext(IHttpContextAccessor httpContextAccessor, CronusContext cronusContext)
+        public ApiContext(IHttpContextAccessor httpContextAccessor, ICronusContextAccessor cronusContextAccessor)
         {
             this.HttpContextAccessor = httpContextAccessor;
-            this.cronusContext = cronusContext;
+            this.cronusContextAccessor = cronusContextAccessor;
         }
 
         public IHttpContextAccessor HttpContextAccessor { get; }
 
         public CurrentUser CurrentUser => new CurrentUser(this);
 
-        public string Tenant => cronusContext.Tenant;
+        public string Tenant => cronusContextAccessor.CronusContext.Tenant;
 
         public string Application => GetApplication();
 
