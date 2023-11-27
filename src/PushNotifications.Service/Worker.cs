@@ -4,8 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Elders.Cronus;
 using Elders.Cronus.Api;
-using Elders.Cronus.Persistence.Cassandra.Migrations;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -43,10 +41,6 @@ namespace PushNotifications.Service
             await cronusApi.RunAsync(stoppingToken);
 
             log.LogInformation("Service started!");
-
-            log.LogInformation("Migration started!");
-            await provider.GetRequiredService<MigrateEventStore>().RunMigratorAsync("pruvit");
-            log.LogInformation("Migration finished!");
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)

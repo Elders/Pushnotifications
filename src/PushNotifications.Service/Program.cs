@@ -52,8 +52,6 @@ namespace PushNotifications.Service
                     services.AddSingleton<IPushNotificationDelivery, FireBaseDelivery>();
                     services.AddSingleton<IPushNotificationDelivery, PushyDelivery>();
                     services.AddSingleton<MultiPlatformDelivery, MultiPlatformDelivery>();
-
-                    services.AddCronusMigratorFromV8toV9();
                 })
                 .UseSerilog(SerilogConfiguration.Configure);
     }
