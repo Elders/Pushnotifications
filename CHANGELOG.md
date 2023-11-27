@@ -1,3 +1,5 @@
+# [6.0.0-release-6.0.0.6](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.5...v6.0.0-release-6.0.0.6) (2023-11-27)
+
 # [6.0.0-preview.1](https://github.com/Elders/Pushnotifications/compare/v5.0.0...v6.0.0-preview.1) (2023-11-23)
 
 
