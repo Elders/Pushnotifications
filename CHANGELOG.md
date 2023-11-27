@@ -1,3 +1,10 @@
+# [6.0.0-release-6.0.0.9](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.8...v6.0.0-release-6.0.0.9) (2023-11-27)
+
+
+### Bug Fixes
+
+* Adds base64 decoding where necessary ([5e517ad](https://github.com/Elders/Pushnotifications/commit/5e517ad210fc19803cef1639f07593badcdafe27))
+
 # [6.0.0-release-6.0.0.8](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.7...v6.0.0-release-6.0.0.8) (2023-11-27)
 
 
