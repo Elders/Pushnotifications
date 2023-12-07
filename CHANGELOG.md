@@ -1,3 +1,10 @@
+# [6.0.0-release-6.0.0.10](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.9...v6.0.0-release-6.0.0.10) (2023-12-07)
+
+
+### Bug Fixes
+
+* Migrate to dotnet 8 and Cronus 10 ([b29c539](https://github.com/Elders/Pushnotifications/commit/b29c53992b58039bb7ec245ef66840868656576b))
+
 # [6.0.0-release-6.0.0.9](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.8...v6.0.0-release-6.0.0.9) (2023-11-27)
 
 
