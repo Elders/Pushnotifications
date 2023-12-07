@@ -1,20 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <UserSecretsId>dotnet-PushNotifications.Service-E7D56A77-8456-4109-928B-9CA6D1E678BF</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cronus.Api" Version="9.0.1" />
-    <PackageReference Include="Cronus.AtomicAction.Redis" Version="9.0.1" />
-    <PackageReference Include="Cronus.Cluster.Consul" Version="9.0.0" />
-    <PackageReference Include="Cronus.Persistence.Cassandra" Version="9.1.4" />
-    <PackageReference Include="Cronus.Projections.Cassandra" Version="9.0.2" />
-    <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="9.0.0" />
-    <PackageReference Include="Cronus.Transport.RabbitMQ" Version="9.0.1" />
-    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.21.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+    <PackageReference Include="Cronus.Api" Version="10.1.0" />
+    <PackageReference Include="Cronus.Cluster.Consul" Version="10.0.1" />
+    <PackageReference Include="Cronus.Persistence.Cassandra" Version="10.1.0" />
+    <PackageReference Include="Cronus.Projections.Cassandra" Version="10.0.0" />
+    <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="10.0.0" />
+    <PackageReference Include="Cronus.Transport.RabbitMQ" Version="10.1.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Pandora.Consul" Version="3.3.0" />
   </ItemGroup>
 

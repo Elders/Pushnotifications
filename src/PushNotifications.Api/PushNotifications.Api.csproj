@@ -1,21 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>PushNotifications.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
-    <PackageReference Include="Cronus" Version="9.2.0" />
-    <PackageReference Include="Cronus.AspNetCore" Version="9.0.0" />
-    <PackageReference Include="Cronus.Persistence.Cassandra" Version="9.1.4" />
-    <PackageReference Include="Cronus.Projections.Cassandra" Version="9.0.2" />
-    <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="9.0.0" />
-    <PackageReference Include="Cronus.Transport.RabbitMQ" Version="9.0.1" />
+    <PackageReference Include="Cronus" Version="10.1.0" />
+    <PackageReference Include="Cronus.AspNetCore" Version="10.0.0" />
+    <PackageReference Include="Cronus.Persistence.Cassandra" Version="10.1.0" />
+    <PackageReference Include="Cronus.Projections.Cassandra" Version="10.0.0" />
+    <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="10.0.0" />
+    <PackageReference Include="Cronus.Transport.RabbitMQ" Version="10.1.0" />
     <PackageReference Include="Discovery.Consul" Version="1.0.0-beta0005" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.23" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Pandora.Consul" Version="3.3.0" />
   </ItemGroup>
 

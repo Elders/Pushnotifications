@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
@@ -33,7 +34,7 @@ namespace PushNotifications.Api
             public Task ExecuteResultAsync(ActionContext context)
             {
                 if (lastModified != default)
-                    context.HttpContext.Response.Headers.Add("Last-Modified", new Microsoft.Extensions.Primitives.StringValues(lastModified.ToUniversalTime().ToString("R")));
+                    context.HttpContext.Response.Headers.Append("Last-Modified", new Microsoft.Extensions.Primitives.StringValues(lastModified.ToUniversalTime().ToString("R")));
 
                 Task result = this.actionResult.ExecuteResultAsync(context);
 

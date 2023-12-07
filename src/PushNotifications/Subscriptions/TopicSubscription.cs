@@ -12,28 +12,28 @@ namespace PushNotifications.Subscriptions
         {
             if (id.IsValid() == false) throw new ArgumentException(nameof(id));
 
-            IEvent evnt = new SubscribedToTopic(id);
+            IEvent evnt = new SubscribedToTopic(id, DateTimeOffset.UtcNow);
             Apply(evnt);
         }
 
-        public void SubscribeToTopic(TopicSubscriptionId id)
+        public void SubscribeToTopic(TopicSubscriptionId id, DateTimeOffset timestamp)
         {
             if (id.IsValid() == false) throw new ArgumentException(nameof(id));
 
             if (state.IsSubscriptionActive == false)
             {
-                IEvent evnt = new SubscribedToTopic(id);
+                IEvent evnt = new SubscribedToTopic(id, timestamp);
                 Apply(evnt);
             }
         }
 
-        public void UnsubscribeFromTopic(TopicSubscriptionId id)
+        public void UnsubscribeFromTopic(TopicSubscriptionId id, DateTimeOffset timestamp)
         {
             if (id.IsValid() == false) throw new ArgumentException(nameof(id));
 
             if (state.IsSubscriptionActive)
             {
-                IEvent evnt = new UnsubscribedFromTopic(id);
+                IEvent evnt = new UnsubscribedFromTopic(id, timestamp);
                 Apply(evnt);
             }
         }

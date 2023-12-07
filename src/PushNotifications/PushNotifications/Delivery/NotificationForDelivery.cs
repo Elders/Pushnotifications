@@ -52,6 +52,7 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
         NotificationMessageSignal()
         {
             Recipients = new List<string>();
+            Timestamp = DateTimeOffset.UtcNow;
         }
 
         public NotificationMessageSignal(string recipient, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt, bool contentAvailable, NotificationTarget target)
@@ -91,6 +92,9 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
 
         [DataMember(Order = 7)]
         public string Application { get; private set; }
+
+        [DataMember(Order = 8)]
+        public DateTimeOffset Timestamp { get; private set; }
 
         public NotificationForDelivery ToDelivery()
         {

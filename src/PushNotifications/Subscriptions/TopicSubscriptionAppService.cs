@@ -17,7 +17,7 @@ namespace PushNotifications.Subscriptions
             if (result.IsSuccess)
             {
                 TopicSubscription topicSubscription = result.Data;
-                topicSubscription.SubscribeToTopic(command.Id);
+                topicSubscription.SubscribeToTopic(command.Id, command.Timestamp);
                 await repository.SaveAsync(topicSubscription).ConfigureAwait(false);
             }
             else if (result.NotFound)
@@ -33,7 +33,7 @@ namespace PushNotifications.Subscriptions
             if (result.IsSuccess)
             {
                 TopicSubscription topicSubscription = result.Data;
-                topicSubscription.UnsubscribeFromTopic(command.Id);
+                topicSubscription.UnsubscribeFromTopic(command.Id, command.Timestamp);
                 await repository.SaveAsync(topicSubscription).ConfigureAwait(false);
             }
         }

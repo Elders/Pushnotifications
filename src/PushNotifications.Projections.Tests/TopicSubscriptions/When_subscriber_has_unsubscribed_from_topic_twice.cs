@@ -2,6 +2,7 @@
 using PushNotifications.Projections.Subscriptions;
 using PushNotifications.Subscriptions;
 using PushNotifications.Subscriptions.Events;
+using System;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -15,10 +16,10 @@ namespace PushNotifications.Tests.PushNotifications
             var id = new TopicSubscriptionId("elders", topic, subscriberId);
 
             projection = new TopicsPerSubscriberProjection();
-            @event = new SubscribedToTopic(id);
+            @event = new SubscribedToTopic(id, DateTimeOffset.UtcNow);
             projection.HandleAsync(@event);
 
-            unsubscribeEvent = new UnsubscribedFromTopic(id);
+            unsubscribeEvent = new UnsubscribedFromTopic(id, DateTimeOffset.UtcNow);
             projection.HandleAsync(unsubscribeEvent);
         };
 

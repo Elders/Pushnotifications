@@ -1,6 +1,7 @@
 ﻿using Machine.Specifications;
 using PushNotifications.Subscriptions;
 using PushNotifications.Subscriptions.Events;
+using System;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -14,7 +15,7 @@ namespace PushNotifications.Tests.PushNotifications
             id = new TopicSubscriptionId("elders", topic, subscriberId);
             ar = new TopicSubscription(id);
         };
-        Because of = () => ar.SubscribeToTopic(id);
+        Because of = () => ar.SubscribeToTopic(id, DateTimeOffset.UtcNow);
 
         It should_not_raise_an_event = () => ar.ShouldHaveEventsCount<SubscribedToTopic>(1);
 

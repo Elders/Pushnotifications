@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Elders.Cronus;
 using Elders.Cronus.Projections;
 using Machine.Specifications;
@@ -17,7 +18,7 @@ namespace PushNotifications.Tests.PushNotifications
             projection = new SubscriberTokensProjection();
             subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
             subscriberId = new DeviceSubscriberId("elders", "kv", "app");
-            @event = new Subscribed(id, subscriberId, subscriptionToken);
+            @event = new Subscribed(id, subscriberId, subscriptionToken, DateTimeOffset.UtcNow);
         };
 
         Because of = () => projection.HandleAsync(@event);

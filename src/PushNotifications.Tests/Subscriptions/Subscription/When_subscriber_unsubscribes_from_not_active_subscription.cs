@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Elders.Cronus;
 using Machine.Specifications;
 using PushNotifications.Subscriptions;
@@ -15,10 +16,10 @@ namespace PushNotifications.Tests.PushNotifications
             subscriberId = new DeviceSubscriberId("elders", "kv", "app");
             subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
             ar = new DeviceSubscription(id, subscriberId, subscriptionToken);
-            ar.UnSubscribe(subscriberId);
+            ar.UnSubscribe(subscriberId, DateTimeOffset.UtcNow);
         };
 
-        Because of = () => ar.UnSubscribe(subscriberId);
+        Because of = () => ar.UnSubscribe(subscriberId, DateTimeOffset.UtcNow);
 
         It should_unsubscribe = () => ar.ShouldHaveEvent<UnSubscribed>(e =>
         {

@@ -9,7 +9,7 @@ public sealed class UnSubscribed : IEvent
 {
     UnSubscribed() { }
 
-    public UnSubscribed(DeviceSubscriptionId id, DeviceSubscriberId subscriberId, SubscriptionToken subscriptionToken)
+    public UnSubscribed(DeviceSubscriptionId id, DeviceSubscriberId subscriberId, SubscriptionToken subscriptionToken, DateTimeOffset timestamp)
     {
         if (id is null) throw new ArgumentException(nameof(id));
         if (subscriberId is null) throw new ArgumentException(nameof(subscriberId));
@@ -18,6 +18,7 @@ public sealed class UnSubscribed : IEvent
         Id = id;
         SubscriberId = subscriberId;
         SubscriptionToken = subscriptionToken;
+        Timestamp = timestamp;
     }
 
     [DataMember(Order = 1)]
@@ -28,4 +29,7 @@ public sealed class UnSubscribed : IEvent
 
     [DataMember(Order = 3)]
     public SubscriptionToken SubscriptionToken { get; private set; }
+
+    [DataMember(Order = 4)]
+    public DateTimeOffset Timestamp { get; private set; }
 }

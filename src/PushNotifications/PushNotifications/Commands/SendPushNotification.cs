@@ -10,7 +10,12 @@ namespace PushNotifications.PushNotifications.Commands
     [DataContract(Name = "5e1e1ae0-d1d6-4243-92fc-b0b6652ecb5b")]
     public class SendPushNotification : ICommand
     {
-        public SendPushNotification(PushNotificationId id, DeviceSubscriberId subscriberId, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt, bool contentAvailable)
+        SendPushNotification()
+        {
+            Timestamp = DateTimeOffset.UtcNow;
+        }
+
+        public SendPushNotification(PushNotificationId id, DeviceSubscriberId subscriberId, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt, bool contentAvailable) : this()
         {
             if (id is null == true) throw new ArgumentNullException(nameof(id));
             if (subscriberId is null == true) throw new ArgumentNullException(nameof(subscriberId));
@@ -50,5 +55,8 @@ namespace PushNotifications.PushNotifications.Commands
 
         [DataMember(Order = 6)]
         public Dictionary<string, object> NotificationData { get; private set; }
+
+        [DataMember(Order = 7)]
+        public DateTimeOffset Timestamp { get; private set; }
     }
 }

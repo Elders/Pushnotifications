@@ -16,7 +16,7 @@ namespace PushNotifications.Subscriptions
             if (result.IsSuccess)
             {
                 DeviceSubscription sub = result.Data;
-                sub.Subscribe(command.SubscriberId);
+                sub.Subscribe(command.SubscriberId, command.Timestamp);
                 await repository.SaveAsync(sub).ConfigureAwait(false);
             }
             else if (result.NotFound)
@@ -32,7 +32,7 @@ namespace PushNotifications.Subscriptions
             if (result.IsSuccess)
             {
                 DeviceSubscription sub = result.Data;
-                sub.UnSubscribe(command.SubscriberId);
+                sub.UnSubscribe(command.SubscriberId, command.Timestamp);
                 await repository.SaveAsync(sub).ConfigureAwait(false);
             }
         }

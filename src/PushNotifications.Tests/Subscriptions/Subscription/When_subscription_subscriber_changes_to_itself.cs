@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Elders.Cronus;
 using Machine.Specifications;
 using PushNotifications.Subscriptions;
@@ -18,7 +19,7 @@ namespace PushNotifications.Tests.PushNotifications
             ar = new DeviceSubscription(id, subscriberId, subscriptionToken);
         };
 
-        Because of = () => ar.Subscribe(newSubscriberIdButStillTheSame);
+        Because of = () => ar.Subscribe(newSubscriberIdButStillTheSame, DateTimeOffset.UtcNow);
 
         It should_be_no_change = () => ((IAggregateRoot)ar).UncommittedEvents.Count().ShouldEqual(1);
 

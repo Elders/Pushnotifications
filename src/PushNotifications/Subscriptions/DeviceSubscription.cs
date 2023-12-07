@@ -15,24 +15,24 @@ namespace PushNotifications.Subscriptions
             if (subscriberId is null) throw new ArgumentException(nameof(subscriberId));
             if (SubscriptionToken.IsValid(subscriptionToken) == false) throw new ArgumentException(nameof(subscriptionToken));
 
-            IEvent evnt = new Subscribed(id, subscriberId, subscriptionToken);
+            IEvent evnt = new Subscribed(id, subscriberId, subscriptionToken, DateTimeOffset.UtcNow);
             Apply(evnt);
         }
 
-        public void Subscribe(DeviceSubscriberId subscriberId)
+        public void Subscribe(DeviceSubscriberId subscriberId, DateTimeOffset timestamp)
         {
             if (state.IsSubscriptionActive == false || state.Subscribers.Where(s => s.Equals(subscriberId)).Any() == false)
             {
-                IEvent evnt = new Subscribed(state.Id, subscriberId, state.SubscriptionToken);
+                IEvent evnt = new Subscribed(state.Id, subscriberId, state.SubscriptionToken, timestamp);
                 Apply(evnt);
             }
         }
 
-        public void UnSubscribe(DeviceSubscriberId subscriberId)
+        public void UnSubscribe(DeviceSubscriberId subscriberId, DateTimeOffset timestamp)
         {
             if (state.IsSubscriptionActive == true)
             {
-                IEvent evnt = new UnSubscribed(state.Id, subscriberId, state.SubscriptionToken);
+                IEvent evnt = new UnSubscribed(state.Id, subscriberId, state.SubscriptionToken, timestamp);
                 Apply(evnt);
             }
         }

@@ -9,13 +9,17 @@ public sealed class SubscribedToTopic : IEvent
 {
     SubscribedToTopic() { }
 
-    public SubscribedToTopic(TopicSubscriptionId topicSubscriptionId)
+    public SubscribedToTopic(TopicSubscriptionId topicSubscriptionId, DateTimeOffset timestamp)
     {
         if (topicSubscriptionId.IsValid() == false) throw new ArgumentNullException(nameof(topicSubscriptionId));
 
         Id = topicSubscriptionId;
+        Timestamp = timestamp;
     }
 
     [DataMember(Order = 1)]
     public TopicSubscriptionId Id { get; private set; }
+
+    [DataMember(Order = 2)]
+    public DateTimeOffset Timestamp { get; private set; }
 }

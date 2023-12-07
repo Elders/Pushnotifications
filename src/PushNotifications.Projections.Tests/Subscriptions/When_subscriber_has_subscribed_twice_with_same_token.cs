@@ -2,6 +2,7 @@
 using PushNotifications.Projections.Subscriptions;
 using PushNotifications.Subscriptions;
 using PushNotifications.Subscriptions.Events;
+using System;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -14,7 +15,7 @@ namespace PushNotifications.Tests.PushNotifications
             projection = new SubscriberTokensProjection();
             var subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
             var subscriberId = new DeviceSubscriberId("elders", "kv", "app");
-            @event = new Subscribed(id, subscriberId, subscriptionToken);
+            @event = new Subscribed(id, subscriberId, subscriptionToken, DateTimeOffset.UtcNow);
             projection.HandleAsync(@event);
         };
 

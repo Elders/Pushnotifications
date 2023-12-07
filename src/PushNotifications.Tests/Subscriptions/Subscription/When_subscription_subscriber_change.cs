@@ -1,6 +1,7 @@
 ﻿using Machine.Specifications;
 using PushNotifications.Subscriptions;
 using PushNotifications.Subscriptions.Events;
+using System;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -16,7 +17,7 @@ namespace PushNotifications.Tests.PushNotifications
             ar = new DeviceSubscription(id, subscriberId, subscriptionToken);
         };
 
-        Because of = () => ar.Subscribe(newSubscriberId);
+        Because of = () => ar.Subscribe(newSubscriberId, DateTimeOffset.UtcNow);
 
         It should_have_correct_new_subscriber = () => ar.ShouldHaveEvent<Subscribed>(e =>
         {

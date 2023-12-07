@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Machine.Specifications;
 using PushNotifications.Projections.Subscriptions;
 using PushNotifications.Subscriptions;
@@ -17,9 +18,9 @@ namespace PushNotifications.Tests.PushNotifications
             secondSubscriptionToken = new SubscriptionToken("token2", SubscriptionType.FireBase);
 
             subscriberId = new DeviceSubscriberId("elders", "kv", "app");
-            var firstSubscribedEvent = new Subscribed(id, subscriberId, firstSubscriptionToken);
-            var secondSubscribedEvent = new Subscribed(id, subscriberId, secondSubscriptionToken);
-            unSubscribedEvent = new UnSubscribed(id, subscriberId, firstSubscriptionToken);
+            var firstSubscribedEvent = new Subscribed(id, subscriberId, firstSubscriptionToken, DateTimeOffset.UtcNow);
+            var secondSubscribedEvent = new Subscribed(id, subscriberId, secondSubscriptionToken, DateTimeOffset.UtcNow);
+            unSubscribedEvent = new UnSubscribed(id, subscriberId, firstSubscriptionToken, DateTimeOffset.UtcNow);
             projection.HandleAsync(firstSubscribedEvent);
             projection.HandleAsync(secondSubscribedEvent);
         };

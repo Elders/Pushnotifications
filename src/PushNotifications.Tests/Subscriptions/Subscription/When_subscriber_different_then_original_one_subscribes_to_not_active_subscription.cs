@@ -1,5 +1,6 @@
 ﻿using Machine.Specifications;
 using PushNotifications.Subscriptions;
+using System;
 using System.Linq;
 
 namespace PushNotifications.Tests.PushNotifications
@@ -14,10 +15,10 @@ namespace PushNotifications.Tests.PushNotifications
             newSubscriberId = new DeviceSubscriberId("elders", "kv2", "app");
             subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
             ar = new DeviceSubscription(id, subscriberId, subscriptionToken);
-            ar.UnSubscribe(subscriberId);
+            ar.UnSubscribe(subscriberId, DateTimeOffset.UtcNow);
         };
 
-        Because of = () => ar.Subscribe(newSubscriberId);
+        Because of = () => ar.Subscribe(newSubscriberId, DateTimeOffset.UtcNow);
 
         It should_activate = () => ar.RootState().IsSubscriptionActive.ShouldBeTrue();
 
