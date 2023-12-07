@@ -1,3 +1,10 @@
+# [6.0.0-release-6.0.0.11](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.10...v6.0.0-release-6.0.0.11) (2023-12-07)
+
+
+### Bug Fixes
+
+* Install Cronus atomic actions ([ef0e110](https://github.com/Elders/Pushnotifications/commit/ef0e110b231d408e5095cdb689fd142dd180f524))
+
 # [6.0.0-release-6.0.0.10](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.9...v6.0.0-release-6.0.0.10) (2023-12-07)
 
 
