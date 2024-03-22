@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using PushNotifications.Contracts.PushNotifications.Delivery;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
+using PushNotifications.Subscriptions;
 
 namespace PushNotifications.Aggregator.InMemory.Tests
 {
@@ -12,7 +12,7 @@ namespace PushNotifications.Aggregator.InMemory.Tests
             for (int i = 0; i < count; i++)
             {
                 var token = new SubscriptionToken(Guid.NewGuid().ToString(), SubscriptionType.FireBase);
-                theDelivery.Send(token, notification);
+                theDelivery.SendAsync(new List<SubscriptionToken>() { token }, notification);
             }
         }
     }

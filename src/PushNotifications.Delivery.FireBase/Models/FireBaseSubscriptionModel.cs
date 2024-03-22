@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using PushNotifications.Contracts;
+using System.Text.Json.Serialization;
+using PushNotifications.Subscriptions;
 
 namespace PushNotifications.Delivery.FireBase.Models
 {
@@ -9,8 +9,8 @@ namespace PushNotifications.Delivery.FireBase.Models
     {
         public FireBaseSubscriptionModel(List<string> registrationTokens, Topic topic)
         {
-            if (ReferenceEquals(null, registrationTokens)) throw new ArgumentNullException(nameof(registrationTokens));
-            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
+            if (registrationTokens is null) throw new ArgumentNullException(nameof(registrationTokens));
+            if (topic is null) throw new ArgumentNullException(nameof(topic));
 
             RegistrationTokens = registrationTokens;
             Topic = "/topics/" + topic;
@@ -19,16 +19,16 @@ namespace PushNotifications.Delivery.FireBase.Models
         public FireBaseSubscriptionModel(string registrationToken, Topic topic)
         {
             if (string.IsNullOrEmpty(registrationToken)) throw new ArgumentNullException(nameof(registrationToken));
-            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
+            if (topic is null) throw new ArgumentNullException(nameof(topic));
 
             RegistrationTokens = new List<string>() { registrationToken };
             Topic = "/topics/" + topic;
         }
 
-        [JsonProperty(PropertyName = "registration_tokens")]
+        [JsonPropertyName("registration_tokens")]
         public List<string> RegistrationTokens { get; private set; }
 
-        [JsonProperty(PropertyName = "to")]
+        [JsonPropertyName("to")]
         public string Topic { get; private set; }
     }
 }

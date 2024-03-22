@@ -1,9 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Events;
 using PushNotifications.Projections.Subscriptions;
+using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -12,27 +12,27 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            var id = new SubscriptionId("id", "elders");
+            var id = DeviceSubscriptionId.New("elders", "id");
             projection = new SubscriberTokensProjection();
             var firstSubscriptionToken = new SubscriptionToken("token1", SubscriptionType.FireBase);
             secondSubscriptionToken = new SubscriptionToken("token2", SubscriptionType.FireBase);
 
-            subscriberId = new SubscriberId("kv", "elders");
-            var firstSubscribedEvent = new Subscribed(id, subscriberId, firstSubscriptionToken);
-            var secondSubscribedEvent = new Subscribed(id, subscriberId, secondSubscriptionToken);
-            unSubscribedEvent = new UnSubscribed(id, subscriberId, firstSubscriptionToken);
-            projection.Handle(firstSubscribedEvent);
-            projection.Handle(secondSubscribedEvent);
+            subscriberId = new DeviceSubscriberId("elders", "kv", "app");
+            var firstSubscribedEvent = new Subscribed(id, subscriberId, firstSubscriptionToken, DateTimeOffset.UtcNow);
+            var secondSubscribedEvent = new Subscribed(id, subscriberId, secondSubscriptionToken, DateTimeOffset.UtcNow);
+            unSubscribedEvent = new UnSubscribed(id, subscriberId, firstSubscriptionToken, DateTimeOffset.UtcNow);
+            projection.HandleAsync(firstSubscribedEvent);
+            projection.HandleAsync(secondSubscribedEvent);
         };
 
-        Because of = () => projection.Handle(unSubscribedEvent);
+        Because of = () => projection.HandleAsync(unSubscribedEvent);
 
         It should_have_one_subscription = () => projection.State.Tokens.Count.ShouldEqual(1);
 
         It should_have_correct_subscription = () => projection.State.Tokens.Single().ShouldEqual(secondSubscriptionToken);
 
         static SubscriberTokensProjection projection;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
         static UnSubscribed unSubscribedEvent;
         static SubscriptionToken secondSubscriptionToken;
     }

@@ -1,7 +1,6 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Subscriptions;
+using System;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -12,12 +11,12 @@ namespace PushNotifications.Tests.PushNotifications
         {
             var tenant = "elders";
             topic = new Topic("topic");
-            subscriberId = new SubscriberId("id", tenant);
-            topicSubscriptionId = new TopicSubscriptionId(subscriberId, topic, tenant);
+            subscriberId = new DeviceSubscriberId(tenant, "id", "app");
+            topicSubscriptionId = new TopicSubscriptionId(tenant, topic, subscriberId);
             aggregate = new TopicSubscription(topicSubscriptionId);
         };
 
-        Because of = () => aggregate.UnsubscribeFromTopic(topicSubscriptionId);
+        Because of = () => aggregate.UnsubscribeFromTopic(topicSubscriptionId, DateTimeOffset.UtcNow);
 
         It should = () => aggregate.RootState().IsSubscriptionActive.ShouldBeFalse();
 
@@ -29,7 +28,7 @@ namespace PushNotifications.Tests.PushNotifications
 
         static TopicSubscription aggregate;
         static TopicSubscriptionId topicSubscriptionId;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
         static Topic topic;
     }
 }

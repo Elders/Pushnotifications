@@ -1,0 +1,26 @@
+{
+    "Serilog": {
+        "MinimumLevel": {
+            // Verbose | Debug | Information | Warning | Error | Fatal
+            "Default": "Information",
+            "Override": {
+                "Elders": "Information",
+                "Microsoft": "Information",
+                "Microsoft.AspNetCore": "Warning",
+                "System": "Information"
+            }
+        },
+        "WriteTo": [
+            {
+                // https://github.com/serilog/serilog-sinks-elasticsearch#json-appsettingsjson-configuration
+                "Name": "Elasticsearch",
+                "Args": {
+                    "nodeUris": "%log_server%",
+                    "autoRegisterTemplate": true,
+                    "autoRegisterTemplateVersion": "ESv6",
+                    "indexFormat": "prd-log-%log_name%-{0:yyyyMMdd}"
+                }
+            }
+        ]
+    }
+}

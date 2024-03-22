@@ -4,15 +4,15 @@ using PushNotifications.Subscriptions;
 
 namespace PushNotifications.Tests.Subscriptions
 {
-    [Subject(nameof(Subscription))]
+    [Subject(nameof(DeviceSubscription))]
     public class When_adding_new_features_to_the_subscription_aggregate
     {
         Establish context = () => expectedMethodsCount = 3;
 
         Because of = () =>
         {
-            var methods = typeof(Subscription).GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Length;
-            var constructors = typeof(Subscription).GetConstructors(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance).Length;
+            var methods = typeof(DeviceSubscription).GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Length;
+            var constructors = typeof(DeviceSubscription).GetConstructors(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance).Length;
             methodsCount = methods + constructors;
         };
 

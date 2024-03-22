@@ -1,33 +1,33 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Subscriptions;
+using System;
+using System.Linq;
 
 namespace PushNotifications.Tests.PushNotifications
 {
-    [Subject(nameof(Subscription))]
+    [Subject(nameof(DeviceSubscription))]
     public class When_subscriber_different_then_original_one_subscribes_to_not_active_subscription
     {
         Establish context = () =>
         {
-            id = new SubscriptionId("id", "elders");
-            subscriberId = new SubscriberId("kv", "elders");
-            newSubscriberId = new SubscriberId("kv2", "elders");
+            id = DeviceSubscriptionId.New("elders", "id");
+            subscriberId = new DeviceSubscriberId("elders", "kv", "app");
+            newSubscriberId = new DeviceSubscriberId("elders", "kv2", "app");
             subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
-            ar = new Subscription(id, subscriberId, subscriptionToken);
-            ar.UnSubscribe(subscriberId);
+            ar = new DeviceSubscription(id, subscriberId, subscriptionToken);
+            ar.UnSubscribe(subscriberId, DateTimeOffset.UtcNow);
         };
 
-        Because of = () => ar.Subscribe(newSubscriberId);
+        Because of = () => ar.Subscribe(newSubscriberId, DateTimeOffset.UtcNow);
 
         It should_activate = () => ar.RootState().IsSubscriptionActive.ShouldBeTrue();
 
-        It should_have_correct_new_subscriber = () => ar.RootState().SubscriberId.ShouldEqual(newSubscriberId);
+        It should_have_correct_new_subscriber = () => ar.RootState().Subscribers.First().ShouldEqual(newSubscriberId);
 
-        static Subscription ar;
-        static SubscriptionId id;
-        static SubscriberId subscriberId;
-        static SubscriberId newSubscriberId;
+        static DeviceSubscription ar;
+        static DeviceSubscriptionId id;
+        static DeviceSubscriberId subscriberId;
+        static DeviceSubscriberId newSubscriberId;
         static SubscriptionToken subscriptionToken;
     }
 }

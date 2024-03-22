@@ -1,12 +1,11 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Delivery.FireBase.Models;
+using PushNotifications.PushNotifications;
+using PushNotifications.Subscriptions;
 using System.Collections.Generic;
 
 namespace PushNotifications.Delivery.FireBase.Tests
 {
-    [Subject(nameof(FireBaseDelivery))]
     public class When_extracting_expired_tokens_from_firebase
     {
         Establish context = () =>

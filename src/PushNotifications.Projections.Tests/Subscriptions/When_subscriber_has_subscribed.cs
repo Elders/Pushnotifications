@@ -1,11 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Elders.Cronus;
 using Elders.Cronus.Projections;
 using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Events;
 using PushNotifications.Projections.Subscriptions;
+using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -14,14 +14,14 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            var id = new SubscriptionId("id", "elders");
+            var id = DeviceSubscriptionId.New("elders", "id");
             projection = new SubscriberTokensProjection();
             subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
-            subscriberId = new SubscriberId("kv", "elders");
-            @event = new Subscribed(id, subscriberId, subscriptionToken);
+            subscriberId = new DeviceSubscriberId("elders", "kv", "app");
+            @event = new Subscribed(id, subscriberId, subscriptionToken, DateTimeOffset.UtcNow);
         };
 
-        Because of = () => projection.Handle(@event);
+        Because of = () => projection.HandleAsync(@event);
 
         It should_subscribe_for_the_event = () => ((IProjectionDefinition)projection).GetProjectionIds(@event).ShouldContain(subscriberId);
         It should_handle_the_event = () => typeof(IEventHandler<Subscribed>).IsAssignableFrom(projection.GetType()).ShouldBeTrue();
@@ -31,7 +31,7 @@ namespace PushNotifications.Tests.PushNotifications
         It should_have_correct_subscription_token = () => projection.State.Tokens.Single().ShouldEqual(subscriptionToken);
 
         static SubscriberTokensProjection projection;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
         static SubscriptionToken subscriptionToken;
         static Subscribed @event;
     }

@@ -10,7 +10,7 @@ namespace PushNotifications.Tests
         public static IAggregateRoot ShouldHaveEvent<TExpectedEvent>(this IAggregateRoot ar, Action<TExpectedEvent> eventAssertions = null) where TExpectedEvent : IEvent
         {
             ar.UncommittedEvents.ShouldContain(@event => @event is TExpectedEvent);
-            if (ReferenceEquals(null, eventAssertions) == false)
+            if (eventAssertions is null == false)
             {
                 var gg = ar.UncommittedEvents.Last(x => x is TExpectedEvent);
                 eventAssertions((TExpectedEvent)gg);
@@ -20,14 +20,14 @@ namespace PushNotifications.Tests
 
         public static IAggregateRoot ShouldNotHaveEvent<TExpectedEvent>(this IAggregateRoot ar, Action<TExpectedEvent> eventAssertions = null) where TExpectedEvent : IEvent
         {
-            if (ReferenceEquals(null, eventAssertions))
+            if (eventAssertions is null)
             {
                 ar.UncommittedEvents.ShouldNotContain(@event => @event is TExpectedEvent);
                 return ar;
             }
 
             var gg = ar.UncommittedEvents.LastOrDefault(x => x is TExpectedEvent);
-            if (ReferenceEquals(null, gg))
+            if (gg is null)
                 return ar;
 
             eventAssertions((TExpectedEvent)gg);

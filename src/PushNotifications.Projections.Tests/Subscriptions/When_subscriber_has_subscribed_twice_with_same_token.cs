@@ -1,8 +1,8 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Events;
 using PushNotifications.Projections.Subscriptions;
+using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
+using System;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -11,15 +11,15 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            var id = new SubscriptionId("id", "elders");
+            var id = DeviceSubscriptionId.New("elders", "id");
             projection = new SubscriberTokensProjection();
             var subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
-            var subscriberId = new SubscriberId("kv", "elders");
-            @event = new Subscribed(id, subscriberId, subscriptionToken);
-            projection.Handle(@event);
+            var subscriberId = new DeviceSubscriberId("elders", "kv", "app");
+            @event = new Subscribed(id, subscriberId, subscriptionToken, DateTimeOffset.UtcNow);
+            projection.HandleAsync(@event);
         };
 
-        Because of = () => projection.Handle(@event);
+        Because of = () => projection.HandleAsync(@event);
 
         It should_have_correct_number_of_subscriptions = () => projection.State.Tokens.Count.ShouldEqual(1);
 

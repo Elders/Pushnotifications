@@ -1,7 +1,8 @@
-﻿using Cassandra;
+﻿using Elders.Cronus.Projections.Cassandra;
 using Elders.Cronus.AtomicAction;
 using PushNotifications.Contracts;
 using System;
+using Cassandra;
 
 namespace Multitenancy.Tracker
 {
@@ -13,7 +14,7 @@ namespace Multitenancy.Tracker
         const string DecrementTemplate = @"UPDATE ""pushnot_subscriptions"" SET cv = cv - 1 WHERE name=?;";
         const string GetTemplate = @"SELECT * FROM pushnot_subscriptions WHERE name=?;";
 
-        private readonly ISession _session;
+        private readonly Cassandra.ISession _session;
         private PreparedStatement _incrementTemplate;
         private PreparedStatement _decrementTemplate;
         private PreparedStatement _getTemplate;
@@ -46,7 +47,7 @@ namespace Multitenancy.Tracker
             }
         }
 
-        public TopicSubscriptionTracker(ISession session, ILock @lock)
+        public TopicSubscriptionTracker(Cassandra.ISession session, ILock @lock)
         {
             if (ReferenceEquals(null, session)) throw new ArgumentNullException(nameof(session));
             if (ReferenceEquals(null, @lock)) throw new ArgumentNullException(nameof(@lock));
@@ -57,7 +58,7 @@ namespace Multitenancy.Tracker
             CreateTableWithLock(_session, @lock, ttl);
         }
 
-        private void CreateTableWithLock(ISession session, ILock @lock, TimeSpan ttl)
+        private void CreateTableWithLock(Cassandra.ISession session, ILock @lock, TimeSpan ttl)
         {
             if (@lock.Lock(CreateTableTemplateLockKey, ttl))
             {
