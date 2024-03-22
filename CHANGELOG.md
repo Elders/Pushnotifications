@@ -1,3 +1,10 @@
+# [6.0.0-release-6.0.0.12](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.11...v6.0.0-release-6.0.0.12) (2024-03-22)
+
+
+### Bug Fixes
+
+* cronus update ([91d978d](https://github.com/Elders/Pushnotifications/commit/91d978d299d3be2f53c17a8116b04e1bed54308b))
+
 # [6.0.0-release-6.0.0.11](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.10...v6.0.0-release-6.0.0.11) (2023-12-07)
 
 
