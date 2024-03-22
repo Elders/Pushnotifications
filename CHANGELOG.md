@@ -1,3 +1,10 @@
+# [6.0.0-release-6.0.0.13](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.12...v6.0.0-release-6.0.0.13) (2024-03-22)
+
+
+### Bug Fixes
+
+* multyAudience ([c935837](https://github.com/Elders/Pushnotifications/commit/c9358377d393cfd0aa7f3c8f983cfc149ca5a5da))
+
 # [6.0.0-release-6.0.0.12](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.11...v6.0.0-release-6.0.0.12) (2024-03-22)
 
 
