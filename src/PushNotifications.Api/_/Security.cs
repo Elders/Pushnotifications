@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -52,15 +53,26 @@ namespace PushNotifications.Api
             return services;
         }
 
-        private static AuthenticationBuilder AddTenantJwtBearer(this AuthenticationBuilder authenticationBuilder, string tenant, IEnumerable<JwtBearerOptions> jwtBearerOptions)
+        private static AuthenticationBuilder AddTenantJwtBearer(this AuthenticationBuilder authenticationBuilder, string tenant, IEnumerable<JwtBearerCustomOptions> jwtBearerOptions)
         {
             foreach (var item in jwtBearerOptions)
             {
                 authenticationBuilder.AddJwtBearer(GetAuthenticationScheme(tenant, item.Authority), o =>
                 {
                     o.Authority = item.Authority;
-                    o.Audience = item.Audience;
                     o.RequireHttpsMetadata = item.RequireHttpsMetadata;
+
+                    var parameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                    {
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero,
+                        ValidateAudience = true,
+                        ValidAudiences = item.Audiences,
+                        ValidateIssuer = true,
+                        ValidIssuer = item.Authority
+                    };
+
+                    o.TokenValidationParameters = parameters;
                 });
             }
 
@@ -72,7 +84,13 @@ namespace PushNotifications.Api
         public class TenantConfigOptions
         {
             public string Name { get; set; }
-            public IEnumerable<JwtBearerOptions> JwtBearerOptions { get; set; }
+            public IEnumerable<JwtBearerCustomOptions> JwtBearerOptions { get; set; }
+        }
+        public class JwtBearerCustomOptions
+        {
+            public string Authority { get; set; }
+            public List<string> Audiences { get; set; } = new List<string>();
+            public bool RequireHttpsMetadata { get; set; }
         }
     }
 }
