@@ -1,3 +1,10 @@
+# [6.0.0-release-6.0.0.14](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.13...v6.0.0-release-6.0.0.14) (2024-04-17)
+
+
+### Bug Fixes
+
+* Cronus update (fixing signal exchanges) ([a114c6e](https://github.com/Elders/Pushnotifications/commit/a114c6e7cd9db14ad2364a3132e2b42851100867))
+
 # [6.0.0-release-6.0.0.13](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.12...v6.0.0-release-6.0.0.13) (2024-03-22)
 
 
