@@ -9,18 +9,18 @@ namespace PushNotifications.Delivery.FireBase
 {
     public sealed class FireBaseDelivery : IPushNotificationDelivery
     {
-        private readonly FireBaseClient fireBase;
+        private readonly FirebaseNotificationService firebaseNotificationService;
 
-        public FireBaseDelivery(FireBaseClient fireBase)
+        public FireBaseDelivery(FirebaseNotificationService firebaseNotificationService)
         {
-            this.fireBase = fireBase;
+            this.firebaseNotificationService = firebaseNotificationService;
         }
 
         public SubscriptionType Platform => SubscriptionType.FireBase;
 
-        public Task<SendTokensResult> SendAsync(IEnumerable<SubscriptionToken> tokens, NotificationForDelivery notification)
+        public async Task<SendTokensResult> SendAsync(IEnumerable<SubscriptionToken> tokens, NotificationForDelivery notification)
         {
-            return fireBase.SendAsync(tokens, notification);
+            return await firebaseNotificationService.SendNotificationsAsync(tokens, notification);
         }
 
         public bool SendToTopic(Topic topic, NotificationForDelivery notification)
