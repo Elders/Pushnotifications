@@ -1,3 +1,28 @@
+# [6.0.0](https://github.com/Elders/Pushnotifications/compare/v5.0.0...v6.0.0) (2024-07-08)
+
+
+### Bug Fixes
+
+* Adds base64 decoding where necessary ([5e517ad](https://github.com/Elders/Pushnotifications/commit/5e517ad210fc19803cef1639f07593badcdafe27))
+* cronus update ([91d978d](https://github.com/Elders/Pushnotifications/commit/91d978d299d3be2f53c17a8116b04e1bed54308b))
+* Cronus update (fixing signal exchanges) ([a114c6e](https://github.com/Elders/Pushnotifications/commit/a114c6e7cd9db14ad2364a3132e2b42851100867))
+* Delete obsolete Firebase integration ([735d0f7](https://github.com/Elders/Pushnotifications/commit/735d0f78a378fd12eecfdd924fb374709d2d6fc1))
+* Fixes issue while trying to send notifications to more than 1k tokens in one transaction ([9e71f23](https://github.com/Elders/Pushnotifications/commit/9e71f2396803c13fe30e9099aa26b5d8dede3a39))
+* Fixes issue with paging ([6816f02](https://github.com/Elders/Pushnotifications/commit/6816f0251c51edd3fbb871ab42228c39d16cfb8b))
+* Install Cronus atomic actions ([ef0e110](https://github.com/Elders/Pushnotifications/commit/ef0e110b231d408e5095cdb689fd142dd180f524))
+* Migrate to dotnet 8 and Cronus 10 ([b29c539](https://github.com/Elders/Pushnotifications/commit/b29c53992b58039bb7ec245ef66840868656576b))
+* multyAudience ([c935837](https://github.com/Elders/Pushnotifications/commit/c9358377d393cfd0aa7f3c8f983cfc149ca5a5da))
+* path issue in release.config.js ([31f1532](https://github.com/Elders/Pushnotifications/commit/31f1532ba3c6089a8b586c95db53cfb281750352))
+* re-order middlewares ([0d2ca79](https://github.com/Elders/Pushnotifications/commit/0d2ca797f34ee96dbf7fbbfcd6951d13b6a5a3c7))
+* start using ICronusContextAccessor instead of CronusContext inside the ApiContext ([f0fbf78](https://github.com/Elders/Pushnotifications/commit/f0fbf78a7d1930cc60d7afcd262714f919e1faaf))
+* Updates packages ([b7b3795](https://github.com/Elders/Pushnotifications/commit/b7b3795830c9e7125f6c03313359a330295ffab3))
+
+
+### Features
+
+* update Pandora.Consul ([da6f7fb](https://github.com/Elders/Pushnotifications/commit/da6f7fb20e47baef807d9f0740a9e32fde8e2b99))
+* validating access tokens from multiple identity providers per tenant ([62c4ed7](https://github.com/Elders/Pushnotifications/commit/62c4ed7cf5ed8f58b54a44d22fcfa22317d7b0ff))
+
 # [6.0.0-release-6.0.0.16](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.15...v6.0.0-release-6.0.0.16) (2024-07-08)
 
 
