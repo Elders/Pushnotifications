@@ -35,19 +35,6 @@ namespace PushNotifications.Delivery.FireBase
             public string client_x509_cert_url { get; set; }
             public string universe_domain { get; set; }
         }
-
-        [Obsolete]
-        public AuthorizationKey GetKey(string tenant, string application)
-        {
-            if (string.IsNullOrEmpty(application))
-            {
-                return Authorizations.Where(x => x.Tenant.Equals(tenant, System.StringComparison.OrdinalIgnoreCase) && x.Application.Equals("vapt", System.StringComparison.OrdinalIgnoreCase)).SingleOrDefault();
-            }
-            else
-            {
-                return Authorizations.Where(x => x.Tenant.Equals(tenant, System.StringComparison.OrdinalIgnoreCase) && x.Application.Equals(application, System.StringComparison.OrdinalIgnoreCase)).SingleOrDefault();
-            }
-        }
     }
 
     public class FireBaseOptionsProvider : OptionsProviderBase<FireBaseOptions>

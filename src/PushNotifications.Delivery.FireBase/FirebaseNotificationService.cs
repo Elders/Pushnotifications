@@ -47,12 +47,13 @@ namespace PushNotifications.Delivery.FireBase
                         Notification = new Notification()
                         {
                             Title = notification.NotificationPayload.Title,
-                            Body = notification.NotificationPayload.Body,
-                            ImageUrl = badge
+                            Body = notification.NotificationPayload.Body
                         }
                     };
 
                     BatchResponse response = await client.SendEachForMulticastAsync(message);
+
+                    skip += take;
 
                     if (response.SuccessCount == 0)
                         return SendTokensResult.Failed;

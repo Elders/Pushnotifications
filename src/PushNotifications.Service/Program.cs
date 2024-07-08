@@ -40,7 +40,6 @@ namespace PushNotifications.Service
 
                     services.AddSingleton<LoggingHandler>();
                     services.AddOption<FireBaseOptions, FireBaseOptionsProvider>();
-                    services.AddHttpClient<FireBaseClient>().AddHttpMessageHandler<LoggingHandler>(); ;
 
                     services.AddSingleton<PushyApiKeyInjectHandler>();
                     services.AddHttpClient<PushyClient>(client =>
