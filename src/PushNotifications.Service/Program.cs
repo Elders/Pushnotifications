@@ -49,6 +49,8 @@ namespace PushNotifications.Service
                     })
                     .AddHttpMessageHandler<PushyApiKeyInjectHandler>();
 
+                    services.AddSingleton<FirebaseNotificationService>();
+                    services.AddSingleton<FirebaseAppOptionsContainer>();
                     services.AddSingleton<IPushNotificationDelivery, FireBaseDelivery>();
                     services.AddSingleton<IPushNotificationDelivery, PushyDelivery>();
                     services.AddSingleton<MultiPlatformDelivery, MultiPlatformDelivery>();

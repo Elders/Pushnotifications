@@ -10,6 +10,7 @@ using static PushNotifications.Delivery.FireBase.FireBaseOptions;
 
 namespace PushNotifications.Delivery.FireBase
 {
+    [Obsolete]
     public abstract class HttpClientBase
     {
         private readonly HttpClient client;
@@ -64,8 +65,8 @@ namespace PushNotifications.Delivery.FireBase
             AuthorizationKey key = options.GetKey(target.Tenant, target.Application);
             if (key is null == false)
             {
-                httpRequestMessage.Headers.TryAddWithoutValidation("Authorization", $"key={key.ServerKey}");
-                return httpRequestMessage;
+                //httpRequestMessage.Headers.TryAddWithoutValidation("Authorization", $"key={key.ServerKey}");
+                //return httpRequestMessage;
             }
 
             throw new Exception($"FireBase authorization server key for tenant {target.Tenant} and application {target.Application} was not found.");

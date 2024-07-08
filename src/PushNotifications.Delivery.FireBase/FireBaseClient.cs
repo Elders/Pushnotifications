@@ -14,6 +14,7 @@ using static PushNotifications.Delivery.FireBase.Models.FireBaseResponseModel;
 
 namespace PushNotifications.Delivery.FireBase
 {
+    [Obsolete]
     public sealed class FireBaseClient : HttpClientBase
     {
         private const string webResource = "fcm/send";
