@@ -1,7 +1,7 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
 using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
+using System;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -12,13 +12,13 @@ namespace PushNotifications.Tests.PushNotifications
         {
             var tenant = "elders";
             topic = new Topic("topic");
-            subscriberId = new SubscriberId("id", tenant);
-            topicSubscriptionId = new TopicSubscriptionId(subscriberId, topic, tenant);
+            subscriberId = new DeviceSubscriberId(tenant, "id", "app");
+            topicSubscriptionId = new TopicSubscriptionId(tenant, topic, subscriberId);
             aggregate = new TopicSubscription(topicSubscriptionId);
-            aggregate.UnsubscribeFromTopic(topicSubscriptionId);
+            aggregate.UnsubscribeFromTopic(topicSubscriptionId, DateTimeOffset.UtcNow);
         };
 
-        Because of = () => aggregate.SubscribeToTopic(topicSubscriptionId);
+        Because of = () => aggregate.SubscribeToTopic(topicSubscriptionId, DateTimeOffset.UtcNow);
 
         It should = () => aggregate.RootState().IsSubscriptionActive.ShouldBeTrue();
 
@@ -28,11 +28,11 @@ namespace PushNotifications.Tests.PushNotifications
 
         It should_have_the_same_topic_subscription_id = () => aggregate.RootState().Id.ShouldEqual(topicSubscriptionId);
 
-        It should_have_two_topic_subscribed_events = () => aggregate.ShouldHaveEventsCount<Contracts.Subscriptions.Events.SubscribedToTopic>(2);
+        It should_have_two_topic_subscribed_events = () => aggregate.ShouldHaveEventsCount<SubscribedToTopic>(2);
 
         static TopicSubscription aggregate;
         static TopicSubscriptionId topicSubscriptionId;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
         static Topic topic;
     }
 }

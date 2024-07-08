@@ -1,24 +1,23 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Events;
 using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
+using System;
 
 namespace PushNotifications.Tests.PushNotifications
 {
-    [Subject(nameof(Subscription))]
+    [Subject(nameof(DeviceSubscription))]
     public class When_subscription_subscriber_change
     {
         Establish context = () =>
         {
-            id = new SubscriptionId("id", "elders");
-            subscriberId = new SubscriberId("kv", "elders");
-            newSubscriberId = new SubscriberId("kv2", "elders");
+            id = DeviceSubscriptionId.New("elders", "id");
+            subscriberId = new DeviceSubscriberId("elders", "kv", "app");
+            newSubscriberId = new DeviceSubscriberId("elders", "kv2", "app");
             subscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
-            ar = new Subscription(id, subscriberId, subscriptionToken);
+            ar = new DeviceSubscription(id, subscriberId, subscriptionToken);
         };
 
-        Because of = () => ar.Subscribe(newSubscriberId);
+        Because of = () => ar.Subscribe(newSubscriberId, DateTimeOffset.UtcNow);
 
         It should_have_correct_new_subscriber = () => ar.ShouldHaveEvent<Subscribed>(e =>
         {
@@ -27,10 +26,10 @@ namespace PushNotifications.Tests.PushNotifications
             e.SubscriptionToken.ShouldEqual(subscriptionToken);
         });
 
-        static Subscription ar;
-        static SubscriptionId id;
-        static SubscriberId subscriberId;
-        static SubscriberId newSubscriberId;
+        static DeviceSubscription ar;
+        static DeviceSubscriptionId id;
+        static DeviceSubscriberId subscriberId;
+        static DeviceSubscriberId newSubscriberId;
         static SubscriptionToken subscriptionToken;
     }
 }

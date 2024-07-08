@@ -1,13 +1,14 @@
 ﻿using System.Runtime.Serialization;
+using System.Threading.Tasks;
 using Elders.Cronus;
 using Elders.Cronus.Projections;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions.Events;
+using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Projections.Subscriptions
 {
     [DataContract(Name = "fc35e537-f06b-406b-b6c3-94725853a278")]
-    public class TopicsPerSubscriberProjection : ProjectionDefinition<SubscriberTopics, SubscriberId>, IProjection,
+    public class TopicsPerSubscriberProjection : ProjectionDefinition<SubscriberTopics, DeviceSubscriberId>, IProjection,
        IEventHandler<SubscribedToTopic>,
        IEventHandler<UnsubscribedFromTopic>
     {
@@ -17,16 +18,20 @@ namespace PushNotifications.Projections.Subscriptions
             Subscribe<UnsubscribedFromTopic>(x => x.Id.SubscriberId);
         }
 
-        public void Handle(SubscribedToTopic @event)
+        public Task HandleAsync(SubscribedToTopic @event)
         {
             State.SubscriberId = @event.Id.SubscriberId;
             State.Topics.Add(@event.Id.Topic);
+
+            return Task.CompletedTask;
         }
 
-        public void Handle(UnsubscribedFromTopic @event)
+        public Task HandleAsync(UnsubscribedFromTopic @event)
         {
             State.SubscriberId = @event.Id.SubscriberId;
             State.Topics.Remove(@event.Id.Topic);
+
+            return Task.CompletedTask;
         }
     }
 }

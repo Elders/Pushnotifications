@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <UserSecretsId>dotnet-PushNotifications.Service-E7D56A77-8456-4109-928B-9CA6D1E678BF</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cronus.Api" Version="10.7.0" />
+    <PackageReference Include="Cronus.AtomicAction.Redis" Version="10.0.0" />
+    <PackageReference Include="Cronus.Cluster.Consul" Version="10.2.0" />
+    <PackageReference Include="Cronus.Persistence.Cassandra" Version="10.7.2" />
+    <PackageReference Include="Cronus.Projections.Cassandra" Version="10.3.1" />
+    <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="10.4.0" />
+    <PackageReference Include="Cronus.Transport.RabbitMQ" Version="10.6.3" />
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Pandora.Consul" Version="3.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Log\Log.csproj" />
+    <ProjectReference Include="..\PushNotifications.Delivery.Pushy\PushNotifications.Delivery.Pushy.csproj" />
+    <ProjectReference Include="..\PushNotifications.Ports\PushNotifications.Ports.csproj" />
+    <ProjectReference Include="..\PushNotifications.Projections\PushNotifications.Projections.csproj" />
+    <ProjectReference Include="..\PushNotifications\PushNotifications.csproj" />
+  </ItemGroup>
+</Project>

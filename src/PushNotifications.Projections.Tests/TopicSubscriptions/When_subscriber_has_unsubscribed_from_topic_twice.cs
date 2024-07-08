@@ -1,8 +1,8 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Events;
 using PushNotifications.Projections.Subscriptions;
+using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
+using System;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -12,24 +12,24 @@ namespace PushNotifications.Tests.PushNotifications
         Establish context = () =>
         {
             topic = new Topic("topic");
-            subscriberId = new SubscriberId("kv", "elders");
-            var id = new TopicSubscriptionId(subscriberId, topic, "elders");
+            subscriberId = new DeviceSubscriberId("elders", "kv", "app");
+            var id = new TopicSubscriptionId("elders", topic, subscriberId);
 
             projection = new TopicsPerSubscriberProjection();
-            @event = new SubscribedToTopic(id);
-            projection.Handle(@event);
+            @event = new SubscribedToTopic(id, DateTimeOffset.UtcNow);
+            projection.HandleAsync(@event);
 
-            unsubscribeEvent = new UnsubscribedFromTopic(id);
-            projection.Handle(unsubscribeEvent);
+            unsubscribeEvent = new UnsubscribedFromTopic(id, DateTimeOffset.UtcNow);
+            projection.HandleAsync(unsubscribeEvent);
         };
 
-        Because of = () => projection.Handle(unsubscribeEvent);
+        Because of = () => projection.HandleAsync(unsubscribeEvent);
 
         It should_have_correct_id = () => projection.State.SubscriberId.ShouldEqual(subscriberId);
         It should_not_have_any_topics_registered = () => projection.State.Topics.ShouldBeEmpty();
 
         static TopicsPerSubscriberProjection projection;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
         static Topic topic;
         static SubscribedToTopic @event;
         static UnsubscribedFromTopic unsubscribeEvent;

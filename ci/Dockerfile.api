@@ -1,0 +1,30 @@
+# create the build instance 
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+WORKDIR /src                                                                    
+COPY ./src ./
+
+# restore solution
+RUN dotnet restore PushNotifications.sln
+
+WORKDIR /src/PushNotifications.Api
+
+# build and publish project   
+RUN dotnet build PushNotifications.Api.csproj -c Release -o /app                                         
+RUN dotnet publish PushNotifications.Api.csproj -c Release -o /app/published
+
+# create the runtime instance 
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS runtime 
+
+# add globalization support
+RUN apk add --no-cache icu-libs
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+
+
+WORKDIR /app
+                                                            
+COPY --from=build /app/published .
+
+STOPSIGNAL SIGINT
+                            
+ENTRYPOINT ["dotnet", "PushNotifications.Api.dll"]

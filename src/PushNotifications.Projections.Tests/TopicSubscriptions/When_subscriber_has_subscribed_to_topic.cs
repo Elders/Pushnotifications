@@ -1,11 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Elders.Cronus;
 using Elders.Cronus.Projections;
 using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Events;
 using PushNotifications.Projections.Subscriptions;
+using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -15,14 +15,14 @@ namespace PushNotifications.Tests.PushNotifications
         Establish context = () =>
         {
             topic = new Topic("topic");
-            subscriberId = new SubscriberId("kv", "elders");
-            var id = new TopicSubscriptionId(subscriberId, topic, "elders");
+            subscriberId = new DeviceSubscriberId("elders", "kv", "app");
+            var id = new TopicSubscriptionId("elders", topic, subscriberId);
 
             projection = new TopicsPerSubscriberProjection();
-            @event = new SubscribedToTopic(id);
+            @event = new SubscribedToTopic(id, DateTimeOffset.UtcNow);
         };
 
-        Because of = () => projection.Handle(@event);
+        Because of = () => projection.HandleAsync(@event);
 
         It should_subscribe_for_the_event = () => ((IProjectionDefinition)projection).GetProjectionIds(@event).ShouldContain(subscriberId);
         It should_handle_the_event = () => typeof(IEventHandler<SubscribedToTopic>).IsAssignableFrom(projection.GetType()).ShouldBeTrue();
@@ -32,7 +32,7 @@ namespace PushNotifications.Tests.PushNotifications
         It should_have_correct_subscription_token = () => projection.State.Topics.Single().ShouldEqual(topic);
 
         static TopicsPerSubscriberProjection projection;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
         static Topic topic;
         static SubscribedToTopic @event;
     }

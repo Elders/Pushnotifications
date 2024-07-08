@@ -1,8 +1,7 @@
 ﻿using Machine.Specifications;
-using PushNotifications.Contracts;
-using PushNotifications.Contracts.Subscriptions;
-using PushNotifications.Contracts.Subscriptions.Events;
 using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
+using System;
 
 namespace PushNotifications.Tests.PushNotifications
 {
@@ -11,18 +10,18 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            subscriberId = new SubscriberId("kv", "elders");
+            subscriberId = new DeviceSubscriberId("elders", "kv", "app");
             topic = new Topic("topic");
-            id = new TopicSubscriptionId(subscriberId, topic, "elders");
+            id = new TopicSubscriptionId("elders", topic, subscriberId);
             ar = new TopicSubscription(id);
         };
-        Because of = () => ar.SubscribeToTopic(id);
+        Because of = () => ar.SubscribeToTopic(id, DateTimeOffset.UtcNow);
 
         It should_not_raise_an_event = () => ar.ShouldHaveEventsCount<SubscribedToTopic>(1);
 
         static TopicSubscription ar;
         static Topic topic;
         static TopicSubscriptionId id;
-        static SubscriberId subscriberId;
+        static DeviceSubscriberId subscriberId;
     }
 }
