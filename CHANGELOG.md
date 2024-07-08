@@ -1,3 +1,10 @@
+# [6.0.0-release-6.0.0.16](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.15...v6.0.0-release-6.0.0.16) (2024-07-08)
+
+
+### Bug Fixes
+
+* Delete obsolete Firebase integration ([735d0f7](https://github.com/Elders/Pushnotifications/commit/735d0f78a378fd12eecfdd924fb374709d2d6fc1))
+
 # [6.0.0-release-6.0.0.15](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.14...v6.0.0-release-6.0.0.15) (2024-07-08)
 
 # [6.0.0-release-6.0.0.14](https://github.com/Elders/Pushnotifications/compare/v6.0.0-release-6.0.0.13...v6.0.0-release-6.0.0.14) (2024-04-17)
