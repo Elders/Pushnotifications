@@ -20,9 +20,6 @@ module.exports={
            && docker logout \
           `,
       }],
-  
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/changelog",
       "@semantic-release/git"
     ],
   
