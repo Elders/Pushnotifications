@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cronus" Version="10.10.2" />
-    <PackageReference Include="Cronus.DomainModeling" Version="10.3.1" />
+    <PackageReference Include="Cronus" Version="10.13.3" />
+    <PackageReference Include="Cronus.DomainModeling" Version="10.3.5" />
   </ItemGroup>
 
   <ItemGroup>
