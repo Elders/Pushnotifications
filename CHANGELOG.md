@@ -1,3 +1,10 @@
+## [6.0.1](https://github.com/Elders/Pushnotifications/compare/v6.0.0...v6.0.1) (2024-07-12)
+
+
+### Bug Fixes
+
+* Fixes pushnot application channels ([5453a2d](https://github.com/Elders/Pushnotifications/commit/5453a2da1e33a970099c3fa7cc03c279a48ba673))
+
 # [6.0.0](https://github.com/Elders/Pushnotifications/compare/v5.0.0...v6.0.0) (2024-07-08)
 
 
