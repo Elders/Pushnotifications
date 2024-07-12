@@ -85,15 +85,23 @@ namespace PushNotifications.Delivery.FireBase
             return finalResult;
         }
 
+
         public FirebaseMessaging GetMessagingClient(string application)
         {
             FirebaseApp app = FirebaseApp.GetInstance(application);
             if (app is null)
             {
                 AppOptions appOptions = firebaseAppOptionsContainer.GetAppOptions(cronusContextAccessor.CronusContext.Tenant, application);
-                app = FirebaseApp.Create(appOptions, application);
+                lock (stupidFirebaseLock)
+                {
+                    app = FirebaseApp.GetInstance(application);
+                    if (app is null)
+                        app = FirebaseApp.Create(appOptions, application);
+                }
             }
             return FirebaseMessaging.GetMessaging(app);
         }
+
+        private object stupidFirebaseLock = new object();
     }
 }
