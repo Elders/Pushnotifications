@@ -33,7 +33,7 @@ namespace PushNotifications.Delivery.FireBase
 
             SendTokensResult finalResult = new SendTokensResult(new List<SubscriptionToken>());
             int skip = 0;
-            int take = 1000;
+            int take = 450;
 
             while (true)
             {
