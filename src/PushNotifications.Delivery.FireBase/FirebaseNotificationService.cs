@@ -87,8 +87,12 @@ namespace PushNotifications.Delivery.FireBase
 
         public FirebaseMessaging GetMessagingClient(string application)
         {
-            AppOptions appOptions = firebaseAppOptionsContainer.GetAppOptions(cronusContextAccessor.CronusContext.Tenant, application);
-            FirebaseApp app = FirebaseApp.Create(appOptions);
+            FirebaseApp app = FirebaseApp.GetInstance(application);
+            if (app is null)
+            {
+                AppOptions appOptions = firebaseAppOptionsContainer.GetAppOptions(cronusContextAccessor.CronusContext.Tenant, application);
+                app = FirebaseApp.Create(appOptions, application);
+            }
             return FirebaseMessaging.GetMessaging(app);
         }
     }
