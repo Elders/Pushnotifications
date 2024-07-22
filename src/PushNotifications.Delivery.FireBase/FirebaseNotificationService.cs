@@ -8,6 +8,7 @@ using PushNotifications.PushNotifications;
 using PushNotifications.Subscriptions;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace PushNotifications.Delivery.FireBase
@@ -63,17 +64,18 @@ namespace PushNotifications.Delivery.FireBase
 
                     if (response.FailureCount > 0)
                     {
-                        List<string> failedTokens = new List<string>();
-                        for (var i = 0; i < response.Responses.Count; i++)
+                        StringBuilder sb = new StringBuilder($"Failed tokens during PN sending for {notification.Target}");
+
+                        for (int i = 0; i < response.Responses.Count; i++)
                         {
-                            if (!response.Responses[i].IsSuccess)
+                            SendResponse potentionallyFailed = response.Responses[i];
+                            if (potentionallyFailed.IsSuccess == false)
                             {
                                 // The order of responses corresponds to the order of the registration tokens.
-                                failedTokens.Add(tokenBatch[i]);
+                                sb.AppendLine($"Source: {potentionallyFailed.Exception.Source}. Message: {potentionallyFailed.Exception.Message}. Error code: {potentionallyFailed.Exception.ErrorCode}. Token: {tokenBatch[i]}");
                             }
                         }
-
-                        logger.Error(() => $"Failed tokens during PN sending for {notification.Target}: {string.Join(", ", failedTokens)}");
+                        logger.Error(sb.ToString);
                     }
                 }
                 else
