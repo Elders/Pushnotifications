@@ -35,7 +35,7 @@ namespace PushNotifications.Ports
                 var subscriberId = new DeviceSubscriberId(urn.Tenant, urn.Id, signal.Application);
                 using (logger.BeginScope(s => s.AddScope("pn_subscriber", subscriberId)))
                 {
-                    var projectionResult = await projections.GetAsync<SubscriberTokensProjection>(subscriberId).ConfigureAwait(false);
+                    var projectionResult = await projections.GetAsync<SubscriberTokensProjection>(subscriberId);
 
                     if (projectionResult.IsSuccess)
                     {
@@ -55,7 +55,7 @@ namespace PushNotifications.Ports
             }
 
             NotificationForDelivery notificationForDelivery = signal.ToDelivery();
-            var pushResult = delivery.SendAsync(tokens, notificationForDelivery).GetAwaiter().GetResult();
+            var pushResult = await delivery.SendAsync(tokens, notificationForDelivery);
 
             //if (pushResult.HasFailedTokens)
             //{
