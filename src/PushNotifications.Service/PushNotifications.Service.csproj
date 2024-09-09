@@ -9,9 +9,9 @@
     <PackageReference Include="Cronus.Api" Version="10.7.0" />
     <PackageReference Include="Cronus.AtomicAction.Redis" Version="10.0.0" />
     <PackageReference Include="Cronus.Cluster.Consul" Version="10.2.0" />
-    <PackageReference Include="Cronus.Persistence.Cassandra" Version="10.9.1" />
-    <PackageReference Include="Cronus.Projections.Cassandra" Version="10.4.0" />
-    <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="10.4.0" />
+    <PackageReference Include="Cronus.Persistence.Cassandra" Version="10.9.2" />
+    <PackageReference Include="Cronus.Projections.Cassandra" Version="10.4.1" />
+    <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="10.5.0" />
     <PackageReference Include="Cronus.Transport.RabbitMQ" Version="10.9.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />

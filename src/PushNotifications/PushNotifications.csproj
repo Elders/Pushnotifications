@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Cronus" Version="10.13.3" />
-    <PackageReference Include="Cronus.DomainModeling" Version="10.3.5" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Cronus.DomainModeling" Version="10.3.6" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
   </ItemGroup>
 
 </Project>

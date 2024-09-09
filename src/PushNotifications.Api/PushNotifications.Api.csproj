@@ -9,13 +9,13 @@
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
     <PackageReference Include="Cronus" Version="10.13.3" />
     <PackageReference Include="Cronus.AspNetCore" Version="10.2.1" />
-    <PackageReference Include="Cronus.Persistence.Cassandra" Version="10.9.1" />
-    <PackageReference Include="Cronus.Projections.Cassandra" Version="10.4.0" />
-    <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="10.4.0" />
+    <PackageReference Include="Cronus.Persistence.Cassandra" Version="10.9.2" />
+    <PackageReference Include="Cronus.Projections.Cassandra" Version="10.4.1" />
+    <PackageReference Include="Cronus.Serialization.NewtonsoftJson" Version="10.5.0" />
     <PackageReference Include="Cronus.Transport.RabbitMQ" Version="10.9.0" />
     <PackageReference Include="Discovery.Consul" Version="1.0.0-beta0005" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <PackageReference Include="Pandora.Consul" Version="3.3.0" />
   </ItemGroup>
 

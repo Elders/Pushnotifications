@@ -3,13 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{B2518E67-E1CB-42BB-AA68-746CDD7C1E19}"
-	ProjectSection(SolutionItems) = preProject
-		PushNotifications.Api.Host\PushNotifications.Api.Host.rn.md = PushNotifications.Api.Host\PushNotifications.Api.Host.rn.md
-		PushNotifications.Api.Reference\PushNotifications.Api.Reference.rn.md = PushNotifications.Api.Reference\PushNotifications.Api.Reference.rn.md
-		PushNotifications.WS.MSI\PushNotifications.WS.MSI.rn.md = PushNotifications.WS.MSI\PushNotifications.WS.MSI.rn.md
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "host", "host", "{AB88975D-6241-4BC7-824E-E6DC762813FE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{F180EF95-6C68-457F-BE8A-60396703165F}"
