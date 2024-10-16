@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using PushNotifications.Contracts.PushNotifications.Delivery;
 using PushNotifications.PushNotifications;
@@ -23,9 +22,9 @@ namespace PushNotifications.Delivery.Pushy
             return pushy.SendAsync(tokens, notification);
         }
 
-        public bool SendToTopic(Topic topic, NotificationForDelivery notification)
+        public Task<bool> SendToTopicAsync(Topic topic, NotificationForDelivery notification)
         {
-            throw new NotImplementedException();
+            return pushy.SendToTopicAsync(topic, notification);
         }
     }
 }

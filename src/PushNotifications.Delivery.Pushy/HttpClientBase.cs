@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using PushNotifications.Delivery.Pushy.Models;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -26,7 +27,7 @@ namespace PushNotifications.Delivery.Pushy
             };
         }
 
-        protected async Task<(HttpResponseMessage Response, T Data)> ExecuteRequestAsync<T>(HttpRequestMessage request)
+        protected async Task<(HttpResponseMessage Response, PushyResponseModel Data)> ExecuteRequestAsync(HttpRequestMessage request)
         {
             if (request is null) throw new ArgumentNullException(nameof(request));
 
@@ -40,17 +41,25 @@ namespace PushNotifications.Delivery.Pushy
                         {
                             using (Stream responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
                             {
-                                T deserializedObject = await JsonSerializer.DeserializeAsync<T>(responseStream, serializerOptions);
+                                PushyResponseModel deserializedObject = await JsonSerializer.DeserializeAsync<PushyResponseModel>(responseStream, serializerOptions);
 
                                 return (response, deserializedObject);
                             }
                         }
                     }
-
-                    if (log.IsEnabled(LogLevel.Error))
+                    else
                     {
-                        string errorResponseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                        log.LogError(errorResponseString);
+                        using (Stream responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                        {
+                            PushyErrorModel deserializedObject = await JsonSerializer.DeserializeAsync<PushyErrorModel>(responseStream, serializerOptions);
+
+                            if (log.IsEnabled(LogLevel.Error))
+                            {
+                                log.LogError(deserializedObject.Error);
+                            }
+
+                            return (response, new PushyResponseModel() { Error = deserializedObject, Success = false });
+                        }
                     }
 
                     return (response, default);

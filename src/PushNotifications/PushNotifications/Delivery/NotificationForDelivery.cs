@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using Elders.Cronus;
 
@@ -44,6 +45,61 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
         public bool ContentAvailable { get; private set; }
 
         public NotificationTarget Target { get; private set; }
+    }
+
+    [DataContract(Namespace = "pushnotifications", Name = "e5dc71ef-a0f4-4e40-82e4-b2529abd3030")]
+    public class TopicNotificationMessageSignal : ISignal
+    {
+        TopicNotificationMessageSignal()
+        {
+            Topics = Enumerable.Empty<string>();
+            Timestamp = DateTimeOffset.UtcNow;
+        }
+
+        public TopicNotificationMessageSignal(string tenant, string topics, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt, bool contentAvailable)
+            : this(tenant, new List<string>() { topics }, notificationPayload, notificationData, expiresAt, contentAvailable)
+        {
+
+        }
+
+        public TopicNotificationMessageSignal(string tenant, IEnumerable<string> topics, NotificationPayload notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt, bool contentAvailable) : this()
+        {
+            Tenant = tenant;
+            Topics = topics;
+            NotificationPayload = notificationPayload;
+            NotificationData = notificationData;
+            ExpiresAt = expiresAt;
+            ContentAvailable = contentAvailable;
+        }
+
+        [DataMember(Order = 0)]
+        public string Tenant { get; private set; }
+
+        [DataMember(Order = 1)]
+        public IEnumerable<string> Topics { get; private set; }
+
+        [DataMember(Order = 2)]
+        public NotificationPayload NotificationPayload { get; private set; }
+
+        [DataMember(Order = 3)]
+        public Dictionary<string, object> NotificationData { get; private set; }
+
+        [DataMember(Order = 4)]
+        public DateTimeOffset ExpiresAt { get; private set; }
+
+        [DataMember(Order = 5)]
+        public bool ContentAvailable { get; private set; }
+
+        [DataMember(Order = 6)]
+        public string Application { get; private set; } = "vapt";
+
+        [DataMember(Order = 7)]
+        public DateTimeOffset Timestamp { get; private set; }
+
+        public NotificationForDelivery ToDelivery()
+        {
+            return new NotificationForDelivery(NotificationPayload, NotificationData, ExpiresAt, ContentAvailable, new NotificationTarget(Tenant, Application));
+        }
     }
 
     [DataContract(Namespace = "pushnotifications", Name = "0b5bc529-e630-4b7a-a683-1377e270a417")]

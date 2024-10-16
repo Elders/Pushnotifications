@@ -101,11 +101,13 @@ namespace PushNotifications.Delivery.Pushy.Models
         [JsonPropertyName("to")]
         public string Topic { get; private set; }
 
-        [JsonPropertyName("Content_available")]
+        [JsonPropertyName("content_available")]
         public bool ContentAvailable { get; private set; }
 
+        [JsonPropertyName("notification")]
         public PushySendNotificationModel Notification { get; private set; }
 
+        [JsonPropertyName("data")]
         public Dictionary<string, object> Data { get; private set; }
 
         /// <summary>

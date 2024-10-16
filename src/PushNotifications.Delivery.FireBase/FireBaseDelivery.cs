@@ -23,9 +23,9 @@ namespace PushNotifications.Delivery.FireBase
             return await firebaseNotificationService.SendNotificationsAsync(tokens, notification);
         }
 
-        public bool SendToTopic(Topic topic, NotificationForDelivery notification)
+        public Task<bool> SendToTopicAsync(Topic topic, NotificationForDelivery notification)
         {
-            throw new NotImplementedException();
+            return firebaseNotificationService.SendToTopicAsync(topic, notification);
         }
     }
 }

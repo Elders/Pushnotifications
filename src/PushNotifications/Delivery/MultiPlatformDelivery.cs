@@ -40,9 +40,15 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
             return result;
         }
 
-        public bool SendToTopic(Topic topic, NotificationForDelivery notification)
+        public async Task<bool> SendToTopicAsync(Topic topic, NotificationForDelivery notification)
         {
-            throw new NotImplementedException();
+            bool result = true;
+            foreach (IPushNotificationDelivery delivery in deliveries.Values)
+            {
+                result &= await delivery.SendToTopicAsync(topic, notification).ConfigureAwait(false);
+            }
+
+            return result;
         }
     }
 }

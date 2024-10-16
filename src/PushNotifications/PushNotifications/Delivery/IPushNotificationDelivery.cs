@@ -11,6 +11,6 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
 
         Task<SendTokensResult> SendAsync(IEnumerable<SubscriptionToken> tokens, NotificationForDelivery notification);
 
-        bool SendToTopic(Topic topic, NotificationForDelivery notification);
+        Task<bool> SendToTopicAsync(Topic topic, NotificationForDelivery notification);
     }
 }

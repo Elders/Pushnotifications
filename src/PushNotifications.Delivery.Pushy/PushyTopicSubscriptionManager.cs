@@ -1,87 +1,30 @@
-﻿//using System;
-//using PushNotifications.Contracts;
-//using PushNotifications.Contracts.PushNotifications.Delivery;
-//using PushNotifications.Delivery.Pushy.Logging;
-//using PushNotifications.Delivery.Pushy.Models;
-//using RestSharp;
-//using RestSharp.Serializers;
+﻿using PushNotifications.Contracts.PushNotifications.Delivery;
+using PushNotifications.Delivery.Pushy;
+using PushNotifications.Subscriptions;
+using System.Threading.Tasks;
 
-//namespace PushNotifications.Delivery.Pushy
-//{
-//    public class PushyTopicSubscriptionManager : ITopicSubscriptionManager
-//    {
-//        static ILog log = LogProvider.GetLogger(typeof(PushyTopicSubscriptionManager));
+public sealed class PushyTopicSubscriptionManager : ITopicSubscriptionManager
+{
+    private readonly PushyClient pushyClient;
 
-//        readonly string serverKey;
+    public PushyTopicSubscriptionManager(PushyClient pushyClient)
+    {
+        this.pushyClient = pushyClient;
+    }
 
-//        readonly IRestClient restClient;
+    public SubscriptionType Platform => SubscriptionType.Pushy;
 
-//        readonly ISerializer serializer;
+    public async Task<bool> SubscribeToTopicAsync(SubscriptionToken token, Topic topic)
+    {
+        bool subscribeResult = await pushyClient.SubscribeToTopicAsync(token, topic).ConfigureAwait(false);
 
-//        public PushyTopicSubscriptionManager(IRestClient restClient, ISerializer serializer, string serverKey)
-//        {
-//            if (ReferenceEquals(null, restClient) == true) throw new ArgumentNullException(nameof(restClient));
-//            if (ReferenceEquals(null, serializer) == true) throw new ArgumentNullException(nameof(serializer));
-//            if (string.IsNullOrEmpty(serverKey) == true) throw new ArgumentNullException(nameof(serverKey));
+        return subscribeResult;
+    }
 
-//            this.restClient = restClient;
-//            this.serializer = serializer;
-//            this.serverKey = serverKey;
-//        }
+    public async Task<bool> UnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic)
+    {
+        bool unsubscribeResult = await pushyClient.UnsubscribeFromTopicAsync(token, topic).ConfigureAwait(false);
 
-//        public bool SubscribeToTopic(SubscriptionToken token, Topic topic)
-//        {
-//            if (ReferenceEquals(null, topic) == true) throw new ArgumentNullException(nameof(topic));
-//            if (ReferenceEquals(null, token) == true) throw new ArgumentNullException(nameof(token));
-
-//            string resource = "devices/subscribe?api_key=" + serverKey;
-
-//            log.Debug(() => $"[PushyBase] subscribing token '{token.Token}' to topic '{topic}''");
-
-//            var model = new PushyTopicSubscriptionModel(token, topic);
-//            IRestRequest request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
-//            var response = restClient.Execute<PushyResponseModel>(request);
-
-//            if (response.StatusCode != System.Net.HttpStatusCode.OK || response.HasDataFailure())
-//            {
-//                response.LogPushyError(() => $"[PushyBase] failure: status code '{response.StatusCode}'. Subscription token: '{token.Token}' from topic: {topic}'");
-//                return false;
-//            }
-
-//            log.Info($"[Pushy] success: subscribed token {token.Token} to topic  '{topic}'");
-//            return true;
-//        }
-
-//        public bool UnsubscribeFromTopic(SubscriptionToken token, Topic topic)
-//        {
-//            if (ReferenceEquals(null, topic) == true) throw new ArgumentNullException(nameof(topic));
-//            if (ReferenceEquals(null, token) == true) throw new ArgumentNullException(nameof(token));
-
-//            string resource = "devices/unsubscribe?api_key=" + serverKey;
-
-//            log.Debug(() => $"[PushyBase] unsubscribing token '{token.Token}' from topic '{topic}''");
-
-//            var model = new PushyTopicSubscriptionModel(token, topic);
-//            IRestRequest request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
-//            var response = restClient.Execute<PushyResponseModel>(request);
-
-//            if (response.StatusCode != System.Net.HttpStatusCode.OK || response.HasDataFailure())
-//            {
-//                response.LogPushyError(() => $"[PushyBase] failure: status code '{response.StatusCode}'. Subscription token: '{token.Token}' from topic: {topic}'");
-//                return false;
-//            }
-
-//            log.Info($"[Pushy] success: unsubscribed token {token.Token} from topic  '{topic}'");
-//            return true;
-//        }
-
-//        IRestRequest CreateRestRequest(string resource, Method method)
-//        {
-//            var request = new RestRequest(resource, method);
-//            request.RequestFormat = DataFormat.Json;
-//            request.JsonSerializer = serializer;
-
-//            return request;
-//        }
-//    }
-//}
+        return unsubscribeResult;
+    }
+}

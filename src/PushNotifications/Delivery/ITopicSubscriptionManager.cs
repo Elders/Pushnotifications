@@ -1,11 +1,14 @@
 ﻿using PushNotifications.Subscriptions;
+using System.Threading.Tasks;
 
 namespace PushNotifications.Contracts.PushNotifications.Delivery
 {
     public interface ITopicSubscriptionManager
     {
-        bool SubscribeToTopic(SubscriptionToken token, Topic topic);
+        public SubscriptionType Platform { get; }
 
-        bool UnsubscribeFromTopic(SubscriptionToken token, Topic topic);
+        Task<bool> SubscribeToTopicAsync(SubscriptionToken token, Topic topic);
+
+        Task<bool> UnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic);
     }
 }
