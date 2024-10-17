@@ -32,10 +32,10 @@ namespace PushNotifications.Delivery.FireBase
 
             string badge = notification.NotificationPayload.Badge > 0 ? notification.NotificationPayload.Badge.ToString() : "1";
 
-            SendTokensResult finalResult = new SendTokensResult(new List<SubscriptionToken>());
             int skip = 0;
-            int take = 450;
+            int take = 450; // The limit from FireBase is 500
 
+            List<SubscriptionToken> failedTokens = new List<SubscriptionToken>();
             while (true)
             {
                 List<string> tokenBatch = subTokens.Skip(skip).Take(take).Select(x => x.Token).ToList();
@@ -73,6 +73,12 @@ namespace PushNotifications.Delivery.FireBase
                             {
                                 // The order of responses corresponds to the order of the registration tokens.
                                 sb.AppendLine($"Source: {potentionallyFailed.Exception.Source}. Message: {potentionallyFailed.Exception.Message}. Error code: {potentionallyFailed.Exception.ErrorCode}. Token: {tokenBatch[i]}");
+
+                                SubscriptionToken findToken = subTokens.Where(x => x.Token == tokenBatch[i]).SingleOrDefault();
+                                if (findToken is not null)
+                                {
+                                    failedTokens.Add(findToken);
+                                }
                             }
                         }
                         logger.Error(sb.ToString);
@@ -84,7 +90,7 @@ namespace PushNotifications.Delivery.FireBase
                 }
             }
 
-            return finalResult;
+            return new SendTokensResult(true, failedTokens);
         }
 
         public async Task<bool> SendToTopicAsync(Topic topic, NotificationForDelivery notification)

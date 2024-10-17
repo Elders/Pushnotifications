@@ -1,6 +1,5 @@
 using System;
 using Elders.Cronus;
-using Elders.Cronus.Persistence.Cassandra.Migrations;
 using Elders.Pandora;
 using Logging;
 using Microsoft.Extensions.DependencyInjection;
