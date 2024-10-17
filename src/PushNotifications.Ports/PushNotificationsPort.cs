@@ -12,7 +12,8 @@ using System.Threading.Tasks;
 namespace PushNotifications.Ports
 {
     public class PushNotificationTrigger : ITrigger,
-        ISignalHandle<NotificationMessageSignal>
+        ISignalHandle<NotificationMessageSignal>,
+        ISignalHandle<TopicNotificationMessageSignal>
     {
         private readonly IProjectionReader projections;
         private readonly MultiPlatformDelivery delivery;
@@ -55,106 +56,34 @@ namespace PushNotifications.Ports
             }
 
             NotificationForDelivery notificationForDelivery = signal.ToDelivery();
-            var pushResult = await delivery.SendAsync(tokens, notificationForDelivery);
-
-            //if (pushResult.HasFailedTokens)
-            //{
-            //    foreach (var failedToken in pushResult.FailedTokens)
-            //    {
-            //        var subscribtionId = SubscriptionId.New(signal.Tenant, failedToken.Token);
-            //        var unsubscribe = new UnSubscribe(subscribtionId, subscriberId, failedToken);
-            //        publisher.Publish(unsubscribe);
-            //    }
-            //}
-
-
+            PushNotifications.SendTokensResult pushResult = await delivery.SendAsync(tokens, notificationForDelivery);
         }
 
-        //public void Send(NotificationMessage notification, )
-        //{
-        //    //var projectionResult = projections.Get<SubscriberTokensProjection>(null);
-        //    //if (projectionResult.IsSuccess == false)
-        //    //{
-        //    //    // log.Info(() => $"No tokens were found for subscriber {@event.SubscriberId}");
-        //    //    return;
-        //    //}
+        public async Task HandleAsync(TopicNotificationMessageSignal signal)
+        {
+            if (signal.Topics.Any() == false)
+                logger.LogInformation("No topics were found for the notification");
 
-        //    //foreach (var token in projectionResult.Data.State.Tokens)
-        //    //{
-        //    //    var delivery = deliveryProvisioner.ResolveDelivery(token.SubscriptionType, notification);
-        //    //    SendTokensResult sendResult = delivery.Send(token, notification);
+            NotificationForDelivery notificationForDelivery = signal.ToDelivery();
+            foreach (var topica in signal.Topics)
+            {
+                Topic topic = new Topic(topica);
 
-        //    //    if (sendResult.HasFailedTokens)
-        //    //    {
-        //    //        foreach (var failedToken in sendResult.FailedTokens)
-        //    //        {
-        //    //            var subscribtionId = SubscriptionId.New(@event.Id.Tenant, failedToken.Token);
-        //    //            var unsubscribe = new UnSubscribe(subscribtionId, @event.SubscriberId, failedToken);
-        //    //            publisher.Publish(unsubscribe);
-        //    //        }
-        //    //    }
-        //    //}
-        //}
+                bool pushResult = await delivery.SendToTopicAsync(topic, notificationForDelivery);
+                LogResult(topic, pushResult);
+            }
+        }
+
+        private void LogResult(Topic topic, bool pushResult)
+        {
+            if (pushResult)
+            {
+                logger.LogInformation($"Notification was sent to topic {topic}");
+            }
+            else
+            {
+                logger.LogError($"Failed to send notification to topic {topic}");
+            }
+        }
     }
-
-    //public class PushNotificationsPort : IPort,
-    //    IEventHandler<PushNotificationSent>,
-    //    IEventHandler<TopicPushNotificationSent>
-    //{
-    //    private readonly IProjectionReader projections;
-    //    private readonly IDeliveryProvisioner deliveryProvisioner;
-
-    //    public PushNotificationsPort(IPublisher<ICommand> commandPublisher, IProjectionReader projections, IDeliveryProvisioner deliveryProvisioner)
-    //    {
-    //        CommandPublisher = commandPublisher;
-    //        this.projections = projections;
-    //        this.deliveryProvisioner = deliveryProvisioner;
-    //    }
-
-    //    public IPublisher<ICommand> CommandPublisher { get; set; }
-
-    //    public void Handle(PushNotificationSent @event)
-    //    {
-    //        var projectionReponse = projections.Get<SubscriberTokensProjection>(@event.SubscriberId);
-    //        if (projectionReponse.IsSuccess == false)
-    //        {
-    //            // log.Info(() => $"No tokens were found for subscriber {@event.SubscriberId}");
-    //            return;
-    //        }
-
-    //        foreach (var token in projectionReponse.Data.State.Tokens)
-    //        {
-    //            var notification = new NotificationForDelivery(@event.Id, @event.NotificationPayload, @event.NotificationData, @event.ExpiresAt, @event.ContentAvailable);
-    //            var delivery = deliveryProvisioner.ResolveDelivery(token.SubscriptionType, notification);
-    //            SendTokensResult sendResult = delivery.Send(token, notification);
-
-    //            if (sendResult.HasFailedTokens)
-    //            {
-    //                foreach (var failedToken in sendResult.FailedTokens)
-    //                {
-    //                    var subscribtionId = SubscriptionId.New(@event.Id.Tenant, failedToken.Token);
-    //                    var unsubscribe = new UnSubscribe(subscribtionId, @event.SubscriberId, failedToken);
-    //                    if (CommandPublisher.Publish(unsubscribe) == false)
-    //                    {
-    //                        //log.Error("Unable to publish command" + Environment.NewLine + unsubscribe.ToString());
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    public void Handle(TopicPushNotificationSent @event)
-    //    {
-    //        var topic = @event.Id.Topic;
-
-    //        var notification = new NotificationForDelivery(@event.Id, @event.NotificationPayload, @event.NotificationData, @event.ExpiresAt, @event.ContentAvailable);
-
-    //        var provisioners = deliveryProvisioner.GetDeliveryProviders(@event.Id.Tenant);
-
-    //        foreach (var provisioner in provisioners)
-    //        {
-    //            provisioner.SendToTopic(topic, notification);
-    //        }
-    //    }
-    //}
 }

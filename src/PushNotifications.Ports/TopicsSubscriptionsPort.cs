@@ -1,117 +1,123 @@
-﻿//using System;
-//using Elders.Cronus;
-//using Elders.Cronus.Projections;
-//using PushNotifications.Contracts.PushNotifications.Delivery;
-//using PushNotifications.Projections.Subscriptions;
-//using PushNotifications.Subscriptions;
-//using PushNotifications.Subscriptions.Events;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Elders.Cronus;
+using Elders.Cronus.Projections;
+using Microsoft.Extensions.Logging;
+using PushNotifications.Contracts.PushNotifications.Delivery;
+using PushNotifications.Projections.Subscriptions;
+using PushNotifications.Subscriptions;
+using PushNotifications.Subscriptions.Events;
 
-//namespace PushNotifications.Ports
-//{
-//    public class TopicsSubscriptionsPort : IPort,
-//        IEventHandler<Subscribed>,
-//        IEventHandler<SubscribedToTopic>,
-//        IEventHandler<UnSubscribed>,
-//        IEventHandler<UnsubscribedFromTopic>
-//    {
-//        public TopicsSubscriptionsPort(IPublisher<ICommand> commandPublisher, IProjectionReader projections, IDeliveryProvisioner deliveryProvisioner, ITopicSubscriptionProvisioner topicSubscriptionProvider)
-//        {
-//            CommandPublisher = commandPublisher;
-//            Projections = projections;
-//            DeliveryProvisioner = deliveryProvisioner;
-//            TopicSubscriptionProvider = topicSubscriptionProvider;
-//        }
+namespace PushNotifications.Ports
+{
+    public class TopicsSubscriptionsPort : IPort,
+        IEventHandler<Subscribed>,
+        IEventHandler<SubscribedToTopic>,
+        IEventHandler<UnSubscribed>,
+        IEventHandler<UnsubscribedFromTopic>
+    {
+        private readonly IPublisher<ICommand> _publisher;
+        private readonly IProjectionReader _projections;
+        private readonly ILogger<TopicsSubscriptionsPort> _logger;
 
-//        public IPublisher<ICommand> CommandPublisher { get; set; }
+        Dictionary<string, ITopicSubscriptionManager> deliveries;
 
-//        public IProjectionReader Projections { get; set; }
+        public TopicsSubscriptionsPort(IPublisher<ICommand> commandPublisher, IProjectionReader projections, ILogger<TopicsSubscriptionsPort> logger, IEnumerable<ITopicSubscriptionManager> deliveries)
+        {
+            _publisher = commandPublisher;
+            _projections = projections;
+            _logger = logger;
+            this.deliveries = deliveries.ToDictionary(key => key.Platform.ToString());
+        }
 
-//        public IDeliveryProvisioner DeliveryProvisioner { get; set; }
+        public async Task HandleAsync(Subscribed @event)
+        {
+            SubscriptionType subscriptionType = @event.SubscriptionToken.SubscriptionType;
+            ReadResult<TopicsPerSubscriberProjection> projectionReponse = await _projections.GetAsync<TopicsPerSubscriberProjection>(@event.SubscriberId);
 
-//        public ITopicSubscriptionProvisioner TopicSubscriptionProvider { get; set; }
+            if (projectionReponse.IsSuccess == false)
+            {
+                _logger.Debug(() => $"No topics were found for subscriber {@event.SubscriberId}");
+                return;
+            }
 
-//        public void Handle(Subscribed @event)
-//        {
-//            SubscriberId currentUser = @event.SubscriberId;
-//            string tenant = @event.SubscriberId.Tenant;
-//            string device = @event.SubscriptionToken.Token;
-//            SubscriptionType subscriptionType = @event.SubscriptionToken.SubscriptionType;
+            ITopicSubscriptionManager subscriptionManager = deliveries[subscriptionType];
 
-//            var projectionReponse = Projections.Get<TopicsPerSubscriberProjection>(@event.SubscriberId);
+            //TODO: This can be improved by sending all topics at asynchronously
+            bool isSuccessful = true;
+            foreach (Topic topic in projectionReponse.Data.State.Topics)
+            {
+                isSuccessful &= await subscriptionManager.SubscribeToTopicAsync(@event.SubscriptionToken, topic);
+            }
 
-//            if (projectionReponse.IsSuccess == false)
-//            {
-//                //log.Info(() => $"No topics were found for subscriber {@event.SubscriberId}");
-//                return;
-//            }
+            if (isSuccessful == false)
+                _logger.LogError($"Failed to subscribe to topics for subscriber {@event.SubscriberId}");
+        }
 
-//            ITopicSubscriptionManager subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(subscriptionType, tenant);
+        public async Task HandleAsync(UnSubscribed @event)
+        {
+            SubscriptionType subscriptionType = @event.SubscriptionToken.SubscriptionType;
+            ReadResult<TopicsPerSubscriberProjection> projectionReponse = await _projections.GetAsync<TopicsPerSubscriberProjection>(@event.SubscriberId);
 
-//            foreach (Topic topic in projectionReponse.Data.State.Topics)
-//            {
-//                subscriptionManager.SubscribeToTopic(@event.SubscriptionToken, topic);
-//            }
-//        }
+            if (projectionReponse.IsSuccess == false)
+            {
+                _logger.Debug(() => $"No topics were found for subscriber {@event.SubscriberId}");
+                return;
+            }
 
-//        public void Handle(UnSubscribed @event)
-//        {
-//            SubscriberId currentUser = @event.SubscriberId;
-//            string tenant = @event.SubscriberId.Tenant;
-//            string device = @event.SubscriptionToken.Token;
-//            SubscriptionType subscriptionType = @event.SubscriptionToken.SubscriptionType;
+            ITopicSubscriptionManager subscriptionManager = deliveries[subscriptionType];
 
-//            var projectionReponse = Projections.Get<TopicsPerSubscriberProjection>(@event.SubscriberId);
 
-//            if (projectionReponse.IsSuccess == false)
-//            {
-//                //  log.Info(() => $"No topics were found for subscriber {@event.SubscriberId}");
-//                return;
-//            }
+            //TODO: This can be improved by sending all topics at asynchronously
+            bool isSuccessful = true;
+            foreach (Topic topic in projectionReponse.Data.State.Topics)
+            {
+                isSuccessful &= await subscriptionManager.UnsubscribeFromTopicAsync(@event.SubscriptionToken, topic);
+            }
 
-//            ITopicSubscriptionManager subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(subscriptionType, tenant);
+            if (isSuccessful == false)
+                _logger.LogError($"Failed to unsubscribe from topics for subscriber {@event.SubscriberId}");
+        }
 
-//            foreach (Topic topic in projectionReponse.Data.State.Topics)
-//            {
-//                subscriptionManager.UnsubscribeFromTopic(@event.SubscriptionToken, topic);
-//            }
-//        }
+        public async Task HandleAsync(SubscribedToTopic @event)
+        {
+            ReadResult<SubscriberTokensProjection> projectionReponse = await _projections.GetAsync<SubscriberTokensProjection>(@event.Id.SubscriberId);
+            if (projectionReponse.IsSuccess == false)
+            {
+                _logger.Debug(() => $"No tokens were found for subscriber {@event.Id.SubscriberId}");
+                return;
+            }
 
-//        public void Handle(SubscribedToTopic @event)
-//        {
-//            if (ReferenceEquals(null, Projections)) throw new ArgumentNullException(nameof(Projections));
-//            if (ReferenceEquals(null, DeliveryProvisioner)) throw new ArgumentNullException(nameof(DeliveryProvisioner));
+            bool isSuccessful = true;
+            foreach (SubscriptionToken token in projectionReponse.Data.State.Tokens)
+            {
+                ITopicSubscriptionManager subscriptionManager = deliveries[token.SubscriptionType];
+                isSuccessful &= await subscriptionManager.SubscribeToTopicAsync(token, @event.Id.Topic);
+            }
 
-//            var projectionReponse = Projections.Get<SubscriberTokensProjection>(@event.Id.SubscriberId);
-//            if (projectionReponse.IsSuccess == false)
-//            {
-//                //log.Info(() => $"No tokens were found for subscriber {@event.Id.SubscriberId}");
-//                return;
-//            }
+            if (isSuccessful == false)
+                _logger.LogError($"Failed to subscribe to topic {@event.Id.Topic} for subscriber {@event.Id.SubscriberId}");
+        }
 
-//            foreach (SubscriptionToken token in projectionReponse.Data.State.Tokens)
-//            {
-//                ITopicSubscriptionManager subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(token.SubscriptionType, @event.Id.SubscriberId.Tenant);
-//                subscriptionManager.SubscribeToTopic(token, @event.Id.Topic);
-//            }
-//        }
+        public async Task HandleAsync(UnsubscribedFromTopic @event)
+        {
+            ReadResult<SubscriberTokensProjection> projectionReponse = await _projections.GetAsync<SubscriberTokensProjection>(@event.Id.SubscriberId);
+            if (projectionReponse.IsSuccess == false)
+            {
+                _logger.Debug(() => $"No tokens were found for subscriber {@event.Id.SubscriberId}");
+                return;
+            }
 
-//        public void Handle(UnsubscribedFromTopic @event)
-//        {
-//            if (ReferenceEquals(null, Projections)) throw new ArgumentNullException(nameof(Projections));
-//            if (ReferenceEquals(null, DeliveryProvisioner)) throw new ArgumentNullException(nameof(DeliveryProvisioner));
+            bool isSuccessful = true;
+            foreach (SubscriptionToken token in projectionReponse.Data.State.Tokens)
+            {
+                ITopicSubscriptionManager subscriptionManager = deliveries[token.SubscriptionType];
+                isSuccessful &= await subscriptionManager.UnsubscribeFromTopicAsync(token, @event.Id.Topic);
+            }
 
-//            var projectionReponse = Projections.Get<SubscriberTokensProjection>(@event.Id.SubscriberId);
-//            if (projectionReponse.IsSuccess == false)
-//            {
-//                //log.Info(() => $"No tokens were found for subscriber {@event.Id.SubscriberId}");
-//                return;
-//            }
-
-//            foreach (SubscriptionToken token in projectionReponse.Data.State.Tokens)
-//            {
-//                ITopicSubscriptionManager subscriptionManager = TopicSubscriptionProvider.ResolveTopicSubscriptionManager(token.SubscriptionType, @event.Id.SubscriberId.Tenant);
-//                subscriptionManager.UnsubscribeFromTopic(token, @event.Id.Topic);
-//            }
-//        }
-//    }
-//}
+            if (isSuccessful == false)
+                _logger.LogError($"Failed to unsubscribe from topic {@event.Id.Topic} for subscriber {@event.Id.SubscriberId}");
+        }
+    }
+}

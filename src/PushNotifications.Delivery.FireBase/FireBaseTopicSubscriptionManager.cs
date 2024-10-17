@@ -1,85 +1,72 @@
-﻿//using System;
-//using PushNotifications.Contracts.PushNotifications.Delivery;
-//using PushNotifications.Delivery.FireBase.Models;
-//using PushNotifications.Subscriptions;
+﻿using Elders.Cronus.MessageProcessing;
+using FirebaseAdmin.Messaging;
+using FirebaseAdmin;
+using PushNotifications.Contracts.PushNotifications.Delivery;
+using PushNotifications.Delivery.FireBase;
+using PushNotifications.Subscriptions;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-//namespace PushNotifications.Delivery.FireBase
-//{
-//    public class FireBaseTopicSubscriptionManager : ITopicSubscriptionManager
-//    {
-//        static ILog log = LogProvider.GetLogger(typeof(FireBaseTopicSubscriptionManager));
+public sealed class FireBaseTopicSubscriptionManager : ITopicSubscriptionManager
+{
+    private readonly FirebaseAppOptionsContainer firebaseAppOptionsContainer;
+    private readonly ICronusContextAccessor cronusContextAccessor;
 
-//        readonly string serverKey;
+    public FireBaseTopicSubscriptionManager(FirebaseAppOptionsContainer firebaseAppOptionsContainer, ICronusContextAccessor cronusContextAccessor)
+    {
+        this.firebaseAppOptionsContainer = firebaseAppOptionsContainer;
+        this.cronusContextAccessor = cronusContextAccessor;
+    }
 
-//        readonly IRestClient restClient;
+    public SubscriptionType Platform => SubscriptionType.FireBase;
 
-//        readonly ISerializer serializer;
+    public async Task<bool> SubscribeToTopicAsync(SubscriptionToken token, Topic topic)
+    {
+        FirebaseMessaging client = GetMessagingClient("vapt"); // TODO: get application from topic or token
 
-//        public FireBaseTopicSubscriptionManager(IRestClient restClient, ISerializer serializer, string serverKey)
-//        {
-//            if (ReferenceEquals(null, restClient) == true) throw new ArgumentNullException(nameof(restClient));
-//            if (ReferenceEquals(null, serializer) == true) throw new ArgumentNullException(nameof(serializer));
-//            if (string.IsNullOrEmpty(serverKey) == true) throw new ArgumentNullException(nameof(serverKey));
+        TopicManagementResponse subscribeResult = await client.SubscribeToTopicAsync(new List<string> { token.Token }, topic).ConfigureAwait(false);
 
-//            this.restClient = restClient;
-//            this.serializer = serializer;
-//            this.serverKey = serverKey;
-//        }
+        // TODO: Add better error handling
+        // We send a list of tokens with single token, so we expect a success count of 1
+        if (subscribeResult.SuccessCount != 1)
+        {
+            return false;
+        }
 
-//        IRestRequest CreateRestRequest(string resource, Method method)
-//        {
-//            var request = new RestRequest(resource, method);
-//            request.RequestFormat = DataFormat.Json;
-//            request.AddHeader("Authorization", $"key={serverKey}");
-//            request.JsonSerializer = serializer;
+        return true;
+    }
 
-//            return request;
-//        }
+    public async Task<bool> UnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic)
+    {
+        FirebaseMessaging client = GetMessagingClient("vapt"); // TODO: get application from topic or token
 
-//        public bool SubscribeToTopic(SubscriptionToken token, Topic topic)
-//        {
-//            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
-//            if (ReferenceEquals(null, token)) throw new ArgumentNullException(nameof(token));
+        TopicManagementResponse unsubscribeResult = await client.SubscribeToTopicAsync(new List<string> { token.Token }, topic).ConfigureAwait(false);
 
-//            const string resource = "/iid/v1:batchAdd";
+        // TODO: Add better error handling
+        // We send a list of tokens with single token, so we expect a success count of 1
+        if (unsubscribeResult.SuccessCount != 1)
+        {
+            return false;
+        }
 
-//            log.Debug(() => $"[FireBase] subscribing '{token.Token}' to topic: `{topic}'");
-//            var model = new FireBaseSubscriptionModel(token.Token, topic);
-//            var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
+        return true;
+    }
 
-//            var result = restClient.Execute<FireBaseResponseModel>(request);
+    private FirebaseMessaging GetMessagingClient(string application)
+    {
+        FirebaseApp app = FirebaseApp.GetInstance(application);
+        if (app is null)
+        {
+            AppOptions appOptions = firebaseAppOptionsContainer.GetAppOptions(cronusContextAccessor.CronusContext.Tenant, application);
+            lock (stupidFirebaseLock)
+            {
+                app = FirebaseApp.GetInstance(application);
+                if (app is null)
+                    app = FirebaseApp.Create(appOptions, application);
+            }
+        }
+        return FirebaseMessaging.GetMessaging(app);
+    }
 
-//            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.HasDataFailure())
-//            {
-//                result.LogFireBaseError(() => $"[FireBase] failure: status code '{result.StatusCode}'. subscription token: '{token.Token}' from topic: {topic}'");
-//                return false;
-//            }
-
-//            log.Info($"[FireBase] success: subscribed `{token.Token}` to topic: `{topic}`");
-//            return true;
-//        }
-
-//        public bool UnsubscribeFromTopic(SubscriptionToken token, Topic topic)
-//        {
-//            if (ReferenceEquals(null, token)) throw new ArgumentNullException(nameof(token));
-//            if (ReferenceEquals(null, topic)) throw new ArgumentNullException(nameof(topic));
-
-//            const string resource = "/iid/v1:batchRemove";
-
-//            log.Debug(() => $"[FireBase] unsubscribing '{token.Token}' from topic: `{topic}'");
-//            var model = new FireBaseSubscriptionModel(token.Token, topic);
-//            var request = CreateRestRequest(resource, Method.POST).AddJsonBody(model);
-
-//            var result = restClient.Execute<FireBaseResponseModel>(request);
-
-//            if (result.StatusCode != System.Net.HttpStatusCode.OK || result.HasDataFailure())
-//            {
-//                result.LogFireBaseError(() => $"[FireBase] failure: status code '{result.StatusCode}'. subscription token: '{token.Token}' from topic: {topic}'");
-//                return false;
-//            }
-
-//            log.Info($"[FireBase] success: unsubscribed `{token.Token}` from topic: `{topic}`");
-//            return true;
-//        }
-//    }
-//}
+    private object stupidFirebaseLock = new object();
+}

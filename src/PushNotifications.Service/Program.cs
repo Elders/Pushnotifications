@@ -51,8 +51,11 @@ namespace PushNotifications.Service
                     services.AddSingleton<FirebaseNotificationService>();
                     services.AddSingleton<FirebaseAppOptionsContainer>();
                     services.AddSingleton<IPushNotificationDelivery, FireBaseDelivery>();
-                    services.AddSingleton<IPushNotificationDelivery, PushyDelivery>();
+                    services.AddSingleton<IPushNotificationDelivery, PushyDelivery>(); // TODO: This is using HTTP client, so it shouldn't be singleton !?
                     services.AddSingleton<MultiPlatformDelivery, MultiPlatformDelivery>();
+
+                    services.AddTransient<ITopicSubscriptionManager, FireBaseTopicSubscriptionManager>();
+                    services.AddTransient<ITopicSubscriptionManager, PushyTopicSubscriptionManager>();
                 })
                 .UseSerilog(SerilogConfiguration.Configure);
     }

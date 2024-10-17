@@ -87,6 +87,25 @@ namespace PushNotifications.Delivery.FireBase
             return finalResult;
         }
 
+        public async Task<bool> SendToTopicAsync(Topic topic, NotificationForDelivery notification)
+        {
+            FirebaseMessaging client = GetMessagingClient(notification.Target.Application);
+
+            Message message = new Message()
+            {
+                Topic = topic,
+                Data = notification.NotificationData.ToDictionary(x => x.Key, y => y.Value.ToString()),
+                Notification = new Notification()
+                {
+                    Title = notification.NotificationPayload.Title,
+                    Body = notification.NotificationPayload.Body
+                }
+            };
+
+            string fcmMessageId = await client.SendAsync(message).ConfigureAwait(false);
+
+            return string.IsNullOrEmpty(fcmMessageId) == false;
+        }
 
         public FirebaseMessaging GetMessagingClient(string application)
         {

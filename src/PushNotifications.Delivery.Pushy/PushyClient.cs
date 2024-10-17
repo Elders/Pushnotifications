@@ -35,7 +35,7 @@ namespace PushNotifications.Delivery.Pushy
             var send = new PushySendModel(tokensAsStrings, model, notification.NotificationData, notification.ExpiresAt, notification.ContentAvailable);
 
             HttpRequestMessage requestMessage = CreateJsonPostRequest(send, resource);
-            var result = await ExecuteRequestAsync<PushyResponseModel>(requestMessage).ConfigureAwait(false);
+            var result = await ExecuteRequestAsync(requestMessage).ConfigureAwait(false);
 
             if (result.Response.IsSuccessStatusCode)
             {
@@ -47,7 +47,7 @@ namespace PushNotifications.Delivery.Pushy
             {
                 if (log.IsEnabled(LogLevel.Error))
                 {
-                    string dataErrors = result.Data?.Error;
+                    string dataErrors = result.Data?.Error.Error;
                     log.LogError($"{result.Response.StatusCode} Failed to sent notification '{notification.NotificationPayload.Body}'{Environment.NewLine}{dataErrors}{Environment.NewLine}{result.Response.ReasonPhrase}");
                 }
 
@@ -55,7 +55,7 @@ namespace PushNotifications.Delivery.Pushy
             }
         }
 
-        public async Task<bool> SendToTopic(Topic topic, NotificationForDelivery notification)
+        public async Task<bool> SendToTopicAsync(Topic topic, NotificationForDelivery notification)
         {
             if (topic is null == true) throw new ArgumentNullException(nameof(topic));
             if (notification is null == true) throw new ArgumentNullException(nameof(notification));
@@ -71,13 +71,21 @@ namespace PushNotifications.Delivery.Pushy
             var model = new PushySendToTopicModel(topic, pushySendNotificationModel, notification.NotificationData, notification.ExpiresAt, notification.ContentAvailable);
 
             HttpRequestMessage requestMessage = CreateJsonPostRequest(model, resource);
-            var result = await ExecuteRequestAsync<PushyResponseModel>(requestMessage).ConfigureAwait(false);
+            var result = await ExecuteRequestAsync(requestMessage).ConfigureAwait(false);
 
             if (result.Response.IsSuccessStatusCode == false)
             {
+                if (result.Data.Error.Code.Equals("NO_RECIPIENTS"))
+                {
+                    if (log.IsEnabled(LogLevel.Information))
+                        log.LogInformation($"No recipients found for topic '{topic}' in Pushy.");
+
+                    return true;
+                }
+
                 if (log.IsEnabled(LogLevel.Error))
                 {
-                    string dataErrors = result.Data.Error;
+                    string dataErrors = result.Data.Error.Error;
                     log.LogError($"{result.Response.StatusCode} Failed to sent notification '{notification.NotificationPayload.Body}'{Environment.NewLine}{dataErrors}{Environment.NewLine}{result.Response.ReasonPhrase}");
                 }
 
@@ -90,7 +98,7 @@ namespace PushNotifications.Delivery.Pushy
             return true;
         }
 
-        public async Task<bool> SubscribeToTopic(SubscriptionToken token, Topic topic)
+        public async Task<bool> SubscribeToTopicAsync(SubscriptionToken token, Topic topic)
         {
             if (topic is null) throw new ArgumentNullException(nameof(topic));
             if (token is null) throw new ArgumentNullException(nameof(token));
@@ -103,13 +111,13 @@ namespace PushNotifications.Delivery.Pushy
             var model = new PushyTopicSubscriptionModel(token.Token, topic);
 
             HttpRequestMessage requestMessage = CreateJsonPostRequest(model, resource);
-            var result = await ExecuteRequestAsync<PushyResponseModel>(requestMessage).ConfigureAwait(false);
+            var result = await ExecuteRequestAsync(requestMessage).ConfigureAwait(false);
 
             if (result.Response.IsSuccessStatusCode == false)
             {
                 if (log.IsEnabled(LogLevel.Error))
                 {
-                    string dataErrors = result.Data.Error;
+                    string dataErrors = result.Data.Error.Error;
                     log.LogError($"{result.Response.StatusCode} - Failed to subscribe to topic. Token: '{token.Token}', Topic: {topic}'{Environment.NewLine}{dataErrors}{Environment.NewLine}{result.Response.ReasonPhrase}");
                 }
 
@@ -122,7 +130,7 @@ namespace PushNotifications.Delivery.Pushy
             return true;
         }
 
-        public async Task<bool> UnsubscribeFromTopic(SubscriptionToken token, Topic topic)
+        public async Task<bool> UnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic)
         {
             if (topic is null) throw new ArgumentNullException(nameof(topic));
             if (token is null) throw new ArgumentNullException(nameof(token));
@@ -135,13 +143,13 @@ namespace PushNotifications.Delivery.Pushy
             var model = new PushyTopicSubscriptionModel(token.Token, topic);
 
             HttpRequestMessage requestMessage = CreateJsonPostRequest(model, resource);
-            var result = await ExecuteRequestAsync<PushyResponseModel>(requestMessage).ConfigureAwait(false);
+            var result = await ExecuteRequestAsync(requestMessage).ConfigureAwait(false);
 
             if (result.Response.IsSuccessStatusCode == false)
             {
                 if (log.IsEnabled(LogLevel.Error))
                 {
-                    string dataErrors = result.Data.Error;
+                    string dataErrors = result.Data.Error.Error;
                     log.LogError($"{result.Response.StatusCode} - Failed to unsubscribe from topic. Token: '{token.Token}', Topic: {topic}'{Environment.NewLine}{dataErrors}{Environment.NewLine}{result.Response.ReasonPhrase}");
                 }
 
