@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using PushNotifications.PushNotifications;
 using PushNotifications.Subscriptions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,7 +23,7 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
         {
             logger.LogInformation("Start sending push notifications...");
 
-            SendTokensResult result = new SendTokensResult(Enumerable.Empty<SubscriptionToken>());
+            SendTokensResult result = SendTokensResult.Success;
 
             var tokensGroupedByPlatform = tokens.GroupBy(key => key.SubscriptionType);
 
