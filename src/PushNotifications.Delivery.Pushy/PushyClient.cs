@@ -75,7 +75,7 @@ namespace PushNotifications.Delivery.Pushy
 
             if (result.Response.IsSuccessStatusCode == false)
             {
-                if (result.Data.Error.Code.Equals("NO_RECIPIENTS"))
+                if (result.Data.Error.Code.Equals("NO_RECIPIENTS")) // https://pushy.me/docs/api/send-notifications
                 {
                     if (log.IsEnabled(LogLevel.Information))
                         log.LogInformation($"No recipients found for topic '{topic}' in Pushy.");
