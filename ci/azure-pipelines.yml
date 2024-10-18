@@ -1,31 +1,79 @@
 trigger:
     branches:
       include:
-      - '*'
+      - master
     paths:
       exclude:
       - CHANGELOG.md
+pr: none
+stages:
+ - stage: Build
+   displayName: Build
+   jobs:
+    - job: Build
+      displayName: Build Job
+      pool:
+        vmImage: 'ubuntu-latest'
 
-pool:
-  vmImage: 'ubuntu-latest'
+      variables:
+        buildConfiguration: 'Release'
 
-variables:
-  buildConfiguration: 'Release'
+      steps:
+        - checkout: self
+          clean: true
+          persistCredentials: true
 
-steps:
-  - checkout: self
-    clean: true
-    persistCredentials: true
 
-  - task: Bash@3
-    name: Release
-    env:
-      STAGING_PATH: $(Build.ArtifactStagingDirectory)
-      LOCAL_PATH: $(Build.Repository.LocalPath)
-      DOCKER_HUB_USER: $(DOCKER_HUB_USER)
-      DOCKER_HUB_PASSWORD: $(DOCKER_HUB_PASSWORD)
-    inputs:
-      targetType: 'inline'
-      script: |
-        time curl -L https://github.com/Elders/blob/releases/download/SemRel-01/node_modules.tar.gz | tar mx -I pigz
-        time npx semantic-release --no-ci
+        - task: Bash@3
+          name: Release
+          env:
+            STAGING_PATH: $(Build.ArtifactStagingDirectory)
+            LOCAL_PATH: $(Build.Repository.LocalPath)
+            DOCKER_HUB_PASSWORD: $(DOCKER_HUB_PASSWORD)
+          inputs:
+            targetType: 'inline'
+            script: |
+              time curl -L https://github.com/Elders/blob/releases/download/SemRel-01/node_modules.tar.gz | tar -xzv
+              RELEASE_OUTPUT=$(npx semantic-release --no-ci)
+              echo "$RELEASE_OUTPUT"
+              if [[ "$RELEASE_OUTPUT" == *"Published"* ]]; then
+                echo "##vso[task.setvariable variable=Released;isOutput=true]true"
+              else
+                echo  "##vso[task.setvariable variable=Released;isOutput=true]false"
+              fi  
+ - stage: Deploy
+   displayName: Deploy Stage
+   condition: and(succeeded(), eq(dependencies.Build.outputs['Build.Release.Released'], 'true'))
+   jobs:
+    - job: Deploy
+      displayName: Deploy Job
+      pool:
+        vmImage: 'ubuntu-22.04'
+      steps:
+     
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          buildType: 'specific'
+          project: 'UniCom'
+          definition: 'Elders.devops'
+          buildVersionToDownload: 'latest'
+          artifactName: 'edo'
+          downloadPath: '$(System.DefaultWorkingDirectory)/_edo'
+
+
+      - task: Kubernetes@1
+        displayName: 'kubectl config read'
+        name: _CONF
+        inputs:
+          kubernetesServiceEndpoint: 'integration-cluster'
+          namespace: unicom
+          command: config
+          arguments: 'view --raw -v6'
+
+
+      - bash: |
+          set -e
+          echo "The last version tag is $BUILD_BUILDNUMBER"
+          ### parameters are :
+          ### conteiner_registry  namespace  deployment  container1 image1 container2 image2 ...
+          bash $(System.DefaultWorkingDirectory)/_edo/edo/azure-devops/release-pipeline-set-image.v1.sh unicominternal.azurecr.io unicom pushnotifications pushnotifications pushnotifications.svc pushnotifications-api pushnotifications.api
