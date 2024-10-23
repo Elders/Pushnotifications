@@ -7,7 +7,8 @@
                 "Elders": "Information",
                 "Microsoft": "Information",
                 "Microsoft.AspNetCore": "Warning",
-                "System": "Information"
+                "System": "Information",
+                "PushNotifications.Ports": "Debug"
             }
         },
         "WriteTo": [
