@@ -16,7 +16,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
         [Required]
         public string Topic { get; set; }
 
-        public string Application { get; set; }
+        public string Application { get; set; } = "vapt"; // This is temp solution, because the PushNotifications .NET client don't support APPLICATION as input parameter.
 
         public SubscribeToTopic AsSubscribeToTopicCommand()
         {

@@ -53,8 +53,8 @@ namespace PushNotifications.Service
                     services.AddSingleton<IPushNotificationDelivery, PushyDelivery>(); // TODO: This is using HTTP client, so it shouldn't be singleton !?
                     services.AddSingleton<MultiPlatformDelivery, MultiPlatformDelivery>();
 
-                    services.AddTransient<ITopicSubscriptionManager, FireBaseTopicSubscriptionManager>();
-                    services.AddTransient<ITopicSubscriptionManager, PushyTopicSubscriptionManager>();
+                    services.AddSingleton<ITopicSubscriptionManager, FireBaseTopicSubscriptionManager>();
+                    services.AddSingleton<ITopicSubscriptionManager, PushyTopicSubscriptionManager>();
                 })
                 .UseSerilog(SerilogConfiguration.Configure);
     }
