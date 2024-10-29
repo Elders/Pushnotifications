@@ -6,16 +6,19 @@ using PushNotifications.Delivery.FireBase;
 using PushNotifications.Subscriptions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 public sealed class FireBaseTopicSubscriptionManager : ITopicSubscriptionManager
 {
     private readonly FirebaseAppOptionsContainer firebaseAppOptionsContainer;
     private readonly ICronusContextAccessor cronusContextAccessor;
+    private readonly ILogger<FireBaseTopicSubscriptionManager> logger;
 
-    public FireBaseTopicSubscriptionManager(FirebaseAppOptionsContainer firebaseAppOptionsContainer, ICronusContextAccessor cronusContextAccessor)
+    public FireBaseTopicSubscriptionManager(FirebaseAppOptionsContainer firebaseAppOptionsContainer, ICronusContextAccessor cronusContextAccessor, ILogger<FireBaseTopicSubscriptionManager> logger)
     {
         this.firebaseAppOptionsContainer = firebaseAppOptionsContainer;
         this.cronusContextAccessor = cronusContextAccessor;
+        this.logger = logger;
     }
 
     public SubscriptionType Platform => SubscriptionType.FireBase;
@@ -30,6 +33,9 @@ public sealed class FireBaseTopicSubscriptionManager : ITopicSubscriptionManager
         // We send a list of tokens with single token, so we expect a success count of 1
         if (subscribeResult.SuccessCount != 1)
         {
+            string error = string.Join(", ", subscribeResult.Errors);
+            logger.LogError("There was an error while subscribing token for topic. ERROR: {error}", error);
+
             return false;
         }
 
@@ -46,6 +52,9 @@ public sealed class FireBaseTopicSubscriptionManager : ITopicSubscriptionManager
         // We send a list of tokens with single token, so we expect a success count of 1
         if (unsubscribeResult.SuccessCount != 1)
         {
+            string error = string.Join(", ", unsubscribeResult.Errors);
+            logger.LogError("There was an error while subscribing token for topic. ERROR: {error}", error);
+
             return false;
         }
 
