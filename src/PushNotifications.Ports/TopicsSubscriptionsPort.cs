@@ -77,7 +77,6 @@ namespace PushNotifications.Ports
             }
 
             if (isSuccessful == false)
-
                 _logger.LogError($"Failed to unsubscribe from topics for subscriber {@event.SubscriberId},{@event.SubscriptionToken}");
         }
 
