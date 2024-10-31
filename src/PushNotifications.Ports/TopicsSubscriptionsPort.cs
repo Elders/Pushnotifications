@@ -62,7 +62,7 @@ namespace PushNotifications.Ports
 
             if (projectionReponse.IsSuccess == false)
             {
-                _logger.Debug(() => $"No topics were found for subscriber {@event.SubscriberId}");
+                _logger.Debug(() => $"No topics were found for subscriber {@event.SubscriberId},{@event.SubscriptionToken}");
                 return;
             }
 
@@ -77,7 +77,8 @@ namespace PushNotifications.Ports
             }
 
             if (isSuccessful == false)
-                _logger.LogError($"Failed to unsubscribe from topics for subscriber {@event.SubscriberId}");
+
+                _logger.LogError($"Failed to unsubscribe from topics for subscriber {@event.SubscriberId},{@event.SubscriptionToken}");
         }
 
         public async Task HandleAsync(SubscribedToTopic @event)
