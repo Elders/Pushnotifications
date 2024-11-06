@@ -48,6 +48,11 @@ namespace PushNotifications.Ports
 
                         foreach (var token in projectionResult.Data.State.Tokens)
                         {
+                            if (toketToSubscriber.ContainsKey(token))
+                            {
+                                logger.LogWarning("There is a message with this token already added. Token: {token}", token);
+                                continue;
+                            }
                             toketToSubscriber.Add(token, subscriberId);
                         }
                     }
