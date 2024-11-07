@@ -48,6 +48,11 @@ namespace PushNotifications.Ports
 
                         foreach (var token in projectionResult.Data.State.Tokens)
                         {
+                            if (toketToSubscriber.TryGetValue(token, out DeviceSubscriberId existingSubscriberId))
+                            {
+                                logger.LogWarning("The token is already added. Token: {token} NewSubsciberId: {subscriberId} AlredyAddedSubscriberId: {existingSubscriberId}", token, subscriberId, existingSubscriberId);
+                                continue;
+                            }
                             toketToSubscriber.Add(token, subscriberId);
                         }
                     }
