@@ -50,7 +50,8 @@ namespace PushNotifications.Ports
                         {
                             if (toketToSubscriber.ContainsKey(token))
                             {
-                                logger.LogWarning("There is a message with this token already added. Token: {token}", token);
+                                var alredyAddedSubscriber = toketToSubscriber[token];
+                                logger.LogError("There is a message with this token already added. Token: {token} NewSubsciberId: {subscriberId} AlredyAddedSubscriberId: {alredyAddedSubscriber}", token, subscriberId, alredyAddedSubscriber);
                                 continue;
                             }
                             toketToSubscriber.Add(token, subscriberId);
