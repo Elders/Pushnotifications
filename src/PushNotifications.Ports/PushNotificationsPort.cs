@@ -48,10 +48,9 @@ namespace PushNotifications.Ports
 
                         foreach (var token in projectionResult.Data.State.Tokens)
                         {
-                            if (toketToSubscriber.ContainsKey(token))
+                            if (toketToSubscriber.TryGetValue(token, out DeviceSubscriberId existingSubscriberId))
                             {
-                                var alredyAddedSubscriber = toketToSubscriber[token];
-                                logger.LogError("There is a message with this token already added. Token: {token} NewSubsciberId: {subscriberId} AlredyAddedSubscriberId: {alredyAddedSubscriber}", token, subscriberId, alredyAddedSubscriber);
+                                logger.LogWarning("The token is already added. Token: {token} NewSubsciberId: {subscriberId} AlredyAddedSubscriberId: {existingSubscriberId}", token, subscriberId, existingSubscriberId);
                                 continue;
                             }
                             toketToSubscriber.Add(token, subscriberId);
