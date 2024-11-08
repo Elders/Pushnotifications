@@ -37,7 +37,7 @@ namespace PushNotifications.Ports
             foreach (var recipient in signal.Recipients)
             {
                 AggregateRootId urn = AggregateRootId.Parse(recipient.UberDecode());
-                var subscriberId = new DeviceSubscriberId(urn.Tenant, urn.Id, signal.Application);
+                DeviceSubscriberId subscriberId = new DeviceSubscriberId(urn.Tenant, urn.Id, signal.Application);
 
                 using (logger.BeginScope(s => s.AddScope("pn_subscriber", subscriberId)))
                 {
@@ -49,12 +49,6 @@ namespace PushNotifications.Ports
 
                         foreach (var token in projectionResult.Data.State.Tokens)
                         {
-                            var existingSubscriberId = tokenToSubscriberList.FirstOrDefault(x => x.Key == token).Value;
-                            if (existingSubscriberId != null)
-                            {
-                                logger.LogWarning("The token is already added. Token: {token} NewSubscriberId: {subscriberId} AlreadyAddedSubscriberId: {existingSubscriberId}", token, subscriberId, existingSubscriberId);
-                                continue;
-                            }
                             tokenToSubscriberList.Add(new KeyValuePair<SubscriptionToken, DeviceSubscriberId>(token, subscriberId));
                         }
                     }
