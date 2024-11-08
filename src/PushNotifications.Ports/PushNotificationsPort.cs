@@ -49,9 +49,9 @@ namespace PushNotifications.Ports
 
                         foreach (var token in projectionResult.Data.State.Tokens)
                         {
-                            if (tokenToSubscriberList.Any(pair => pair.Key.Equals(token)))
+                            var existingSubscriberId = tokenToSubscriberList.FirstOrDefault(x => x.Key == token).Value;
+                            if (existingSubscriberId != null)
                             {
-                                var existingSubscriberId = tokenToSubscriberList.First(x => x.Key == token).Value;
                                 logger.LogWarning("The token is already added. Token: {token} NewSubscriberId: {subscriberId} AlreadyAddedSubscriberId: {existingSubscriberId}", token, subscriberId, existingSubscriberId);
                                 continue;
                             }
@@ -80,7 +80,7 @@ namespace PushNotifications.Ports
 
                 foreach (SubscriptionToken failedToken in pushResult.FailedTokens)
                 {
-                    var tokenPair = tokenToSubscriberList.Where(pair => pair.Key.Equals(failedToken)).ToList();
+                    var tokenPair = tokenToSubscriberList.Where(pair => IsSubscriptionTokensEquals(pair.Key, failedToken));
                     foreach (var token in tokenPair)
                     {
                         {
@@ -94,6 +94,15 @@ namespace PushNotifications.Ports
                     }
                 }
             }
+        }
+
+        public bool IsSubscriptionTokensEquals(SubscriptionToken token1, SubscriptionToken token2)
+        {
+            if ((token1.Token.Equals(token2.Token, StringComparison.Ordinal)) && string.Equals(token1.SubscriptionType, token2.SubscriptionType, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task HandleAsync(TopicNotificationMessageSignal signal)
