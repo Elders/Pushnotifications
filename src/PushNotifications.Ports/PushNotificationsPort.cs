@@ -74,7 +74,7 @@ namespace PushNotifications.Ports
 
                 foreach (SubscriptionToken failedToken in pushResult.FailedTokens)
                 {
-                    var tokenPair = tokenToSubscriberList.Where(pair => IsSubscriptionTokensEquals(pair.Key, failedToken));
+                    IEnumerable<KeyValuePair<SubscriptionToken, DeviceSubscriberId>> tokenPair = tokenToSubscriberList.Where(pair => IsSubscriptionTokensEquals(pair.Key, failedToken));
                     foreach (var token in tokenPair)
                     {
                         {
@@ -92,7 +92,7 @@ namespace PushNotifications.Ports
 
         public bool IsSubscriptionTokensEquals(SubscriptionToken token1, SubscriptionToken token2)
         {
-            if ((token1.Token.Equals(token2.Token, StringComparison.Ordinal)) && string.Equals(token1.SubscriptionType, token2.SubscriptionType, StringComparison.OrdinalIgnoreCase))
+            if ((token1.Token.Equals(token2.Token, StringComparison.Ordinal)) && (token1.SubscriptionType == token2.SubscriptionType))
             {
                 return true;
             }
