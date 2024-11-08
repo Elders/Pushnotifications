@@ -13,10 +13,9 @@ namespace PushNotifications.Service
 
         PushyOptions options;
 
-        public PushyApiKeyInjectHandler(IOptionsMonitor<PushyOptions> monitor)
+        public PushyApiKeyInjectHandler(IOptions<PushyOptions> monitor)
         {
-            options = monitor.CurrentValue;
-            monitor.OnChange(OptionsChanged);
+            options = monitor.Value;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -27,11 +26,6 @@ namespace PushNotifications.Service
             }
 
             return await base.SendAsync(request, cancellationToken);
-        }
-
-        private void OptionsChanged(PushyOptions newOptions)
-        {
-            options = newOptions;
         }
     }
 }
