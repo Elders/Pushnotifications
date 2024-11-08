@@ -32,12 +32,13 @@ namespace PushNotifications.Ports
         public async Task HandleAsync(NotificationMessageSignal signal)
         {
             List<SubscriptionToken> tokens = new List<SubscriptionToken>();
-            var toketToSubscriber = new Dictionary<SubscriptionToken, DeviceSubscriberId>();
+            var tokenToSubscriberList = new List<KeyValuePair<SubscriptionToken, DeviceSubscriberId>>();
 
             foreach (var recipient in signal.Recipients)
             {
                 AggregateRootId urn = AggregateRootId.Parse(recipient.UberDecode());
                 var subscriberId = new DeviceSubscriberId(urn.Tenant, urn.Id, signal.Application);
+
                 using (logger.BeginScope(s => s.AddScope("pn_subscriber", subscriberId)))
                 {
                     var projectionResult = await projections.GetAsync<SubscriberTokensProjection>(subscriberId);
@@ -48,12 +49,13 @@ namespace PushNotifications.Ports
 
                         foreach (var token in projectionResult.Data.State.Tokens)
                         {
-                            if (toketToSubscriber.TryGetValue(token, out DeviceSubscriberId existingSubscriberId))
+                            if (tokenToSubscriberList.Any(pair => pair.Key.Equals(token)))
                             {
-                                logger.LogWarning("The token is already added. Token: {token} NewSubsciberId: {subscriberId} AlredyAddedSubscriberId: {existingSubscriberId}", token, subscriberId, existingSubscriberId);
+                                var existingSubscriberId = tokenToSubscriberList.First(x => x.Key == token).Value;
+                                logger.LogWarning("The token is already added. Token: {token} NewSubscriberId: {subscriberId} AlreadyAddedSubscriberId: {existingSubscriberId}", token, subscriberId, existingSubscriberId);
                                 continue;
                             }
-                            toketToSubscriber.Add(token, subscriberId);
+                            tokenToSubscriberList.Add(new KeyValuePair<SubscriptionToken, DeviceSubscriberId>(token, subscriberId));
                         }
                     }
                     else if (projectionResult.HasError)
@@ -78,13 +80,17 @@ namespace PushNotifications.Ports
 
                 foreach (SubscriptionToken failedToken in pushResult.FailedTokens)
                 {
-                    if (toketToSubscriber.TryGetValue(failedToken, out DeviceSubscriberId subscriberId))
+                    var tokenPair = tokenToSubscriberList.Where(pair => pair.Key.Equals(failedToken)).ToList();
+                    foreach (var token in tokenPair)
                     {
-                        var deviceSubscriptionId = DeviceSubscriptionId.New(signal.Tenant, failedToken.Token);
-                        UnSubscribe unSubscribe = new UnSubscribe(deviceSubscriptionId, subscriberId, failedToken);
-                        publisher.Publish(unSubscribe);
+                        {
+                            var subscriberId = token.Value;
+                            var deviceSubscriptionId = DeviceSubscriptionId.New(signal.Tenant, failedToken.Token);
+                            UnSubscribe unSubscribe = new UnSubscribe(deviceSubscriptionId, subscriberId, failedToken);
+                            publisher.Publish(unSubscribe);
 
-                        logger.Debug(() => $"Unsubscribed the token {failedToken.Token} from the subscriber {subscriberId}");
+                            logger.Debug(() => $"Unsubscribed the token {failedToken.Token} from the subscriber {subscriberId}");
+                        }
                     }
                 }
             }
