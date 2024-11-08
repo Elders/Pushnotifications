@@ -40,7 +40,7 @@ namespace PushNotifications.Service
                     services.AddSingleton<LoggingHandler>();
                     services.AddOption<FireBaseOptions, FireBaseOptionsProvider>();
 
-                    services.AddSingleton<PushyApiKeyInjectHandler>();
+                    services.AddTransient<PushyApiKeyInjectHandler>();
                     services.AddHttpClient<PushyClient>(client =>
                     {
                         client.BaseAddress = new Uri("https://api.pushy.me/");
