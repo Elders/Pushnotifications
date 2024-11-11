@@ -77,14 +77,12 @@ namespace PushNotifications.Ports
                     IEnumerable<KeyValuePair<SubscriptionToken, DeviceSubscriberId>> tokenPair = tokenToSubscriberList.Where(pair => IsSubscriptionTokensEquals(pair.Key, failedToken));
                     foreach (var token in tokenPair)
                     {
-                        {
-                            var subscriberId = token.Value;
-                            var deviceSubscriptionId = DeviceSubscriptionId.New(signal.Tenant, failedToken.Token);
-                            UnSubscribe unSubscribe = new UnSubscribe(deviceSubscriptionId, subscriberId, failedToken);
-                            publisher.Publish(unSubscribe);
+                        var subscriberId = token.Value;
+                        var deviceSubscriptionId = DeviceSubscriptionId.New(signal.Tenant, failedToken.Token);
+                        UnSubscribe unSubscribe = new UnSubscribe(deviceSubscriptionId, subscriberId, failedToken);
+                        publisher.Publish(unSubscribe);
 
-                            logger.Debug(() => $"Unsubscribed the token {failedToken.Token} from the subscriber {subscriberId}");
-                        }
+                        logger.Debug(() => $"Unsubscribed the token {failedToken.Token} from the subscriber {subscriberId}");
                     }
                 }
             }
