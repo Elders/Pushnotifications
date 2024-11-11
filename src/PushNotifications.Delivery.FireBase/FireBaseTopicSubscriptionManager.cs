@@ -62,6 +62,44 @@ public sealed class FireBaseTopicSubscriptionManager : ITopicSubscriptionManager
         return true;
     }
 
+    public async Task<object> TrySubscribeToTopicAsync(SubscriptionToken token, Topic topic)
+    {
+        FirebaseMessaging client = GetMessagingClient("vapt"); // TODO: get application from topic or token
+
+        TopicManagementResponse subscribeResult = await client.SubscribeToTopicAsync(new List<string> { token.Token }, topic).ConfigureAwait(false);
+
+        // TODO: Add better error handling
+        // We send a list of tokens with single token, so we expect a success count of 1
+        if (subscribeResult.SuccessCount != 1)
+        {
+            string error = string.Join(", ", subscribeResult.Errors.Select(x => x.Reason));
+            logger.LogError("There was an error while subscribing token for topic. ERROR: {error}", error);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public async Task<object> TryUnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic)
+    {
+        FirebaseMessaging client = GetMessagingClient("vapt"); // TODO: get application from topic or token
+
+        TopicManagementResponse unsubscribeResult = await client.UnsubscribeFromTopicAsync(new List<string> { token.Token }, topic).ConfigureAwait(false);
+
+        // TODO: Add better error handling
+        // We send a list of tokens with single token, so we expect a success count of 1
+        if (unsubscribeResult.SuccessCount != 1)
+        {
+            string error = string.Join(", ", unsubscribeResult.Errors.Select(x => x.Reason));
+            logger.LogError("There was an error while unsubscribing token for topic. ERROR: {error}", error);
+
+            return error;
+        }
+
+        return true;
+    }
+
     private FirebaseMessaging GetMessagingClient(string application)
     {
         FirebaseApp app = FirebaseApp.GetInstance(application);

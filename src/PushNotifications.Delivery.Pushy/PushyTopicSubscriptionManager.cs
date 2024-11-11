@@ -21,6 +21,16 @@ public sealed class PushyTopicSubscriptionManager : ITopicSubscriptionManager
         return subscribeResult;
     }
 
+    public Task<object> TrySubscribeToTopicAsync(SubscriptionToken token, Topic topic)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public Task<object> TryUnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public async Task<bool> UnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic)
     {
         bool unsubscribeResult = await pushyClient.UnsubscribeFromTopicAsync(token, topic).ConfigureAwait(false);

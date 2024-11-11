@@ -10,5 +10,9 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
         Task<bool> SubscribeToTopicAsync(SubscriptionToken token, Topic topic);
 
         Task<bool> UnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic);
+
+        Task<object> TryUnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic);
+
+        Task<object> TrySubscribeToTopicAsync(SubscriptionToken token, Topic topic);
     }
 }
