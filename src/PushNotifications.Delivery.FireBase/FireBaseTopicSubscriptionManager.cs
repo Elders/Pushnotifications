@@ -11,6 +11,7 @@ using System.Linq;
 using PushNotifications.Delivery;
 
 namespace PushNotifications.Ports;
+
 public sealed class FireBaseTopicSubscriptionManager : ITopicSubscriptionManager
 {
     private readonly FirebaseAppOptionsContainer firebaseAppOptionsContainer;
