@@ -1,4 +1,5 @@
-﻿using PushNotifications.Subscriptions;
+﻿using PushNotifications.Delivery;
+using PushNotifications.Subscriptions;
 using System.Threading.Tasks;
 
 namespace PushNotifications.Contracts.PushNotifications.Delivery
@@ -7,8 +8,8 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
     {
         public SubscriptionType Platform { get; }
 
-        Task<bool> SubscribeToTopicAsync(SubscriptionToken token, Topic topic);
+        Task<SubscribeUnsubscribeResult> SubscribeToTopicAsync(SubscriptionToken token, Topic topic);
 
-        Task<bool> UnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic);
+        Task<SubscribeUnsubscribeResult> UnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic);
     }
 }

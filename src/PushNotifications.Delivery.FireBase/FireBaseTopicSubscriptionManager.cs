@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using PushNotifications.Delivery;
+
+namespace PushNotifications.Ports;
 
 public sealed class FireBaseTopicSubscriptionManager : ITopicSubscriptionManager
 {
@@ -24,7 +27,7 @@ public sealed class FireBaseTopicSubscriptionManager : ITopicSubscriptionManager
 
     public SubscriptionType Platform => SubscriptionType.FireBase;
 
-    public async Task<bool> SubscribeToTopicAsync(SubscriptionToken token, Topic topic)
+    public async Task<SubscribeUnsubscribeResult> SubscribeToTopicAsync(SubscriptionToken token, Topic topic)
     {
         FirebaseMessaging client = GetMessagingClient("vapt"); // TODO: get application from topic or token
 
@@ -37,13 +40,13 @@ public sealed class FireBaseTopicSubscriptionManager : ITopicSubscriptionManager
             string error = string.Join(", ", subscribeResult.Errors.Select(x => x.Reason));
             logger.LogError("There was an error while subscribing token for topic. ERROR: {error}", error);
 
-            return false;
+            return SubscribeUnsubscribeResult.Unsuccessful(subscribeResult.Errors.Select(x => x.Reason));
         }
 
-        return true;
+        return SubscribeUnsubscribeResult.Successful();
     }
 
-    public async Task<bool> UnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic)
+    public async Task<SubscribeUnsubscribeResult> UnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic)
     {
         FirebaseMessaging client = GetMessagingClient("vapt"); // TODO: get application from topic or token
 
@@ -56,10 +59,10 @@ public sealed class FireBaseTopicSubscriptionManager : ITopicSubscriptionManager
             string error = string.Join(", ", unsubscribeResult.Errors.Select(x => x.Reason));
             logger.LogError("There was an error while unsubscribing token for topic. ERROR: {error}", error);
 
-            return false;
+            return SubscribeUnsubscribeResult.Unsuccessful(unsubscribeResult.Errors.Select(x => x.Reason));
         }
 
-        return true;
+        return SubscribeUnsubscribeResult.Successful();
     }
 
     private FirebaseMessaging GetMessagingClient(string application)
