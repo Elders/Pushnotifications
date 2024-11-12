@@ -36,7 +36,6 @@ namespace PushNotifications.Ports
         {
             SubscriptionType subscriptionType = @event.SubscriptionToken.SubscriptionType;
             ReadResult<TopicsPerSubscriberProjection> projectionReponse = await _projections.GetAsync<TopicsPerSubscriberProjection>(@event.SubscriberId);
-
             if (projectionReponse.IsSuccess == false)
             {
                 _logger.Debug(() => $"No topics were found for subscriber {@event.SubscriberId}");
@@ -49,10 +48,9 @@ namespace PushNotifications.Ports
             foreach (Topic topic in projectionReponse.Data.State.Topics)
             {
                 var result = await subscriptionManager.SubscribeToTopicAsync(@event.SubscriptionToken, topic);
-
                 if (result.IsSuccess == false)
                 {
-                    RemoveInvalidSubscribingToken(result.InvalidTokens, @event.Id, @event.SubscriberId, @event.SubscriptionToken, topic);
+                    RemoveInvalidSubscribingToken(result.HasInvalidTokens, @event.Id, @event.SubscriberId, @event.SubscriptionToken, topic);
                 }
             }
         }
@@ -61,7 +59,6 @@ namespace PushNotifications.Ports
         {
             SubscriptionType subscriptionType = @event.SubscriptionToken.SubscriptionType;
             ReadResult<TopicsPerSubscriberProjection> projectionReponse = await _projections.GetAsync<TopicsPerSubscriberProjection>(@event.SubscriberId);
-
             if (projectionReponse.IsSuccess == false)
             {
                 _logger.Debug(() => $"No topics were found for subscriber {@event.SubscriberId},{@event.SubscriptionToken}");
@@ -74,10 +71,9 @@ namespace PushNotifications.Ports
             foreach (Topic topic in projectionReponse.Data.State.Topics)
             {
                 var result = await subscriptionManager.UnsubscribeFromTopicAsync(@event.SubscriptionToken, topic);
-
                 if (result.IsSuccess == false)
                 {
-                    RemoveInvalidUnSubscribingToken(result.InvalidTokens, @event.Id, @event.SubscriberId, @event.SubscriptionToken, topic);
+                    RemoveInvalidUnSubscribingToken(result.HasInvalidTokens, @event.Id, @event.SubscriberId, @event.SubscriptionToken, topic);
                 }
             }
         }
@@ -95,11 +91,10 @@ namespace PushNotifications.Ports
             {
                 ITopicSubscriptionManager subscriptionManager = deliveries[token.SubscriptionType];
                 var result = await subscriptionManager.SubscribeToTopicAsync(token, @event.Id.Topic);
-
                 if (result.IsSuccess == false)
                 {
                     var deviceSubscriptionId = DeviceSubscriptionId.New(@event.Id.NID, token.Token);
-                    RemoveInvalidSubscribingToken(result.InvalidTokens, deviceSubscriptionId, @event.Id.SubscriberId, token, @event.Id.Topic);
+                    RemoveInvalidSubscribingToken(result.HasInvalidTokens, deviceSubscriptionId, @event.Id.SubscriberId, token, @event.Id.Topic);
                 }
             }
         }
@@ -117,23 +112,21 @@ namespace PushNotifications.Ports
             {
                 ITopicSubscriptionManager subscriptionManager = deliveries[token.SubscriptionType];
                 var result = await subscriptionManager.UnsubscribeFromTopicAsync(token, @event.Id.Topic);
-
                 if (result.IsSuccess == false)
                 {
                     var deviceSubscriptionId = DeviceSubscriptionId.New(@event.Id.NID, token.Token);
-                    RemoveInvalidUnSubscribingToken(result.InvalidTokens, deviceSubscriptionId, @event.Id.SubscriberId, token, @event.Id.Topic);
+                    RemoveInvalidUnSubscribingToken(result.HasInvalidTokens, deviceSubscriptionId, @event.Id.SubscriberId, token, @event.Id.Topic);
                 }
             }
         }
 
-        private void RemoveInvalidSubscribingToken(bool invalidTokens, DeviceSubscriptionId id, DeviceSubscriberId subscriberId, SubscriptionToken subscriptionToken, Topic topic)
+        private void RemoveInvalidSubscribingToken(bool hasInvalidTokens, DeviceSubscriptionId id, DeviceSubscriberId subscriberId, SubscriptionToken subscriptionToken, Topic topic)
         {
-            if (invalidTokens == true)
+            if (hasInvalidTokens)
             {
                 _logger.LogInformation($"The token is invalid, the user will not be subscribed for this topic and the token will be removed. Subscriber: {subscriberId}, Topic: {topic}");
 
-                var deviceSubscriptionId = DeviceSubscriptionId.New(id.NID, subscriptionToken.Token);
-                UnSubscribe unSubscribe = new UnSubscribe(deviceSubscriptionId, subscriberId, subscriptionToken);
+                UnSubscribe unSubscribe = new UnSubscribe(id, subscriberId, subscriptionToken);
                 _publisher.Publish(unSubscribe);
             }
             else
@@ -141,14 +134,13 @@ namespace PushNotifications.Ports
                 _logger.LogError($"Failed to subscribe for topic, look for the error for more info. Topic: {topic}, Subscriber: {subscriberId}");
             }
         }
-        private void RemoveInvalidUnSubscribingToken(bool invalidTokens, DeviceSubscriptionId id, DeviceSubscriberId subscriberId, SubscriptionToken subscriptionToken, Topic topic)
+        private void RemoveInvalidUnSubscribingToken(bool hasInvalidTokens, DeviceSubscriptionId id, DeviceSubscriberId subscriberId, SubscriptionToken subscriptionToken, Topic topic)
         {
-            if (invalidTokens == true)
+            if (hasInvalidTokens)
             {
                 _logger.LogInformation($"The token is invalid and will be removed. Subscriber: {subscriberId}, Topic: {topic}");
 
-                var deviceSubscriptionId = DeviceSubscriptionId.New(id.NID, subscriptionToken.Token);
-                UnSubscribe unSubscribe = new UnSubscribe(deviceSubscriptionId, subscriberId, subscriptionToken);
+                UnSubscribe unSubscribe = new UnSubscribe(id, subscriberId, subscriptionToken);
                 _publisher.Publish(unSubscribe);
             }
             else

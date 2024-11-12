@@ -3,16 +3,21 @@ using System.Linq;
 
 namespace PushNotifications.Delivery
 {
-    public class SubscribeUnsubscribeHandler
+    public class SubscribeUnsubscribeResultModel
     {
-        SubscribeUnsubscribeHandler()
+        SubscribeUnsubscribeResultModel()
         {
             Errors = Enumerable.Empty<string>();
         }
 
-        SubscribeUnsubscribeHandler(IEnumerable<string> errors) : this()
+        SubscribeUnsubscribeResultModel(IEnumerable<string> errors) : this()
         {
             Errors = errors;
+        }
+
+        SubscribeUnsubscribeResultModel(string error)
+        {
+            Errors = new List<string> { error };
         }
 
         public IEnumerable<string> Errors { get; private set; }
@@ -22,7 +27,7 @@ namespace PushNotifications.Delivery
             get { return Errors.Any() == false; }
         }
 
-        public bool InvalidTokens
+        public bool HasInvalidTokens
         {
             get
             {
@@ -30,8 +35,10 @@ namespace PushNotifications.Delivery
             }
         }
 
-        public static SubscribeUnsubscribeHandler Successful() => new SubscribeUnsubscribeHandler();
+        public static SubscribeUnsubscribeResultModel Successful() => new SubscribeUnsubscribeResultModel();
 
-        public static SubscribeUnsubscribeHandler Unsuccessful(IEnumerable<string> errors) => new SubscribeUnsubscribeHandler(errors);
+        public static SubscribeUnsubscribeResultModel Unsuccessful(IEnumerable<string> errors) => new SubscribeUnsubscribeResultModel(errors);
+        public static SubscribeUnsubscribeResultModel Unsuccessful(string error) => new SubscribeUnsubscribeResultModel(error);
+
     }
 }

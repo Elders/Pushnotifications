@@ -8,8 +8,8 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
     {
         public SubscriptionType Platform { get; }
 
-        Task<SubscribeUnsubscribeHandler> SubscribeToTopicAsync(SubscriptionToken token, Topic topic);
+        Task<SubscribeUnsubscribeResultModel> SubscribeToTopicAsync(SubscriptionToken token, Topic topic);
 
-        Task<SubscribeUnsubscribeHandler> UnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic);
+        Task<SubscribeUnsubscribeResultModel> UnsubscribeFromTopicAsync(SubscriptionToken token, Topic topic);
     }
 }
