@@ -3,19 +3,19 @@ using System.Linq;
 
 namespace PushNotifications.Delivery
 {
-    public class SubscribeUnsubscribeResultModel
+    public class SubscribeUnsubscribeResult
     {
-        SubscribeUnsubscribeResultModel()
+        SubscribeUnsubscribeResult()
         {
             Errors = Enumerable.Empty<string>();
         }
 
-        SubscribeUnsubscribeResultModel(IEnumerable<string> errors) : this()
+        SubscribeUnsubscribeResult(IEnumerable<string> errors) : this()
         {
             Errors = errors;
         }
 
-        SubscribeUnsubscribeResultModel(string error)
+        SubscribeUnsubscribeResult(string error)
         {
             Errors = new List<string> { error };
         }
@@ -35,10 +35,10 @@ namespace PushNotifications.Delivery
             }
         }
 
-        public static SubscribeUnsubscribeResultModel Successful() => new SubscribeUnsubscribeResultModel();
+        public static SubscribeUnsubscribeResult Successful() => new SubscribeUnsubscribeResult();
 
-        public static SubscribeUnsubscribeResultModel Unsuccessful(IEnumerable<string> errors) => new SubscribeUnsubscribeResultModel(errors);
-        public static SubscribeUnsubscribeResultModel Unsuccessful(string error) => new SubscribeUnsubscribeResultModel(error);
+        public static SubscribeUnsubscribeResult Unsuccessful(IEnumerable<string> errors) => new SubscribeUnsubscribeResult(errors);
+        public static SubscribeUnsubscribeResult Unsuccessful(string error) => new SubscribeUnsubscribeResult(error);
 
     }
 }
