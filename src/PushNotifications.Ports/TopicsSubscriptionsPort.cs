@@ -124,7 +124,7 @@ namespace PushNotifications.Ports
         {
             if (hasInvalidTokens)
             {
-                _logger.LogInformation($"The token is invalid, the user will not be subscribed for this topic and the token will be removed. Subscriber: {subscriberId}, Topic: {topic}");
+                _logger.LogInformation($"The token is invalid, the user will not be subscribed for this topic and the token will be removed. Subscriber: {subscriberId}, Topic: {topic}, Token:{subscriptionToken}");
 
                 UnSubscribe unSubscribe = new UnSubscribe(id, subscriberId, subscriptionToken);
                 _publisher.Publish(unSubscribe);
@@ -138,7 +138,7 @@ namespace PushNotifications.Ports
         {
             if (hasInvalidTokens)
             {
-                _logger.LogInformation($"The token is invalid and will be removed. Subscriber: {subscriberId}, Topic: {topic}");
+                _logger.LogInformation($"The token is invalid and will be removed. Subscriber: {subscriberId}, Topic: {topic}, Token:{subscriptionToken}");
 
                 UnSubscribe unSubscribe = new UnSubscribe(id, subscriberId, subscriptionToken);
                 _publisher.Publish(unSubscribe);
