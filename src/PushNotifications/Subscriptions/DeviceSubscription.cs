@@ -32,8 +32,13 @@ namespace PushNotifications.Subscriptions
         {
             if (state.IsSubscriptionActive == true)
             {
-                IEvent evnt = new UnSubscribed(state.Id, subscriberId, state.SubscriptionToken, timestamp);
-                Apply(evnt);
+                bool userIsSubscribedToDevice = state.Subscribers.Where(s => s.Equals(subscriberId)).Any();
+
+                if (userIsSubscribedToDevice)
+                {
+                    IEvent evnt = new UnSubscribed(state.Id, subscriberId, state.SubscriptionToken, timestamp);
+                    Apply(evnt);
+                }
             }
         }
     }
