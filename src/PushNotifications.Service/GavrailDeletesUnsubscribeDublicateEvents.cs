@@ -60,6 +60,9 @@ namespace PushNotifications.Service
 
                      Queue<EventRecord> eventRecords = new Queue<EventRecord>();
 
+                     Dictionary<DeviceSubscriberId, UnSubscribed> chekPairs = new Dictionary<DeviceSubscriberId, UnSubscribed>();
+
+
                      foreach (AggregateCommitRaw @commit in arStream.Commits)
                      {
                          var @event = commit.Events.First();
@@ -71,19 +74,37 @@ namespace PushNotifications.Service
                          {
                              UnSubscribed data = _serializer.DeserializeFromBytes<UnSubscribed>(@event.Data);
 
-                             if (eventRecords.Any(x => x.Unsubscribed.SubscriberId == data.SubscriberId) == false)
+                             if (chekPairs.ContainsKey(data.SubscriberId) && (chekPairs[data.SubscriberId] == null))
                              {
                                  EventRecord eventRecord = new EventRecord(@event, data);
                                  eventRecords.Enqueue(eventRecord);
 
-                                 _logger.LogInformation($"First unsubscribe for user:{data.SubscriberId},the others will be deleted");
+                                 chekPairs[data.SubscriberId] = data;
                              }
                          }
                          if (isthisEventSubscribed)
                          {
                              Subscribed data = _serializer.DeserializeFromBytes<Subscribed>(@event.Data);
-                             EventRecord eventRecord = new EventRecord(@event, data);
-                             eventRecords.Enqueue(eventRecord);
+
+                             if (chekPairs.ContainsKey(data.SubscriberId))
+                             {
+                                 if (chekPairs[data.SubscriberId] == null)
+                                 {
+                                     continue;
+                                 }
+                                 if (chekPairs[data.SubscriberId] != null)
+                                 {
+                                     chekPairs[data.SubscriberId] = null;
+                                     EventRecord eventRecord = new EventRecord(@event, data);
+                                     eventRecords.Enqueue(eventRecord);
+                                 }
+                             }
+                             else
+                             {
+                                 chekPairs.Add(data.SubscriberId, null);
+                                 EventRecord eventRecord = new EventRecord(@event, data);
+                                 eventRecords.Enqueue(eventRecord);
+                             }
                              _logger.LogInformation($"Subscribe for user:{data.SubscriberId}");
                          }
 
