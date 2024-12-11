@@ -26,7 +26,8 @@ namespace PushNotifications.Service
         private readonly IEventStore _eventStore;
         private readonly ISerializer _serializer;
         private readonly ILogger<GavrailDeletesUnsubscribeDublicateEvents> _logger;
-        private byte[] deviceSubscriptionRootNameAsBytes = Encoding.UTF8.GetBytes(":subscription:");
+        private static byte[] deviceSubscriptionRootNameAsBytes = Encoding.UTF8.GetBytes(":subscription:");
+
         public GavrailDeletesUnsubscribeDublicateEvents(IEventStorePlayer player, IEventStore eventStore, ILogger<GavrailDeletesUnsubscribeDublicateEvents> logger, ISerializer serializer)
         {
             _player = player;
@@ -34,12 +35,15 @@ namespace PushNotifications.Service
             _logger = logger;
             _serializer = serializer;
         }
+        public async Task HandleAsync(GavrailDeletesUnsubscribeDublicateEventsSignal signal)
+        {
+            await DeleteAsync(signal);
+        }
 
         public async Task<bool> DeleteAsync(GavrailDeletesUnsubscribeDublicateEventsSignal signal)
         {
             var contractIdBytes = Encoding.UTF8.GetBytes(typeof(UnSubscribed).GetContractId());
             var contractSubscribeIdBytes = Encoding.UTF8.GetBytes(typeof(Subscribed).GetContractId());
-
 
             _logger.LogInformation("The migration for un/subscibe events is starting...");
             PlayerOperator playerOperator = new PlayerOperator()
@@ -53,24 +57,30 @@ namespace PushNotifications.Service
 
                      if (index < 0)
                      {
-                         //_logger.LogInformation("Skiping unneeded agregate");
                          return;
+                     }
 
+                     var commitCount = 0;
+                     var eventsCount = 0;
+                     foreach (var commit in arStream.Commits)
+                     {
+                         commitCount++;
+                         eventsCount += commit.Events.Count();
+                     }
+                     if (commitCount != eventsCount)
+                     {
+                         _logger.LogError($"Commits and events count in not equal!!! {arStream.Commits.First().Events.First().AggregateRootId}");
+                         return;
                      }
 
                      Queue<EventRecord> eventRecords = new Queue<EventRecord>();
-
                      Dictionary<DeviceSubscriberId, UnSubscribed> chekPairs = new Dictionary<DeviceSubscriberId, UnSubscribed>();
-
 
                      foreach (AggregateCommitRaw @commit in arStream.Commits)
                      {
                          var @event = commit.Events.First();
 
-                         bool isthisEventUnsubscribed = @event.Data.AsSpan().IndexOf(contractIdBytes) > -1;
-                         bool isthisEventSubscribed = @event.Data.AsSpan().IndexOf(contractSubscribeIdBytes) > -1;
-
-                         if (isthisEventUnsubscribed)
+                         if (@event.Data.AsSpan().IndexOf(contractIdBytes) > -1)
                          {
                              UnSubscribed data = _serializer.DeserializeFromBytes<UnSubscribed>(@event.Data);
 
@@ -78,11 +88,11 @@ namespace PushNotifications.Service
                              {
                                  EventRecord eventRecord = new EventRecord(@event, data);
                                  eventRecords.Enqueue(eventRecord);
-
                                  chekPairs[data.SubscriberId] = data;
                              }
                          }
-                         if (isthisEventSubscribed)
+
+                         else
                          {
                              Subscribed data = _serializer.DeserializeFromBytes<Subscribed>(@event.Data);
 
@@ -92,7 +102,7 @@ namespace PushNotifications.Service
                                  {
                                      continue;
                                  }
-                                 if (chekPairs[data.SubscriberId] != null)
+                                 else
                                  {
                                      chekPairs[data.SubscriberId] = null;
                                      EventRecord eventRecord = new EventRecord(@event, data);
@@ -105,54 +115,43 @@ namespace PushNotifications.Service
                                  EventRecord eventRecord = new EventRecord(@event, data);
                                  eventRecords.Enqueue(eventRecord);
                              }
-                             //_logger.LogInformation($"Subscribe for user:{data.SubscriberId}");
                          }
-
                      }
 
                      if (eventRecords.Count == arStream.Commits.Count)
                      {
-                         _logger.LogInformation($"Everythig is fine with aggregate {System.Text.Encoding.UTF8.GetString(arStream.Commits.First().Events.First().AggregateRootId)}");
+                         // _logger.LogInformation($"Everythig is fine with aggregate {System.Text.Encoding.UTF8.GetString(arStream.Commits.First().Events.First().AggregateRootId)}");
                          return;
                      }
 
-                     foreach (AggregateCommitRaw @commit in arStream.Commits)
+                     if (signal.IsDryRun == false)
                      {
-                         if (signal.IsDryRun == false)
+                         foreach (AggregateCommitRaw @commit in arStream.Commits)
                          {
-                             await _eventStore.DeleteAsync(commit.Events.First());
+                             await _eventStore.DeleteAsync(commit.Events.First()).ConfigureAwait(false);
                          }
                      }
 
-                     //_logger.LogWarning("The all events are deleted, the store is cleaned");
-                     //_logger.LogInformation("Starting to add events");
-
                      int revision = 0;
-                     while (eventRecords.Count > 0)
+                     if (signal.IsDryRun == false)
                      {
-                         revision++;
-                         EventRecord currentEvent = eventRecords.Dequeue();
-
-                         var newEvent = new AggregateEventRaw(currentEvent.AggregateEvent.AggregateRootId, currentEvent.AggregateEvent.Data, revision, currentEvent.AggregateEvent.Position, currentEvent.AggregateEvent.Timestamp);
-
-                         if (signal.IsDryRun == false)
+                         while (eventRecords.Count > 0)
                          {
+                             revision++;
+                             EventRecord currentEvent = eventRecords.Dequeue();
+
+                             var newEvent = new AggregateEventRaw(currentEvent.AggregateEvent.AggregateRootId, currentEvent.AggregateEvent.Data, revision, currentEvent.AggregateEvent.Position, currentEvent.AggregateEvent.Timestamp);
+
                              await _eventStore.AppendAsync(newEvent).ConfigureAwait(false);
                          }
                      }
-                     //_logger.LogInformation("Migration for current aggregate completed");
                  }
             };
-            await _player.EnumerateEventStore(playerOperator, new PlayerOptions(), CancellationToken.None).ConfigureAwait(false);
 
+            await _player.EnumerateEventStore(playerOperator, new PlayerOptions(), CancellationToken.None).ConfigureAwait(false);
             _logger.LogInformation("Completed!");
 
             return true;
-        }
-
-        public async Task HandleAsync(GavrailDeletesUnsubscribeDublicateEventsSignal signal)
-        {
-            await DeleteAsync(signal);
         }
     }
 
@@ -162,14 +161,12 @@ namespace PushNotifications.Service
         {
             AggregateEvent = aggregateEvent;
             Subscribed = subscribed;
-            Unsubscribed = null;
         }
 
         public EventRecord(AggregateEventRaw aggregateEvent, UnSubscribed unsubscribed)
         {
             AggregateEvent = aggregateEvent;
             Unsubscribed = unsubscribed;
-            Subscribed = null;
         }
         public AggregateEventRaw AggregateEvent { get; set; }
         public UnSubscribed Unsubscribed { get; set; }
