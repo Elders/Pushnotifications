@@ -24,7 +24,7 @@ namespace PushNotifications.MigrationSignals
         public string Tenant { get; private set; }
 
         [DataMember(Order = 1)]
-        public bool IsDryRun { get; private set; }
+        public bool IsDryRun { get; private set; } = true;
 
         [DataMember(Order = 2)]
         public DateTimeOffset Timestamp { get; private set; }
