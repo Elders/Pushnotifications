@@ -74,7 +74,7 @@ namespace PushNotifications.Delivery.FireBase
                                 // The order of responses corresponds to the order of the registration tokens.
                                 sb.AppendLine($"Source: {potentionallyFailed.Exception.Source}. Message: {potentionallyFailed.Exception.Message}. Error code: {potentionallyFailed.Exception.ErrorCode}. Token: {tokenBatch[i]}");
 
-                                SubscriptionToken findToken = subTokens.Where(x => x.Token == tokenBatch[i]).SingleOrDefault();
+                                var findToken = subTokens.Where(x => x.Token == tokenBatch[i]).FirstOrDefault();
                                 if (findToken is not null)
                                 {
                                     failedTokens.Add(findToken);
