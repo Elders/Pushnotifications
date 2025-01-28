@@ -68,6 +68,20 @@ namespace PushNotifications.Ports
             NotificationForDelivery notificationForDelivery = signal.ToDelivery();
             PushNotifications.SendTokensResult pushResult = await delivery.SendAsync(tokens, notificationForDelivery);
 
+            if (pushResult.IsSuccessful == false)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    if (pushResult.IsSuccessful)
+                    {
+                        break;
+                    }
+                    await Task.Delay(30000);
+                    pushResult = await delivery.SendAsync(tokens, notificationForDelivery);
+                    logger.LogWarning($"Retry {i} to sent push notification");
+                }
+            }
+
             if (pushResult.IsSuccessful && pushResult.HasFailedTokens)
             {
                 logger.Warn(() => "Failed to send notification to some of the tokens.");
