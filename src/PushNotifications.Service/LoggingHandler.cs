@@ -1,5 +1,4 @@
-﻿using Elders.Cronus;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -31,7 +30,7 @@ namespace PushNotifications.Service
                 await AddResponseLogAsync(response, requestTrace);
             }
 
-            logger.Debug(() => requestTrace.ToString());
+            logger.LogDebug(requestTrace.ToString());
 
             return response;
         }

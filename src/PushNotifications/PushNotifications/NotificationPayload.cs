@@ -1,10 +1,9 @@
-﻿using Elders.Cronus;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace PushNotifications.Contracts.PushNotifications
 {
     [DataContract(Name = "dd74d54e-a72c-4506-b2a4-3f9d20c922bc")]
-    public class NotificationPayload : ValueObject<NotificationPayload>
+    public record class NotificationPayload
     {
         NotificationPayload() { }
 

@@ -84,7 +84,7 @@ namespace PushNotifications.Ports
 
             if (pushResult.IsSuccessful && pushResult.HasFailedTokens)
             {
-                logger.Warn(() => "Failed to send notification to some of the tokens.");
+                logger.LogWarning("Failed to send notification to some of the tokens.");
 
                 foreach (SubscriptionToken failedToken in pushResult.FailedTokens)
                 {
@@ -92,11 +92,11 @@ namespace PushNotifications.Ports
                     foreach (var token in tokenPair)
                     {
                         var subscriberId = token.Value;
-                        var deviceSubscriptionId = DeviceSubscriptionId.New(signal.Tenant, failedToken.Token);
+                        var deviceSubscriptionId = new DeviceSubscriptionId(signal.Tenant, failedToken.Token);
                         UnSubscribe unSubscribe = new UnSubscribe(deviceSubscriptionId, subscriberId, failedToken);
                         publisher.Publish(unSubscribe);
 
-                        logger.Debug(() => $"Unsubscribed the token {failedToken.Token} from the subscriber {subscriberId}");
+                        logger.LogDebug($"Unsubscribed the token {failedToken.Token} from the subscriber {subscriberId}");
                     }
                 }
             }

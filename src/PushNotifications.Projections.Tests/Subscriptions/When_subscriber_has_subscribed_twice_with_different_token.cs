@@ -11,7 +11,7 @@ namespace PushNotifications.Tests.PushNotifications
     {
         Establish context = () =>
         {
-            var id = DeviceSubscriptionId.New("elders", "id");
+            var id = new DeviceSubscriptionId("elders", "id");
             projection = new SubscriberTokensProjection();
             firstSubscriptionToken = new SubscriptionToken("token", SubscriptionType.FireBase);
             secondSubscriptionToken = new SubscriptionToken("token2", SubscriptionType.FireBase);

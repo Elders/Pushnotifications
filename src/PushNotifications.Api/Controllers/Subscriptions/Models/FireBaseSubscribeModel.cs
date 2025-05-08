@@ -24,7 +24,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             var urn = context.CurrentUser.UserId ?? AggregateRootId.Parse(Subscriber.UberDecode());
 
             var subscriptionToken = new SubscriptionToken(Token, SubscriptionType.FireBase);
-            var subscriptionId = DeviceSubscriptionId.New(urn.Tenant, subscriptionToken);
+            var subscriptionId = new DeviceSubscriptionId(urn.Tenant, subscriptionToken);
             var subscriberId = new DeviceSubscriberId(urn.Tenant, urn.Id, context.Application);
             return new Subscribe(subscriptionId, subscriberId, subscriptionToken);
         }
@@ -34,7 +34,7 @@ namespace PushNotifications.Api.Controllers.Subscriptions.Commands
             var urn = context.CurrentUser.UserId ?? AggregateRootId.Parse(Subscriber.UberDecode());
 
             var subscriptionToken = new SubscriptionToken(Token, SubscriptionType.FireBase);
-            var subscriptionId = DeviceSubscriptionId.New(urn.Tenant, subscriptionToken);
+            var subscriptionId = new DeviceSubscriptionId(urn.Tenant, subscriptionToken);
             var subscriberId = new DeviceSubscriberId(urn.Tenant, urn.Id, context.Application);
             return new UnSubscribe(subscriptionId, subscriberId, subscriptionToken);
         }
