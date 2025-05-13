@@ -32,7 +32,7 @@ namespace PushNotifications.Api
 
             if (result.NotFound)
             {
-                log.Warn(() => $"Instance of projection {typeof(TProjection).Name} was not found. " + result.NotFoundHint);
+                log.LogWarning($"Instance of projection {typeof(TProjection).Name} was not found. " + result.NotFoundHint);
                 if (onNotFound is null)
                     return new ProblemObjectResult(new ResourceNotFoundProblemDetails(httpContextAccessor.HttpContext, $"Instance of projection {typeof(TProjection).Name} was not found. {result.NotFoundHint}"));
                 else
@@ -41,7 +41,7 @@ namespace PushNotifications.Api
 
             if (result.HasError)
             {
-                log.Error(() => $"Failed to load instance of projection {typeof(TProjection).Name}. {result.Error}");
+                log.LogError($"Failed to load instance of projection {typeof(TProjection).Name}. {result.Error}");
                 return new ProblemObjectResult(new ProjectionProblemDetails(httpContextAccessor.HttpContext, new string[] { result.Error }));
             }
 
@@ -70,7 +70,7 @@ namespace PushNotifications.Api
             }
             catch (Exception ex)
             {
-                log.ErrorException(ex, () => ex.Message);
+                log.LogError(ex,ex.Message);
                 return PublisherProblem(command);
             }
         }
@@ -87,7 +87,7 @@ namespace PushNotifications.Api
             }
             catch (Exception ex)
             {
-                log.ErrorException(ex, () => ex.Message);
+                log.LogError(ex, ex.Message);
                 return PublisherProblem(signal);
             }
         }
@@ -96,7 +96,7 @@ namespace PushNotifications.Api
         {
             var problemDetails = new PublisherProblemDetails(httpContextAccessor.HttpContext, message);
 
-            log.Error(() => System.Text.Json.JsonSerializer.Serialize(problemDetails));
+            log.LogError(System.Text.Json.JsonSerializer.Serialize(problemDetails));
 
             return new ProblemObjectResult(problemDetails);
         }

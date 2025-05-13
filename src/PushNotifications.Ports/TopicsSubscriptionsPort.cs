@@ -38,7 +38,7 @@ namespace PushNotifications.Ports
             ReadResult<TopicsPerSubscriberProjection> projectionReponse = await _projections.GetAsync<TopicsPerSubscriberProjection>(@event.SubscriberId);
             if (projectionReponse.IsSuccess == false)
             {
-                _logger.Debug(() => $"No topics were found for subscriber {@event.SubscriberId}");
+                _logger.LogDebug($"No topics were found for subscriber {@event.SubscriberId}");
                 return;
             }
 
@@ -61,7 +61,7 @@ namespace PushNotifications.Ports
             ReadResult<TopicsPerSubscriberProjection> projectionReponse = await _projections.GetAsync<TopicsPerSubscriberProjection>(@event.SubscriberId);
             if (projectionReponse.IsSuccess == false)
             {
-                _logger.Debug(() => $"No topics were found for subscriber {@event.SubscriberId},{@event.SubscriptionToken}");
+                _logger.LogDebug($"No topics were found for subscriber {@event.SubscriberId},{@event.SubscriptionToken}");
                 return;
             }
 
@@ -83,7 +83,7 @@ namespace PushNotifications.Ports
             ReadResult<SubscriberTokensProjection> projectionReponse = await _projections.GetAsync<SubscriberTokensProjection>(@event.Id.SubscriberId);
             if (projectionReponse.IsSuccess == false)
             {
-                _logger.Debug(() => $"No tokens were found for subscriber {@event.Id.SubscriberId}");
+                _logger.LogDebug($"No tokens were found for subscriber {@event.Id.SubscriberId}");
                 return;
             }
 
@@ -93,7 +93,7 @@ namespace PushNotifications.Ports
                 var result = await subscriptionManager.SubscribeToTopicAsync(token, @event.Id.Topic);
                 if (result.IsSuccess == false)
                 {
-                    var deviceSubscriptionId = DeviceSubscriptionId.New(@event.Id.NID, token.Token);
+                    var deviceSubscriptionId = new DeviceSubscriptionId(@event.Id.NID, token.Token);
                     RemoveInvalidSubscribingToken(result.HasInvalidTokens, deviceSubscriptionId, @event.Id.SubscriberId, token, @event.Id.Topic);
                 }
             }
@@ -104,7 +104,7 @@ namespace PushNotifications.Ports
             ReadResult<SubscriberTokensProjection> projectionReponse = await _projections.GetAsync<SubscriberTokensProjection>(@event.Id.SubscriberId);
             if (projectionReponse.IsSuccess == false)
             {
-                _logger.Debug(() => $"No tokens were found for subscriber {@event.Id.SubscriberId}");
+                _logger.LogDebug($"No tokens were found for subscriber {@event.Id.SubscriberId}");
                 return;
             }
 
@@ -114,7 +114,7 @@ namespace PushNotifications.Ports
                 var result = await subscriptionManager.UnsubscribeFromTopicAsync(token, @event.Id.Topic);
                 if (result.IsSuccess == false)
                 {
-                    var deviceSubscriptionId = DeviceSubscriptionId.New(@event.Id.NID, token.Token);
+                    var deviceSubscriptionId = new DeviceSubscriptionId(@event.Id.NID, token.Token);
                     RemoveInvalidUnSubscribingToken(result.HasInvalidTokens, deviceSubscriptionId, @event.Id.SubscriberId, token, @event.Id.Topic);
                 }
             }

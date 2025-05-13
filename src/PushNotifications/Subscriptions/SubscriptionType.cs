@@ -1,11 +1,10 @@
-﻿using Elders.Cronus;
-using System;
+﻿using System;
 using System.Runtime.Serialization;
 
 namespace PushNotifications.Subscriptions
 {
     [DataContract(Name = "ca26d20b-67aa-442b-95f2-45f7ea925d78")]
-    public class SubscriptionType : ValueObject<SubscriptionType>
+    public sealed record class SubscriptionType
     {
         [DataMember(Order = 1)]
         private string value;

@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cronus.DomainModeling" Version="10.3.6" />
+    <PackageReference Include="Cronus.DomainModeling" Version="11.0.2" />
   </ItemGroup>
 
   <ItemGroup>

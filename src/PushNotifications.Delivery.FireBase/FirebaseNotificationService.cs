@@ -1,5 +1,4 @@
-﻿using Elders.Cronus;
-using Elders.Cronus.MessageProcessing;
+﻿using Elders.Cronus.MessageProcessing;
 using FirebaseAdmin;
 using FirebaseAdmin.Messaging;
 using Microsoft.Extensions.Logging;
@@ -81,7 +80,7 @@ namespace PushNotifications.Delivery.FireBase
                                 }
                             }
                         }
-                        logger.Error(sb.ToString);
+                        logger.LogError(sb.ToString());
                     }
                 }
                 else

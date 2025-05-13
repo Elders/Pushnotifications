@@ -1,5 +1,4 @@
-﻿using Elders.Cronus;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using PushNotifications.PushNotifications;
 using PushNotifications.Subscriptions;
 using System.Collections.Generic;
@@ -32,7 +31,7 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
                 var delivery = deliveries[platformTokens.Key];
                 IEnumerable<SubscriptionToken> theTokens = platformTokens.AsEnumerable();
                 var localResult = await delivery.SendAsync(theTokens, notification).ConfigureAwait(false);
-                logger.Info(() => $"PN send has failed? {localResult.HasFailedTokens}");
+                logger.LogInformation($"PN send has failed? {localResult.HasFailedTokens}");
                 result = result + localResult; // Do not use += ni**a
             }
 

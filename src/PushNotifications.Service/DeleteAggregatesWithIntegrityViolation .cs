@@ -38,8 +38,8 @@ namespace PushNotifications.Service
             {
                 OnAggregateStreamLoadedAsync = async stream =>
                 {
-                    byte[] aggregateRootId = stream.Commits.First().Events.First().AggregateRootId;
-                    string aggregateRootIdAsString = System.Text.Encoding.UTF8.GetString(stream.Commits.First().Events.First().AggregateRootId);
+                    System.ReadOnlyMemory<byte> aggregateRootId = stream.Commits.First().Events.First().AggregateRootId;
+                    string aggregateRootIdAsString = System.Text.Encoding.UTF8.GetString(stream.Commits.First().Events.First().AggregateRootId.Span);
 
                     List<AggregateCommit> aggregateCommits = new List<AggregateCommit>();
 
