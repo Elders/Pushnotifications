@@ -6,7 +6,7 @@ using Elders.Cronus;
 
 namespace PushNotifications.Contracts.PushNotifications.Delivery
 {
-    public sealed record class NotificationTarget
+    public sealed class NotificationTarget
     {
         public NotificationTarget(string tenant, string application)
         {
@@ -19,7 +19,7 @@ namespace PushNotifications.Contracts.PushNotifications.Delivery
         public string Application { get; private set; }
     }
 
-    public sealed record class NotificationForDelivery
+    public sealed class NotificationForDelivery
     {
         public NotificationForDelivery(NotificationPayload notificationPayload, Dictionary<string, object> notificationData, DateTimeOffset expiresAt, bool contentAvailable, NotificationTarget target)
         {
